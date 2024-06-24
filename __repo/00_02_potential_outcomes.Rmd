@@ -1,0 +1,288 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# Potential Outcomes
+
+The potential outcomes framework, often associated with the Rubin Causal
+Model (RCM), is a powerful method for defining and estimating causal
+effects. In this framework, a causal effect is understood through the
+comparison of potential outcomes under different treatment conditions.
+
+## Key Concepts
+
+1.  **Potential Outcomes**: For each unit (e.g., individual, group, or
+    entity), there are two potential outcomes:
+
+    -   $Y{_i}^1$: The outcome if the unit receives the treatment.
+    -   $Y{_i}^0$: The outcome if the unit does not receive the
+        treatment.
+
+    These outcomes are also known as counterfactual outcomes because
+    they represent hypothetical scenarios that cannot be simultaneously
+    observed.
+
+2.  **Observed Outcome**: For each unit, we can only observe one of
+    these potential outcomes depending on the treatment assignment. This
+    is expressed using the switching equation: $$
+    Y_{i} = D_i \cdot Y{_i}^1 + (1 - D_i) \cdot Y{_i}^0
+    $$ where $Y$ is the observed outcome and $D$ is the treatment
+    indicator ($D = 1$ if the unit receives the treatment and $D = 0$ if
+    the unit does not).
+
+### Causal Effect
+
+The individual causal effect for a unit $i$ is defined as the difference
+between its two potential outcomes: $$
+\text{Causal Effect}_i = Y_i ^1 - Y_i ^0
+$$
+
+However, because we can only observe one of these outcomes for each
+unit, we typically focus on average causal effects across a population.
+
+### Average Treatment Effect (ATE)
+
+The Average Treatment Effect (ATE) is the expected difference in
+outcomes if all units were treated versus if none were treated: $$
+\text{ATE} = E[Y_i ^1] - E[Y_i ^0]
+$$
+
+### Average Treatment Effect on the Treated (ATT)
+
+The Average Treatment Effect on the Treated (ATT) is the average causal
+effect for those units that actually received the treatment: $$
+\text{ATT} = E[Y(1) | D = 1] - E[Y(0) | D = 1]
+$$
+
+### The Fundamental Problem of Causal Inference
+
+A major challenge in causal inference is that we can never observe both
+potential outcomes for the same unit simultaneously. This is known as
+the **fundamental problem of causal inference**. Therefore, we rely on
+assumptions and statistical methods to estimate causal effects.
+
+## Assumptions for Identifying Causal Effects
+
+Several assumptions can help identify causal effects:
+
+### 1. **Independence**
+
+The independence assumption, also known as the unconfoundedness or ignorability assumption, is crucial in causal inference:
+
+$$[Y^0, Y^1] \perp D$$
+
+This notation means that the potential outcomes \((Y^0, Y^1)\) are independent of the treatment assignment \(D\). In other words, the treatment is assigned randomly with respect to the potential outcomes. This ensures that any difference in outcomes between treated and control groups can be attributed to the treatment itself, rather than other factors.
+
+It means there are no unobserved confounders.
+
+
+However, in real-world scenarios, human-based sorting and decision-making processes often violate this assumption. People self-select into treatments based on various observed and unobserved characteristics, leading to non-random assignment. As a result, naïve observational comparisons—which do not account for this non-randomness—are almost always incapable of accurately recovering causal effects.
+
+To address this issue, researchers use various methods such as randomized controlled trials (RCTs), matching techniques, instrumental variables, and regression adjustment to attempt to approximate random assignment and thus make valid causal inferences.
+
+
+1(a).  **Ignorability (Unconfoundedness)**:
+
+$$[Y^0, Y^1] \perp D \mid X $$
+
+       
+This assumption implies that conditional on covariates $X$, the treatment assignment $D$ is independent of the potential outcomes.
+
+Treatment can be assigned conditionally on covariates. For example state assign student to three classes randomly but schools chosen first, then students are assigned randomly later. 
+
+The treatment assignment was only conditionally random. When treatment assignment had been conditional on observable variables, it is a situation of selection on observables. 
+
+2. **Stable Unit Treatment Value Assumption (SUTVA)**
+
+SUTVA is a critical assumption in causal inference and has two main components:
+
+- **No Interference**: The potential outcomes for any unit are unaffected by the treatment status of other units. This means the treatment effect on one unit does not spill over to affect another unit.
+
+- **Consistency**: The observed outcome for a unit under the treatment received is the same as the potential outcome under that treatment. This means that if a unit receives the treatment, its observed outcome should match the potential outcome we would expect if it had received that treatment.
+
+**Implications of SUTVA**
+
+1. **Homogeneous Treatment**:
+    - SUTVA implies that the treatment is administered uniformly across all units. In practice, this assumption can be violated if, for instance, the effectiveness of a treatment varies due to differences in how it is delivered. For example, if some doctors are better surgeons than others, the "dose" of the treatment (surgery) is not homogeneous.
+
+2. **No Externalities (No Spillovers)**:
+    - SUTVA assumes there are no externalities, meaning that the treatment of one unit does not affect the outcomes of other units. If unit 1 receives the treatment and this somehow affects unit 2's outcome, this would be a violation of SUTVA. We are assuming away such spillover effects to ensure that the treatment effect can be isolated and accurately measured.
+    
+  - No general equilibrium effects
+
+Violations of SUTVA can lead to biased estimates of causal effects, so it is essential to consider these assumptions carefully and take appropriate steps to address potential violations when conducting causal inference.
+
+
+## Methods for Estimating Causal Effects
+
+Several methods can be used to estimate causal effects under the potential outcomes framework:
+
+1.  **Randomized Controlled Trials (RCTs)**:
+
+Random assignment ensures that the treatment and control groups are comparable, allowing for unbiased estimation of the ATE.
+        
+2.  **Matching**:
+
+Pairing treated and control units with similar covariates to estimate the treatment effect.
+        
+3.  **Regression Adjustment**:
+
+Using regression models to adjust for differences in covariates between treated and control groups.
+
+4.  **Instrumental Variables (IV)**:
+
+Using instruments that affect the treatment assignment but are not related to the potential outcomes, except through the treatment.
+
+5.  **Difference-in-Differences (DiD)**:
+
+Comparing the changes in outcomes over time between treated and control groups to account for time-invariant unobserved heterogeneity.
+
+
+## Example
+
+Let's consider an example to illustrate the potential outcomes
+framework:
+
+**Scenario**: We want to estimate the effect of a job training program (treatment) on participants' earnings.
+
+**Potential Outcomes**:
+  $Y_i(1)$: Earnings of individual $i$ if they participate in the job training program.
+  $Y_i(0)$: Earnings of individual $i$ if they do not participate in the job training program.
+  
+  
+**Observed Outcome**:
+
+If individual $i$ participates in the program ($D_i = 1$), we observe $Y_i = Y_i(1)$.   
+If individual $i$ does not participate ($D_i = 0$), we observe  $Y_i = Y_i(0)$.
+
+**Objective**: Estimate the ATE of the job training program on earnings: 
+$$ \text{ATE} = E[Y(1)] - E[Y(0)] $$
+
+In practice, we might use matching or regression adjustment to control for covariates that affect both participation in the program and earnings, helping us to estimate the causal effect more accurately.
+
+
+### Simple Difference Method
+
+The simple difference method is one of the basic approaches to estimating causal effects in observational studies. It compares the average outcomes of a treatment group and a control group. This method is straightforward but relies on the assumption that the two groups are comparable in all respects except for the treatment.
+
+
+
+#### Key Concepts
+
+1.  **Treatment Group**: The group that receives the treatment or intervention.
+2.  **Control Group**: The group that does not receive the treatment or intervention.
+
+#### Steps to Implement the Simple Difference Method
+
+1.  **Identify Treatment and Control Groups**:
+
+Define the groups that have received the treatment (treatment group) and those that have not (control group).
+
+2.  **Calculate Average Outcomes**:
+
+Compute the average outcome for the treatment group ($\bar{Y}_T$).  
+Compute the average outcome for the control group ($\bar{Y}_C$).
+
+3.  **Compute the Difference**:
+
+The estimated treatment effect is the difference between the average outcomes of the treatment and control groups: 
+
+$$\hat{\delta} = \bar{Y}_T - \bar{Y}_C $$
+
+#### Assumptions
+
+The simple difference method assumes that the treatment and control groups are comparable, meaning that any difference in outcomes is solely due to the treatment. This assumption is often referred to as the **strong ignorability assumption**.
+
+1.  **No Confounding Variables**: There are no unobserved factors that influence both the treatment assignment and the outcome.
+2.  **Homogeneity**: The treatment effect is constant across all individuals in the population.
+
+#### Limitations
+
+1.  **Selection Bias**: If individuals self-select into the treatment group based on characteristics that also affect the outcome, the estimate will be biased.
+
+2.  **Confounding Variables**: If there are unobserved confounders that affect both the treatment and the outcome, the simple difference method will not provide a valid estimate of the causal effect.
+
+#### Example
+
+Let's illustrate the simple difference method with an example.
+
+**Scenario**: We want to estimate the effect of a job training program on participants' earnings.
+
+1.  **Data**:
+    -   Treatment group: Participants of the job training program.
+    -   Control group: Non-participants of the job training program.
+    -   Outcome: Earnings after the program.
+2.  **Average Outcomes**:
+    -   Average earnings for the treatment group ($\bar{Y}_T$): \$50,000
+    -   Average earnings for the control group ($\bar{Y}_C$): \$45,000
+3.  **Compute the Difference**:
+    -   The estimated treatment effect: $ \hat{\delta} = \bar{Y}_T - \bar{Y}_C = 50,000 - 45,000 = 5,000 $
+    -   Interpretation: The job training program is estimated to increase earnings by \$5,000 on average.
+
+#### Addressing Limitations
+
+To address the limitations of the simple difference method, researchers can use more sophisticated techniques that control for confounding variables and selection bias:
+
+1.  **Randomized Controlled Trials (RCTs)**: Random assignment of treatment can ensure comparability between treatment and control groups.
+
+2.  **Matching Methods**: Match treatment and control units based on observed covariates to create comparable groups.
+
+3.  **Regression Adjustment**: Use regression models to control for observed covariates that may confound the relationship between treatment and outcome.
+
+4.  **Instrumental Variables (IV)**: Use instruments that are correlated with the treatment but not directly with the outcome to account for unobserved confounders.
+
+5.  **Difference-in-Differences (DiD)**: Compare changes in outcomes over time between treatment and control groups to account fortime-invariant unobserved heterogeneity.
+
+### Conclusion
+
+The simple difference method provides an intuitive way to estimate causal effects by comparing the average outcomes of treatment and control groups. However, its validity relies on the strong assumption that the groups are comparable in all respects except for the treatment. In practice, researchers often need to use more advanced techniques to address potential biases and confounding factors.
+
+
+
+## Randomization-Based Methods
+
+Athey and Imbens are prominent economists who have contributed significantly to the development and application of randomization-based methods in econometrics. These methods are particularly valuable for inferring the probability that an estimated coefficient is not simply a result of chance. Here's an explanation of the context and importance of their work:
+
+### Traditional Methods vs. Randomization-Based Methods
+
+- **Traditional Methods**: Economists often use parametric tests (like t-tests or F-tests) which rely on assumptions about the distribution of the error terms (e.g., normality, homoscedasticity). These methods use asymptotic approximations to calculate p-values, which may not always be accurate, especially in small samples or when assumptions are violated.
+
+- **Randomization-Based Methods**: These methods, such as permutation tests, do not rely on these distributional assumptions. Instead, they use the actual data to construct the distribution of the test statistic under the null hypothesis. This approach involves reshuffling the treatment labels or data points multiple times to create a distribution of the test statistic that purely reflects random chance.
+
+### Why Use Randomization-Based Methods?
+
+1. **Exact P-Values**: Randomization methods can construct exact p-values, which provide a more precise measure of the probability that the observed effect could have arisen by chance. This is especially important in cases where traditional assumptions do not hold.
+
+2. **Robustness**: These methods are robust to violations of common statistical assumptions (e.g., non-normality, heteroscedasticity). They rely on the randomization process used in the experiment or observational study, ensuring that the inferences are valid regardless of the underlying data distribution.
+
+3. **Small Samples**: In small sample sizes, randomization-based methods are particularly advantageous because traditional asymptotic approximations may be unreliable.
+
+### How Randomization-Based Methods Work
+
+1. **Calculate the Observed Statistic**: First, calculate the test statistic (e.g., the difference in means, regression coefficient) from the observed data.
+
+2. **Randomize Data**: Randomly reassign the treatment labels or shuffle the data points many times (typically thousands). Each randomization should maintain the structure of the data but break any systematic association between treatment and outcome.
+
+3. **Calculate Test Statistics for Randomizations**: For each randomization, calculate the test statistic. This generates a distribution of the test statistic under the null hypothesis of no treatment effect.
+
+4. **Compare Observed Statistic**: Compare the observed test statistic to this distribution. The p-value is the proportion of randomized test statistics that are as extreme as or more extreme than the observed statistic.
+
+### Example
+
+Suppose Athey and Imbens are evaluating the effect of a training program on income:
+
+1. **Observed Difference in Means**: The difference in mean income between the treatment (received training) and control (no training) groups is calculated.
+
+2. **Randomization**: The treatment labels (received training or not) are randomly shuffled, and the difference in means is recalculated for each shuffle. This process is repeated many times.
+
+3. **Distribution of Differences**: The randomization process generates a distribution of differences in means under the null hypothesis that training has no effect.
+
+4. **Calculate P-Value**: The p-value is the proportion of differences from the randomization distribution that are as extreme or more extreme than the observed difference.
+
+### Contribution of Athey and Imbens
+
+Athey and Imbens' work emphasizes the use of these robust, non-parametric methods to provide more reliable and exact p-values. Their approach is part of a broader trend in econometrics and other social sciences toward more reliable inference methods that do not heavily rely on restrictive assumptions. By focusing on randomization-based methods, they help ensure that the conclusions drawn from empirical studies are more credible and less sensitive to potential violations of traditional model assumptions.
+
+This methodology is particularly valuable in experimental economics, field experiments, and observational studies where treatment effects are being evaluated. By using randomization-based methods, researchers can make stronger causal inferences and provide more robust evidence for policy and decision-making.

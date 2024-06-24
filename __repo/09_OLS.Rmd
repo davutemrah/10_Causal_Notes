@@ -1,0 +1,176 @@
+# Ordinary Least Squares (OLS)
+
+## Simple Linear Regression
+
+ Let's derive the Ordinary Least Squares (OLS) estimators for the simple linear regression model:
+
+\[ Y = \alpha + \beta X + \epsilon \]
+
+Here, \(Y\) is the dependent variable, \(X\) is the independent variable, \(\alpha\) (alpha) is the intercept, \(\beta\) (beta) is the slope, and \(\epsilon\) (epsilon) is the error term.
+
+To find the OLS estimators, we need to minimize the sum of squared residuals (SSR):
+
+\[ SSR = \sum_{i=1}^n (Y_i - \hat{Y}_i)^2 \]
+\[ \hat{Y}_i = \hat{\alpha} + \hat{\beta} X_i \]
+
+Substituting \(\hat{Y}_i\):
+
+\[ SSR = \sum_{i=1}^n (Y_i - (\hat{\alpha} + \hat{\beta} X_i))^2 \]
+
+To minimize SSR with respect to \(\hat{\alpha}\) and \(\hat{\beta}\), we take partial derivatives and set them to zero:
+
+1. **Partial derivative with respect to \(\hat{\alpha}\):**
+
+\[ \frac{\partial SSR}{\partial \hat{\alpha}} = \sum_{i=1}^n -2(Y_i - \hat{\alpha} - \hat{\beta} X_i) = 0 \]
+
+Simplifying:
+
+\[ \sum_{i=1}^n (Y_i - \hat{\alpha} - \hat{\beta} X_i) = 0 \]
+\[ \sum_{i=1}^n Y_i - n\hat{\alpha} - \hat{\beta}\sum_{i=1}^n X_i = 0 \]
+
+Solving for \(\hat{\alpha}\):
+
+\[ n\hat{\alpha} = \sum_{i=1}^n Y_i - \hat{\beta} \sum_{i=1}^n X_i \]
+\[ \hat{\alpha} = \frac{1}{n} \sum_{i=1}^n Y_i - \hat{\beta} \frac{1}{n} \sum_{i=1}^n X_i \]
+\[ \hat{\alpha} = \bar{Y} - \hat{\beta} \bar{X} \]
+
+Where \(\bar{Y} = \frac{1}{n} \sum_{i=1}^n Y_i\) and \(\bar{X} = \frac{1}{n} \sum_{i=1}^n X_i\).
+
+2. **Partial derivative with respect to \(\hat{\beta}\):**
+
+\[ \frac{\partial SSR}{\partial \hat{\beta}} = \sum_{i=1}^n -2X_i(Y_i - \hat{\alpha} - \hat{\beta} X_i) = 0 \]
+
+Simplifying:
+
+\[ \sum_{i=1}^n X_i(Y_i - \hat{\alpha} - \hat{\beta} X_i) = 0 \]
+
+Substitute \(\hat{\alpha}\) from the previous result:
+
+\[ \sum_{i=1}^n X_i Y_i - \hat{\alpha}\sum_{i=1}^n X_i - \hat{\beta}\sum_{i=1}^n X_i^2 = 0 \]
+\[ \sum_{i=1}^n X_i Y_i - (\bar{Y} - \hat{\beta} \bar{X})\sum_{i=1}^n X_i - \hat{\beta}\sum_{i=1}^n X_i^2 = 0 \]
+
+Substitute \(\hat{\alpha} = \bar{Y} - \hat{\beta} \bar{X}\):
+
+\[ \sum_{i=1}^n X_i Y_i - (\bar{Y}\sum_{i=1}^n X_i - \hat{\beta} \bar{X} \sum_{i=1}^n X_i) - \hat{\beta}\sum_{i=1}^n X_i^2 = 0 \]
+\[ \sum_{i=1}^n X_i Y_i - \bar{Y}\sum_{i=1}^n X_i + \hat{\beta} \bar{X} \sum_{i=1}^n X_i - \hat{\beta}\sum_{i=1}^n X_i^2 = 0 \]
+\[ \sum_{i=1}^n X_i Y_i - \bar{Y}\sum_{i=1}^n X_i = \hat{\beta}\left(\sum_{i=1}^n X_i^2 - \bar{X} \sum_{i=1}^n X_i\right) \]
+
+Since \(\sum_{i=1}^n \bar{X} = n \bar{X}\):
+
+\[ \sum_{i=1}^n X_i Y_i - \bar{Y}\sum_{i=1}^n X_i = \hat{\beta}\left(\sum_{i=1}^n X_i^2 - n \bar{X}^2\right) \]
+
+Simplifying:
+
+\[ \sum_{i=1}^n X_i Y_i - n \bar{X} \bar{Y} = \hat{\beta}\left(\sum_{i=1}^n X_i^2 - n \bar{X}^2\right) \]
+
+Finally, solving for \(\hat{\beta}\):
+
+\[ \hat{\beta} = \frac{\sum_{i=1}^n X_i Y_i - n \bar{X} \bar{Y}}{\sum_{i=1}^n X_i^2 - n \bar{X}^2} \]
+
+Alternatively, this can be written in terms of deviations from the mean:
+
+\[ \hat{\beta} = \frac{\sum_{i=1}^n (X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^n (X_i - \bar{X})^2} \]
+
+### Summary
+
+- The OLS estimator for the slope (\(\beta\)) is:
+
+\[ \hat{\beta} = \frac{\sum_{i=1}^n (X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^n (X_i - \bar{X})^2} \]
+
+- The OLS estimator for the intercept (\(\alpha\)) is:
+
+\[ \hat{\alpha} = \bar{Y} - \hat{\beta} \bar{X} \]
+
+These derivations show how the OLS estimators for \(\beta\) and \(\alpha\) are obtained by minimizing the sum of squared residuals in a simple linear regression model.
+
+
+### Interpreting Model Coefficients in OLS Models
+
+In Ordinary Least Squares (OLS) regression, the interpretation of coefficients depends on the functional form of the model and the nature of the variables involved. Here are some common types of models and how to interpret their coefficients.
+
+### 1. Linear Models (Linear-Linear)
+
+**Model Form**: \( Y = \beta_0 + \beta_1 X + \epsilon \)
+
+- **Coefficients Interpretation**:
+  - **Continuous Variable**: \( \beta_1 \) represents the change in \( Y \) for a one-unit increase in \( X \).
+    - *Example*: If \( Y \) is annual income in dollars and \( X \) is years of education, \( \beta_1 = 2000 \) means an additional year of education increases income by $2000.
+  - **Dummy Variable**: \( \beta_1 \) represents the difference in \( Y \) between the reference category (usually coded as 0) and the category represented by the dummy variable (coded as 1).
+    - *Example*: If \( Y \) is income and \( X \) is a dummy variable for gender (1 for male, 0 for female), \( \beta_1 = 5000 \) means males earn $5000 more than females, holding other factors constant.
+
+### 2. Log-Linear Models
+
+**Model Form**: \( \log(Y) = \beta_0 + \beta_1 X + \epsilon \)
+
+- **Coefficients Interpretation**:
+  - **Continuous Variable**: \( \beta_1 \) represents the approximate percentage change in \( Y \) for a one-unit increase in \( X \).
+    - *Example*: If \( \log(Y) \) is the natural log of income and \( X \) is years of education, \( \beta_1 = 0.05 \) means an additional year of education increases income by approximately 5%.
+  - **Dummy Variable**: \( \beta_1 \) represents the approximate percentage difference in \( Y \) between the reference category and the category represented by the dummy variable.
+    - *Example*: If \( \log(Y) \) is the natural log of income and \( X \) is a dummy for gender, \( \beta_1 = 0.10 \) means males earn approximately 10% more than females, holding other factors constant.
+
+### 3. Linear-Log Models
+
+**Model Form**: \( Y = \beta_0 + \beta_1 \log(X) + \epsilon \)
+
+- **Coefficients Interpretation**:
+  - **Continuous Variable**: \( \beta_1 \) represents the change in \( Y \) for a 1% change in \( X \) (since a 1% change in \( X \) is approximately a change of 0.01 in \( \log(X) \)).
+    - *Example*: If \( Y \) is income and \( \log(X) \) is the natural log of years of experience, \( \beta_1 = 1000 \) means a 1% increase in experience leads to an increase in income of $10 (since \( 1000 \times 0.01 = 10 \)).
+  - **Dummy Variable**: Less common in linear-log models but would be interpreted similarly to linear models.
+
+### 4. Log-Log Models
+
+**Model Form**: \( \log(Y) = \beta_0 + \beta_1 \log(X) + \epsilon \)
+
+- **Coefficients Interpretation**:
+  - **Continuous Variable**: \( \beta_1 \) represents the elasticity of \( Y \) with respect to \( X \), meaning the percentage change in \( Y \) for a 1% change in \( X \).
+    - *Example*: If \( \log(Y) \) is the natural log of income and \( \log(X) \) is the natural log of years of education, \( \beta_1 = 0.5 \) means a 1% increase in years of education results in a 0.5% increase in income.
+  - **Dummy Variable**: Less common in log-log models but would be interpreted as in log-linear models.
+
+### Examples of Dummy and Continuous Variables
+
+#### Example 1: Linear Model with Dummy and Continuous Variables
+
+**Model**: \( Y = \beta_0 + \beta_1 X_1 + \beta_2 D + \epsilon \)
+
+- **\( Y \)**: Income
+- **\( X_1 \)**: Years of education (continuous)
+- **\( D \)**: Gender (dummy, 1 for male, 0 for female)
+
+**Interpretation**:
+- \( \beta_1 \): Change in income for an additional year of education.
+- \( \beta_2 \): Difference in income between males and females, holding education constant.
+
+#### Example 2: Log-Linear Model with Continuous Variables
+
+**Model**: \( \log(Y) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon \)
+
+- **\( \log(Y) \)**: Log of income
+- **\( X_1 \)**: Years of education (continuous)
+- **\( X_2 \)**: Years of work experience (continuous)
+
+**Interpretation**:
+- \( \beta_1 \): Percentage change in income for an additional year of education.
+- \( \beta_2 \): Percentage change in income for an additional year of work experience.
+
+#### Example 3: Log-Log Model with Continuous Variables
+
+**Model**: \( \log(Y) = \beta_0 + \beta_1 \log(X_1) + \beta_2 \log(X_2) + \epsilon \)
+
+- **\( \log(Y) \)**: Log of income
+- **\( \log(X_1) \)**: Log of years of education
+- **\( \log(X_2) \)**: Log of years of work experience
+
+**Interpretation**:
+- \( \beta_1 \): Elasticity of income with respect to education.
+- \( \beta_2 \): Elasticity of income with respect to work experience.
+
+### Assumptions and Considerations
+
+- **Linearity**: The relationship between the variables should be correctly specified (linear, log-linear, etc.).
+- **Homoscedasticity**: The variance of the error terms should be constant across all levels of the independent variables.
+- **No Multicollinearity**: Independent variables should not be too highly correlated with each other.
+- **No Autocorrelation**: The residuals should not be correlated with each other (important in time series data).
+- **Normality of Errors**: The error terms should be normally distributed, especially for small sample sizes.
+
+Understanding these models and their interpretations is crucial for accurately conveying the impact of variables in econometric analyses. Being prepared to explain these interpretations clearly and provide relevant examples will be beneficial for your interview.
+

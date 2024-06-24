@@ -1,0 +1,66 @@
+h1:causal-models Causal Models
+h2:ordinary-least-squares-ols Ordinary Least Squares (OLS)
+h3:linearity 1. 
+h3:exogeneity 2. 
+h3:homoscedasticity 3. 
+h3:no-autocorrelation 4. 
+h3:no-perfect-multicollinearity 5. 
+h3:normality-of-errors-for-inference 6. 
+h3:practical-considerations-and-tests Practical Considerations and Tests
+h2:concepts Concepts
+h3:goodness-of-fit Goodness of Fit
+h3:robustness-checks-and-validation-methods Robustness checks and validation methods
+h4:robustness-checks Robustness Checks
+h4:validation-methods Validation Methods
+h4:differences-between-robustness-checks-and-validation-methods Differences Between Robustness Checks and Validation Methods
+h2:multivariate-regression Multivariate Regression
+h2:directed-acyclic-graphs-dags Directed Acyclic Graphs (DAGs)
+h3:confounder Confounder
+h3:collider Collider
+h3:what-to-do What to do
+h3:how-to-do How to do
+h3:bad-controls Bad Controls
+h4:key-points-on-bad-controls-by-joshua-angrist Key Points on  by Joshua Angrist:
+h4:example-from-angrist-and-pischkes-mostly-harmless-econometrics Example from Angrist and Pischke’s :
+h4:practical-advice Practical Advice:
+h4:summary Summary:
+h2:external-and-internal-validity-in-econometrics External and Internal Validity in Econometrics
+h3:internal-validity Internal Validity
+h4:key-points-on-internal-validity Key Points on Internal Validity:
+h4:examples-in-econometrics Examples in Econometrics:
+h3:external-validity External Validity
+h4:key-points-on-external-validity Key Points on External Validity:
+h4:common-threats-to-external-validity Common Threats to External Validity:
+h4:examples-in-econometrics-1 Examples in Econometrics:
+h3:balancing-internal-and-external-validity Balancing Internal and External Validity
+h4:practical-considerations Practical Considerations:
+h2:endogeneity Endogeneity
+h3:sources-of-endogeneity Sources of Endogeneity:
+h3:consequences-of-endogeneity Consequences of Endogeneity:
+h3:methods-to-address-endogeneity Methods to Address Endogeneity:
+h2:reduced-form-model Reduced Form Model
+h3:characteristics-of-reduced-form-models Characteristics of Reduced Form Models:
+h3:uses-of-reduced-form-models Uses of Reduced Form Models:
+h3:example-of-a-reduced-form-model Example of a Reduced Form Model:
+h2:unobserved-variable-affecting-only-the-dependent-variable Unobserved Variable Affecting Only the Dependent Variable
+h2:types-of-biases Types of Biases
+h3:selection-bias 1. Selection Bias
+h3:omitted-variable-bias 2. Omitted Variable Bias
+h3:measurement-bias 3. Measurement Bias
+h3:response-bias 4. Response Bias
+h3:attrition-bias 5. Attrition Bias
+h3:publication-bias 6. Publication Bias
+h3:survivorship-bias 7. Survivorship Bias
+h3:recall-bias 8. Recall Bias
+h3:confirmation-bias 9. Confirmation Bias
+h3:confounding-bias 10. Confounding Bias
+h3:endogeneity-bias 11. Endogeneity Bias
+h3:non-response-bias 12. Non-Response Bias
+h3:observer-bias 13. Observer Bias
+h3:overfitting-bias 14. Overfitting Bias
+h3:addressing-biases Addressing Biases
+h3:self-selection-bias Self-Selection Bias
+h4:examples-of-self-selection-bias Examples of Self-Selection Bias:
+h4:addressing-self-selection-bias Addressing Self-Selection Bias
+h4:conclusion Conclusion
+

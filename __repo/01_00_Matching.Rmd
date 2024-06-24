@@ -1,0 +1,464 @@
+# Matching
+
+## Subclassification
+
+Subclassification is a method used to satisfy the backdoor criterion by adjusting differences in means with strata-specific weights. These weights ensure that the distribution of means by strata matches the counterfactual's strata distribution.
+
+This method addresses the problem when treatment assignment is random, conditional on observables. The assumption in mathematical notation is:
+
+$$ [Y^0, Y^1] \perp D \mid X $$
+
+This implies that, given covariates $X$, the treatment assignment $D$ is independent of the potential outcomes (random).
+
+Treatment can be assigned conditionally on covariates. For example, a state might assign students to three classes randomly, but first, schools are chosen, and then students are assigned randomly within those schools.
+
+### Example
+
+Consider a study investigating the impact of cigar type on mortality. Without considering age, it appears that cigar or pipe users have higher mortality rates, which is controversial. However, age is a crucial factor that influences both cigar type selection (treatment) and mortality rate (outcome), making it a confounder.
+
+In this method, my strategy for addressing covariate imbalance is to condition on age, ensuring that the age distribution is comparable between the treatment and control groups.
+
+### Step-by-Step Example
+
+1.  **Bin Age into Groups**: Create age groups (e.g., 18-30, 31-45, 46-60, 61+).
+
+2.  **Calculate Percent Distribution**: Determine the percentage of individuals in each age group for both treatment and control groups.
+
+3.  **Weighted Mortality Rate**:
+
+    -   Calculate the mortality rate for each age group within each treatment group.\
+    -   Use the age group percentages to calculate a weighted average mortality rate for each treatment group.
+
+#### Implementation
+
+Suppose we have the following data:
+
+| Age Group | Treatment | Control | Treatment Deaths | Control Deaths | Treatment Total | Control Total |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| 18-30     | 20%       | 25%     | 10               | 15             | 100             | 150           |
+| 31-45     | 30%       | 20%     | 20               | 10             | 150             | 100           |
+| 46-60     | 25%       | 30%     | 30               | 20             | 125             | 150           |
+| 61+       | 25%       | 25%     | 40               | 30             | 125             | 125           |
+
+1.  **Calculate Age-Specific Mortality Rates**:
+
+    $$
+    \text{Mortality Rate (18-30)} = \frac{10}{100} = 10\%, \quad \text{Control Mortality Rate (18-30)} = \frac{15}{150} = 10\%
+    $$
+
+    (Repeat for other age groups.)
+
+2.  **Calculate Weighted Mortality Rates**:
+
+    $$
+    \text{Weighted Mortality Rate (Treatment)} = 0.20 \times 10\% + 0.30 \times 13.3\% + 0.25 \times 24\% + 0.25 \times 32\%
+    $$
+
+    $$
+    \text{Weighted Mortality Rate (Control)} = 0.25 \times 10\% + 0.20 \times 10\% + 0.30 \times 13.3\% + 0.25 \times 24\%
+    $$
+
+### Considerations
+
+-   **Choice of Variables**: Deciding which variables to use for adjustment can be challenging. Including too many variables can lead to the "curse of dimensionality," where the data becomes too sparse in higher dimensions.
+
+-   **Common Support Assumption**: This assumption requires that for each stratum, there exist observations in both the treatment and control groups. If the sample size is small, this assumption may be violated, making it difficult to compare groups effectively.
+
+By carefully choosing variables and ensuring sufficient sample sizes within strata, subclassification can effectively adjust for covariate imbalances and yield more accurate estimates of treatment effects.
+
+## Exact Matching
+
+Exact matching is a method used to estimate causal effects by pairing units in the treatment group with units in the control group that have identical values for certain covariates. This method helps in comparing the outcomes of similar units under different treatments to infer causal effects.
+
+Why?
+
+Because independence assumption is violated, and treatment assignment is not random.
+
+### Explanation
+
+Suppose we have a treatment group and a control group, and we want to estimate the treatment effect by finding exact matches based on a covariate.
+
+1.  **Matching Process**:
+
+    -   If a unit in the treatment group has a covariate value of 2, we look for a unit in the control group with the same covariate value of 2.
+
+    -   If we find such a match, we use the outcome of the control unit to impute the counterfactual outcome for the treatment unit.
+
+2.  **Handling Multiple Matches**:
+
+    -   If there are multiple control units with the same covariate value as the treatment unit, we take the average of those control units' outcomes to impute the counterfactual for the treatment unit.
+
+3.  **Calculating the Average Treatment Effect (ATE)**:
+
+    -   By imputing counterfactual outcomes for each unit in both the control and treatment groups based on matching covariates, we can calculate the ATE.
+
+4.  **Calculating the Average Treatment Effect on the Treated (ATT)**:
+
+    -   Typically, we find exact matching control units for treatment units and calculate the ATT. This involves comparing only the matched pairs.
+
+    -   In a typical example, control group is much larger than treatment group and it is much easier to find similar treated units within a larger control unit.
+
+### Example
+
+Let's consider an example where we are studying the effect of a new teaching method on student performance. We have two groups: students who received the new teaching method (treatment group) and students who received the traditional method (control group). We will use the exact matching method based on a covariate, such as prior test scores.
+
+#### Step-by-Step Process
+
+1.  **Identify Covariate**:
+
+    -   Prior test scores are used as the matching covariate.
+
+2.  **Exact Matching**:
+
+    -   Suppose a student in the treatment group has a prior test score of 85.
+    -   We look for students in the control group with a prior test score of 85.
+    -   If we find multiple students in the control group with a prior test score of 85, we average their outcomes.
+
+3.  **Impute Counterfactuals**:
+
+    -   For the treatment student with a prior test score of 85, we use the average outcome of the matched control students to impute the counterfactual outcome.
+
+4.  **Create Matched Sample**:
+
+    -   The matched sample consists of pairs of treatment and control units with the same covariate value.
+
+    -   For example, if we have another treatment student with a prior test score of 90, we find control students with a prior test score of 90 and repeat the process.
+
+5.  **Calculate ATT**:
+
+    -   For each matched pair, we calculate the difference in outcomes.
+
+    -   Average these differences to obtain the ATT.
+
+#### Example Data
+
+| Student | Group     | Prior Test Score | Outcome (Final Score) |
+|---------|-----------|------------------|-----------------------|
+| A       | Treatment | 85               | 90                    |
+| B       | Treatment | 90               | 88                    |
+| C       | Control   | 85               | 85                    |
+| D       | Control   | 90               | 86                    |
+| E       | Control   | 85               | 87                    |
+
+-   For Student A (Treatment, 85): Match with Students C and E (Control, 85). Average outcome: (85 + 87) / 2 = 86. Imputed counterfactual for A: 86.
+-   For Student B (Treatment, 90): Match with Student D (Control, 90). Imputed counterfactual for B: 86.
+
+#### ATT Calculation
+
+-   Difference for Student A: 90 - 86 = 4
+-   Difference for Student B: 88 - 86 = 2
+
+$$ \text{ATT} = \frac{4 + 2}{2} = 3 $$
+
+### Conclusion
+
+Exact matching helps in creating a comparable control group for each treatment unit based on covariates. By doing so, we can more accurately estimate the causal effect of the treatment.
+
+However, this method requires sufficient overlap between the covariate distributions of the treatment and control groups, and the common support assumption must be satisfied.
+
+## Approximate Matching Methods
+
+When you have multiple covariates to match or do not have exact matches, you can use approximate matching methods to find the best possible matches.
+
+### Nearest Neighbor Covariate Matching
+
+When the number of matching covariates exceeds one, we need a new definition of distance to measure closeness between units. Multiple covariates not only introduce the curse-of-dimensionality problem but also complicate the measurement of distance. This poses challenges for finding a good match in the data and demands a large sample size for the matching discrepancies to be trivially small.
+
+#### Euclidean Distance
+
+-   **Definition**: Euclidean distance is a common measure of distance between two points in a multi-dimensional space.
+
+-   **Problem**: The distance measure depends on the scale of the variables, which can distort the true closeness between points.
+
+#### Normalized Euclidean Distance
+
+-   **Definition**: This is the Euclidean distance normalized by the variance of the variables.
+
+-   **Advantage**: Normalizing by variance adjusts for differences in scale among the covariates, making the distance measure more accurate.
+
+#### Mahalanobis Distance
+
+-   **Definition**: Mahalanobis distance is a scale-invariant distance metric that takes into account the correlations between variables.
+
+-   **Advantage**: It adjusts for the scale and correlations of the covariates, providing a more accurate measure of distance.
+
+
+### Example
+
+Suppose we are studying the impact of a job training program on employment outcomes. We have multiple covariates, such as age, education level, and prior work experience. We want to use approximate matching to find control units that are similar to the treatment units based on these covariates.
+
+#### Step-by-Step Process
+
+1.  **Identify Covariates**:
+    -   Age
+    -   Education Level
+    -   Prior Work Experience
+2.  **Calculate Distances**:
+    -   **Euclidean Distance**:
+
+        $$\text{Distance} = \sqrt{(X_1 - Y_1)^2 + (X_2 - Y_2)^2 + \cdots + (X_n - Y_n)^2}$$
+
+    -   **Normalized Euclidean Distance**:
+
+        $$\text{Distance} = \sqrt{\left(\frac{X_1 - Y_1}{\sigma_1}\right)^2 + \left(\frac{X_2 - Y_2}{\sigma_2}\right)^2 + \cdots + \left(\frac{X_n - Y_n}{\sigma_n}\right)^2}$$
+
+    -   **Mahalanobis Distance**:
+
+        $$\text{Distance} = \sqrt{(X - Y)^T S^{-1} (X - Y)}$$
+
+where $S$ is the covariance matrix of the covariates.
+
+3.  **Find Nearest Neighbors**:
+
+    -   For each treatment unit, calculate the distance to all control units using the chosen distance metric.
+
+    -   Select the control unit with the smallest distance as the match for the treatment unit.
+
+4.  **Calculate Treatment Effect**:
+
+    -   Compare the outcomes of matched pairs to estimate the treatment effect.
+
+### Hypothetical Data
+
+| Unit | Group     | Age | Education Level | Prior Work Experience | Outcome    |
+|------|-----------|-----|-----------------|-----------------------|------------|
+| 1    | Treatment | 25  | Bachelor's      | 2 years               | Employed   |
+| 2    | Treatment | 30  | Master's        | 5 years               | Employed   |
+| 3    | Control   | 26  | Bachelor's      | 1 year                | Unemployed |
+| 4    | Control   | 29  | Master's        | 6 years               | Employed   |
+
+#### Matching Process
+
+1.  **Calculate Normalized Euclidean Distances**:
+
+    -   Normalize the covariates by their variances.
+
+    -   Compute distances between each treatment unit and all control units.
+
+2.  **Match Units**:
+
+    -   Match Unit 1 (Treatment) with Unit 3 (Control) based on the smallest normalized Euclidean distance.
+
+    -   Match Unit 2 (Treatment) with Unit 4 (Control) based on the smallest normalized Euclidean distance.
+
+3.  **Estimate Treatment Effect**:
+
+    -   Compare outcomes of matched pairs:
+        -   Unit 1 (Treatment) vs. Unit 3 (Control): Employed vs. Unemployed
+        -   Unit 2 (Treatment) vs. Unit 4 (Control): Employed vs. Employed
+
+By using approximate matching methods like nearest neighbor matching with normalized Euclidean or Mahalanobis distances, we can more accurately estimate the treatment effect even when dealing with multiple covariates and the lack of exact matches.
+
+## Propensity Score Methods
+
+Propensity score methods are approximate matching techniques that use propensity scores as distance metrics. These methods offer several ways to perform matching based on propensity scores.
+
+Propensity score matching (PSM) is a widely used method, particularly in medical sciences, for addressing selection on observables. However, it has not been as widely adopted among economists as other non-experimental methods like regression discontinuity or difference-in-differences. This reluctance is largely due to **skepticism about the conditional independence assumption (CIA)** being achievable in any dataset. Economists are often more concerned about selection on unobservables than selection on observables, making them less likely to use matching methods.
+
+### Concept
+
+Propensity score matching is used when a conditioning strategy can satisfy the backdoor criterion.
+
+The method involves estimating a model (usually logit or probit) to predict the conditional probability of treatment based on covariates.
+
+The **predicted values** from this estimation, called propensity scores, collapse the covariates into a single scalar. Comparisons between the treatment and control groups are then based on these propensity scores.
+
+### Steps
+
+1.  **Estimate Propensity Scores**: Use a logit or probit model to estimate the probability of receiving the treatment based on observed covariates.
+
+2.  **Match Units**: Match treatment units with control units that have similar propensity scores.
+
+3.  **Assess Overlap**: Ensure that there is common support, meaning there are units in both treatment and control groups across the range of propensity scores.
+
+4.  **Calculate Treatment Effect**: Compare outcomes between matched treatment and control units to estimate the treatment effect.
+
+### Example
+
+Suppose we are studying the effect of a job training program on employment outcomes. We have the following covariates: age, education level, and prior work experience. We will use propensity score matching to estimate the effect of the program.
+
+#### Step-by-Step Process
+
+1.  **Estimate Propensity Scores**:
+    -   Fit a logit model to predict the probability of receiving the job training based on age, education level, and prior work experience.
+
+Example logit model: $$P(Treatment) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 \cdot Age + \beta_2 \cdot Education + \beta_3 \cdot Experience)}}
+     $$
+
+2.  **Calculate Propensity Scores**:
+
+Use the fitted logit model to calculate the propensity score for each unit.
+
+3.  **Match Units**:
+
+-   Match each treatment unit with one or more control units that have similar propensity scores.
+
+-   Example matching method: Nearest neighbor matching.
+
+NN matching is greedy in the sense that each pairing occurs without reference to how other units will be or have been paired, and therefore does not aim to optimize any criterion. Nearest neighbor matching is the most common form of matching used.
+
+For large datasets (i.e., in 10,000s to millions), some matching methods will be too slow to be used at scale. Instead, users should consider generalized full matching, subclassification, or coarsened exact matching, which are all very fast and designed to work with large datasets.
+
+(Nice article on MatchIt)[<https://cran.r-project.org/web/packages/MatchIt/vignettes/matching-methods.html>]
+
+4.  **Assess Overlap**:
+
+- Check for common support to ensure there is overlap in propensity scores between the treatment and control groups.
+
+- If there is no overlap, adjust the model or consider other methods.
+
+5.  **Calculate Treatment Effect**:
+
+- Compare employment outcomes between matched treatment and control units.
+
+- Calculate the average treatment effect on the treated (ATT).
+
+#### Example Data 
+
+| Unit | Group     | Age | Education Level | Prior Work Experience | Outcome    | Propensity Score |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| 1    | Treatment | 25  | Bachelor's      | 2 years               | Employed   | 0.70             |
+| 2    | Treatment | 30  | Master's        | 5 years               | Employed   | 0.85             |
+| 3    | Control   | 26  | Bachelor's      | 1 year                | Unemployed | 0.65             |
+| 4    | Control   | 29  | Master's        | 6 years               | Employed   | 0.80             |
+
+**Match Units**: 
+    
+- Match Unit 1 (Treatment) with Unit 3 (Control) based on similar propensity scores (0.70 vs. 0.65).
+    
+- Match Unit 2 (Treatment) with Unit 4 (Control) based on similar propensity scores (0.85 vs. 0.80).
+
+- Not very intuitive or even confusing: There are many ways to use PS for matching
+
+**Calculate ATT**:
+
+Compare outcomes of matched pairs:
+- Unit 1 (Treatment) vs. Unit 3 (Control): Employed vs. Unemployed
+- Unit 2 (Treatment) vs. Unit 4 (Control): Employed vs. Employed
+
+### Assumptions and Considerations
+
+1.  **Conditional Independence Assumption (CIA)**:
+    -   Treatment assignment is independent of potential outcomes given the observed covariates.
+    -   This assumption is crucial for PSM to provide unbiased estimates.
+    
+2.  **Common Support**:
+    -   There must be overlap in the distribution of propensity scores between the treatment and control groups.
+    -   Lack of common support can lead to biased estimates as some treatment units may have no comparable control units.
+
+3.  **Model Specification**:
+    -   The logit or probit model must be correctly specified to accurately estimate propensity scores.
+    -   Including relevant covariates and interactions is important for achieving balance between groups.
+
+4.  **Sample Size**:
+    -   PSM requires a sufficiently large sample size to find good matches for each treatment unit.
+    -   Smaller samples may lead to poor matches and biased estimates.
+
+Propensity score matching is a powerful tool for estimating causal effects in observational studies, but it relies heavily on the assumptions of CIA and common support. Proper model specification and adequate sample size are essential for obtaining reliable estimates.
+
+
+
+## Inverse Probability Weighting (Weighting on the propensity score)
+
+It is weighting treatment and control units according to, which is causing units with very small values of the propensity score to blow up and become unusually influential in the calculation of ATT. Thus, we will need to trim the data.
+
+A good rule of thumb, they note, is to keep only observations on the interval [0.1,0.9], which was performed at the end of the program.
+
+We still need to calculate standard errors, such as based on a bootstrapping method, 
+
+The sensitivity of inverse probability weighting to extreme values of the propensity score has led some researchers to propose an alternative that can handle extremes a bit better.
+
+Most software packages have programs that will estimate the sample analog of these inverse probability weighted parameters that use the second method with normalized weights. 
+
+
+
+## Nearest-neighbor matching
+
+An alternative, very popular approach to inverse probability weighting is matching on the propensity score. This is often done by finding a couple of units with comparable propensity scores from the control unit donor pool within some ad hoc chosen radius distance of the treated unit’s own propensity score. The researcher then averages the outcomes and then assigns that average as an imputation to the original treated unit as a proxy for the potential outcome under counterfactual control. Then effort is made to enforce common support through trimming.
+
+Nevertheless, nearest-neighbor matching, along with inverse probability weighting, is perhaps the most common method for estimating a propensity score model. 
+
+Nearest-neighbor matching using the propensity score pairs each treatment unit  with one or more comparable control group units , where comparability is measured in terms of distance to the nearest propensity score. This control group unit’s outcome is then plugged into a matched sample. Once we have the matched sample, we can calculate the ATT as
+
+We will focus on the ATT because of the problems with overlap that we discussed earlier.
+
+
+We can chose to match using K nearest neighbors. Nearest neighbors, in other words, will find the K nearest units in the control group, where “nearest” is measured as closest on the propensity score itself. Unlike covariate matching, distance here is straightforward because of the dimension reduction afforded by the propensity score. We then average actual outcome, and match that average outcome to each treatment unit. Once we have that, we subtract each unit’s matched control from its treatment value, and then divide by N, the number of treatment units.
+
+### Example in R
+
+```
+library(MatchIt)
+library(Zelig)
+
+m_out <- matchit(treat ~ age + agesq + agecube + educ +
+                 educsq + marr + nodegree +
+                 black + hisp + re74 + re75 + u74 + u75 + interaction1,
+                 data = nsw_dw_cpscontrol, method = "nearest", 
+                 distance = "logit", ratio =5)
+
+m_data <- match.data(m_out)
+
+z_out <- zelig(re78 ~ treat + age + agesq + agecube + educ +
+               educsq + marr + nodegree +
+               black + hisp + re74 + re75 + u74 + u75 + interaction1, 
+               model = "ls", data = m_data)
+
+x_out <- setx(z_out, treat = 0)
+x1_out <- setx(z_out, treat = 1)
+
+s_out <- sim(z_out, x = x_out, x1 = x1_out)
+
+summary(s_out)
+```
+
+
+## Coarsened Exact Matching
+
+Coarsened Exact Matching (CEM) is a method based on the idea that exact matching can often be achieved by coarsening the data. Coarsening involves creating categorical variables (e.g., 0- to 10-year-olds, 11- to 20-year-olds), making it easier to find exact matches. Once exact matches are found, weights are calculated based on where a person fits within certain strata, and these weights are used in a simple weighted regression.
+
+This method can be implemented using the `MatchIt` library in R.
+
+### Example
+
+Consider the variable "schooling," which can be categorized as:
+- Less than high school
+- High school only
+- Some college
+- College graduate
+- Post-college
+
+Each observation is placed into one of these categories, creating strata for each unique combination of observations. Assign these strata to the original (uncoarsened) data, and drop any observation whose stratum doesn’t contain at least one treated and one control unit. Then, add weights based on stratum size and analyze the data without further matching.
+
+### Steps in Coarsened Exact Matching
+
+1. **Coarsen the Data**: Transform continuous or detailed categorical variables into coarser categories.
+   - Example: Age groups (0-10, 11-20, etc.) or education levels (less than high school, high school, etc.).
+   
+2. **Create Strata**: For each unique combination of the coarsened variables, create a stratum.
+   - Each observation is assigned to a stratum based on its coarsened characteristics.
+   
+3. **Assign Weights**: Calculate weights for each observation based on the stratum size.
+   - Observations in larger strata receive smaller weights and vice versa.
+   
+4. **Drop Unmatched Observations**: Remove any strata that do not contain both treated and control units.
+   
+5. **Weighted Regression**: Use the weights in a regression analysis to account for the matching process.
+
+### Considerations
+
+- **Balance**: Coarsening can improve balance between treated and control groups but may result in some loss of information.
+
+- **Weight Calculation**: Weights should reflect the relative sizes of the strata to ensure accurate representation in the analysis.
+
+- **Implementation**: Ensure the coarsening process does not oversimplify the data, potentially masking important variations.
+
+By carefully coarsening the data and using appropriate weights, CEM allows for more accurate and reliable estimation of treatment effects, even when exact matching on the original variables is not feasible.
+
+
+
+
+
+
+
+

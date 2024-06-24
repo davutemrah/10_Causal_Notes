@@ -1,0 +1,81 @@
+
+
+## Twoway Fixed Effects with Differential Timing
+
+$y_{it} = \alpha_0 + \delta D_{it} + X_{it} + \alpha_i + \alpha_t + \epsilon_{it}$
+
+When researchers estimate this regression these days, they usually use the linear fixed-effects model. These linear panel models have gotten the nickname “twoway fixed effects” because they include both time fixed effects and unit fixed effects. 
+
+
+## Bacon Decomposition
+
+
+The punchline of the Bacon decomposition theorem is that the twoway fixed effects estimator is a weighted average of all potential 2 x 2 DD estimates where weights are both based on group sizes and variance in treatment.
+
+### Overview
+
+Bacon Decomposition is a method introduced by Goodman-Bacon (2018) for decomposing the overall treatment effect estimated by a Two-Way Fixed Effects (TWFE) regression model in the context of Difference-in-Differences (DiD) settings with variation in treatment timing. The key insight from this decomposition is that the TWFE estimate in such settings can be understood as a weighted average of all possible 2x2 DiD estimates that can be constructed from the data. This decomposition helps identify the sources of bias, especially when treatment effects are heterogeneous or when there are differential pre-treatment trends.
+
+### Key Concepts
+
+1. **Two-Way Fixed Effects (TWFE) Models**:
+   - TWFE models are commonly used in DiD analyses to account for time-invariant differences between units and common shocks over time by including unit and time fixed effects.
+   - The model typically looks like:
+     \[ Y_{it} = \alpha_i + \lambda_t + \beta D_{it} + \epsilon_{it} \]
+   where \(Y_{it}\) is the outcome for unit \(i\) at time \(t\), \(\alpha_i\) are unit fixed effects, \(\lambda_t\) are time fixed effects, \(D_{it}\) is the treatment indicator, and \(\beta\) is the treatment effect.
+
+2. **Variation in Treatment Timing**:
+   - In many DiD applications, units receive treatment at different times rather than simultaneously. This leads to multiple possible comparisons between treated and control units at different points in time.
+
+3. **Bacon Decomposition**:
+   - The decomposition breaks down the overall TWFE estimate into a weighted average of all possible 2x2 DiD estimates. Each of these estimates compares treated and untreated units in specific periods.
+   - The decomposition reveals that the overall estimate is influenced by:
+     - Comparisons between early-treated and late-treated units.
+     - Comparisons between treated and untreated units at different times.
+     - Comparisons within treated units (pre- and post-treatment).
+
+### Components of Bacon Decomposition
+
+1. **Early vs. Late Treated Units**:
+   - Comparing units treated early with those treated later. This can introduce bias if there are differential trends among these groups.
+   
+2. **Treated vs. Untreated Units**:
+   - Standard DiD comparison where treated units are compared to untreated ones, assuming common trends between them.
+
+3. **Within-Unit Comparisons**:
+   - Comparing outcomes within the same unit before and after treatment.
+
+### Formula for Decomposition
+
+The overall TWFE estimate \(\hat{\beta}_{TWFE}\) can be decomposed as:
+\[ \hat{\beta}_{TWFE} = \sum_{k} w_k \hat{\beta}_k \]
+where \(\hat{\beta}_k\) are the 2x2 DiD estimates, and \(w_k\) are the weights that depend on the relative timing of treatment and the distribution of the treated and control units over time.
+
+### Implications and Interpretation
+
+1. **Heterogeneous Treatment Effects**:
+   - When treatment effects vary over time or across units, the TWFE estimate can be biased. Bacon decomposition helps identify how much of the TWFE estimate is driven by comparisons that might be invalid due to treatment effect heterogeneity.
+
+2. **Differential Pre-treatment Trends**:
+   - If treated and control units follow different pre-treatment trends, this can also bias the TWFE estimate. Bacon decomposition highlights which comparisons are most affected by such trends.
+
+3. **Policy Implications**:
+   - Understanding the sources of bias through Bacon decomposition can inform better policy evaluations by revealing the need for more appropriate methods or robustness checks in the presence of staggered treatment adoption.
+
+### Example
+
+Consider a study evaluating the impact of a new education policy implemented in different schools at different times. Using a TWFE model, the overall treatment effect might be estimated as:
+\[ \hat{\beta}_{TWFE} = 0.5 \]
+
+Applying Bacon decomposition, we might find that:
+- Comparisons between schools treated in 2018 and those treated in 2020 contribute \(0.3\) to the estimate.
+- Comparisons between treated schools and untreated schools contribute \(0.1\).
+- Comparisons within schools before and after treatment contribute \(0.1\).
+
+If early-treated schools experienced a different trend in outcomes compared to late-treated schools, this could explain the significant contribution from early vs. late comparisons, highlighting potential bias in the overall estimate.
+
+### Conclusion
+
+Bacon decomposition provides a nuanced understanding of the TWFE estimates in DiD settings with staggered treatment adoption. By breaking down the overall estimate into its constituent comparisons, researchers can identify and address potential biases due to heterogeneous treatment effects and differential trends, leading to more accurate and reliable causal inferences.
+
+

@@ -1,0 +1,19 @@
+
+#### Self Driving Cars Experiment
+
+(Source)[https://matteocourthoud.github.io/post/synth/]
+
+
+Suppose you were a ride-sharing platform and you wanted to test the effect of self-driving cars in your fleet.
+
+As you can imagine, there are many limitations to running an AB/test for this type of feature. First of all, it’s complicated to randomize individual rides. Second, it’s a very expensive intervention. Third, and statistically most important, you cannot run this intervention at the ride level. The problem is that there are spillover effects from treated to control units: if indeed self-driving cars are more efficient, it means that they can serve more customers in the same amount of time, reducing the customers available to normal drivers (the control group). This spillover contaminates the experiment and prevents a causal interpretation of the results.
+
+For all these reasons, we select only one city. Given the synthetic vibe of the article we cannot but select… (drum roll)… Miami!
+
+We have information on the largest 46 U.S. cities for the period 2002-2019. The panel is balanced, which means that we observe all cities for all time periods. Self-driving cars were introduced in 2013.
+
+As expected, the groups are not balanced: Miami is more densely populated, poorer, larger and has lower employment rate than the other cities in the US in our sample.
+
+We are interested in understanding the impact of the introduction of self-driving cars on revenue.
+
+One initial idea could be to analyze the data as we would in an A/B test, comparing control and treatment group. We can estimate the treatment effect as a difference in means in revenue between the treatment and control group, after the introduction of self-driving cars.

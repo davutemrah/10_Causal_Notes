@@ -1,0 +1,18 @@
+h1:instrumental-variables-iv Instrumental Variables (IV)
+h2:key-concepts Key Concepts
+h3:requirements-for-a-valid-instrument Requirements for a Valid Instrument
+h3:the-iv-estimation-process The IV Estimation Process
+h3:example Example
+h4:context-education-and-earnings Context: Education and Earnings
+h4:steps Steps:
+h3:assumptions-and-considerations Assumptions and Considerations
+h3:advantages-of-iv Advantages of IV
+h3:disadvantages-of-iv Disadvantages of IV
+h3:conclusion Conclusion
+h2:difference-between-instrumental-variable-iv-method-and-two-stage-least-squares-2sls-method Difference Between Instrumental Variable (IV) Method and Two-Stage Least Squares (2SLS) Method
+h3:instrumental-variable-iv-method Instrumental Variable (IV) Method
+h3:two-stage-least-squares-2sls-method Two-Stage Least Squares (2SLS) Method
+h3:summary-of-differences Summary of Differences:
+h2:homogenous-treatment-effect Homogenous Treatment Effect
+h2:heterogenous-treatment-effect Heterogenous Treatment Effect
+

@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Synthetic Control Method (SCM) | Notes on Causal Models</title>
+  <meta name="description" content="This is a collection of notes from open sources" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Synthetic Control Method (SCM) | Notes on Causal Models" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is a collection of notes from open sources" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Synthetic Control Method (SCM) | Notes on Causal Models" />
+  
+  <meta name="twitter:description" content="This is a collection of notes from open sources" />
+  
+
+<meta name="author" content="DEA" />
+
+
+<meta name="date" content="2024-06-23" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="difference-in-differences-did-methods.html"/>
+<link rel="next" href="instrumental-variables-iv.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Causal Model Notes</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Acknowledgement</a></li>
+<li class="chapter" data-level="1" data-path="causal-models.html"><a href="causal-models.html"><i class="fa fa-check"></i><b>1</b> Causal Models</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="causal-models.html"><a href="causal-models.html#ordinary-least-squares-ols"><i class="fa fa-check"></i><b>1.1</b> Ordinary Least Squares (OLS)</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="causal-models.html"><a href="causal-models.html#linearity"><i class="fa fa-check"></i><b>1.1.1</b> 1. <strong>Linearity</strong></a></li>
+<li class="chapter" data-level="1.1.2" data-path="causal-models.html"><a href="causal-models.html#exogeneity"><i class="fa fa-check"></i><b>1.1.2</b> 2. <strong>Exogeneity</strong></a></li>
+<li class="chapter" data-level="1.1.3" data-path="causal-models.html"><a href="causal-models.html#homoscedasticity"><i class="fa fa-check"></i><b>1.1.3</b> 3. <strong>Homoscedasticity</strong></a></li>
+<li class="chapter" data-level="1.1.4" data-path="causal-models.html"><a href="causal-models.html#no-autocorrelation"><i class="fa fa-check"></i><b>1.1.4</b> 4. <strong>No Autocorrelation</strong></a></li>
+<li class="chapter" data-level="1.1.5" data-path="causal-models.html"><a href="causal-models.html#no-perfect-multicollinearity"><i class="fa fa-check"></i><b>1.1.5</b> 5. <strong>No Perfect Multicollinearity</strong></a></li>
+<li class="chapter" data-level="1.1.6" data-path="causal-models.html"><a href="causal-models.html#normality-of-errors-for-inference"><i class="fa fa-check"></i><b>1.1.6</b> 6. <strong>Normality of Errors (for inference)</strong></a></li>
+<li class="chapter" data-level="1.1.7" data-path="causal-models.html"><a href="causal-models.html#practical-considerations-and-tests"><i class="fa fa-check"></i><b>1.1.7</b> Practical Considerations and Tests</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="causal-models.html"><a href="causal-models.html#concepts"><i class="fa fa-check"></i><b>1.2</b> Concepts</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="causal-models.html"><a href="causal-models.html#goodness-of-fit"><i class="fa fa-check"></i><b>1.2.1</b> Goodness of Fit</a></li>
+<li class="chapter" data-level="1.2.2" data-path="causal-models.html"><a href="causal-models.html#robustness-checks-and-validation-methods"><i class="fa fa-check"></i><b>1.2.2</b> Robustness checks and validation methods</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="causal-models.html"><a href="causal-models.html#multivariate-regression"><i class="fa fa-check"></i><b>1.3</b> Multivariate Regression</a></li>
+<li class="chapter" data-level="1.4" data-path="causal-models.html"><a href="causal-models.html#directed-acyclic-graphs-dags"><i class="fa fa-check"></i><b>1.4</b> Directed Acyclic Graphs (DAGs)</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="causal-models.html"><a href="causal-models.html#confounder"><i class="fa fa-check"></i><b>1.4.1</b> Confounder</a></li>
+<li class="chapter" data-level="1.4.2" data-path="causal-models.html"><a href="causal-models.html#collider"><i class="fa fa-check"></i><b>1.4.2</b> Collider</a></li>
+<li class="chapter" data-level="1.4.3" data-path="causal-models.html"><a href="causal-models.html#what-to-do"><i class="fa fa-check"></i><b>1.4.3</b> What to do</a></li>
+<li class="chapter" data-level="1.4.4" data-path="causal-models.html"><a href="causal-models.html#how-to-do"><i class="fa fa-check"></i><b>1.4.4</b> How to do</a></li>
+<li class="chapter" data-level="1.4.5" data-path="causal-models.html"><a href="causal-models.html#bad-controls"><i class="fa fa-check"></i><b>1.4.5</b> Bad Controls</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="causal-models.html"><a href="causal-models.html#external-and-internal-validity-in-econometrics"><i class="fa fa-check"></i><b>1.5</b> External and Internal Validity in Econometrics</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="causal-models.html"><a href="causal-models.html#internal-validity"><i class="fa fa-check"></i><b>1.5.1</b> Internal Validity</a></li>
+<li class="chapter" data-level="1.5.2" data-path="causal-models.html"><a href="causal-models.html#external-validity"><i class="fa fa-check"></i><b>1.5.2</b> External Validity</a></li>
+<li class="chapter" data-level="1.5.3" data-path="causal-models.html"><a href="causal-models.html#balancing-internal-and-external-validity"><i class="fa fa-check"></i><b>1.5.3</b> Balancing Internal and External Validity</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="causal-models.html"><a href="causal-models.html#endogeneity"><i class="fa fa-check"></i><b>1.6</b> Endogeneity</a>
+<ul>
+<li class="chapter" data-level="1.6.1" data-path="causal-models.html"><a href="causal-models.html#sources-of-endogeneity"><i class="fa fa-check"></i><b>1.6.1</b> Sources of Endogeneity:</a></li>
+<li class="chapter" data-level="1.6.2" data-path="causal-models.html"><a href="causal-models.html#consequences-of-endogeneity"><i class="fa fa-check"></i><b>1.6.2</b> Consequences of Endogeneity:</a></li>
+<li class="chapter" data-level="1.6.3" data-path="causal-models.html"><a href="causal-models.html#methods-to-address-endogeneity"><i class="fa fa-check"></i><b>1.6.3</b> Methods to Address Endogeneity:</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="causal-models.html"><a href="causal-models.html#reduced-form-model"><i class="fa fa-check"></i><b>1.7</b> Reduced Form Model</a>
+<ul>
+<li class="chapter" data-level="1.7.1" data-path="causal-models.html"><a href="causal-models.html#characteristics-of-reduced-form-models"><i class="fa fa-check"></i><b>1.7.1</b> Characteristics of Reduced Form Models:</a></li>
+<li class="chapter" data-level="1.7.2" data-path="causal-models.html"><a href="causal-models.html#uses-of-reduced-form-models"><i class="fa fa-check"></i><b>1.7.2</b> Uses of Reduced Form Models:</a></li>
+<li class="chapter" data-level="1.7.3" data-path="causal-models.html"><a href="causal-models.html#example-of-a-reduced-form-model"><i class="fa fa-check"></i><b>1.7.3</b> Example of a Reduced Form Model:</a></li>
+</ul></li>
+<li class="chapter" data-level="1.8" data-path="causal-models.html"><a href="causal-models.html#unobserved-variable-affecting-only-the-dependent-variable"><i class="fa fa-check"></i><b>1.8</b> Unobserved Variable Affecting Only the Dependent Variable</a></li>
+<li class="chapter" data-level="1.9" data-path="causal-models.html"><a href="causal-models.html#types-of-biases"><i class="fa fa-check"></i><b>1.9</b> Types of Biases</a>
+<ul>
+<li class="chapter" data-level="1.9.1" data-path="causal-models.html"><a href="causal-models.html#selection-bias"><i class="fa fa-check"></i><b>1.9.1</b> 1. Selection Bias</a></li>
+<li class="chapter" data-level="1.9.2" data-path="causal-models.html"><a href="causal-models.html#omitted-variable-bias"><i class="fa fa-check"></i><b>1.9.2</b> 2. Omitted Variable Bias</a></li>
+<li class="chapter" data-level="1.9.3" data-path="causal-models.html"><a href="causal-models.html#measurement-bias"><i class="fa fa-check"></i><b>1.9.3</b> 3. Measurement Bias</a></li>
+<li class="chapter" data-level="1.9.4" data-path="causal-models.html"><a href="causal-models.html#response-bias"><i class="fa fa-check"></i><b>1.9.4</b> 4. Response Bias</a></li>
+<li class="chapter" data-level="1.9.5" data-path="causal-models.html"><a href="causal-models.html#attrition-bias"><i class="fa fa-check"></i><b>1.9.5</b> 5. Attrition Bias</a></li>
+<li class="chapter" data-level="1.9.6" data-path="causal-models.html"><a href="causal-models.html#publication-bias"><i class="fa fa-check"></i><b>1.9.6</b> 6. Publication Bias</a></li>
+<li class="chapter" data-level="1.9.7" data-path="causal-models.html"><a href="causal-models.html#survivorship-bias"><i class="fa fa-check"></i><b>1.9.7</b> 7. Survivorship Bias</a></li>
+<li class="chapter" data-level="1.9.8" data-path="causal-models.html"><a href="causal-models.html#recall-bias"><i class="fa fa-check"></i><b>1.9.8</b> 8. Recall Bias</a></li>
+<li class="chapter" data-level="1.9.9" data-path="causal-models.html"><a href="causal-models.html#confirmation-bias"><i class="fa fa-check"></i><b>1.9.9</b> 9. Confirmation Bias</a></li>
+<li class="chapter" data-level="1.9.10" data-path="causal-models.html"><a href="causal-models.html#confounding-bias"><i class="fa fa-check"></i><b>1.9.10</b> 10. Confounding Bias</a></li>
+<li class="chapter" data-level="1.9.11" data-path="causal-models.html"><a href="causal-models.html#endogeneity-bias"><i class="fa fa-check"></i><b>1.9.11</b> 11. Endogeneity Bias</a></li>
+<li class="chapter" data-level="1.9.12" data-path="causal-models.html"><a href="causal-models.html#non-response-bias"><i class="fa fa-check"></i><b>1.9.12</b> 12. Non-Response Bias</a></li>
+<li class="chapter" data-level="1.9.13" data-path="causal-models.html"><a href="causal-models.html#observer-bias"><i class="fa fa-check"></i><b>1.9.13</b> 13. Observer Bias</a></li>
+<li class="chapter" data-level="1.9.14" data-path="causal-models.html"><a href="causal-models.html#overfitting-bias"><i class="fa fa-check"></i><b>1.9.14</b> 14. Overfitting Bias</a></li>
+<li class="chapter" data-level="1.9.15" data-path="causal-models.html"><a href="causal-models.html#addressing-biases"><i class="fa fa-check"></i><b>1.9.15</b> Addressing Biases</a></li>
+<li class="chapter" data-level="1.9.16" data-path="causal-models.html"><a href="causal-models.html#self-selection-bias"><i class="fa fa-check"></i><b>1.9.16</b> Self-Selection Bias</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="potential-outcomes.html"><a href="potential-outcomes.html"><i class="fa fa-check"></i><b>2</b> Potential Outcomes</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#key-concepts"><i class="fa fa-check"></i><b>2.1</b> Key Concepts</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#causal-effect"><i class="fa fa-check"></i><b>2.1.1</b> Causal Effect</a></li>
+<li class="chapter" data-level="2.1.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#average-treatment-effect-ate"><i class="fa fa-check"></i><b>2.1.2</b> Average Treatment Effect (ATE)</a></li>
+<li class="chapter" data-level="2.1.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#average-treatment-effect-on-the-treated-att"><i class="fa fa-check"></i><b>2.1.3</b> Average Treatment Effect on the Treated (ATT)</a></li>
+<li class="chapter" data-level="2.1.4" data-path="potential-outcomes.html"><a href="potential-outcomes.html#the-fundamental-problem-of-causal-inference"><i class="fa fa-check"></i><b>2.1.4</b> The Fundamental Problem of Causal Inference</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#assumptions-for-identifying-causal-effects"><i class="fa fa-check"></i><b>2.2</b> Assumptions for Identifying Causal Effects</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#independence"><i class="fa fa-check"></i><b>2.2.1</b> 1. <strong>Independence</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#methods-for-estimating-causal-effects"><i class="fa fa-check"></i><b>2.3</b> Methods for Estimating Causal Effects</a></li>
+<li class="chapter" data-level="2.4" data-path="potential-outcomes.html"><a href="potential-outcomes.html#example"><i class="fa fa-check"></i><b>2.4</b> Example</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#simple-difference-method"><i class="fa fa-check"></i><b>2.4.1</b> Simple Difference Method</a></li>
+<li class="chapter" data-level="2.4.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#conclusion-1"><i class="fa fa-check"></i><b>2.4.2</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="potential-outcomes.html"><a href="potential-outcomes.html#randomization-based-methods"><i class="fa fa-check"></i><b>2.5</b> Randomization-Based Methods</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#traditional-methods-vs.-randomization-based-methods"><i class="fa fa-check"></i><b>2.5.1</b> Traditional Methods vs. Randomization-Based Methods</a></li>
+<li class="chapter" data-level="2.5.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#why-use-randomization-based-methods"><i class="fa fa-check"></i><b>2.5.2</b> Why Use Randomization-Based Methods?</a></li>
+<li class="chapter" data-level="2.5.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#how-randomization-based-methods-work"><i class="fa fa-check"></i><b>2.5.3</b> How Randomization-Based Methods Work</a></li>
+<li class="chapter" data-level="2.5.4" data-path="potential-outcomes.html"><a href="potential-outcomes.html#example-2"><i class="fa fa-check"></i><b>2.5.4</b> Example</a></li>
+<li class="chapter" data-level="2.5.5" data-path="potential-outcomes.html"><a href="potential-outcomes.html#contribution-of-athey-and-imbens"><i class="fa fa-check"></i><b>2.5.5</b> Contribution of Athey and Imbens</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="potential-outcomes.html"><a href="potential-outcomes.html#on-how-parameters-are-calculated"><i class="fa fa-check"></i><b>2.6</b> On how parameters are calculated</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#propensity-score-matching-psm-and-maximum-likelihood-estimation-mle"><i class="fa fa-check"></i><b>2.6.1</b> Propensity Score Matching (PSM) and Maximum Likelihood Estimation (MLE)</a></li>
+<li class="chapter" data-level="2.6.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#logistic-regression"><i class="fa fa-check"></i><b>2.6.2</b> Logistic Regression</a></li>
+<li class="chapter" data-level="2.6.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#ordinary-least-squares-ols-regression"><i class="fa fa-check"></i><b>2.6.3</b> Ordinary Least Squares (OLS) Regression</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="matching.html"><a href="matching.html"><i class="fa fa-check"></i><b>3</b> Matching</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="matching.html"><a href="matching.html#subclassification"><i class="fa fa-check"></i><b>3.1</b> Subclassification</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="matching.html"><a href="matching.html#example-3"><i class="fa fa-check"></i><b>3.1.1</b> Example</a></li>
+<li class="chapter" data-level="3.1.2" data-path="matching.html"><a href="matching.html#step-by-step-example"><i class="fa fa-check"></i><b>3.1.2</b> Step-by-Step Example</a></li>
+<li class="chapter" data-level="3.1.3" data-path="matching.html"><a href="matching.html#considerations"><i class="fa fa-check"></i><b>3.1.3</b> Considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="matching.html"><a href="matching.html#exact-matching"><i class="fa fa-check"></i><b>3.2</b> Exact Matching</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="matching.html"><a href="matching.html#explanation"><i class="fa fa-check"></i><b>3.2.1</b> Explanation</a></li>
+<li class="chapter" data-level="3.2.2" data-path="matching.html"><a href="matching.html#example-4"><i class="fa fa-check"></i><b>3.2.2</b> Example</a></li>
+<li class="chapter" data-level="3.2.3" data-path="matching.html"><a href="matching.html#conclusion-2"><i class="fa fa-check"></i><b>3.2.3</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="matching.html"><a href="matching.html#approximate-matching-methods"><i class="fa fa-check"></i><b>3.3</b> Approximate Matching Methods</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="matching.html"><a href="matching.html#nearest-neighbor-covariate-matching"><i class="fa fa-check"></i><b>3.3.1</b> Nearest Neighbor Covariate Matching</a></li>
+<li class="chapter" data-level="3.3.2" data-path="matching.html"><a href="matching.html#example-5"><i class="fa fa-check"></i><b>3.3.2</b> Example</a></li>
+<li class="chapter" data-level="3.3.3" data-path="matching.html"><a href="matching.html#hypothetical-data"><i class="fa fa-check"></i><b>3.3.3</b> Hypothetical Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="matching.html"><a href="matching.html#propensity-score-methods"><i class="fa fa-check"></i><b>3.4</b> Propensity Score Methods</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="matching.html"><a href="matching.html#concept"><i class="fa fa-check"></i><b>3.4.1</b> Concept</a></li>
+<li class="chapter" data-level="3.4.2" data-path="matching.html"><a href="matching.html#steps"><i class="fa fa-check"></i><b>3.4.2</b> Steps</a></li>
+<li class="chapter" data-level="3.4.3" data-path="matching.html"><a href="matching.html#example-6"><i class="fa fa-check"></i><b>3.4.3</b> Example</a></li>
+<li class="chapter" data-level="3.4.4" data-path="matching.html"><a href="matching.html#assumptions-and-considerations"><i class="fa fa-check"></i><b>3.4.4</b> Assumptions and Considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="matching.html"><a href="matching.html#inverse-probability-weighting-weighting-on-the-propensity-score"><i class="fa fa-check"></i><b>3.5</b> Inverse Probability Weighting (Weighting on the propensity score)</a></li>
+<li class="chapter" data-level="3.6" data-path="matching.html"><a href="matching.html#nearest-neighbor-matching"><i class="fa fa-check"></i><b>3.6</b> Nearest-neighbor matching</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="matching.html"><a href="matching.html#example-in-r"><i class="fa fa-check"></i><b>3.6.1</b> Example in R</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="matching.html"><a href="matching.html#coarsened-exact-matching"><i class="fa fa-check"></i><b>3.7</b> Coarsened Exact Matching</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="matching.html"><a href="matching.html#example-7"><i class="fa fa-check"></i><b>3.7.1</b> Example</a></li>
+<li class="chapter" data-level="3.7.2" data-path="matching.html"><a href="matching.html#steps-in-coarsened-exact-matching"><i class="fa fa-check"></i><b>3.7.2</b> Steps in Coarsened Exact Matching</a></li>
+<li class="chapter" data-level="3.7.3" data-path="matching.html"><a href="matching.html#considerations-1"><i class="fa fa-check"></i><b>3.7.3</b> Considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="matching.html"><a href="matching.html#ab-test-article-from-medium"><i class="fa fa-check"></i><b>3.8</b> A/B Test article from Medium</a>
+<ul>
+<li class="chapter" data-level="3.8.1" data-path="matching.html"><a href="matching.html#example-conversion-rate-of-an-e-commerce-website"><i class="fa fa-check"></i><b>3.8.1</b> Example: Conversion Rate of an E-Commerce Website</a></li>
+<li class="chapter" data-level="3.8.2" data-path="matching.html"><a href="matching.html#example-ab-test"><i class="fa fa-check"></i><b>3.8.2</b> Example: A/B Test</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="matching.html"><a href="matching.html#task-1-load-the-data"><i class="fa fa-check"></i><b>3.9</b> Task 1: Load the data</a></li>
+<li class="chapter" data-level="3.10" data-path="matching.html"><a href="matching.html#task-2-set-up-hypothesis"><i class="fa fa-check"></i><b>3.10</b> Task 2: Set up Hypothesis</a></li>
+<li class="chapter" data-level="3.11" data-path="matching.html"><a href="matching.html#task-3-compute-the-difference-in-the-click-through-rate"><i class="fa fa-check"></i><b>3.11</b> Task 3: Compute the difference in the click-through rate</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html"><i class="fa fa-check"></i><b>4</b> Task four : create sample distribution using bootsrapping</a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#bootstrapping"><i class="fa fa-check"></i><b>4.0.1</b> Bootstrapping :</a></li>
+<li class="chapter" data-level="4.0.2" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#example-8"><i class="fa fa-check"></i><b>4.0.2</b> Example :</a></li>
+<li class="chapter" data-level="4.1" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#task-five-evaluate-the-null-hypothesis-and-draw-conclustions."><i class="fa fa-check"></i><b>4.1</b> Task five : Evaluate the null hypothesis and draw conclustions.</a></li>
+<li class="chapter" data-level="4.2" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#alternative-random-sampling-code"><i class="fa fa-check"></i><b>4.2</b> alternative random sampling code</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ab-testing.html"><a href="ab-testing.html"><i class="fa fa-check"></i><b>5</b> AB Testing</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ab-testing.html"><a href="ab-testing.html#sources"><i class="fa fa-check"></i><b>5.1</b> Sources</a></li>
+<li class="chapter" data-level="5.2" data-path="ab-testing.html"><a href="ab-testing.html#concepts-1"><i class="fa fa-check"></i><b>5.2</b> Concepts</a></li>
+<li class="chapter" data-level="5.3" data-path="ab-testing.html"><a href="ab-testing.html#ai-summary"><i class="fa fa-check"></i><b>5.3</b> AI Summary</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="ab-testing.html"><a href="ab-testing.html#ab-testing-randomized-controlled-trials"><i class="fa fa-check"></i><b>5.3.1</b> A/B Testing (Randomized Controlled Trials)</a></li>
+<li class="chapter" data-level="5.3.2" data-path="ab-testing.html"><a href="ab-testing.html#concepts-2"><i class="fa fa-check"></i><b>5.3.2</b> Concepts:</a></li>
+<li class="chapter" data-level="5.3.3" data-path="ab-testing.html"><a href="ab-testing.html#comparison-and-usage"><i class="fa fa-check"></i><b>5.3.3</b> Comparison and Usage</a></li>
+<li class="chapter" data-level="5.3.4" data-path="ab-testing.html"><a href="ab-testing.html#significance"><i class="fa fa-check"></i><b>5.3.4</b> Significance</a></li>
+<li class="chapter" data-level="5.3.5" data-path="ab-testing.html"><a href="ab-testing.html#group-size"><i class="fa fa-check"></i><b>5.3.5</b> Group Size</a></li>
+<li class="chapter" data-level="5.3.6" data-path="ab-testing.html"><a href="ab-testing.html#relationship-between-effect-size-significance-and-group-size"><i class="fa fa-check"></i><b>5.3.6</b> Relationship Between Effect Size, Significance, and Group Size</a></li>
+<li class="chapter" data-level="5.3.7" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-3"><i class="fa fa-check"></i><b>5.3.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="ab-testing.html"><a href="ab-testing.html#size-of-the-control-group"><i class="fa fa-check"></i><b>5.4</b> Size of the Control Group</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="ab-testing.html"><a href="ab-testing.html#sample-size-calculation-formula"><i class="fa fa-check"></i><b>5.4.1</b> Sample Size Calculation Formula</a></li>
+<li class="chapter" data-level="5.4.2" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-4"><i class="fa fa-check"></i><b>5.4.2</b> Conclusion</a></li>
+<li class="chapter" data-level="5.4.3" data-path="ab-testing.html"><a href="ab-testing.html#statistical-assumptions-for-randomized-controlled-trials-rcts"><i class="fa fa-check"></i><b>5.4.3</b> Statistical Assumptions for Randomized Controlled Trials (RCTs)</a></li>
+<li class="chapter" data-level="5.4.4" data-path="ab-testing.html"><a href="ab-testing.html#robustness-checks-1"><i class="fa fa-check"></i><b>5.4.4</b> Robustness Checks</a></li>
+<li class="chapter" data-level="5.4.5" data-path="ab-testing.html"><a href="ab-testing.html#validation-methods-1"><i class="fa fa-check"></i><b>5.4.5</b> Validation Methods</a></li>
+<li class="chapter" data-level="5.4.6" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-5"><i class="fa fa-check"></i><b>5.4.6</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html"><i class="fa fa-check"></i><b>6</b> Difference-in-Differences (DiD) Methods</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#simple-difference-in-differences-did"><i class="fa fa-check"></i><b>6.1</b> Simple Difference-in-Differences (DiD)</a></li>
+<li class="chapter" data-level="6.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#controversial-note"><i class="fa fa-check"></i><b>6.2</b> Controversial Note</a></li>
+<li class="chapter" data-level="6.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#placebo-tests-for-parallel-trends"><i class="fa fa-check"></i><b>6.3</b> Placebo tests for parallel trends</a></li>
+<li class="chapter" data-level="6.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#two-way-fixed-effects-model"><i class="fa fa-check"></i><b>6.4</b> Two-Way Fixed Effects Model</a></li>
+<li class="chapter" data-level="6.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#event-study-methods"><i class="fa fa-check"></i><b>6.5</b> Event Study Methods</a></li>
+<li class="chapter" data-level="6.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#importance-of-placebos-in-dd"><i class="fa fa-check"></i><b>6.6</b> Importance of Placebos in DD</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#triple-differences"><i class="fa fa-check"></i><b>6.6.1</b> Triple Differences</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#compositional-changes"><i class="fa fa-check"></i><b>6.7</b> Compositional Changes</a></li>
+<li class="chapter" data-level="6.8" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-assumptions"><i class="fa fa-check"></i><b>6.8</b> Key Assumptions</a>
+<ul>
+<li class="chapter" data-level="6.8.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#implementation-steps"><i class="fa fa-check"></i><b>6.8.1</b> Implementation Steps</a></li>
+<li class="chapter" data-level="6.8.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#advantages"><i class="fa fa-check"></i><b>6.8.2</b> Advantages</a></li>
+<li class="chapter" data-level="6.8.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#limitations-1"><i class="fa fa-check"></i><b>6.8.3</b> Limitations</a></li>
+<li class="chapter" data-level="6.8.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#q-how-would-you-test-the-parallel-trends-assumption"><i class="fa fa-check"></i><b>6.8.4</b> Q: How would you test the parallel trends assumption?</a></li>
+<li class="chapter" data-level="6.8.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#q-how-would-you-address-potential-violations-of-the-parallel-trends-assumption"><i class="fa fa-check"></i><b>6.8.5</b> Q: How would you address potential violations of the parallel trends assumption?</a></li>
+</ul></li>
+<li class="chapter" data-level="6.9" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#notes"><i class="fa fa-check"></i><b>6.9</b> Notes</a>
+<ul>
+<li class="chapter" data-level="6.9.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#example-business"><i class="fa fa-check"></i><b>6.9.1</b> Example: Business</a></li>
+</ul></li>
+<li class="chapter" data-level="6.10" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#extra-considerations"><i class="fa fa-check"></i><b>6.10</b> Extra Considerations</a></li>
+<li class="chapter" data-level="6.11" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#synthetic-difference-in-differences-synthdid-method"><i class="fa fa-check"></i><b>6.11</b> Synthetic Difference-in-Differences (SynthDiD) method</a></li>
+<li class="chapter" data-level="6.12" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#doubly-robust-models-in-econometrics"><i class="fa fa-check"></i><b>6.12</b> Doubly Robust Models in Econometrics</a>
+<ul>
+<li class="chapter" data-level="6.12.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-concepts-3"><i class="fa fa-check"></i><b>6.12.1</b> Key Concepts</a></li>
+<li class="chapter" data-level="6.12.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#steps-in-doubly-robust-estimation"><i class="fa fa-check"></i><b>6.12.2</b> Steps in Doubly Robust Estimation</a></li>
+<li class="chapter" data-level="6.12.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#advantages-1"><i class="fa fa-check"></i><b>6.12.3</b> Advantages</a></li>
+<li class="chapter" data-level="6.12.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#examples-and-applications"><i class="fa fa-check"></i><b>6.12.4</b> Examples and Applications</a></li>
+<li class="chapter" data-level="6.12.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#assumptions-and-considerations-1"><i class="fa fa-check"></i><b>6.12.5</b> Assumptions and Considerations</a></li>
+<li class="chapter" data-level="6.12.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-6"><i class="fa fa-check"></i><b>6.12.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.13" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#twoway-fixed-effects-with-differential-timing"><i class="fa fa-check"></i><b>6.13</b> Twoway Fixed Effects with Differential Timing</a></li>
+<li class="chapter" data-level="6.14" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#bacon-decomposition"><i class="fa fa-check"></i><b>6.14</b> Bacon Decomposition</a>
+<ul>
+<li class="chapter" data-level="6.14.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#overview"><i class="fa fa-check"></i><b>6.14.1</b> Overview</a></li>
+<li class="chapter" data-level="6.14.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-concepts-4"><i class="fa fa-check"></i><b>6.14.2</b> Key Concepts</a></li>
+<li class="chapter" data-level="6.14.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#components-of-bacon-decomposition"><i class="fa fa-check"></i><b>6.14.3</b> Components of Bacon Decomposition</a></li>
+<li class="chapter" data-level="6.14.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#formula-for-decomposition"><i class="fa fa-check"></i><b>6.14.4</b> Formula for Decomposition</a></li>
+<li class="chapter" data-level="6.14.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#implications-and-interpretation"><i class="fa fa-check"></i><b>6.14.5</b> Implications and Interpretation</a></li>
+<li class="chapter" data-level="6.14.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#example-9"><i class="fa fa-check"></i><b>6.14.6</b> Example</a></li>
+<li class="chapter" data-level="6.14.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-7"><i class="fa fa-check"></i><b>6.14.7</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html"><i class="fa fa-check"></i><b>7</b> Synthetic Control Method (SCM)</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#ai-summary-1"><i class="fa fa-check"></i><b>7.1</b> AI Summary</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#synthetic-control-method-scm-1"><i class="fa fa-check"></i><b>7.1.1</b> Synthetic Control Method (SCM)</a></li>
+<li class="chapter" data-level="7.1.2" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#placebo-tests"><i class="fa fa-check"></i><b>7.1.2</b> Placebo tests</a></li>
+<li class="chapter" data-level="7.1.3" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>7.1.3</b> Leave-One-Out Cross-Validation</a></li>
+<li class="chapter" data-level="7.1.4" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#detailed-example"><i class="fa fa-check"></i><b>7.1.4</b> Detailed Example</a></li>
+<li class="chapter" data-level="7.1.5" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-9"><i class="fa fa-check"></i><b>7.1.5</b> Conclusion</a></li>
+<li class="chapter" data-level="7.1.6" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data"><i class="fa fa-check"></i><b>7.1.6</b> Data</a></li>
+<li class="chapter" data-level="7.1.7" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data-setting"><i class="fa fa-check"></i><b>7.1.7</b> Data Setting</a></li>
+<li class="chapter" data-level="7.1.8" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#requirements-for-synthetic-control-method"><i class="fa fa-check"></i><b>7.1.8</b> Requirements for Synthetic Control Method</a></li>
+<li class="chapter" data-level="7.1.9" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data-requirements-summary"><i class="fa fa-check"></i><b>7.1.9</b> Data Requirements Summary</a></li>
+<li class="chapter" data-level="7.1.10" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#practical-considerations-1"><i class="fa fa-check"></i><b>7.1.10</b> Practical Considerations</a></li>
+<li class="chapter" data-level="7.1.11" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#example-12"><i class="fa fa-check"></i><b>7.1.11</b> Example</a></li>
+<li class="chapter" data-level="7.1.12" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-10"><i class="fa fa-check"></i><b>7.1.12</b> Conclusion</a></li>
+<li class="chapter" data-level="7.1.13" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#synthetic-did"><i class="fa fa-check"></i><b>7.1.13</b> Synthetic DID</a></li>
+<li class="chapter" data-level="7.1.14" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#robustness-checks-3"><i class="fa fa-check"></i><b>7.1.14</b> Robustness Checks</a></li>
+<li class="chapter" data-level="7.1.15" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#validation-methods-3"><i class="fa fa-check"></i><b>7.1.15</b> Validation Methods</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html"><i class="fa fa-check"></i><b>8</b> Instrumental Variables (IV)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#key-concepts-5"><i class="fa fa-check"></i><b>8.1</b> Key Concepts</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#requirements-for-a-valid-instrument"><i class="fa fa-check"></i><b>8.1.1</b> Requirements for a Valid Instrument</a></li>
+<li class="chapter" data-level="8.1.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#the-iv-estimation-process"><i class="fa fa-check"></i><b>8.1.2</b> The IV Estimation Process</a></li>
+<li class="chapter" data-level="8.1.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#example-13"><i class="fa fa-check"></i><b>8.1.3</b> Example</a></li>
+<li class="chapter" data-level="8.1.4" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#assumptions-and-considerations-2"><i class="fa fa-check"></i><b>8.1.4</b> Assumptions and Considerations</a></li>
+<li class="chapter" data-level="8.1.5" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#advantages-of-iv"><i class="fa fa-check"></i><b>8.1.5</b> Advantages of IV</a></li>
+<li class="chapter" data-level="8.1.6" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#disadvantages-of-iv"><i class="fa fa-check"></i><b>8.1.6</b> Disadvantages of IV</a></li>
+<li class="chapter" data-level="8.1.7" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#conclusion-11"><i class="fa fa-check"></i><b>8.1.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#difference-between-instrumental-variable-iv-method-and-two-stage-least-squares-2sls-method"><i class="fa fa-check"></i><b>8.2</b> Difference Between Instrumental Variable (IV) Method and Two-Stage Least Squares (2SLS) Method</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#instrumental-variable-iv-method"><i class="fa fa-check"></i><b>8.2.1</b> Instrumental Variable (IV) Method</a></li>
+<li class="chapter" data-level="8.2.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#two-stage-least-squares-2sls-method"><i class="fa fa-check"></i><b>8.2.2</b> Two-Stage Least Squares (2SLS) Method</a></li>
+<li class="chapter" data-level="8.2.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#summary-of-differences"><i class="fa fa-check"></i><b>8.2.3</b> Summary of Differences:</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#homogenous-treatment-effect"><i class="fa fa-check"></i><b>8.3</b> Homogenous Treatment Effect</a></li>
+<li class="chapter" data-level="8.4" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#heterogenous-treatment-effect"><i class="fa fa-check"></i><b>8.4</b> Heterogenous Treatment Effect</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html"><i class="fa fa-check"></i><b>9</b> Regression Discontinuity Designs (RDD)</a>
+<ul>
+<li class="chapter" data-level="9.0.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#validation-and-falsification"><i class="fa fa-check"></i><b>9.0.1</b> Validation and Falsification</a></li>
+<li class="chapter" data-level="9.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#regression-discontinuity-designs-rdd-1"><i class="fa fa-check"></i><b>9.1</b> Regression Discontinuity Designs (RDD)</a></li>
+<li class="chapter" data-level="9.2" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-6"><i class="fa fa-check"></i><b>9.2</b> Key Concepts</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#types-of-rdd"><i class="fa fa-check"></i><b>9.2.1</b> Types of RDD</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#sharp-rdd"><i class="fa fa-check"></i><b>9.3</b> Sharp RDD</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-7"><i class="fa fa-check"></i><b>9.3.1</b> Key Concepts</a></li>
+<li class="chapter" data-level="9.3.2" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#assumptions-for-rdd"><i class="fa fa-check"></i><b>9.3.2</b> Assumptions for RDD</a></li>
+<li class="chapter" data-level="9.3.3" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#estimation-in-sharp-rdd"><i class="fa fa-check"></i><b>9.3.3</b> Estimation in Sharp RDD</a></li>
+<li class="chapter" data-level="9.3.4" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#fuzzy-rdd"><i class="fa fa-check"></i><b>9.3.4</b> Fuzzy RDD</a></li>
+<li class="chapter" data-level="9.3.5" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications"><i class="fa fa-check"></i><b>9.3.5</b> Parametric vs. Non-Parametric Applications</a></li>
+<li class="chapter" data-level="9.3.6" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#example-14"><i class="fa fa-check"></i><b>9.3.6</b> Example</a></li>
+<li class="chapter" data-level="9.3.7" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#summary-2"><i class="fa fa-check"></i><b>9.3.7</b> Summary</a></li>
+<li class="chapter" data-level="9.3.8" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#challenges-to-identification"><i class="fa fa-check"></i><b>9.3.8</b> Challenges to Identification</a></li>
+<li class="chapter" data-level="9.3.9" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#examples"><i class="fa fa-check"></i><b>9.3.9</b> Examples</a></li>
+<li class="chapter" data-level="9.3.10" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#types-of-rdd-1"><i class="fa fa-check"></i><b>9.3.10</b> Types of RDD</a></li>
+<li class="chapter" data-level="9.3.11" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications-1"><i class="fa fa-check"></i><b>9.3.11</b> Parametric vs. Non-Parametric Applications</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#regression-kink-design"><i class="fa fa-check"></i><b>9.4</b> Regression Kink Design</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html"><i class="fa fa-check"></i><b>10</b> Fixed Effects and Panel Data Methods</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#pooled-regression"><i class="fa fa-check"></i><b>10.1</b> Pooled Regression</a></li>
+<li class="chapter" data-level="10.2" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#panel-data-methods"><i class="fa fa-check"></i><b>10.2</b> Panel Data Methods</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#fixed-effects-model"><i class="fa fa-check"></i><b>10.2.1</b> Fixed Effects Model</a></li>
+<li class="chapter" data-level="10.2.2" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#random-effects-model"><i class="fa fa-check"></i><b>10.2.2</b> Random Effects Model</a></li>
+<li class="chapter" data-level="10.2.3" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#example-economic-growth-and-education"><i class="fa fa-check"></i><b>10.2.3</b> Example: Economic Growth and Education</a></li>
+<li class="chapter" data-level="10.2.4" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#conclusion-12"><i class="fa fa-check"></i><b>10.2.4</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html"><i class="fa fa-check"></i><b>11</b> Ordinary Least Squares (OLS)</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#simple-linear-regression"><i class="fa fa-check"></i><b>11.1</b> Simple Linear Regression</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#summary-3"><i class="fa fa-check"></i><b>11.1.1</b> Summary</a></li>
+<li class="chapter" data-level="11.1.2" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#interpreting-model-coefficients-in-ols-models"><i class="fa fa-check"></i><b>11.1.2</b> Interpreting Model Coefficients in OLS Models</a></li>
+<li class="chapter" data-level="11.1.3" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#linear-models-linear-linear"><i class="fa fa-check"></i><b>11.1.3</b> 1. Linear Models (Linear-Linear)</a></li>
+<li class="chapter" data-level="11.1.4" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#log-linear-models"><i class="fa fa-check"></i><b>11.1.4</b> 2. Log-Linear Models</a></li>
+<li class="chapter" data-level="11.1.5" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#linear-log-models"><i class="fa fa-check"></i><b>11.1.5</b> 3. Linear-Log Models</a></li>
+<li class="chapter" data-level="11.1.6" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#log-log-models"><i class="fa fa-check"></i><b>11.1.6</b> 4. Log-Log Models</a></li>
+<li class="chapter" data-level="11.1.7" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#examples-of-dummy-and-continuous-variables"><i class="fa fa-check"></i><b>11.1.7</b> Examples of Dummy and Continuous Variables</a></li>
+<li class="chapter" data-level="11.1.8" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#assumptions-and-considerations-3"><i class="fa fa-check"></i><b>11.1.8</b> Assumptions and Considerations</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="resampling-methods.html"><a href="resampling-methods.html"><i class="fa fa-check"></i><b>12</b> Resampling methods</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="resampling-methods.html"><a href="resampling-methods.html#bootstrapping-1"><i class="fa fa-check"></i><b>12.1</b> Bootstrapping</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html"><i class="fa fa-check"></i><b>13</b> Hypotheis Testing</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#concepts-3"><i class="fa fa-check"></i><b>13.1</b> Concepts</a>
+<ul>
+<li class="chapter" data-level="13.1.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#significance-level-α"><i class="fa fa-check"></i><b>13.1.1</b> Significance Level (α)</a></li>
+<li class="chapter" data-level="13.1.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#p-value"><i class="fa fa-check"></i><b>13.1.2</b> P-Value</a></li>
+<li class="chapter" data-level="13.1.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-i-error"><i class="fa fa-check"></i><b>13.1.3</b> Type I Error</a></li>
+<li class="chapter" data-level="13.1.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-ii-error"><i class="fa fa-check"></i><b>13.1.4</b> Type II Error</a></li>
+<li class="chapter" data-level="13.1.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#relationship-between-type-i-and-type-ii-errors"><i class="fa fa-check"></i><b>13.1.5</b> Relationship Between Type I and Type II Errors</a></li>
+<li class="chapter" data-level="13.1.6" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#importance-in-research-and-decision-making"><i class="fa fa-check"></i><b>13.1.6</b> Importance in Research and Decision Making</a></li>
+<li class="chapter" data-level="13.1.7" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#statistical-power"><i class="fa fa-check"></i><b>13.1.7</b> Statistical power</a></li>
+</ul></li>
+<li class="chapter" data-level="13.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#null-hypothesis"><i class="fa fa-check"></i><b>13.2</b> Null Hypothesis</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fishers-sharp-null-hypothesis"><i class="fa fa-check"></i><b>13.2.1</b> Fisher’s Sharp Null Hypothesis</a></li>
+<li class="chapter" data-level="13.2.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#neymans-null-hypothesis"><i class="fa fa-check"></i><b>13.2.2</b> Neyman’s Null Hypothesis</a></li>
+<li class="chapter" data-level="13.2.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#key-differences"><i class="fa fa-check"></i><b>13.2.3</b> Key Differences</a></li>
+<li class="chapter" data-level="13.2.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-to-illustrate-the-difference"><i class="fa fa-check"></i><b>13.2.4</b> Example to Illustrate the Difference</a></li>
+<li class="chapter" data-level="13.2.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-13"><i class="fa fa-check"></i><b>13.2.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#permutation-tests"><i class="fa fa-check"></i><b>13.3</b> Permutation Tests</a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-and-why-to-use-permutation-tests"><i class="fa fa-check"></i><b>13.3.1</b> When and Why to Use Permutation Tests</a></li>
+<li class="chapter" data-level="13.3.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-to-perform-a-permutation-test"><i class="fa fa-check"></i><b>13.3.2</b> How to Perform a Permutation Test</a></li>
+<li class="chapter" data-level="13.3.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-calculation"><i class="fa fa-check"></i><b>13.3.3</b> Example Calculation</a></li>
+<li class="chapter" data-level="13.3.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-14"><i class="fa fa-check"></i><b>13.3.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fischers-exact-test"><i class="fa fa-check"></i><b>13.4</b> Fischer’s Exact Test</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-to-use-fishers-exact-test"><i class="fa fa-check"></i><b>13.4.1</b> When to Use Fisher’s Exact Test</a></li>
+<li class="chapter" data-level="13.4.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-fishers-exact-test-works"><i class="fa fa-check"></i><b>13.4.2</b> How Fisher’s Exact Test Works</a></li>
+<li class="chapter" data-level="13.4.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#step-by-step-example-1"><i class="fa fa-check"></i><b>13.4.3</b> Step-by-Step Example</a></li>
+<li class="chapter" data-level="13.4.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-15"><i class="fa fa-check"></i><b>13.4.4</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="maximum-likelihood-estimation.html"><a href="maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>14</b> Maximum Likelihood Estimation</a></li>
+<li class="divider"></li>
+<li><a href="https://davutemrah.github.io" target="blank">Back to Home Page</li>
+<li><a href="https://davutemrah.github.io/notebooks/" target="blank">Back to Collections</li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Notes on Causal Models</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="synthetic-control-method-scm" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Synthetic Control Method (SCM)<a href="synthetic-control-method-scm.html#synthetic-control-method-scm" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The synthetic control method is a statistical technique that creates a “synthetic” control group by combining multiple control units that are similar to the treatment unit in all relevant characteristics. The synthetic control group is constructed to match the pre-treatment outcomes of the treated unit as closely as possible. The treatment effect is then estimated by comparing the post-treatment outcomes of the treated unit to those of the synthetic control group.</p>
+<p>Synthetic control allow us to do causal inference when we have as few as one treated unit and many control units and we observe them over time. The idea is simple: combine untreated units so that they mimic the behavior of the treated unit as closely as possible, without the treatment. Then use this “synthetic unit” as a control.</p>
+<p>The method first introduced by Abadie, Diamond and Hainmueller (2010) and has been called “the most important innovation in the policy evaluation literature in the last few years”. Moreover, it is widely used in the industry because of its simplicity and interpretability.</p>
+<div id="ai-summary-1" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> AI Summary<a href="synthetic-control-method-scm.html#ai-summary-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="synthetic-control-method-scm-1" class="section level3 hasAnchor" number="7.1.1">
+<h3><span class="header-section-number">7.1.1</span> Synthetic Control Method (SCM)<a href="synthetic-control-method-scm.html#synthetic-control-method-scm-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>What is the Synthetic Control Method?</strong></p>
+<ul>
+<li>SCM is a statistical method used to evaluate the effect of an intervention or treatment when a randomized control trial is not feasible. It constructs a synthetic version of the treated unit using a weighted combination of control units.</li>
+</ul>
+<div id="real-world-examples" class="section level4 hasAnchor" number="7.1.1.1">
+<h4><span class="header-section-number">7.1.1.1</span> Real-World Examples<a href="synthetic-control-method-scm.html#real-world-examples" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Can you provide a real-world example where SCM has been used?</strong></p>
+<ul>
+<li>SCM was famously used to evaluate the economic impact of California’s tobacco control program in 1988. By constructing a synthetic California from other states with similar pre-intervention characteristics, researchers estimated the program’s impact on cigarette sales.</li>
+</ul>
+</div>
+<div id="assumptions-1" class="section level4 hasAnchor" number="7.1.1.2">
+<h4><span class="header-section-number">7.1.1.2</span> Assumptions<a href="synthetic-control-method-scm.html#assumptions-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>What are the key assumptions of SCM?</strong></p>
+<ul>
+<li>No hidden confounders: Assumes that all relevant variables are included in the model.</li>
+<li>No anticipation effect: Assumes that the intervention did not affect the units before its implementation.</li>
+<li>Convex hull: Assumes that the treated unit lies within the convex hull of the donor pool.</li>
+</ul>
+</div>
+<div id="validation-methods-2" class="section level4 hasAnchor" number="7.1.1.3">
+<h4><span class="header-section-number">7.1.1.3</span> Validation Methods<a href="synthetic-control-method-scm.html#validation-methods-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>How can you validate the results of an SCM?</strong></p>
+<ul>
+<li><p><strong>Placebo Tests:</strong> Apply the method to units that were not exposed to the intervention to check if significant effects are falsely detected.</p></li>
+<li><p><strong>Leave-One-Out Cross-Validation:</strong> Assess the impact by leaving one control unit out of the synthetic control and observing if the results significantly change.</p></li>
+<li><p><strong>Pre-Intervention Fit:</strong> Ensure the synthetic control closely tracks the treated unit before the intervention.</p></li>
+</ul>
+</div>
+<div id="robustness-checks-2" class="section level4 hasAnchor" number="7.1.1.4">
+<h4><span class="header-section-number">7.1.1.4</span> Robustness Checks<a href="synthetic-control-method-scm.html#robustness-checks-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>What robustness checks can you perform for SCM?</strong></p>
+<ul>
+<li><strong>Sensitivity Analysis:</strong> Test the robustness of results to changes in the weights of control units.</li>
+<li><strong>In-Sample Prediction:</strong> Check if the synthetic control accurately predicts the outcome for the treated unit in the pre-intervention period.</li>
+<li><strong>Alternative Specifications:</strong> Use different sets of predictor variables to construct the synthetic control and see if the results hold.</li>
+</ul>
+</div>
+<div id="violating-situations" class="section level4 hasAnchor" number="7.1.1.5">
+<h4><span class="header-section-number">7.1.1.5</span> Violating Situations<a href="synthetic-control-method-scm.html#violating-situations" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>What situations could violate the assumptions of SCM?</strong></p>
+<ul>
+<li><strong>Unobserved Confounders:</strong> If there are important variables that influence both the intervention and the outcome but are not included in the model.</li>
+<li><strong>Anticipation Effects:</strong> If the units change their behavior in anticipation of the intervention.</li>
+<li><strong>Poor Fit Pre-Intervention:</strong> If the synthetic control does not closely match the treated unit’s pre-intervention trends.</li>
+</ul>
+</div>
+<div id="detailed-explanation-of-a-key-concept" class="section level4 hasAnchor" number="7.1.1.6">
+<h4><span class="header-section-number">7.1.1.6</span> Detailed Explanation of a Key Concept<a href="synthetic-control-method-scm.html#detailed-explanation-of-a-key-concept" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Constructing a Synthetic Control:</strong></p>
+<ul>
+<li><p><strong>Choosing Donor Pool:</strong> Select units that were not exposed to the intervention but are similar to the treated unit.</p></li>
+<li><p><strong>Variable Selection:</strong> Identify predictor variables that are strongly related to the outcome variable.</p></li>
+<li><p><strong>Weighting Process:</strong> Assign weights to control units such that the weighted combination closely resembles the treated unit in terms of pre-intervention characteristics.</p></li>
+</ul>
+</div>
+<div id="example-implementation" class="section level4 hasAnchor" number="7.1.1.7">
+<h4><span class="header-section-number">7.1.1.7</span> Example Implementation<a href="synthetic-control-method-scm.html#example-implementation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Case Study: Impact of a New Policy on Unemployment Rates</strong></p>
+<ul>
+<li><p><strong>Objective:</strong> Assess the impact of a new job training program on unemployment rates in a particular state.</p></li>
+<li><p><strong>Steps:</strong></p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Select Donor Pool:</strong> Choose similar states without the job training program.</p></li>
+<li><p><strong>Identify Predictors:</strong> Variables such as GDP growth, historical unemployment rates, industrial composition.</p></li>
+<li><p><strong>Construct Synthetic Control:</strong> Calculate weights for each control state to create a synthetic state that mirrors the treated state’s pre-intervention unemployment rate.</p></li>
+<li><p><strong>Analyze Results:</strong> Compare post-intervention unemployment rates between the treated state and its synthetic counterpart.</p></li>
+</ol></li>
+</ul>
+</div>
+</div>
+<div id="placebo-tests" class="section level3 hasAnchor" number="7.1.2">
+<h3><span class="header-section-number">7.1.2</span> Placebo tests<a href="synthetic-control-method-scm.html#placebo-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Placebo tests are a crucial part of validating the results of a Synthetic Control Method (SCM) analysis. They help ensure that the observed effect of an intervention is not due to random chance but rather to the intervention itself. Here’s a detailed explanation of how placebo tests are performed and interpreted:</p>
+<div id="concept-1" class="section level4 hasAnchor" number="7.1.2.1">
+<h4><span class="header-section-number">7.1.2.1</span> Concept<a href="synthetic-control-method-scm.html#concept-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A placebo test involves applying the synthetic control methodology to units that were not subjected to the intervention. The idea is to check whether similar treatment effects are observed in these non-treated units, which should not exhibit a significant effect if the synthetic control method is working correctly.</p>
+</div>
+<div id="steps-for-performing-placebo-tests" class="section level4 hasAnchor" number="7.1.2.2">
+<h4><span class="header-section-number">7.1.2.2</span> Steps for Performing Placebo Tests<a href="synthetic-control-method-scm.html#steps-for-performing-placebo-tests" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: decimal">
+<li><strong>Identify Non-Treated Units:</strong>
+<ul>
+<li>Select units from the donor pool that were not exposed to the intervention.</li>
+</ul></li>
+<li><strong>Create Placebo Interventions:</strong>
+<ul>
+<li>Assign a placebo intervention to each non-treated unit. This means arbitrarily selecting a point in time as the “intervention” date for these units.</li>
+</ul></li>
+<li><strong>Construct Synthetic Controls for Placebo Units:</strong>
+<ul>
+<li>For each non-treated unit with a placebo intervention, construct a synthetic control using the same pre-intervention period and predictor variables as for the actual treated unit.</li>
+</ul></li>
+<li><strong>Compare Outcomes:</strong>
+<ul>
+<li>Calculate the difference between the outcomes of the non-treated units and their synthetic controls in the post-intervention period.</li>
+</ul></li>
+</ol>
+</div>
+<div id="interpreting-placebo-tests" class="section level4 hasAnchor" number="7.1.2.3">
+<h4><span class="header-section-number">7.1.2.3</span> Interpreting Placebo Tests<a href="synthetic-control-method-scm.html#interpreting-placebo-tests" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: decimal">
+<li><strong>Distribution of Placebo Effects:</strong>
+<ul>
+<li>Examine the distribution of the placebo effects across all non-treated units. This helps determine if the observed effect for the treated unit is unusually large compared to the placebo effects.</li>
+</ul></li>
+<li><strong>Significance Testing:</strong>
+<ul>
+<li>If the effect observed in the actual treated unit is significantly larger than the effects observed in the placebo tests, this suggests that the effect is likely due to the intervention rather than random variation.</li>
+</ul></li>
+<li><strong>Graphical Analysis:</strong>
+<ul>
+<li>Plot the post-intervention gaps (difference between actual and synthetic outcomes) for both the treated unit and the placebo units. If the treated unit’s gap stands out from the placebo gaps, it strengthens the evidence for a causal effect of the intervention.</li>
+</ul></li>
+</ol>
+</div>
+<div id="example-10" class="section level4 hasAnchor" number="7.1.2.4">
+<h4><span class="header-section-number">7.1.2.4</span> Example<a href="synthetic-control-method-scm.html#example-10" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Imagine you are evaluating the impact of a new job training program introduced in State A in 2010.</p>
+<ol style="list-style-type: decimal">
+<li><strong>Select Donor Pool:</strong>
+<ul>
+<li>Choose similar states (B, C, D, etc.) that did not introduce the job training program.</li>
+</ul></li>
+<li><strong>Placebo Interventions:</strong>
+<ul>
+<li>Assign placebo intervention years for states B, C, and D (e.g., 2010 for all states).</li>
+</ul></li>
+<li><strong>Construct Synthetic Controls:</strong>
+<ul>
+<li>For each state, construct a synthetic control using the same method applied to State A.</li>
+</ul></li>
+<li><strong>Analyze Results:</strong>
+<ul>
+<li>Compare the post-2010 unemployment rates of each state with their respective synthetic controls.</li>
+</ul></li>
+</ol>
+<p>If State A shows a significant drop in unemployment rates compared to its synthetic control, and the placebo tests for states B, C, and D show no significant changes, this strengthens the case that the job training program had a real impact on State A.</p>
+<ol start="5" style="list-style-type: decimal">
+<li><strong>Graphical Evidence:</strong>
+<ul>
+<li>Plot the unemployment rate differences (treated - synthetic) for State A and placebo states. The graph should show a distinct deviation for State A after 2010, while the placebo states’ lines should remain relatively flat.</li>
+</ul></li>
+</ol>
+</div>
+<div id="robustness" class="section level4 hasAnchor" number="7.1.2.5">
+<h4><span class="header-section-number">7.1.2.5</span> Robustness<a href="synthetic-control-method-scm.html#robustness" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>By showing that non-treated units (placebo units) do not exhibit significant changes in the outcome, while the treated unit does, you provide strong evidence that the intervention (job training program) is responsible for the observed effect.</p>
+</div>
+<div id="conclusion-8" class="section level4 hasAnchor" number="7.1.2.6">
+<h4><span class="header-section-number">7.1.2.6</span> Conclusion<a href="synthetic-control-method-scm.html#conclusion-8" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Placebo tests are an essential validation tool in SCM. They help rule out the possibility that the observed effect is due to random variation or other factors unrelated to the intervention. By carefully constructing and analyzing placebo tests, you can enhance the credibility of your SCM analysis and provide robust evidence for causal inference.</p>
+</div>
+</div>
+<div id="leave-one-out-cross-validation" class="section level3 hasAnchor" number="7.1.3">
+<h3><span class="header-section-number">7.1.3</span> Leave-One-Out Cross-Validation<a href="synthetic-control-method-scm.html#leave-one-out-cross-validation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Leave-One-Out Cross-Validation (LOO-CV) is a <strong>robustness check</strong> used in the context of the Synthetic Control Method (SCM) to assess the sensitivity and stability of the results. This method systematically removes one unit from the donor pool at a time to examine how the exclusion affects the construction of the synthetic control and the estimated treatment effect.</p>
+<div id="steps-for-leave-one-out-cross-validation-in-scm" class="section level4 hasAnchor" number="7.1.3.1">
+<h4><span class="header-section-number">7.1.3.1</span> Steps for Leave-One-Out Cross-Validation in SCM<a href="synthetic-control-method-scm.html#steps-for-leave-one-out-cross-validation-in-scm" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: decimal">
+<li><strong>Initial Synthetic Control Construction:</strong>
+<ul>
+<li>First, construct the synthetic control for the treated unit using the full donor pool of control units.</li>
+</ul></li>
+<li><strong>Iterative Exclusion:</strong>
+<ul>
+<li>Iteratively exclude one control unit at a time from the donor pool and reconstruct the synthetic control without the excluded unit.</li>
+<li>For a donor pool with <span class="math inline">\(n\)</span> control units, this results in <span class="math inline">\(n\)</span> different synthetic controls, each missing one different control unit.</li>
+</ul></li>
+<li><strong>Calculate Treatment Effect:</strong>
+<ul>
+<li>For each iteration, calculate the treatment effect as the difference between the outcome of the treated unit and the outcome of the synthetic control constructed without the excluded unit.</li>
+</ul></li>
+<li><strong>Compare and Analyze:</strong>
+<ul>
+<li>Compare the treatment effects from all iterations to assess the stability and robustness of the original treatment effect.</li>
+</ul></li>
+</ol>
+</div>
+<div id="interpreting-leave-one-out-cross-validation" class="section level4 hasAnchor" number="7.1.3.2">
+<h4><span class="header-section-number">7.1.3.2</span> Interpreting Leave-One-Out Cross-Validation<a href="synthetic-control-method-scm.html#interpreting-leave-one-out-cross-validation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: decimal">
+<li><strong>Consistency of Results:</strong>
+<ul>
+<li>If the estimated treatment effects from all iterations are similar to the original estimate (constructed with the full donor pool), it indicates that the result is robust and not overly dependent on any single control unit.</li>
+</ul></li>
+<li><strong>Sensitivity to Exclusion:</strong>
+<ul>
+<li>If excluding certain control units significantly changes the estimated treatment effect, this suggests that the result may be sensitive to the composition of the donor pool. Identifying such units can provide insights into which control units are driving the results.</li>
+</ul></li>
+<li><strong>Graphical Analysis:</strong>
+<ul>
+<li>Plot the treatment effects from each iteration to visually inspect the variability. Ideally, the effects should cluster closely around the original estimate.</li>
+</ul></li>
+</ol>
+</div>
+<div id="example-11" class="section level4 hasAnchor" number="7.1.3.3">
+<h4><span class="header-section-number">7.1.3.3</span> Example<a href="synthetic-control-method-scm.html#example-11" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Consider an evaluation of the impact of a smoking ban on public health outcomes in City A. The donor pool includes Cities B, C, D, E, and F.</p>
+<ol style="list-style-type: decimal">
+<li><strong>Construct Full Synthetic Control:</strong>
+<ul>
+<li>Using Cities B, C, D, E, and F, create a synthetic control for City A and calculate the treatment effect on public health outcomes.</li>
+</ul></li>
+<li><strong>Iteratively Exclude Cities:</strong>
+<ul>
+<li>Exclude City B, reconstruct the synthetic control using Cities C, D, E, and F, and calculate the new treatment effect.</li>
+<li>Repeat this process for Cities C, D, E, and F.</li>
+</ul></li>
+<li><strong>Compare Results:</strong>
+<ul>
+<li>Compare the treatment effect estimates obtained from each exclusion to the original estimate.</li>
+</ul></li>
+<li><strong>Analysis:</strong>
+<ul>
+<li>If the treatment effect estimates are similar regardless of which city is excluded, the result is robust.</li>
+<li>If excluding a particular city (e.g., City D) results in a significantly different treatment effect, this indicates that City D has a substantial influence on the synthetic control.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div id="detailed-example" class="section level3 hasAnchor" number="7.1.4">
+<h3><span class="header-section-number">7.1.4</span> Detailed Example<a href="synthetic-control-method-scm.html#detailed-example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="original-estimate" class="section level4 hasAnchor" number="7.1.4.1">
+<h4><span class="header-section-number">7.1.4.1</span> Original Estimate:<a href="synthetic-control-method-scm.html#original-estimate" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><strong>Full Donor Pool (Cities B, C, D, E, F):</strong> Treatment effect is a 5% reduction in public health issues.</li>
+</ul>
+</div>
+<div id="leave-one-out-estimates" class="section level4 hasAnchor" number="7.1.4.2">
+<h4><span class="header-section-number">7.1.4.2</span> Leave-One-Out Estimates:<a href="synthetic-control-method-scm.html#leave-one-out-estimates" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><strong>Excluding City B (Cities C, D, E, F):</strong> Treatment effect is a 4.8% reduction.</li>
+<li><strong>Excluding City C (Cities B, D, E, F):</strong> Treatment effect is a 5.2% reduction.</li>
+<li><strong>Excluding City D (Cities B, C, E, F):</strong> Treatment effect is a 3.0% reduction.</li>
+<li><strong>Excluding City E (Cities B, C, D, F):</strong> Treatment effect is a 5.1% reduction.</li>
+<li><strong>Excluding City F (Cities B, C, D, E):</strong> Treatment effect is a 4.9% reduction.</li>
+</ul>
+</div>
+<div id="analysis" class="section level4 hasAnchor" number="7.1.4.3">
+<h4><span class="header-section-number">7.1.4.3</span> Analysis:<a href="synthetic-control-method-scm.html#analysis" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><p>The estimates are generally close to the original 5% reduction, except when City D is excluded, which yields a 3% reduction.</p></li>
+<li><p>This suggests that City D has a significant influence on the synthetic control and should be further examined to understand why its exclusion changes the result.</p></li>
+</ul>
+</div>
+</div>
+<div id="conclusion-9" class="section level3 hasAnchor" number="7.1.5">
+<h3><span class="header-section-number">7.1.5</span> Conclusion<a href="synthetic-control-method-scm.html#conclusion-9" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Leave-One-Out Cross-Validation is a powerful tool to test the robustness and reliability of the synthetic control method’s results. By systematically excluding each control unit, it helps identify how dependent the estimated treatment effect is on individual control units. This ensures that the results are not driven by any single unit and provides a deeper understanding of the underlying data and the robustness of the findings.</p>
+</div>
+<div id="data" class="section level3 hasAnchor" number="7.1.6">
+<h3><span class="header-section-number">7.1.6</span> Data<a href="synthetic-control-method-scm.html#data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The Synthetic Control Method (SCM) is a sophisticated tool used in causal inference to estimate the effect of an intervention or treatment when a randomized control trial is not feasible. For SCM to be effectively implemented, certain data settings and requirements need to be met. Here’s a detailed explanation of these requirements:</p>
+</div>
+<div id="data-setting" class="section level3 hasAnchor" number="7.1.7">
+<h3><span class="header-section-number">7.1.7</span> Data Setting<a href="synthetic-control-method-scm.html#data-setting" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Treated Unit:</strong>
+<ul>
+<li>The unit (e.g., a region, city, country, organization) that is exposed to the intervention or treatment.</li>
+</ul></li>
+<li><strong>Control Units (Donor Pool):</strong>
+<ul>
+<li>A set of similar units that were not exposed to the intervention. These units will be used to construct the synthetic control.</li>
+</ul></li>
+<li><strong>Outcome Variable:</strong>
+<ul>
+<li>The variable of interest that the intervention is expected to affect. This could be economic indicators, health outcomes, crime rates, etc.</li>
+</ul></li>
+<li><strong>Predictor Variables:</strong>
+<ul>
+<li>A set of variables that are believed to influence the outcome variable. These predictors are used to create the synthetic control and should be available for both the treated and control units.</li>
+</ul></li>
+<li><strong>Time Period:</strong>
+<ul>
+<li>Data should cover a sufficiently long period before and after the intervention. The pre-intervention period is used to match the treated unit with the synthetic control, and the post-intervention period is used to evaluate the treatment effect.</li>
+</ul></li>
+</ol>
+</div>
+<div id="requirements-for-synthetic-control-method" class="section level3 hasAnchor" number="7.1.8">
+<h3><span class="header-section-number">7.1.8</span> Requirements for Synthetic Control Method<a href="synthetic-control-method-scm.html#requirements-for-synthetic-control-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Similarity in Pre-Intervention Period:</strong>
+<ul>
+<li>The treated unit and the control units should have similar trends in the outcome variable and predictor variables during the pre-intervention period. This similarity ensures that the synthetic control can accurately replicate the treated unit’s trajectory had the intervention not occurred.</li>
+</ul></li>
+<li><strong>Sufficient Number of Control Units:</strong>
+<ul>
+<li>A reasonably large donor pool is necessary to construct a reliable synthetic control. The control units should be comparable to the treated unit in terms of the pre-intervention characteristics.</li>
+</ul></li>
+<li><strong>Availability of Data:</strong>
+<ul>
+<li>Detailed and reliable data for both the treated unit and the control units over the entire time period (both pre- and post-intervention) is crucial. Missing data can bias the results.</li>
+</ul></li>
+<li><strong>No Anticipation Effect:</strong>
+<ul>
+<li>It is assumed that the intervention does not affect the outcome variable before its actual implementation. This ensures that any observed changes in the outcome variable after the intervention can be attributed to the intervention itself.</li>
+</ul></li>
+<li><strong>Convex Hull Condition:</strong>
+<ul>
+<li>The treated unit should lie within the convex hull of the control units in the space of the predictor variables. This condition ensures that a weighted combination of control units can adequately represent the treated unit.</li>
+</ul></li>
+<li><strong>Stationarity of Relationship:</strong>
+<ul>
+<li>The relationship between predictor variables and the outcome variable should remain stable over time. If this relationship changes significantly, the synthetic control constructed from pre-intervention data might not be valid for post-intervention analysis.</li>
+</ul></li>
+</ol>
+</div>
+<div id="data-requirements-summary" class="section level3 hasAnchor" number="7.1.9">
+<h3><span class="header-section-number">7.1.9</span> Data Requirements Summary<a href="synthetic-control-method-scm.html#data-requirements-summary" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Outcome Data:</strong>
+<ul>
+<li>Continuous data on the outcome variable for both the treated and control units over the entire study period.</li>
+</ul></li>
+<li><strong>Predictor Data:</strong>
+<ul>
+<li>Data on several predictor variables that influence the outcome variable. These should be available for both the treated and control units.</li>
+</ul></li>
+<li><strong>Pre-Intervention and Post-Intervention Data:</strong>
+<ul>
+<li>Sufficient data points before the intervention to accurately match the treated unit with the synthetic control, and enough data points after the intervention to assess its impact.</li>
+</ul></li>
+</ol>
+</div>
+<div id="practical-considerations-1" class="section level3 hasAnchor" number="7.1.10">
+<h3><span class="header-section-number">7.1.10</span> Practical Considerations<a href="synthetic-control-method-scm.html#practical-considerations-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Data Quality:</strong>
+<ul>
+<li>High-quality, consistent data is crucial. Any inaccuracies or inconsistencies in the data can lead to unreliable results.</li>
+</ul></li>
+<li><strong>Selection of Control Units:</strong>
+<ul>
+<li>The control units should be selected based on their similarity to the treated unit and their relevance to the study. Including irrelevant or highly dissimilar units can distort the synthetic control.</li>
+</ul></li>
+<li><strong>Choice of Predictors:</strong>
+<ul>
+<li>The predictor variables should be carefully chosen based on theoretical and empirical understanding of what drives the outcome variable. Including irrelevant predictors can reduce the accuracy of the synthetic control.</li>
+</ul></li>
+</ol>
+</div>
+<div id="example-12" class="section level3 hasAnchor" number="7.1.11">
+<h3><span class="header-section-number">7.1.11</span> Example<a href="synthetic-control-method-scm.html#example-12" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Consider evaluating the impact of a new traffic policy in City A on reducing traffic accidents.</p>
+<ol style="list-style-type: decimal">
+<li><strong>Treated Unit:</strong>
+<ul>
+<li>City A where the traffic policy was implemented.</li>
+</ul></li>
+<li><strong>Control Units:</strong>
+<ul>
+<li>A set of similar cities (Cities B, C, D, etc.) where the policy was not implemented.</li>
+</ul></li>
+<li><strong>Outcome Variable:</strong>
+<ul>
+<li>Number of traffic accidents.</li>
+</ul></li>
+<li><strong>Predictor Variables:</strong>
+<ul>
+<li>Variables such as population density, average income, road infrastructure quality, historical traffic accident rates, and other socio-economic factors.</li>
+</ul></li>
+<li><strong>Time Period:</strong>
+<ul>
+<li>Data covering several years before and after the implementation of the traffic policy.</li>
+</ul></li>
+</ol>
+</div>
+<div id="conclusion-10" class="section level3 hasAnchor" number="7.1.12">
+<h3><span class="header-section-number">7.1.12</span> Conclusion<a href="synthetic-control-method-scm.html#conclusion-10" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The success of the Synthetic Control Method relies heavily on the quality and appropriateness of the data used. Ensuring that the treated and control units are similar, having a sufficient number of control units, and having detailed and accurate data for the relevant time periods are crucial for producing reliable and valid estimates of the treatment effect. By carefully selecting the outcome and predictor variables and ensuring robust data quality, SCM can provide valuable insights into the causal effects of interventions.</p>
+<div id="setting" class="section level4 hasAnchor" number="7.1.12.1">
+<h4><span class="header-section-number">7.1.12.1</span> Setting<a href="synthetic-control-method-scm.html#setting" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><p>We assume that for a panel of i.i.d. subjects over time.</p></li>
+<li><p>we observed a set of variables that includes:</p></li>
+<li><p>a treatment assignment (treated)<br />
+</p></li>
+<li><p>a response (revenue)<br />
+</p></li>
+<li><p>a feature vector (population, density, employment and GDP)</p></li>
+</ul>
+<p>Moreover, one unit (Miami in our case) is treated at time (2013 in our case). We distinguish time periods before treatment and time periods after treatment.</p>
+<p>Crucially, treatment is not randomly assigned, therefore a difference in means between the treated unit(s) and the control group is not an unbiased estimator of the average treatment effect.</p>
+<p><strong>Some Resources:</strong></p>
+<p>(Synthetic Difference-in-Differences)[<a href="https://matheusfacure.github.io/python-causality-handbook/25-Synthetic-Diff-in-Diff.html" class="uri">https://matheusfacure.github.io/python-causality-handbook/25-Synthetic-Diff-in-Diff.html</a>]</p>
+</div>
+</div>
+<div id="synthetic-did" class="section level3 hasAnchor" number="7.1.13">
+<h3><span class="header-section-number">7.1.13</span> Synthetic DID<a href="synthetic-control-method-scm.html#synthetic-did" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Advantages of SynthDiD method:</strong></p>
+<ul>
+<li><p>The synthetic control method is usually used for a few treated and control units and needs long, balanced data before treatment.</p></li>
+<li><p>SynthDiD, on the other hand, works well even with a short data period before treatment, unlike the synthetic control method [4].
+This method is being preferred especially because it doesn’t have a strict parallel trends assumption (PTA) requirement like DiD.
+SynthDiD guarantees a suitable quantity of control units, considers possible pre-intervention patterns, and may accommodate a degree of endogenous treatment timing [4].
+Disadvantages of SynthDiD method:
+Can be computationally expensive (even with only one treated group/block).
+Requires a balanced panel (i.e., you can only use units observed for all time periods) and that the treatment timing is identical for all treated units.
+Requires enough pre-treatment periods for good estimation, so, if you don’t have enough pre-treatment period might be better to use just the regular DiD.
+Computing and comparing the average treatment effects for subgroups is tricky. One option is to split the sample into subgroups and compute the average treatment effects for each subgroup.
+Implementing SynthDiD where the treatment timing varies might be tricky. In the case of staggered treatment timing, as one solution, one can estimate the average treatment effect for each treatment cohort and then aggregate cohort-specific average treatment effects to an overall average treatment effects.
+Here are also some other points that you might want to know when getting started.
+Things to note:
+SynthDiD employs regularized ridge regression (L2) while ensuring that the resulting weights have a sum of one.
+In the process of pretreatment matching, SynthDiD tries to determine the average treatment effect across the entire sample. This approach might cause individual time period estimates to be less precise. Nonetheless, the overall average yields an unbiased evaluation.
+The standard errors for the treatment effects are estimated with jacknife or if a cohort has only one treated unit with placebo method.
+The estimator is considered consistent and asymptotically normal, given that the combination of the number of control units and pretreatment periods is sufficiently large relative to the combination of the number of treated units and posttreatment periods.
+In practice, pre-treatment variables play a minor role in Synthetic DiD, as lagged outcomes hold more predictive power, making the treatment of these variables less critical.
+Conclusion
+In this blog post, I introduce the SynthDiD method and discuss its relationship with traditional DiD and SCM. SynthDiD combines the strengths of both SCM and DiD, allowing for causal inference with large panels even when the pretreatment period is short. I demonstrate the method using the synthdid package in R. Although it has several advantages, such as not requiring a strict parallel trends assumption, it also has drawbacks, like being computationally expensive and requiring a balanced panel. Overall, SynthDiD is a valuable tool for researchers interested in estimating causal effects using observational data, providing an alternative to traditional DiD and SCM methods.</p></li>
+</ul>
+<p>Robustness checks and validation methods are essential aspects of evaluating the reliability and credibility of empirical research findings, including those derived from the Synthetic Control Method (SCM). Although they are related and sometimes overlap, they serve distinct purposes in the research process. Here’s a detailed explanation of the differences between them and why each is important:</p>
+</div>
+<div id="robustness-checks-3" class="section level3 hasAnchor" number="7.1.14">
+<h3><span class="header-section-number">7.1.14</span> Robustness Checks<a href="synthetic-control-method-scm.html#robustness-checks-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition:</strong>
+Robustness checks are procedures used to assess the sensitivity and stability of research findings to various assumptions, model specifications, and data perturbations. The goal is to determine whether the results hold under different conditions and to identify any potential weaknesses in the analysis.</p>
+<p><strong>Purpose:</strong>
+- <strong>Assess Stability:</strong> Ensure that the findings are not unduly influenced by specific choices made in the analysis (e.g., selection of control units, predictor variables).
+- <strong>Identify Key Drivers:</strong> Determine which aspects of the model or data are most influential in driving the results.
+- <strong>Evaluate Generalizability:</strong> Check whether the results are consistent across different sub-samples or alternative model specifications.</p>
+<p><strong>Examples of Robustness Checks:</strong>
+1. <strong>Leave-One-Out Cross-Validation:</strong> Assess how the results change when each control unit is excluded one at a time.
+2. <strong>Alternative Model Specifications:</strong> Test different sets of predictor variables or alternative functional forms of the model.
+3. <strong>Sensitivity Analysis:</strong> Evaluate the impact of small changes in the data or assumptions on the estimated treatment effect.
+4. <strong>In-Sample Prediction:</strong> Check the model’s performance in predicting the outcome variable within the pre-intervention period.</p>
+</div>
+<div id="validation-methods-3" class="section level3 hasAnchor" number="7.1.15">
+<h3><span class="header-section-number">7.1.15</span> Validation Methods<a href="synthetic-control-method-scm.html#validation-methods-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition:</strong>
+Validation methods are procedures used to confirm that the analytical approach and findings are credible and correctly specified. The goal is to ensure that the methodology accurately captures the causal relationship of interest and that the results are not artifacts of methodological flaws.</p>
+<p><strong>Purpose:</strong>
+- <strong>Establish Credibility:</strong> Demonstrate that the research design and methods are sound and that the findings are credible.
+- <strong>Detect Biases:</strong> Identify and correct any biases or errors in the analysis that could distort the results.
+- <strong>Provide Evidence for Causal Claims:</strong> Strengthen the argument that the observed effects are truly caused by the intervention rather than other factors.</p>
+<p><strong>Examples of Validation Methods:</strong>
+1. <strong>Placebo Tests:</strong> Apply the methodology to units or time periods where no intervention occurred to ensure that no significant effects are detected.
+2. <strong>Pre-Intervention Fit:</strong> Ensure that the synthetic control closely matches the treated unit’s trajectory in the pre-intervention period.
+3. <strong>Falsification Tests:</strong> Use outcomes that should not be affected by the intervention to check for false positives.
+4. <strong>External Validation:</strong> Compare the findings with results from other studies or alternative methodologies to check for consistency.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="difference-in-differences-did-methods.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="instrumental-variables-iv.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Causal Methods.pdf", "Causal Methods.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

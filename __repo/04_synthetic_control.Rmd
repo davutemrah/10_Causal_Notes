@@ -1,0 +1,395 @@
+# Synthetic Control Method (SCM)
+
+The synthetic control method is a statistical technique that creates a "synthetic" control group by combining multiple control units that are similar to the treatment unit in all relevant characteristics. The synthetic control group is constructed to match the pre-treatment outcomes of the treated unit as closely as possible. The treatment effect is then estimated by comparing the post-treatment outcomes of the treated unit to those of the synthetic control group.
+
+Synthetic control allow us to do causal inference when we have as few as one treated unit and many control units and we observe them over time. The idea is simple: combine untreated units so that they mimic the behavior of the treated unit as closely as possible, without the treatment. Then use this “synthetic unit” as a control. 
+
+The method first introduced by Abadie, Diamond and Hainmueller (2010) and has been called “the most important innovation in the policy evaluation literature in the last few years”. Moreover, it is widely used in the industry because of its simplicity and interpretability.
+
+
+## AI Summary
+
+
+### Synthetic Control Method (SCM)
+
+**What is the Synthetic Control Method?**
+
+   - SCM is a statistical method used to evaluate the effect of an intervention or treatment when a randomized control trial is not feasible. It constructs a synthetic version of the treated unit using a weighted combination of control units.
+
+#### Real-World Examples
+
+**Can you provide a real-world example where SCM has been used?**
+
+   - SCM was famously used to evaluate the economic impact of California's tobacco control program in 1988. By constructing a synthetic California from other states with similar pre-intervention characteristics, researchers estimated the program's impact on cigarette sales.
+
+#### Assumptions
+
+**What are the key assumptions of SCM?**
+
+   - No hidden confounders: Assumes that all relevant variables are included in the model.
+   - No anticipation effect: Assumes that the intervention did not affect the units before its implementation.
+   - Convex hull: Assumes that the treated unit lies within the convex hull of the donor pool.
+
+#### Validation Methods
+
+**How can you validate the results of an SCM?**
+
+   - **Placebo Tests:** Apply the method to units that were not exposed to the intervention to check if significant effects are falsely detected.
+   
+   - **Leave-One-Out Cross-Validation:** Assess the impact by leaving one control unit out of the synthetic control and observing if the results significantly change.
+   
+   - **Pre-Intervention Fit:** Ensure the synthetic control closely tracks the treated unit before the intervention.
+
+#### Robustness Checks
+
+**What robustness checks can you perform for SCM?**
+
+   - **Sensitivity Analysis:** Test the robustness of results to changes in the weights of control units.
+   - **In-Sample Prediction:** Check if the synthetic control accurately predicts the outcome for the treated unit in the pre-intervention period.
+   - **Alternative Specifications:** Use different sets of predictor variables to construct the synthetic control and see if the results hold.
+
+#### Violating Situations
+
+**What situations could violate the assumptions of SCM?**
+
+   - **Unobserved Confounders:** If there are important variables that influence both the intervention and the outcome but are not included in the model.
+   - **Anticipation Effects:** If the units change their behavior in anticipation of the intervention.
+   - **Poor Fit Pre-Intervention:** If the synthetic control does not closely match the treated unit’s pre-intervention trends.
+
+
+#### Detailed Explanation of a Key Concept
+
+**Constructing a Synthetic Control:**
+
+- **Choosing Donor Pool:** Select units that were not exposed to the intervention but are similar to the treated unit.
+
+- **Variable Selection:** Identify predictor variables that are strongly related to the outcome variable.
+
+- **Weighting Process:** Assign weights to control units such that the weighted combination closely resembles the treated unit in terms of pre-intervention characteristics.
+
+#### Example Implementation
+
+**Case Study: Impact of a New Policy on Unemployment Rates**
+
+- **Objective:** Assess the impact of a new job training program on unemployment rates in a particular state.
+
+- **Steps:**
+
+  1. **Select Donor Pool:** Choose similar states without the job training program.
+
+  2. **Identify Predictors:** Variables such as GDP growth, historical unemployment rates, industrial composition.
+
+  3. **Construct Synthetic Control:** Calculate weights for each control state to create a synthetic state that mirrors the treated state's pre-intervention unemployment rate.
+
+  4. **Analyze Results:** Compare post-intervention unemployment rates between the treated state and its synthetic counterpart.
+
+
+
+### Placebo tests
+
+Placebo tests are a crucial part of validating the results of a Synthetic Control Method (SCM) analysis. They help ensure that the observed effect of an intervention is not due to random chance but rather to the intervention itself. Here’s a detailed explanation of how placebo tests are performed and interpreted:
+
+#### Concept
+
+A placebo test involves applying the synthetic control methodology to units that were not subjected to the intervention. The idea is to check whether similar treatment effects are observed in these non-treated units, which should not exhibit a significant effect if the synthetic control method is working correctly.
+
+#### Steps for Performing Placebo Tests
+
+1. **Identify Non-Treated Units:**
+   - Select units from the donor pool that were not exposed to the intervention.
+
+2. **Create Placebo Interventions:**
+   - Assign a placebo intervention to each non-treated unit. This means arbitrarily selecting a point in time as the "intervention" date for these units.
+
+3. **Construct Synthetic Controls for Placebo Units:**
+   - For each non-treated unit with a placebo intervention, construct a synthetic control using the same pre-intervention period and predictor variables as for the actual treated unit.
+
+4. **Compare Outcomes:**
+   - Calculate the difference between the outcomes of the non-treated units and their synthetic controls in the post-intervention period.
+
+#### Interpreting Placebo Tests
+
+1. **Distribution of Placebo Effects:**
+   - Examine the distribution of the placebo effects across all non-treated units. This helps determine if the observed effect for the treated unit is unusually large compared to the placebo effects.
+
+2. **Significance Testing:**
+   - If the effect observed in the actual treated unit is significantly larger than the effects observed in the placebo tests, this suggests that the effect is likely due to the intervention rather than random variation.
+
+3. **Graphical Analysis:**
+   - Plot the post-intervention gaps (difference between actual and synthetic outcomes) for both the treated unit and the placebo units. If the treated unit’s gap stands out from the placebo gaps, it strengthens the evidence for a causal effect of the intervention.
+
+#### Example
+
+Imagine you are evaluating the impact of a new job training program introduced in State A in 2010. 
+
+1. **Select Donor Pool:**
+   - Choose similar states (B, C, D, etc.) that did not introduce the job training program.
+
+2. **Placebo Interventions:**
+   - Assign placebo intervention years for states B, C, and D (e.g., 2010 for all states).
+
+3. **Construct Synthetic Controls:**
+   - For each state, construct a synthetic control using the same method applied to State A.
+
+4. **Analyze Results:**
+   - Compare the post-2010 unemployment rates of each state with their respective synthetic controls.
+
+If State A shows a significant drop in unemployment rates compared to its synthetic control, and the placebo tests for states B, C, and D show no significant changes, this strengthens the case that the job training program had a real impact on State A.
+
+
+5. **Graphical Evidence:**
+   - Plot the unemployment rate differences (treated - synthetic) for State A and placebo states. The graph should show a distinct deviation for State A after 2010, while the placebo states’ lines should remain relatively flat.
+
+#### Robustness
+
+By showing that non-treated units (placebo units) do not exhibit significant changes in the outcome, while the treated unit does, you provide strong evidence that the intervention (job training program) is responsible for the observed effect.
+
+#### Conclusion
+
+Placebo tests are an essential validation tool in SCM. They help rule out the possibility that the observed effect is due to random variation or other factors unrelated to the intervention. By carefully constructing and analyzing placebo tests, you can enhance the credibility of your SCM analysis and provide robust evidence for causal inference.
+
+
+
+### Leave-One-Out Cross-Validation
+
+Leave-One-Out Cross-Validation (LOO-CV) is a **robustness check** used in the context of the Synthetic Control Method (SCM) to assess the sensitivity and stability of the results. This method systematically removes one unit from the donor pool at a time to examine how the exclusion affects the construction of the synthetic control and the estimated treatment effect.
+
+#### Steps for Leave-One-Out Cross-Validation in SCM
+
+1. **Initial Synthetic Control Construction:**
+   - First, construct the synthetic control for the treated unit using the full donor pool of control units.
+
+2. **Iterative Exclusion:**
+   - Iteratively exclude one control unit at a time from the donor pool and reconstruct the synthetic control without the excluded unit.
+   - For a donor pool with \( n \) control units, this results in \( n \) different synthetic controls, each missing one different control unit.
+
+3. **Calculate Treatment Effect:**
+   - For each iteration, calculate the treatment effect as the difference between the outcome of the treated unit and the outcome of the synthetic control constructed without the excluded unit.
+
+4. **Compare and Analyze:**
+   - Compare the treatment effects from all iterations to assess the stability and robustness of the original treatment effect.
+
+#### Interpreting Leave-One-Out Cross-Validation
+
+1. **Consistency of Results:**
+   - If the estimated treatment effects from all iterations are similar to the original estimate (constructed with the full donor pool), it indicates that the result is robust and not overly dependent on any single control unit.
+
+2. **Sensitivity to Exclusion:**
+   - If excluding certain control units significantly changes the estimated treatment effect, this suggests that the result may be sensitive to the composition of the donor pool. Identifying such units can provide insights into which control units are driving the results.
+
+3. **Graphical Analysis:**
+   - Plot the treatment effects from each iteration to visually inspect the variability. Ideally, the effects should cluster closely around the original estimate.
+
+#### Example
+
+Consider an evaluation of the impact of a smoking ban on public health outcomes in City A. The donor pool includes Cities B, C, D, E, and F.
+
+1. **Construct Full Synthetic Control:**
+   - Using Cities B, C, D, E, and F, create a synthetic control for City A and calculate the treatment effect on public health outcomes.
+
+2. **Iteratively Exclude Cities:**
+   - Exclude City B, reconstruct the synthetic control using Cities C, D, E, and F, and calculate the new treatment effect.
+   - Repeat this process for Cities C, D, E, and F.
+
+3. **Compare Results:**
+   - Compare the treatment effect estimates obtained from each exclusion to the original estimate.
+
+4. **Analysis:**
+   - If the treatment effect estimates are similar regardless of which city is excluded, the result is robust.
+   - If excluding a particular city (e.g., City D) results in a significantly different treatment effect, this indicates that City D has a substantial influence on the synthetic control.
+
+### Detailed Example
+
+#### Original Estimate:
+- **Full Donor Pool (Cities B, C, D, E, F):** Treatment effect is a 5% reduction in public health issues.
+
+#### Leave-One-Out Estimates:
+- **Excluding City B (Cities C, D, E, F):** Treatment effect is a 4.8% reduction.
+- **Excluding City C (Cities B, D, E, F):** Treatment effect is a 5.2% reduction.
+- **Excluding City D (Cities B, C, E, F):** Treatment effect is a 3.0% reduction.
+- **Excluding City E (Cities B, C, D, F):** Treatment effect is a 5.1% reduction.
+- **Excluding City F (Cities B, C, D, E):** Treatment effect is a 4.9% reduction.
+
+#### Analysis:
+- The estimates are generally close to the original 5% reduction, except when City D is excluded, which yields a 3% reduction.
+
+- This suggests that City D has a significant influence on the synthetic control and should be further examined to understand why its exclusion changes the result.
+
+### Conclusion
+
+Leave-One-Out Cross-Validation is a powerful tool to test the robustness and reliability of the synthetic control method’s results. By systematically excluding each control unit, it helps identify how dependent the estimated treatment effect is on individual control units. This ensures that the results are not driven by any single unit and provides a deeper understanding of the underlying data and the robustness of the findings.
+
+
+
+### Data 
+
+The Synthetic Control Method (SCM) is a sophisticated tool used in causal inference to estimate the effect of an intervention or treatment when a randomized control trial is not feasible. For SCM to be effectively implemented, certain data settings and requirements need to be met. Here’s a detailed explanation of these requirements:
+
+### Data Setting
+
+1. **Treated Unit:**
+   - The unit (e.g., a region, city, country, organization) that is exposed to the intervention or treatment.
+
+2. **Control Units (Donor Pool):**
+   - A set of similar units that were not exposed to the intervention. These units will be used to construct the synthetic control.
+
+3. **Outcome Variable:**
+   - The variable of interest that the intervention is expected to affect. This could be economic indicators, health outcomes, crime rates, etc.
+
+4. **Predictor Variables:**
+   - A set of variables that are believed to influence the outcome variable. These predictors are used to create the synthetic control and should be available for both the treated and control units.
+
+5. **Time Period:**
+   - Data should cover a sufficiently long period before and after the intervention. The pre-intervention period is used to match the treated unit with the synthetic control, and the post-intervention period is used to evaluate the treatment effect.
+
+### Requirements for Synthetic Control Method
+
+1. **Similarity in Pre-Intervention Period:**
+   - The treated unit and the control units should have similar trends in the outcome variable and predictor variables during the pre-intervention period. This similarity ensures that the synthetic control can accurately replicate the treated unit's trajectory had the intervention not occurred.
+
+2. **Sufficient Number of Control Units:**
+   - A reasonably large donor pool is necessary to construct a reliable synthetic control. The control units should be comparable to the treated unit in terms of the pre-intervention characteristics.
+
+3. **Availability of Data:**
+   - Detailed and reliable data for both the treated unit and the control units over the entire time period (both pre- and post-intervention) is crucial. Missing data can bias the results.
+
+4. **No Anticipation Effect:**
+   - It is assumed that the intervention does not affect the outcome variable before its actual implementation. This ensures that any observed changes in the outcome variable after the intervention can be attributed to the intervention itself.
+
+5. **Convex Hull Condition:**
+   - The treated unit should lie within the convex hull of the control units in the space of the predictor variables. This condition ensures that a weighted combination of control units can adequately represent the treated unit.
+
+6. **Stationarity of Relationship:**
+   - The relationship between predictor variables and the outcome variable should remain stable over time. If this relationship changes significantly, the synthetic control constructed from pre-intervention data might not be valid for post-intervention analysis.
+
+### Data Requirements Summary
+
+1. **Outcome Data:**
+   - Continuous data on the outcome variable for both the treated and control units over the entire study period.
+
+2. **Predictor Data:**
+   - Data on several predictor variables that influence the outcome variable. These should be available for both the treated and control units.
+
+3. **Pre-Intervention and Post-Intervention Data:**
+   - Sufficient data points before the intervention to accurately match the treated unit with the synthetic control, and enough data points after the intervention to assess its impact.
+
+### Practical Considerations
+
+1. **Data Quality:**
+   - High-quality, consistent data is crucial. Any inaccuracies or inconsistencies in the data can lead to unreliable results.
+
+2. **Selection of Control Units:**
+   - The control units should be selected based on their similarity to the treated unit and their relevance to the study. Including irrelevant or highly dissimilar units can distort the synthetic control.
+
+3. **Choice of Predictors:**
+   - The predictor variables should be carefully chosen based on theoretical and empirical understanding of what drives the outcome variable. Including irrelevant predictors can reduce the accuracy of the synthetic control.
+
+### Example
+
+Consider evaluating the impact of a new traffic policy in City A on reducing traffic accidents.
+
+1. **Treated Unit:**
+   - City A where the traffic policy was implemented.
+
+2. **Control Units:**
+   - A set of similar cities (Cities B, C, D, etc.) where the policy was not implemented.
+
+3. **Outcome Variable:**
+   - Number of traffic accidents.
+
+4. **Predictor Variables:**
+   - Variables such as population density, average income, road infrastructure quality, historical traffic accident rates, and other socio-economic factors.
+
+5. **Time Period:**
+   - Data covering several years before and after the implementation of the traffic policy.
+
+### Conclusion
+
+The success of the Synthetic Control Method relies heavily on the quality and appropriateness of the data used. Ensuring that the treated and control units are similar, having a sufficient number of control units, and having detailed and accurate data for the relevant time periods are crucial for producing reliable and valid estimates of the treatment effect. By carefully selecting the outcome and predictor variables and ensuring robust data quality, SCM can provide valuable insights into the causal effects of interventions.
+
+#### Setting
+
+- We assume that for a panel of i.i.d. subjects over time.
+- we observed a set of variables that includes:
+
+- a treatment assignment (treated)  
+- a response (revenue)  
+- a feature vector  (population, density, employment and GDP)
+
+
+Moreover, one unit (Miami in our case) is treated at time  (2013 in our case). We distinguish time periods before treatment and time periods after treatment.
+
+Crucially, treatment  is not randomly assigned, therefore a difference in means between the treated unit(s) and the control group is not an unbiased estimator of the average treatment effect.
+
+
+**Some Resources:**
+
+(Synthetic Difference-in-Differences)[https://matheusfacure.github.io/python-causality-handbook/25-Synthetic-Diff-in-Diff.html]
+
+
+
+### Synthetic DID
+
+**Advantages of SynthDiD method:**
+
+- The synthetic control method is usually used for a few treated and control units and needs long, balanced data before treatment. 
+
+- SynthDiD, on the other hand, works well even with a short data period before treatment, unlike the synthetic control method [4].
+This method is being preferred especially because it doesn’t have a strict parallel trends assumption (PTA) requirement like DiD.
+SynthDiD guarantees a suitable quantity of control units, considers possible pre-intervention patterns, and may accommodate a degree of endogenous treatment timing [4].
+Disadvantages of SynthDiD method:
+Can be computationally expensive (even with only one treated group/block).
+Requires a balanced panel (i.e., you can only use units observed for all time periods) and that the treatment timing is identical for all treated units.
+Requires enough pre-treatment periods for good estimation, so, if you don’t have enough pre-treatment period might be better to use just the regular DiD.
+Computing and comparing the average treatment effects for subgroups is tricky. One option is to split the sample into subgroups and compute the average treatment effects for each subgroup.
+Implementing SynthDiD where the treatment timing varies might be tricky. In the case of staggered treatment timing, as one solution, one can estimate the average treatment effect for each treatment cohort and then aggregate cohort-specific average treatment effects to an overall average treatment effects.
+Here are also some other points that you might want to know when getting started.
+Things to note:
+SynthDiD employs regularized ridge regression (L2) while ensuring that the resulting weights have a sum of one.
+In the process of pretreatment matching, SynthDiD tries to determine the average treatment effect across the entire sample. This approach might cause individual time period estimates to be less precise. Nonetheless, the overall average yields an unbiased evaluation.
+The standard errors for the treatment effects are estimated with jacknife or if a cohort has only one treated unit with placebo method.
+The estimator is considered consistent and asymptotically normal, given that the combination of the number of control units and pretreatment periods is sufficiently large relative to the combination of the number of treated units and posttreatment periods.
+In practice, pre-treatment variables play a minor role in Synthetic DiD, as lagged outcomes hold more predictive power, making the treatment of these variables less critical.
+Conclusion
+In this blog post, I introduce the SynthDiD method and discuss its relationship with traditional DiD and SCM. SynthDiD combines the strengths of both SCM and DiD, allowing for causal inference with large panels even when the pretreatment period is short. I demonstrate the method using the synthdid package in R. Although it has several advantages, such as not requiring a strict parallel trends assumption, it also has drawbacks, like being computationally expensive and requiring a balanced panel. Overall, SynthDiD is a valuable tool for researchers interested in estimating causal effects using observational data, providing an alternative to traditional DiD and SCM methods.
+
+
+
+
+
+
+
+Robustness checks and validation methods are essential aspects of evaluating the reliability and credibility of empirical research findings, including those derived from the Synthetic Control Method (SCM). Although they are related and sometimes overlap, they serve distinct purposes in the research process. Here's a detailed explanation of the differences between them and why each is important:
+
+### Robustness Checks
+
+**Definition:**
+Robustness checks are procedures used to assess the sensitivity and stability of research findings to various assumptions, model specifications, and data perturbations. The goal is to determine whether the results hold under different conditions and to identify any potential weaknesses in the analysis.
+
+**Purpose:**
+- **Assess Stability:** Ensure that the findings are not unduly influenced by specific choices made in the analysis (e.g., selection of control units, predictor variables).
+- **Identify Key Drivers:** Determine which aspects of the model or data are most influential in driving the results.
+- **Evaluate Generalizability:** Check whether the results are consistent across different sub-samples or alternative model specifications.
+
+**Examples of Robustness Checks:**
+1. **Leave-One-Out Cross-Validation:** Assess how the results change when each control unit is excluded one at a time.
+2. **Alternative Model Specifications:** Test different sets of predictor variables or alternative functional forms of the model.
+3. **Sensitivity Analysis:** Evaluate the impact of small changes in the data or assumptions on the estimated treatment effect.
+4. **In-Sample Prediction:** Check the model’s performance in predicting the outcome variable within the pre-intervention period.
+
+### Validation Methods
+
+**Definition:**
+Validation methods are procedures used to confirm that the analytical approach and findings are credible and correctly specified. The goal is to ensure that the methodology accurately captures the causal relationship of interest and that the results are not artifacts of methodological flaws.
+
+**Purpose:**
+- **Establish Credibility:** Demonstrate that the research design and methods are sound and that the findings are credible.
+- **Detect Biases:** Identify and correct any biases or errors in the analysis that could distort the results.
+- **Provide Evidence for Causal Claims:** Strengthen the argument that the observed effects are truly caused by the intervention rather than other factors.
+
+**Examples of Validation Methods:**
+1. **Placebo Tests:** Apply the methodology to units or time periods where no intervention occurred to ensure that no significant effects are detected.
+2. **Pre-Intervention Fit:** Ensure that the synthetic control closely matches the treated unit’s trajectory in the pre-intervention period.
+3. **Falsification Tests:** Use outcomes that should not be affected by the intervention to check for false positives.
+4. **External Validation:** Compare the findings with results from other studies or alternative methodologies to check for consistency.
+

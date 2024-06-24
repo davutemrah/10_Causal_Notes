@@ -1,0 +1,5 @@
+# Maximum Likelihood Estimation
+
+very nice website
+
+[https://www.statlect.com/fundamentals-of-statistics/linear-regression-maximum-likelihood]

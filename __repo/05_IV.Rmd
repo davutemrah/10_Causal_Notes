@@ -1,0 +1,186 @@
+# Instrumental Variables (IV)
+
+Instrumental Variables (IV) is a method used in econometrics and statistics to estimate causal relationships when controlled experiments are not feasible and there is an endogeneity problem—typically due to omitted variable bias, measurement error, or simultaneity.
+
+## Key Concepts
+
+1. **Endogeneity**: Occurs when an explanatory variable is correlated with the error term. This correlation violates the OLS assumption that the regressors are exogenous, leading to biased and inconsistent estimates.
+
+2. **Instrumental Variable**: A variable (or set of variables) that is correlated with the endogenous explanatory variable but uncorrelated with the error term. It helps to isolate the exogenous variation in the endogenous explanatory variable.
+
+### Requirements for a Valid Instrument
+
+A valid instrument must satisfy two key conditions:
+1. **Relevance**: The instrument must be correlated with the endogenous explanatory variable.
+   - *Mathematically*: $ \text{Cov}(Z, X) \neq 0 $
+   - This ensures that the instrument can explain some of the variations in the endogenous regressor.
+   
+2. **Exogeneity**: The instrument must be uncorrelated with the error term in the structural equation.
+   - *Mathematically*: $ \text{Cov}(Z, u) = 0 $
+   - This ensures that the instrument does not suffer from the same endogeneity problem as the endogenous regressor.
+
+### The IV Estimation Process
+
+The IV estimation is typically carried out in two stages, known as Two-Stage Least Squares (2SLS):
+
+1. **First Stage**: Regress the endogenous variable on the instrument(s) to obtain the predicted values of the endogenous variable.
+   - *Equation*: \( X = \pi_0 + \pi_1 Z + v \)
+   - Obtain the fitted values \( \hat{X} \) from this regression.
+
+2. **Second Stage**: Regress the dependent variable on the predicted values from the first stage.
+   - *Equation*: \( Y = \beta_0 + \beta_1 \hat{X} + \epsilon \)
+   - The coefficient \( \beta_1 \) from this regression is the IV estimate of the effect of \( X \) on \( Y \).
+
+### Example
+
+#### Context: Education and Earnings
+
+- **Endogeneity Problem**: In estimating the effect of education on earnings, the variable "years of education" might be endogenous due to omitted variables like ability or family background.
+  
+- **Instrument**: Distance to the nearest college could be used as an instrument for education.
+  - **Relevance**: Distance to college affects the likelihood of obtaining more education.
+  - **Exogeneity**: Distance to college is unlikely to be directly related to individual earnings, apart from its effect on education.
+
+#### Steps:
+
+1. **First Stage**: Regress "years of education" on "distance to college".
+   - *Equation*: \( \text{Education} = \pi_0 + \pi_1 (\text{Distance to College}) + v \)
+   - Obtain the fitted values \( \widehat{\text{Education}} \).
+
+2. **Second Stage**: Regress "earnings" on the fitted values from the first stage.
+   - *Equation*: \( \text{Earnings} = \beta_0 + \beta_1 (\widehat{\text{Education}}) + \epsilon \)
+   - The coefficient \( \beta_1 \) is the IV estimate of the effect of education on earnings.
+
+### Assumptions and Considerations
+
+1. **Instrument Strength**: Weak instruments can lead to biased estimates even in large samples. The relevance condition must be strong enough.
+
+*Test*: First stage F-statistic (rule of thumb: F > 10). As F gets larger, then bias goes 0.
+
+2. **Over-Identification Test**: When there are multiple instruments, it's possible to test for the exogeneity of instruments using over-identification tests like the Sargan or Hansen J test.
+
+3. **Single vs. Multiple Instruments**: Using multiple instruments can improve the efficiency of the IV estimator, provided all instruments are valid.
+
+### Advantages of IV
+
+- Provides consistent estimates in the presence of endogeneity.
+- Can be used when randomized experiments are not feasible.
+
+### Disadvantages of IV
+
+- Finding valid instruments can be difficult.
+- Weak instruments can lead to biased and imprecise estimates.
+- Interpretation of the IV estimate can be less straightforward, often reflecting a Local Average Treatment Effect (LATE) rather than the Average Treatment Effect (ATE).
+
+### Conclusion
+
+Instrumental Variables (IV) is a powerful method for addressing endogeneity in observational studies, allowing researchers to estimate causal effects more accurately. Understanding the conditions for valid instruments and the proper application of the 2SLS method is crucial for leveraging this technique effectively. For your interview, be prepared to discuss the theory, assumptions, applications, and potential pitfalls of IV estimation.
+
+
+
+
+## Difference Between Instrumental Variable (IV) Method and Two-Stage Least Squares (2SLS) Method
+
+The terms "Instrumental Variable (IV) method" and "Two-Stage Least Squares (2SLS) method" are closely related but not identical. Here's a detailed explanation of the differences:
+
+### Instrumental Variable (IV) Method
+
+**Instrumental Variable (IV) method** is a general approach used to address endogeneity in regression models. It involves using instruments—variables that are correlated with the endogenous explanatory variable but uncorrelated with the error term. The IV method can be implemented in various ways, one of which is the 2SLS method.
+
+- **Purpose**: To obtain consistent estimates when there is endogeneity due to omitted variable bias, measurement error, or simultaneity.
+
+- **Instruments**: The choice of instruments is crucial. Valid instruments must satisfy two key conditions:
+  1. **Relevance**: The instrument must be correlated with the endogenous explanatory variable.
+  2. **Exogeneity**: The instrument must be uncorrelated with the error term in the regression model.
+
+### Two-Stage Least Squares (2SLS) Method
+
+**Two-Stage Least Squares (2SLS) method** is a specific implementation of the IV method. It involves a two-step estimation process to address endogeneity. 
+
+- **Step 1 (First Stage)**: Regress the endogenous explanatory variable on the instruments to obtain the predicted values.
+  
+  $$X = \pi_0 + \pi_1 Z + \nu$$
+  
+  Here, \( X \) is the endogenous variable, \( Z \) is the instrument, and \(\nu\) is the error term. This regression yields the predicted values \(\hat{X}\).
+
+- **Step 2 (Second Stage)**: Regress the dependent variable on the predicted values of the endogenous variable obtained from the first stage.
+  
+  $$Y = \alpha + \beta \hat{X} + \epsilon$$
+
+The 2SLS method ensures that the endogenous variable \(X\) is replaced by its predicted value \(\hat{X}\), which is purged of the endogenous component, thus providing consistent estimates of \(\beta\).
+
+### Summary of Differences:
+
+- **General Approach vs. Specific Method**: The IV method is a general approach for dealing with endogeneity, while 2SLS is a specific implementation of the IV method.
+- **Implementation**: 2SLS involves a two-step process to obtain consistent estimates using instruments, whereas the IV method can be implemented in various ways, not just through 2SLS.
+- **Application**: In practice, 2SLS is the most commonly used method for implementing the IV approach because it is straightforward and provides clear steps for estimation.
+
+
+## Homogenous Treatment Effect
+
+
+## Heterogenous Treatment Effect
+
+
+Note that the treatment effect differes by individual i.
+
+$$Y^{1}_i - Y^{0}_i = \delta_i$$
+
+The main questions we have now are: 
+
+(1) what is IV estimating when we have heterogeneous treatment effects, and 
+
+(2) under what assumptions will IV identify a causal effect with heterogeneous treatment effects?
+
+
+we introduce a distinction between the internal validity of a study and its external validity. Internal validity means our strategy identified a causal effect for the population we studied. But external validity means the study’s finding applied to different populations (not in the study).
+
+
+
+There are considerably more assumptions necessary for identification once we introduce heterogeneous treatment effects—specifically five assumptions. 
+
+
+1. A stable unit treatment value assumption (SUTVA) that states that the potential outcomes for each person  are unrelated to the treatment status of other individuals. 
+
+2.The independence assumption. The independence assumption is also sometimes called the “as good as random assignment” assumption. It states that the IV is independent of the potential outcomes and potential treatment assignments.
+
+we can check pretreatment covariate balance.
+
+3. There is the exclusion restriction. The exclusion restriction states that any effect of Z on Y must be via the effect of Z on D. 
+
+4. First stage.
+
+5. The monotonicity assumption. Monotonicity requires that the instrumental variable (weakly) operate in the same direction on all individual units. In other words, while the instrument may have no effect on some people, all those who are affected are affected in the same direction (i.e., positively or negatively, but not both). 
+
+
+If all 5 assumptions hold truem then valid IV strategy estimates the **local average treatment effect (LATE)** of  on D on Y.
+
+
+
+The **LATE** framework partitions the population of units with an instrument into potentially four mutually exclusive groups. Those groups are:
+
+**1. Compliers:** This is the subpopulation whose treatment status is affected by the instrument in the correct direction. That is, $D^{1}_i=1$ and $D^{0}_i=0$.
+
+**2. Defiers:** This is the subpopulation whose treatment status is affected by the instrument in the wrong direction. That is, $D^{1}_i=0$ and $D^{0}_i=1$.
+
+**3. Never takers:** This is the subpopulation of units that never take the treatment regardless of the value of the instrument. So, $D^{1}_i=D^{0}_i=0$. They simply never take the treatment
+
+**4. Always takers:** This is the subpopulation of units that always take the treatment regardless of the value of the instrument. So, $D^{1}_i=D^{0}_i=1$. They simply always take the instrument.
+
+
+**CAVEAT**
+
+With all five assumptions satisfied, IV estimates the average treatment effect for compliers, which is the parameter we’ve called the local average treatment effect.
+
+
+Without further assumptions, LATE is not informative about effects on never-takers or always-takers because the instrument does not affect their treatment status.
+
+It matters because in most applications, we would be mostly interested in estimating the average treatment effect on the whole population, but that’s not usually possible with IV.
+
+
+
+
+
+
+
+

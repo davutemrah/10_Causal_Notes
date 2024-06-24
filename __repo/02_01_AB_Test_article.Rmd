@@ -1,0 +1,99 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## A/B Test article from Medium
+
+
+### Example: Conversion Rate of an E-Commerce Website 
+
+[Article
+Source](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a)
+
+
+Suppose an e-commerce website wants to test if implementing a new feature (e.g., layout or button) will significantly improve conversion rate.
+
+**conversion rate:** number of purchases divided by number of sessions/visits
+
+We can randomly show the new webpage to 50% of the users. Then, we have a test group and a control group. Once we have **enough data points**, we can test if the conversion rate in the treatment group is significantly higher (one side test) than that in the control group. 
+
+The null hypothesis is that conversion rates are not significantly different in the two group. 
+
+**Sample Size for Comparing Two Means**.  
+
+One way to perform the test is to calculate daily conversion rates for both the treatment and the control groups. 
+
+Since the conversion rate in a group on a certain day represents a single data point, the sample size is actually the number of days. 
+
+Thus, we will be testing the difference between the mean of daily conversion rates in each group
+across the testing period. The formula for estimate minimum sample size is as follows:
+
+
+**Sample Size Estimate for A/B Test**
+
+In an A/B test, the sample size ($n$) required for each group can be estimated using the formula:
+
+$$n = \frac{{2 \cdot (Z_{\alpha/2} + Z_{\beta})^2 \cdot \sigma^2}}{{\delta^2}}$$
+
+where:
+  $ n : \text{ Sample size per group}$
+  $ Z_{\alpha/2} : \text{ Critical value for significance level}$ 
+  $ Z_{\beta} : \text{ Critical value for desired power}$
+  $ \sigma^2 : \text{ Variance of the population}$
+  $ \delta : \text{ Minimum detectable effect size}$
+
+This formula helps in determining the sample size needed to achieve desired levels of significance and power in an A/B test.
+
+
+For our example, let’s assume that the mean daily conversion rate for the past 6 months is 0.15 and the
+sample standard deviation is 0.05. 
+
+With the new feature, we expect to see a 3% absolute increase in conversion rate. Thus, for the conversion rate for the treatment group will be 0.18. We also assume that the sample standard deviations are the same for the two group. 
+
+Our parameters are as follows. 
+
+$\mu_1 = 0.15$
+$\mu_2 = 0.18$
+$\sigma_1 = \sigma_2 = 0.05$ 
+
+Assuming $\alpha = 0.05$ and $\beta = 0.20$ ($power = 0.80$), applying the formula, the required minimum sample size is 35 days. 
+
+This is consistent with the result from this web calculator. 
+
+
+**Sample Size for Comparing Two Proportions**
+
+
+The two-means approach considers each day+group as a data point. But what if we focus on individual users and visits? 
+
+What if we want to know how many visits/sessions are required for the testing? In this case, the conversion rate for a group is basically all purchases divided by all sessions in that group. If each session is a Bernoulli trial (convert or not), each group follows a binomial distribution. 
+
+To test the difference in conversion rate between the treatment and control groups, we need a test of two proportions. The formula for estimating the minimum required sample size is as follows.
+
+
+**Summary: Sample Size Estimate for Comparing Proportions**
+
+When comparing proportions in two independent groups, the sample size ($n$) required for each group can be estimated using the formula:
+
+$$n = \frac{{2 \cdot (Z_{\alpha/2} + Z_{\beta})^2 \cdot (p(1-p))}}{{\delta^2}}$$
+
+where:
+
+$n : \text{ Sample size per group}$  
+$Z_{\alpha/2} : \text{ Critical value for significance level}$  
+$Z_{\beta} : \text{ Critical value for desired power}$  
+$p : \text{ Expected proportion in one group}$  
+$\delta : \text{ Minimum detectable difference in proportions}$  
+
+This formula helps in determining the sample size needed to detect a specified difference in proportions between two groups with desired levels of significance and power.
+
+Assuming 50–50 split, we have the following parameters:   
+
+$p_1 = 0.15$ 
+$p_2 = 0.18$  
+$k = 1$ 
+
+Using $\alpha = 0.05$ and $\beta = 0.20$, applying the formula, the required sample size is $1,892$ sessions per group. 
+

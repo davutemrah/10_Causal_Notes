@@ -1,0 +1,17 @@
+# Resampling methods
+
+
+#### Jackknife
+
+
+The jackknife method is a resampling technique where each observation (in this case, each treated unit) is systematically omitted from the dataset, and the analysis is repeated each time to estimate the variance of the treatment effect. This provides a robust estimate of the standard errors that accounts for the potential variability across different treated units.
+
+
+## Bootstrapping
+
+
+bootstrapping is a procedure used to estimate the variance of an estimator. In the context of inverse probability weighting, we would repeatedly draw (“with replacement”) a random sample of our original data and then use that smaller sample to calculate the sample analogs of the ATE or ATT. 
+
+standard bootstrapping
+
+wild bootstrapping

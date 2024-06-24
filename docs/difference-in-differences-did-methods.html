@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Difference-in-Differences (DiD) Methods | Notes on Causal Models</title>
+  <meta name="description" content="This is a collection of notes from open sources" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Difference-in-Differences (DiD) Methods | Notes on Causal Models" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is a collection of notes from open sources" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Difference-in-Differences (DiD) Methods | Notes on Causal Models" />
+  
+  <meta name="twitter:description" content="This is a collection of notes from open sources" />
+  
+
+<meta name="author" content="DEA" />
+
+
+<meta name="date" content="2024-06-23" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ab-testing.html"/>
+<link rel="next" href="synthetic-control-method-scm.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Causal Model Notes</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Acknowledgement</a></li>
+<li class="chapter" data-level="1" data-path="causal-models.html"><a href="causal-models.html"><i class="fa fa-check"></i><b>1</b> Causal Models</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="causal-models.html"><a href="causal-models.html#ordinary-least-squares-ols"><i class="fa fa-check"></i><b>1.1</b> Ordinary Least Squares (OLS)</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="causal-models.html"><a href="causal-models.html#linearity"><i class="fa fa-check"></i><b>1.1.1</b> 1. <strong>Linearity</strong></a></li>
+<li class="chapter" data-level="1.1.2" data-path="causal-models.html"><a href="causal-models.html#exogeneity"><i class="fa fa-check"></i><b>1.1.2</b> 2. <strong>Exogeneity</strong></a></li>
+<li class="chapter" data-level="1.1.3" data-path="causal-models.html"><a href="causal-models.html#homoscedasticity"><i class="fa fa-check"></i><b>1.1.3</b> 3. <strong>Homoscedasticity</strong></a></li>
+<li class="chapter" data-level="1.1.4" data-path="causal-models.html"><a href="causal-models.html#no-autocorrelation"><i class="fa fa-check"></i><b>1.1.4</b> 4. <strong>No Autocorrelation</strong></a></li>
+<li class="chapter" data-level="1.1.5" data-path="causal-models.html"><a href="causal-models.html#no-perfect-multicollinearity"><i class="fa fa-check"></i><b>1.1.5</b> 5. <strong>No Perfect Multicollinearity</strong></a></li>
+<li class="chapter" data-level="1.1.6" data-path="causal-models.html"><a href="causal-models.html#normality-of-errors-for-inference"><i class="fa fa-check"></i><b>1.1.6</b> 6. <strong>Normality of Errors (for inference)</strong></a></li>
+<li class="chapter" data-level="1.1.7" data-path="causal-models.html"><a href="causal-models.html#practical-considerations-and-tests"><i class="fa fa-check"></i><b>1.1.7</b> Practical Considerations and Tests</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="causal-models.html"><a href="causal-models.html#concepts"><i class="fa fa-check"></i><b>1.2</b> Concepts</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="causal-models.html"><a href="causal-models.html#goodness-of-fit"><i class="fa fa-check"></i><b>1.2.1</b> Goodness of Fit</a></li>
+<li class="chapter" data-level="1.2.2" data-path="causal-models.html"><a href="causal-models.html#robustness-checks-and-validation-methods"><i class="fa fa-check"></i><b>1.2.2</b> Robustness checks and validation methods</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="causal-models.html"><a href="causal-models.html#multivariate-regression"><i class="fa fa-check"></i><b>1.3</b> Multivariate Regression</a></li>
+<li class="chapter" data-level="1.4" data-path="causal-models.html"><a href="causal-models.html#directed-acyclic-graphs-dags"><i class="fa fa-check"></i><b>1.4</b> Directed Acyclic Graphs (DAGs)</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="causal-models.html"><a href="causal-models.html#confounder"><i class="fa fa-check"></i><b>1.4.1</b> Confounder</a></li>
+<li class="chapter" data-level="1.4.2" data-path="causal-models.html"><a href="causal-models.html#collider"><i class="fa fa-check"></i><b>1.4.2</b> Collider</a></li>
+<li class="chapter" data-level="1.4.3" data-path="causal-models.html"><a href="causal-models.html#what-to-do"><i class="fa fa-check"></i><b>1.4.3</b> What to do</a></li>
+<li class="chapter" data-level="1.4.4" data-path="causal-models.html"><a href="causal-models.html#how-to-do"><i class="fa fa-check"></i><b>1.4.4</b> How to do</a></li>
+<li class="chapter" data-level="1.4.5" data-path="causal-models.html"><a href="causal-models.html#bad-controls"><i class="fa fa-check"></i><b>1.4.5</b> Bad Controls</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="causal-models.html"><a href="causal-models.html#external-and-internal-validity-in-econometrics"><i class="fa fa-check"></i><b>1.5</b> External and Internal Validity in Econometrics</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="causal-models.html"><a href="causal-models.html#internal-validity"><i class="fa fa-check"></i><b>1.5.1</b> Internal Validity</a></li>
+<li class="chapter" data-level="1.5.2" data-path="causal-models.html"><a href="causal-models.html#external-validity"><i class="fa fa-check"></i><b>1.5.2</b> External Validity</a></li>
+<li class="chapter" data-level="1.5.3" data-path="causal-models.html"><a href="causal-models.html#balancing-internal-and-external-validity"><i class="fa fa-check"></i><b>1.5.3</b> Balancing Internal and External Validity</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="causal-models.html"><a href="causal-models.html#endogeneity"><i class="fa fa-check"></i><b>1.6</b> Endogeneity</a>
+<ul>
+<li class="chapter" data-level="1.6.1" data-path="causal-models.html"><a href="causal-models.html#sources-of-endogeneity"><i class="fa fa-check"></i><b>1.6.1</b> Sources of Endogeneity:</a></li>
+<li class="chapter" data-level="1.6.2" data-path="causal-models.html"><a href="causal-models.html#consequences-of-endogeneity"><i class="fa fa-check"></i><b>1.6.2</b> Consequences of Endogeneity:</a></li>
+<li class="chapter" data-level="1.6.3" data-path="causal-models.html"><a href="causal-models.html#methods-to-address-endogeneity"><i class="fa fa-check"></i><b>1.6.3</b> Methods to Address Endogeneity:</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="causal-models.html"><a href="causal-models.html#reduced-form-model"><i class="fa fa-check"></i><b>1.7</b> Reduced Form Model</a>
+<ul>
+<li class="chapter" data-level="1.7.1" data-path="causal-models.html"><a href="causal-models.html#characteristics-of-reduced-form-models"><i class="fa fa-check"></i><b>1.7.1</b> Characteristics of Reduced Form Models:</a></li>
+<li class="chapter" data-level="1.7.2" data-path="causal-models.html"><a href="causal-models.html#uses-of-reduced-form-models"><i class="fa fa-check"></i><b>1.7.2</b> Uses of Reduced Form Models:</a></li>
+<li class="chapter" data-level="1.7.3" data-path="causal-models.html"><a href="causal-models.html#example-of-a-reduced-form-model"><i class="fa fa-check"></i><b>1.7.3</b> Example of a Reduced Form Model:</a></li>
+</ul></li>
+<li class="chapter" data-level="1.8" data-path="causal-models.html"><a href="causal-models.html#unobserved-variable-affecting-only-the-dependent-variable"><i class="fa fa-check"></i><b>1.8</b> Unobserved Variable Affecting Only the Dependent Variable</a></li>
+<li class="chapter" data-level="1.9" data-path="causal-models.html"><a href="causal-models.html#types-of-biases"><i class="fa fa-check"></i><b>1.9</b> Types of Biases</a>
+<ul>
+<li class="chapter" data-level="1.9.1" data-path="causal-models.html"><a href="causal-models.html#selection-bias"><i class="fa fa-check"></i><b>1.9.1</b> 1. Selection Bias</a></li>
+<li class="chapter" data-level="1.9.2" data-path="causal-models.html"><a href="causal-models.html#omitted-variable-bias"><i class="fa fa-check"></i><b>1.9.2</b> 2. Omitted Variable Bias</a></li>
+<li class="chapter" data-level="1.9.3" data-path="causal-models.html"><a href="causal-models.html#measurement-bias"><i class="fa fa-check"></i><b>1.9.3</b> 3. Measurement Bias</a></li>
+<li class="chapter" data-level="1.9.4" data-path="causal-models.html"><a href="causal-models.html#response-bias"><i class="fa fa-check"></i><b>1.9.4</b> 4. Response Bias</a></li>
+<li class="chapter" data-level="1.9.5" data-path="causal-models.html"><a href="causal-models.html#attrition-bias"><i class="fa fa-check"></i><b>1.9.5</b> 5. Attrition Bias</a></li>
+<li class="chapter" data-level="1.9.6" data-path="causal-models.html"><a href="causal-models.html#publication-bias"><i class="fa fa-check"></i><b>1.9.6</b> 6. Publication Bias</a></li>
+<li class="chapter" data-level="1.9.7" data-path="causal-models.html"><a href="causal-models.html#survivorship-bias"><i class="fa fa-check"></i><b>1.9.7</b> 7. Survivorship Bias</a></li>
+<li class="chapter" data-level="1.9.8" data-path="causal-models.html"><a href="causal-models.html#recall-bias"><i class="fa fa-check"></i><b>1.9.8</b> 8. Recall Bias</a></li>
+<li class="chapter" data-level="1.9.9" data-path="causal-models.html"><a href="causal-models.html#confirmation-bias"><i class="fa fa-check"></i><b>1.9.9</b> 9. Confirmation Bias</a></li>
+<li class="chapter" data-level="1.9.10" data-path="causal-models.html"><a href="causal-models.html#confounding-bias"><i class="fa fa-check"></i><b>1.9.10</b> 10. Confounding Bias</a></li>
+<li class="chapter" data-level="1.9.11" data-path="causal-models.html"><a href="causal-models.html#endogeneity-bias"><i class="fa fa-check"></i><b>1.9.11</b> 11. Endogeneity Bias</a></li>
+<li class="chapter" data-level="1.9.12" data-path="causal-models.html"><a href="causal-models.html#non-response-bias"><i class="fa fa-check"></i><b>1.9.12</b> 12. Non-Response Bias</a></li>
+<li class="chapter" data-level="1.9.13" data-path="causal-models.html"><a href="causal-models.html#observer-bias"><i class="fa fa-check"></i><b>1.9.13</b> 13. Observer Bias</a></li>
+<li class="chapter" data-level="1.9.14" data-path="causal-models.html"><a href="causal-models.html#overfitting-bias"><i class="fa fa-check"></i><b>1.9.14</b> 14. Overfitting Bias</a></li>
+<li class="chapter" data-level="1.9.15" data-path="causal-models.html"><a href="causal-models.html#addressing-biases"><i class="fa fa-check"></i><b>1.9.15</b> Addressing Biases</a></li>
+<li class="chapter" data-level="1.9.16" data-path="causal-models.html"><a href="causal-models.html#self-selection-bias"><i class="fa fa-check"></i><b>1.9.16</b> Self-Selection Bias</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="potential-outcomes.html"><a href="potential-outcomes.html"><i class="fa fa-check"></i><b>2</b> Potential Outcomes</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#key-concepts"><i class="fa fa-check"></i><b>2.1</b> Key Concepts</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#causal-effect"><i class="fa fa-check"></i><b>2.1.1</b> Causal Effect</a></li>
+<li class="chapter" data-level="2.1.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#average-treatment-effect-ate"><i class="fa fa-check"></i><b>2.1.2</b> Average Treatment Effect (ATE)</a></li>
+<li class="chapter" data-level="2.1.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#average-treatment-effect-on-the-treated-att"><i class="fa fa-check"></i><b>2.1.3</b> Average Treatment Effect on the Treated (ATT)</a></li>
+<li class="chapter" data-level="2.1.4" data-path="potential-outcomes.html"><a href="potential-outcomes.html#the-fundamental-problem-of-causal-inference"><i class="fa fa-check"></i><b>2.1.4</b> The Fundamental Problem of Causal Inference</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#assumptions-for-identifying-causal-effects"><i class="fa fa-check"></i><b>2.2</b> Assumptions for Identifying Causal Effects</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#independence"><i class="fa fa-check"></i><b>2.2.1</b> 1. <strong>Independence</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#methods-for-estimating-causal-effects"><i class="fa fa-check"></i><b>2.3</b> Methods for Estimating Causal Effects</a></li>
+<li class="chapter" data-level="2.4" data-path="potential-outcomes.html"><a href="potential-outcomes.html#example"><i class="fa fa-check"></i><b>2.4</b> Example</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#simple-difference-method"><i class="fa fa-check"></i><b>2.4.1</b> Simple Difference Method</a></li>
+<li class="chapter" data-level="2.4.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#conclusion-1"><i class="fa fa-check"></i><b>2.4.2</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="potential-outcomes.html"><a href="potential-outcomes.html#randomization-based-methods"><i class="fa fa-check"></i><b>2.5</b> Randomization-Based Methods</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#traditional-methods-vs.-randomization-based-methods"><i class="fa fa-check"></i><b>2.5.1</b> Traditional Methods vs. Randomization-Based Methods</a></li>
+<li class="chapter" data-level="2.5.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#why-use-randomization-based-methods"><i class="fa fa-check"></i><b>2.5.2</b> Why Use Randomization-Based Methods?</a></li>
+<li class="chapter" data-level="2.5.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#how-randomization-based-methods-work"><i class="fa fa-check"></i><b>2.5.3</b> How Randomization-Based Methods Work</a></li>
+<li class="chapter" data-level="2.5.4" data-path="potential-outcomes.html"><a href="potential-outcomes.html#example-2"><i class="fa fa-check"></i><b>2.5.4</b> Example</a></li>
+<li class="chapter" data-level="2.5.5" data-path="potential-outcomes.html"><a href="potential-outcomes.html#contribution-of-athey-and-imbens"><i class="fa fa-check"></i><b>2.5.5</b> Contribution of Athey and Imbens</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="potential-outcomes.html"><a href="potential-outcomes.html#on-how-parameters-are-calculated"><i class="fa fa-check"></i><b>2.6</b> On how parameters are calculated</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#propensity-score-matching-psm-and-maximum-likelihood-estimation-mle"><i class="fa fa-check"></i><b>2.6.1</b> Propensity Score Matching (PSM) and Maximum Likelihood Estimation (MLE)</a></li>
+<li class="chapter" data-level="2.6.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#logistic-regression"><i class="fa fa-check"></i><b>2.6.2</b> Logistic Regression</a></li>
+<li class="chapter" data-level="2.6.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#ordinary-least-squares-ols-regression"><i class="fa fa-check"></i><b>2.6.3</b> Ordinary Least Squares (OLS) Regression</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="matching.html"><a href="matching.html"><i class="fa fa-check"></i><b>3</b> Matching</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="matching.html"><a href="matching.html#subclassification"><i class="fa fa-check"></i><b>3.1</b> Subclassification</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="matching.html"><a href="matching.html#example-3"><i class="fa fa-check"></i><b>3.1.1</b> Example</a></li>
+<li class="chapter" data-level="3.1.2" data-path="matching.html"><a href="matching.html#step-by-step-example"><i class="fa fa-check"></i><b>3.1.2</b> Step-by-Step Example</a></li>
+<li class="chapter" data-level="3.1.3" data-path="matching.html"><a href="matching.html#considerations"><i class="fa fa-check"></i><b>3.1.3</b> Considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="matching.html"><a href="matching.html#exact-matching"><i class="fa fa-check"></i><b>3.2</b> Exact Matching</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="matching.html"><a href="matching.html#explanation"><i class="fa fa-check"></i><b>3.2.1</b> Explanation</a></li>
+<li class="chapter" data-level="3.2.2" data-path="matching.html"><a href="matching.html#example-4"><i class="fa fa-check"></i><b>3.2.2</b> Example</a></li>
+<li class="chapter" data-level="3.2.3" data-path="matching.html"><a href="matching.html#conclusion-2"><i class="fa fa-check"></i><b>3.2.3</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="matching.html"><a href="matching.html#approximate-matching-methods"><i class="fa fa-check"></i><b>3.3</b> Approximate Matching Methods</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="matching.html"><a href="matching.html#nearest-neighbor-covariate-matching"><i class="fa fa-check"></i><b>3.3.1</b> Nearest Neighbor Covariate Matching</a></li>
+<li class="chapter" data-level="3.3.2" data-path="matching.html"><a href="matching.html#example-5"><i class="fa fa-check"></i><b>3.3.2</b> Example</a></li>
+<li class="chapter" data-level="3.3.3" data-path="matching.html"><a href="matching.html#hypothetical-data"><i class="fa fa-check"></i><b>3.3.3</b> Hypothetical Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="matching.html"><a href="matching.html#propensity-score-methods"><i class="fa fa-check"></i><b>3.4</b> Propensity Score Methods</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="matching.html"><a href="matching.html#concept"><i class="fa fa-check"></i><b>3.4.1</b> Concept</a></li>
+<li class="chapter" data-level="3.4.2" data-path="matching.html"><a href="matching.html#steps"><i class="fa fa-check"></i><b>3.4.2</b> Steps</a></li>
+<li class="chapter" data-level="3.4.3" data-path="matching.html"><a href="matching.html#example-6"><i class="fa fa-check"></i><b>3.4.3</b> Example</a></li>
+<li class="chapter" data-level="3.4.4" data-path="matching.html"><a href="matching.html#assumptions-and-considerations"><i class="fa fa-check"></i><b>3.4.4</b> Assumptions and Considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="matching.html"><a href="matching.html#inverse-probability-weighting-weighting-on-the-propensity-score"><i class="fa fa-check"></i><b>3.5</b> Inverse Probability Weighting (Weighting on the propensity score)</a></li>
+<li class="chapter" data-level="3.6" data-path="matching.html"><a href="matching.html#nearest-neighbor-matching"><i class="fa fa-check"></i><b>3.6</b> Nearest-neighbor matching</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="matching.html"><a href="matching.html#example-in-r"><i class="fa fa-check"></i><b>3.6.1</b> Example in R</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="matching.html"><a href="matching.html#coarsened-exact-matching"><i class="fa fa-check"></i><b>3.7</b> Coarsened Exact Matching</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="matching.html"><a href="matching.html#example-7"><i class="fa fa-check"></i><b>3.7.1</b> Example</a></li>
+<li class="chapter" data-level="3.7.2" data-path="matching.html"><a href="matching.html#steps-in-coarsened-exact-matching"><i class="fa fa-check"></i><b>3.7.2</b> Steps in Coarsened Exact Matching</a></li>
+<li class="chapter" data-level="3.7.3" data-path="matching.html"><a href="matching.html#considerations-1"><i class="fa fa-check"></i><b>3.7.3</b> Considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="matching.html"><a href="matching.html#ab-test-article-from-medium"><i class="fa fa-check"></i><b>3.8</b> A/B Test article from Medium</a>
+<ul>
+<li class="chapter" data-level="3.8.1" data-path="matching.html"><a href="matching.html#example-conversion-rate-of-an-e-commerce-website"><i class="fa fa-check"></i><b>3.8.1</b> Example: Conversion Rate of an E-Commerce Website</a></li>
+<li class="chapter" data-level="3.8.2" data-path="matching.html"><a href="matching.html#example-ab-test"><i class="fa fa-check"></i><b>3.8.2</b> Example: A/B Test</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="matching.html"><a href="matching.html#task-1-load-the-data"><i class="fa fa-check"></i><b>3.9</b> Task 1: Load the data</a></li>
+<li class="chapter" data-level="3.10" data-path="matching.html"><a href="matching.html#task-2-set-up-hypothesis"><i class="fa fa-check"></i><b>3.10</b> Task 2: Set up Hypothesis</a></li>
+<li class="chapter" data-level="3.11" data-path="matching.html"><a href="matching.html#task-3-compute-the-difference-in-the-click-through-rate"><i class="fa fa-check"></i><b>3.11</b> Task 3: Compute the difference in the click-through rate</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html"><i class="fa fa-check"></i><b>4</b> Task four : create sample distribution using bootsrapping</a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#bootstrapping"><i class="fa fa-check"></i><b>4.0.1</b> Bootstrapping :</a></li>
+<li class="chapter" data-level="4.0.2" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#example-8"><i class="fa fa-check"></i><b>4.0.2</b> Example :</a></li>
+<li class="chapter" data-level="4.1" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#task-five-evaluate-the-null-hypothesis-and-draw-conclustions."><i class="fa fa-check"></i><b>4.1</b> Task five : Evaluate the null hypothesis and draw conclustions.</a></li>
+<li class="chapter" data-level="4.2" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#alternative-random-sampling-code"><i class="fa fa-check"></i><b>4.2</b> alternative random sampling code</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ab-testing.html"><a href="ab-testing.html"><i class="fa fa-check"></i><b>5</b> AB Testing</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ab-testing.html"><a href="ab-testing.html#sources"><i class="fa fa-check"></i><b>5.1</b> Sources</a></li>
+<li class="chapter" data-level="5.2" data-path="ab-testing.html"><a href="ab-testing.html#concepts-1"><i class="fa fa-check"></i><b>5.2</b> Concepts</a></li>
+<li class="chapter" data-level="5.3" data-path="ab-testing.html"><a href="ab-testing.html#ai-summary"><i class="fa fa-check"></i><b>5.3</b> AI Summary</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="ab-testing.html"><a href="ab-testing.html#ab-testing-randomized-controlled-trials"><i class="fa fa-check"></i><b>5.3.1</b> A/B Testing (Randomized Controlled Trials)</a></li>
+<li class="chapter" data-level="5.3.2" data-path="ab-testing.html"><a href="ab-testing.html#concepts-2"><i class="fa fa-check"></i><b>5.3.2</b> Concepts:</a></li>
+<li class="chapter" data-level="5.3.3" data-path="ab-testing.html"><a href="ab-testing.html#comparison-and-usage"><i class="fa fa-check"></i><b>5.3.3</b> Comparison and Usage</a></li>
+<li class="chapter" data-level="5.3.4" data-path="ab-testing.html"><a href="ab-testing.html#significance"><i class="fa fa-check"></i><b>5.3.4</b> Significance</a></li>
+<li class="chapter" data-level="5.3.5" data-path="ab-testing.html"><a href="ab-testing.html#group-size"><i class="fa fa-check"></i><b>5.3.5</b> Group Size</a></li>
+<li class="chapter" data-level="5.3.6" data-path="ab-testing.html"><a href="ab-testing.html#relationship-between-effect-size-significance-and-group-size"><i class="fa fa-check"></i><b>5.3.6</b> Relationship Between Effect Size, Significance, and Group Size</a></li>
+<li class="chapter" data-level="5.3.7" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-3"><i class="fa fa-check"></i><b>5.3.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="ab-testing.html"><a href="ab-testing.html#size-of-the-control-group"><i class="fa fa-check"></i><b>5.4</b> Size of the Control Group</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="ab-testing.html"><a href="ab-testing.html#sample-size-calculation-formula"><i class="fa fa-check"></i><b>5.4.1</b> Sample Size Calculation Formula</a></li>
+<li class="chapter" data-level="5.4.2" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-4"><i class="fa fa-check"></i><b>5.4.2</b> Conclusion</a></li>
+<li class="chapter" data-level="5.4.3" data-path="ab-testing.html"><a href="ab-testing.html#statistical-assumptions-for-randomized-controlled-trials-rcts"><i class="fa fa-check"></i><b>5.4.3</b> Statistical Assumptions for Randomized Controlled Trials (RCTs)</a></li>
+<li class="chapter" data-level="5.4.4" data-path="ab-testing.html"><a href="ab-testing.html#robustness-checks-1"><i class="fa fa-check"></i><b>5.4.4</b> Robustness Checks</a></li>
+<li class="chapter" data-level="5.4.5" data-path="ab-testing.html"><a href="ab-testing.html#validation-methods-1"><i class="fa fa-check"></i><b>5.4.5</b> Validation Methods</a></li>
+<li class="chapter" data-level="5.4.6" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-5"><i class="fa fa-check"></i><b>5.4.6</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html"><i class="fa fa-check"></i><b>6</b> Difference-in-Differences (DiD) Methods</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#simple-difference-in-differences-did"><i class="fa fa-check"></i><b>6.1</b> Simple Difference-in-Differences (DiD)</a></li>
+<li class="chapter" data-level="6.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#controversial-note"><i class="fa fa-check"></i><b>6.2</b> Controversial Note</a></li>
+<li class="chapter" data-level="6.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#placebo-tests-for-parallel-trends"><i class="fa fa-check"></i><b>6.3</b> Placebo tests for parallel trends</a></li>
+<li class="chapter" data-level="6.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#two-way-fixed-effects-model"><i class="fa fa-check"></i><b>6.4</b> Two-Way Fixed Effects Model</a></li>
+<li class="chapter" data-level="6.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#event-study-methods"><i class="fa fa-check"></i><b>6.5</b> Event Study Methods</a></li>
+<li class="chapter" data-level="6.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#importance-of-placebos-in-dd"><i class="fa fa-check"></i><b>6.6</b> Importance of Placebos in DD</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#triple-differences"><i class="fa fa-check"></i><b>6.6.1</b> Triple Differences</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#compositional-changes"><i class="fa fa-check"></i><b>6.7</b> Compositional Changes</a></li>
+<li class="chapter" data-level="6.8" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-assumptions"><i class="fa fa-check"></i><b>6.8</b> Key Assumptions</a>
+<ul>
+<li class="chapter" data-level="6.8.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#implementation-steps"><i class="fa fa-check"></i><b>6.8.1</b> Implementation Steps</a></li>
+<li class="chapter" data-level="6.8.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#advantages"><i class="fa fa-check"></i><b>6.8.2</b> Advantages</a></li>
+<li class="chapter" data-level="6.8.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#limitations-1"><i class="fa fa-check"></i><b>6.8.3</b> Limitations</a></li>
+<li class="chapter" data-level="6.8.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#q-how-would-you-test-the-parallel-trends-assumption"><i class="fa fa-check"></i><b>6.8.4</b> Q: How would you test the parallel trends assumption?</a></li>
+<li class="chapter" data-level="6.8.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#q-how-would-you-address-potential-violations-of-the-parallel-trends-assumption"><i class="fa fa-check"></i><b>6.8.5</b> Q: How would you address potential violations of the parallel trends assumption?</a></li>
+</ul></li>
+<li class="chapter" data-level="6.9" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#notes"><i class="fa fa-check"></i><b>6.9</b> Notes</a>
+<ul>
+<li class="chapter" data-level="6.9.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#example-business"><i class="fa fa-check"></i><b>6.9.1</b> Example: Business</a></li>
+</ul></li>
+<li class="chapter" data-level="6.10" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#extra-considerations"><i class="fa fa-check"></i><b>6.10</b> Extra Considerations</a></li>
+<li class="chapter" data-level="6.11" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#synthetic-difference-in-differences-synthdid-method"><i class="fa fa-check"></i><b>6.11</b> Synthetic Difference-in-Differences (SynthDiD) method</a></li>
+<li class="chapter" data-level="6.12" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#doubly-robust-models-in-econometrics"><i class="fa fa-check"></i><b>6.12</b> Doubly Robust Models in Econometrics</a>
+<ul>
+<li class="chapter" data-level="6.12.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-concepts-3"><i class="fa fa-check"></i><b>6.12.1</b> Key Concepts</a></li>
+<li class="chapter" data-level="6.12.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#steps-in-doubly-robust-estimation"><i class="fa fa-check"></i><b>6.12.2</b> Steps in Doubly Robust Estimation</a></li>
+<li class="chapter" data-level="6.12.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#advantages-1"><i class="fa fa-check"></i><b>6.12.3</b> Advantages</a></li>
+<li class="chapter" data-level="6.12.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#examples-and-applications"><i class="fa fa-check"></i><b>6.12.4</b> Examples and Applications</a></li>
+<li class="chapter" data-level="6.12.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#assumptions-and-considerations-1"><i class="fa fa-check"></i><b>6.12.5</b> Assumptions and Considerations</a></li>
+<li class="chapter" data-level="6.12.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-6"><i class="fa fa-check"></i><b>6.12.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.13" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#twoway-fixed-effects-with-differential-timing"><i class="fa fa-check"></i><b>6.13</b> Twoway Fixed Effects with Differential Timing</a></li>
+<li class="chapter" data-level="6.14" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#bacon-decomposition"><i class="fa fa-check"></i><b>6.14</b> Bacon Decomposition</a>
+<ul>
+<li class="chapter" data-level="6.14.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#overview"><i class="fa fa-check"></i><b>6.14.1</b> Overview</a></li>
+<li class="chapter" data-level="6.14.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-concepts-4"><i class="fa fa-check"></i><b>6.14.2</b> Key Concepts</a></li>
+<li class="chapter" data-level="6.14.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#components-of-bacon-decomposition"><i class="fa fa-check"></i><b>6.14.3</b> Components of Bacon Decomposition</a></li>
+<li class="chapter" data-level="6.14.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#formula-for-decomposition"><i class="fa fa-check"></i><b>6.14.4</b> Formula for Decomposition</a></li>
+<li class="chapter" data-level="6.14.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#implications-and-interpretation"><i class="fa fa-check"></i><b>6.14.5</b> Implications and Interpretation</a></li>
+<li class="chapter" data-level="6.14.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#example-9"><i class="fa fa-check"></i><b>6.14.6</b> Example</a></li>
+<li class="chapter" data-level="6.14.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-7"><i class="fa fa-check"></i><b>6.14.7</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html"><i class="fa fa-check"></i><b>7</b> Synthetic Control Method (SCM)</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#ai-summary-1"><i class="fa fa-check"></i><b>7.1</b> AI Summary</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#synthetic-control-method-scm-1"><i class="fa fa-check"></i><b>7.1.1</b> Synthetic Control Method (SCM)</a></li>
+<li class="chapter" data-level="7.1.2" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#placebo-tests"><i class="fa fa-check"></i><b>7.1.2</b> Placebo tests</a></li>
+<li class="chapter" data-level="7.1.3" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>7.1.3</b> Leave-One-Out Cross-Validation</a></li>
+<li class="chapter" data-level="7.1.4" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#detailed-example"><i class="fa fa-check"></i><b>7.1.4</b> Detailed Example</a></li>
+<li class="chapter" data-level="7.1.5" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-9"><i class="fa fa-check"></i><b>7.1.5</b> Conclusion</a></li>
+<li class="chapter" data-level="7.1.6" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data"><i class="fa fa-check"></i><b>7.1.6</b> Data</a></li>
+<li class="chapter" data-level="7.1.7" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data-setting"><i class="fa fa-check"></i><b>7.1.7</b> Data Setting</a></li>
+<li class="chapter" data-level="7.1.8" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#requirements-for-synthetic-control-method"><i class="fa fa-check"></i><b>7.1.8</b> Requirements for Synthetic Control Method</a></li>
+<li class="chapter" data-level="7.1.9" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data-requirements-summary"><i class="fa fa-check"></i><b>7.1.9</b> Data Requirements Summary</a></li>
+<li class="chapter" data-level="7.1.10" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#practical-considerations-1"><i class="fa fa-check"></i><b>7.1.10</b> Practical Considerations</a></li>
+<li class="chapter" data-level="7.1.11" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#example-12"><i class="fa fa-check"></i><b>7.1.11</b> Example</a></li>
+<li class="chapter" data-level="7.1.12" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-10"><i class="fa fa-check"></i><b>7.1.12</b> Conclusion</a></li>
+<li class="chapter" data-level="7.1.13" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#synthetic-did"><i class="fa fa-check"></i><b>7.1.13</b> Synthetic DID</a></li>
+<li class="chapter" data-level="7.1.14" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#robustness-checks-3"><i class="fa fa-check"></i><b>7.1.14</b> Robustness Checks</a></li>
+<li class="chapter" data-level="7.1.15" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#validation-methods-3"><i class="fa fa-check"></i><b>7.1.15</b> Validation Methods</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html"><i class="fa fa-check"></i><b>8</b> Instrumental Variables (IV)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#key-concepts-5"><i class="fa fa-check"></i><b>8.1</b> Key Concepts</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#requirements-for-a-valid-instrument"><i class="fa fa-check"></i><b>8.1.1</b> Requirements for a Valid Instrument</a></li>
+<li class="chapter" data-level="8.1.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#the-iv-estimation-process"><i class="fa fa-check"></i><b>8.1.2</b> The IV Estimation Process</a></li>
+<li class="chapter" data-level="8.1.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#example-13"><i class="fa fa-check"></i><b>8.1.3</b> Example</a></li>
+<li class="chapter" data-level="8.1.4" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#assumptions-and-considerations-2"><i class="fa fa-check"></i><b>8.1.4</b> Assumptions and Considerations</a></li>
+<li class="chapter" data-level="8.1.5" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#advantages-of-iv"><i class="fa fa-check"></i><b>8.1.5</b> Advantages of IV</a></li>
+<li class="chapter" data-level="8.1.6" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#disadvantages-of-iv"><i class="fa fa-check"></i><b>8.1.6</b> Disadvantages of IV</a></li>
+<li class="chapter" data-level="8.1.7" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#conclusion-11"><i class="fa fa-check"></i><b>8.1.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#difference-between-instrumental-variable-iv-method-and-two-stage-least-squares-2sls-method"><i class="fa fa-check"></i><b>8.2</b> Difference Between Instrumental Variable (IV) Method and Two-Stage Least Squares (2SLS) Method</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#instrumental-variable-iv-method"><i class="fa fa-check"></i><b>8.2.1</b> Instrumental Variable (IV) Method</a></li>
+<li class="chapter" data-level="8.2.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#two-stage-least-squares-2sls-method"><i class="fa fa-check"></i><b>8.2.2</b> Two-Stage Least Squares (2SLS) Method</a></li>
+<li class="chapter" data-level="8.2.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#summary-of-differences"><i class="fa fa-check"></i><b>8.2.3</b> Summary of Differences:</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#homogenous-treatment-effect"><i class="fa fa-check"></i><b>8.3</b> Homogenous Treatment Effect</a></li>
+<li class="chapter" data-level="8.4" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#heterogenous-treatment-effect"><i class="fa fa-check"></i><b>8.4</b> Heterogenous Treatment Effect</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html"><i class="fa fa-check"></i><b>9</b> Regression Discontinuity Designs (RDD)</a>
+<ul>
+<li class="chapter" data-level="9.0.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#validation-and-falsification"><i class="fa fa-check"></i><b>9.0.1</b> Validation and Falsification</a></li>
+<li class="chapter" data-level="9.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#regression-discontinuity-designs-rdd-1"><i class="fa fa-check"></i><b>9.1</b> Regression Discontinuity Designs (RDD)</a></li>
+<li class="chapter" data-level="9.2" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-6"><i class="fa fa-check"></i><b>9.2</b> Key Concepts</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#types-of-rdd"><i class="fa fa-check"></i><b>9.2.1</b> Types of RDD</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#sharp-rdd"><i class="fa fa-check"></i><b>9.3</b> Sharp RDD</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-7"><i class="fa fa-check"></i><b>9.3.1</b> Key Concepts</a></li>
+<li class="chapter" data-level="9.3.2" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#assumptions-for-rdd"><i class="fa fa-check"></i><b>9.3.2</b> Assumptions for RDD</a></li>
+<li class="chapter" data-level="9.3.3" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#estimation-in-sharp-rdd"><i class="fa fa-check"></i><b>9.3.3</b> Estimation in Sharp RDD</a></li>
+<li class="chapter" data-level="9.3.4" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#fuzzy-rdd"><i class="fa fa-check"></i><b>9.3.4</b> Fuzzy RDD</a></li>
+<li class="chapter" data-level="9.3.5" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications"><i class="fa fa-check"></i><b>9.3.5</b> Parametric vs. Non-Parametric Applications</a></li>
+<li class="chapter" data-level="9.3.6" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#example-14"><i class="fa fa-check"></i><b>9.3.6</b> Example</a></li>
+<li class="chapter" data-level="9.3.7" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#summary-2"><i class="fa fa-check"></i><b>9.3.7</b> Summary</a></li>
+<li class="chapter" data-level="9.3.8" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#challenges-to-identification"><i class="fa fa-check"></i><b>9.3.8</b> Challenges to Identification</a></li>
+<li class="chapter" data-level="9.3.9" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#examples"><i class="fa fa-check"></i><b>9.3.9</b> Examples</a></li>
+<li class="chapter" data-level="9.3.10" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#types-of-rdd-1"><i class="fa fa-check"></i><b>9.3.10</b> Types of RDD</a></li>
+<li class="chapter" data-level="9.3.11" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications-1"><i class="fa fa-check"></i><b>9.3.11</b> Parametric vs. Non-Parametric Applications</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#regression-kink-design"><i class="fa fa-check"></i><b>9.4</b> Regression Kink Design</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html"><i class="fa fa-check"></i><b>10</b> Fixed Effects and Panel Data Methods</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#pooled-regression"><i class="fa fa-check"></i><b>10.1</b> Pooled Regression</a></li>
+<li class="chapter" data-level="10.2" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#panel-data-methods"><i class="fa fa-check"></i><b>10.2</b> Panel Data Methods</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#fixed-effects-model"><i class="fa fa-check"></i><b>10.2.1</b> Fixed Effects Model</a></li>
+<li class="chapter" data-level="10.2.2" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#random-effects-model"><i class="fa fa-check"></i><b>10.2.2</b> Random Effects Model</a></li>
+<li class="chapter" data-level="10.2.3" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#example-economic-growth-and-education"><i class="fa fa-check"></i><b>10.2.3</b> Example: Economic Growth and Education</a></li>
+<li class="chapter" data-level="10.2.4" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#conclusion-12"><i class="fa fa-check"></i><b>10.2.4</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html"><i class="fa fa-check"></i><b>11</b> Ordinary Least Squares (OLS)</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#simple-linear-regression"><i class="fa fa-check"></i><b>11.1</b> Simple Linear Regression</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#summary-3"><i class="fa fa-check"></i><b>11.1.1</b> Summary</a></li>
+<li class="chapter" data-level="11.1.2" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#interpreting-model-coefficients-in-ols-models"><i class="fa fa-check"></i><b>11.1.2</b> Interpreting Model Coefficients in OLS Models</a></li>
+<li class="chapter" data-level="11.1.3" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#linear-models-linear-linear"><i class="fa fa-check"></i><b>11.1.3</b> 1. Linear Models (Linear-Linear)</a></li>
+<li class="chapter" data-level="11.1.4" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#log-linear-models"><i class="fa fa-check"></i><b>11.1.4</b> 2. Log-Linear Models</a></li>
+<li class="chapter" data-level="11.1.5" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#linear-log-models"><i class="fa fa-check"></i><b>11.1.5</b> 3. Linear-Log Models</a></li>
+<li class="chapter" data-level="11.1.6" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#log-log-models"><i class="fa fa-check"></i><b>11.1.6</b> 4. Log-Log Models</a></li>
+<li class="chapter" data-level="11.1.7" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#examples-of-dummy-and-continuous-variables"><i class="fa fa-check"></i><b>11.1.7</b> Examples of Dummy and Continuous Variables</a></li>
+<li class="chapter" data-level="11.1.8" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#assumptions-and-considerations-3"><i class="fa fa-check"></i><b>11.1.8</b> Assumptions and Considerations</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="resampling-methods.html"><a href="resampling-methods.html"><i class="fa fa-check"></i><b>12</b> Resampling methods</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="resampling-methods.html"><a href="resampling-methods.html#bootstrapping-1"><i class="fa fa-check"></i><b>12.1</b> Bootstrapping</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html"><i class="fa fa-check"></i><b>13</b> Hypotheis Testing</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#concepts-3"><i class="fa fa-check"></i><b>13.1</b> Concepts</a>
+<ul>
+<li class="chapter" data-level="13.1.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#significance-level-α"><i class="fa fa-check"></i><b>13.1.1</b> Significance Level (α)</a></li>
+<li class="chapter" data-level="13.1.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#p-value"><i class="fa fa-check"></i><b>13.1.2</b> P-Value</a></li>
+<li class="chapter" data-level="13.1.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-i-error"><i class="fa fa-check"></i><b>13.1.3</b> Type I Error</a></li>
+<li class="chapter" data-level="13.1.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-ii-error"><i class="fa fa-check"></i><b>13.1.4</b> Type II Error</a></li>
+<li class="chapter" data-level="13.1.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#relationship-between-type-i-and-type-ii-errors"><i class="fa fa-check"></i><b>13.1.5</b> Relationship Between Type I and Type II Errors</a></li>
+<li class="chapter" data-level="13.1.6" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#importance-in-research-and-decision-making"><i class="fa fa-check"></i><b>13.1.6</b> Importance in Research and Decision Making</a></li>
+<li class="chapter" data-level="13.1.7" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#statistical-power"><i class="fa fa-check"></i><b>13.1.7</b> Statistical power</a></li>
+</ul></li>
+<li class="chapter" data-level="13.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#null-hypothesis"><i class="fa fa-check"></i><b>13.2</b> Null Hypothesis</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fishers-sharp-null-hypothesis"><i class="fa fa-check"></i><b>13.2.1</b> Fisher’s Sharp Null Hypothesis</a></li>
+<li class="chapter" data-level="13.2.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#neymans-null-hypothesis"><i class="fa fa-check"></i><b>13.2.2</b> Neyman’s Null Hypothesis</a></li>
+<li class="chapter" data-level="13.2.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#key-differences"><i class="fa fa-check"></i><b>13.2.3</b> Key Differences</a></li>
+<li class="chapter" data-level="13.2.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-to-illustrate-the-difference"><i class="fa fa-check"></i><b>13.2.4</b> Example to Illustrate the Difference</a></li>
+<li class="chapter" data-level="13.2.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-13"><i class="fa fa-check"></i><b>13.2.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#permutation-tests"><i class="fa fa-check"></i><b>13.3</b> Permutation Tests</a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-and-why-to-use-permutation-tests"><i class="fa fa-check"></i><b>13.3.1</b> When and Why to Use Permutation Tests</a></li>
+<li class="chapter" data-level="13.3.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-to-perform-a-permutation-test"><i class="fa fa-check"></i><b>13.3.2</b> How to Perform a Permutation Test</a></li>
+<li class="chapter" data-level="13.3.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-calculation"><i class="fa fa-check"></i><b>13.3.3</b> Example Calculation</a></li>
+<li class="chapter" data-level="13.3.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-14"><i class="fa fa-check"></i><b>13.3.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fischers-exact-test"><i class="fa fa-check"></i><b>13.4</b> Fischer’s Exact Test</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-to-use-fishers-exact-test"><i class="fa fa-check"></i><b>13.4.1</b> When to Use Fisher’s Exact Test</a></li>
+<li class="chapter" data-level="13.4.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-fishers-exact-test-works"><i class="fa fa-check"></i><b>13.4.2</b> How Fisher’s Exact Test Works</a></li>
+<li class="chapter" data-level="13.4.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#step-by-step-example-1"><i class="fa fa-check"></i><b>13.4.3</b> Step-by-Step Example</a></li>
+<li class="chapter" data-level="13.4.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-15"><i class="fa fa-check"></i><b>13.4.4</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="maximum-likelihood-estimation.html"><a href="maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>14</b> Maximum Likelihood Estimation</a></li>
+<li class="divider"></li>
+<li><a href="https://davutemrah.github.io" target="blank">Back to Home Page</li>
+<li><a href="https://davutemrah.github.io/notebooks/" target="blank">Back to Collections</li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Notes on Causal Models</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="difference-in-differences-did-methods" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Difference-in-Differences (DiD) Methods<a href="difference-in-differences-did-methods.html#difference-in-differences-did-methods" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>Difference-in-Differences (DiD)</strong> is a quasi-experimental technique
+used in econometrics to estimate causal relationships. It compares the
+changes in outcomes over time between a treatment group and a control
+group.</p>
+<p><strong>Some resource links</strong> <a href="https://asjadnaqvi.github.io/DiD/">Comprehensive
+resource</a></p>
+<p><a href="https://matteocourthoud.github.io/post/diff_in_diffs/">Extra reading 2</a></p>
+<p><a href="https://mixtape.scunning.com/09-difference_in_differences">Mixtape</a></p>
+<p><a href="https://www.youtube.com/watch?v=mbYTZ0w-QTw">youtube series</a></p>
+<p><strong>Books</strong></p>
+<p><a href="https://theeffectbook.net">The Effect</a></p>
+<p><a href="https://www.hsph.harvard.edu/miguel-hernan/wp-content/uploads/sites/1268/2024/04/hernanrobins_WhatIf_26apr24.pdf">What
+if?</a></p>
+<p>[Mathaeus - personal](Extra reading -
+python](<a href="https://matheusfacure.github.io/python-causality-handbook/13-Difference-in-Differences.htm" class="uri">https://matheusfacure.github.io/python-causality-handbook/13-Difference-in-Differences.htm</a>)</p>
+<div id="simple-difference-in-differences-did" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Simple Difference-in-Differences (DiD)<a href="difference-in-differences-did-methods.html#simple-difference-in-differences-did" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p><strong>Basic Idea</strong>: Difference-in-Differences (DiD) is a
+quasi-experimental design used in econometrics to estimate causal
+relationships. It compares the changes in outcomes over time between
+a treatment group and a control group.</p></li>
+<li><p>Treatment assignment is not random, but we observe both treated and
+untreated units before and after treatment.</p></li>
+</ul>
+<p>-Under certain structural assumptions, especially parallel outcome
+trends in the absence of treatment, we can recover the average treatment
+effect.</p>
+<ul>
+<li><strong>Formula</strong>: The basic DiD estimator is:</li>
+</ul>
+<p><span class="math display">\[
+  \text{DiD} = (\text{Y}_{\text{post-treatment, treatment group}} - \text{Y}_{\text{pre-treatment, treatment group}}) - (\text{Y}_{\text{post-treatment, control group}} - \text{Y}_{\text{pre-treatment, control group}})
+\]</span></p>
+<p><strong>Concept</strong>:</p>
+<p><strong>DiD</strong> is used when we have data from before and after a treatment is
+applied to a treatment group, and we also have a control group that does
+not receive the treatment.</p>
+<p>The key assumption is that in the absence of treatment, the difference
+between the treatment and control groups would have remained constant
+over time (parallel trends assumption).</p>
+<ul>
+<li><p>Simple 2x2 DD collapses to true ATT when parallel trend holds true.</p></li>
+<li><p>ATT can be calculated through differencing outcomes but regression
+can be used instead if we want to control for some more covariates.</p></li>
+<li><p>if you need to avoid omitted variable bias through controlling for
+endogenous covariates that vary over time, then you may want to use
+regression. Such strategies are another way of saying that you will
+need to close some known critical backdoor.</p></li>
+<li><p>Another reason for the equation is that by controlling for more
+appropriate covariates, you can reduce residual variance and improve
+the precision of your DD estimate.</p></li>
+</ul>
+<p><strong>Model</strong>:</p>
+<p><span class="math display">\[ Y_{it} = \alpha + \beta_1 \text{Post}_t + \beta_2 \text{Treated}_i + \beta_3 (\text{Post}_t \times \text{Treated}_i) + \epsilon_{it} \]</span></p>
+<p>where:</p>
+<ul>
+<li><p><span class="math inline">\(Y_{it}\)</span> is the outcome variable for entity <span class="math inline">\(i\)</span> at time <span class="math inline">\(t\)</span>.</p></li>
+<li><p><span class="math inline">\(\text{Post}_t\)</span> is a dummy variable equal to 1 for periods after the
+treatment and 0 otherwise.</p></li>
+<li><p><span class="math inline">\(\text{Treated}_i\)</span> is a dummy variable equal to 1 for the treatment
+group and 0 for the control group.</p></li>
+<li><p><span class="math inline">\(\beta_3\)</span> is the DiD estimator, representing the treatment effect
+(ATT).</p></li>
+</ul>
+</div>
+<div id="controversial-note" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Controversial Note<a href="difference-in-differences-did-methods.html#controversial-note" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The variables of interest in many of these setups only vary at a group level, such as the state, and outcome variables are often serially correlated. In Card and Krueger (1994), it is very likely for instance that employment in each state is not only correlated within the state but also serially correlated.</p>
+<p>Bertrand, Duflo, and Mullainathan (2004) point out that the conventional standard errors often severely understate the standard deviation of the estimators, and so standard errors are biased downward, “too small,” and therefore overreject the null hypothesis. Bertrand, Duflo, and Mullainathan (2004) propose the following solutions:</p>
+<ul>
+<li><p><strong>Block bootstrapping</strong> standard errors.</p></li>
+<li><p><strong>Aggregating</strong> the data into one pre and one post period.</p></li>
+</ul>
+<p>This approach ignores the time-series dimensions altogether, and if there is only one pre and post period and one untreated group, it’s as simple as it sounds.</p>
+<ul>
+<li><strong>Clustering</strong> standard errors at the group level.</li>
+</ul>
+<p>You simply adjust standard errors by clustering at the group level, as we discussed in the earlier chapter, or the level of treatment. For state-level panels, that would mean clustering at the state level, which allows for arbitrary serial correlation in errors within a state over time. This is the most common solution employed.</p>
+<p>If number of groups is small, then you may use wild bootstrap technique, or randomization inference.</p>
+</div>
+<div id="placebo-tests-for-parallel-trends" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Placebo tests for parallel trends<a href="difference-in-differences-did-methods.html#placebo-tests-for-parallel-trends" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p>We can test palcebo effects in the pre-treatment years to show in the pretreatment years both groups have similar trends. However, this may not prove that those groups will behave similarly after the treatment in the absence of treatment.</p></li>
+<li><p>Just because they were similar before does not logically require they be the same after.</p></li>
+<li><p>Likewise, we are not obligated to believe that that counterfactual trends would be the same post-treatment because they had been similar pre-treatment without further assumptions about the predictive power of pre-treatment trends.</p></li>
+<li><p>But this is a nice attempt anyway.</p></li>
+<li><p>While the test is important, technically pre-treatment similarities are neither necessary nor sufficient to guarantee parallel counterfactual trends (Kahn-Lang and Lang 2019).</p></li>
+<li><p>Any DD is a combination of a comparison between the treatment and the never treated, an early treated compared to a late treated, and a late treated compared to an early treated. Thus only showing the comparison with the never treated is actually a misleading presentation of the underlying mechanization of identification using an twoway fixed-effects model with differential timing.</p></li>
+</ul>
+</div>
+<div id="two-way-fixed-effects-model" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> Two-Way Fixed Effects Model<a href="difference-in-differences-did-methods.html#two-way-fixed-effects-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Concept</strong>:</p>
+<p>The <strong>two-way fixed effects model</strong> extends the simple DiD approach by
+controlling for time-invariant characteristics of the entities and
+common shocks over time.</p>
+<p>It adds fixed effects for both entities and time periods to control for
+unobserved heterogeneity.</p>
+<p><strong>Model</strong>:</p>
+<p><span class="math display">\[ Y_{it} = \alpha_0 + \beta_1\text{Treat}_i + \beta_2\text{Post}_t + \beta_3 (\text{Post}_t \times \text{Treat}_i) + \epsilon_{it} \]</span></p>
+<p>where:</p>
+<ul>
+<li><p><span class="math inline">\(\beta_1\)</span> represents entity fixed effects.</p></li>
+<li><p><span class="math inline">\(\beta_2\)</span> represents time fixed effects.</p></li>
+<li><p><span class="math inline">\(\beta_3\)</span> remains the DiD estimator.</p></li>
+</ul>
+<p><strong>Example</strong>: Using the job training program example, this model would
+account for fixed characteristics of individuals (such as inherent
+employability) and time-specific effects (such as economic conditions).</p>
+<p><span class="math display">\[ Y_{it} = \alpha_i + \gamma_t + \beta_3 (\text{Post}_t \times \text{Treated}_i) + \epsilon_{it} \]</span></p>
+<p>This controls for both individual-specific and time-specific unobserved
+heterogeneity, providing a more robust estimate of the treatment effect.</p>
+</div>
+<div id="event-study-methods" class="section level2 hasAnchor" number="6.5">
+<h2><span class="header-section-number">6.5</span> Event Study Methods<a href="difference-in-differences-did-methods.html#event-study-methods" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Concept</strong>:</p>
+<p><strong>Event studies</strong> extend DiD by examining the dynamics of
+the treatment effect over multiple periods before and after the
+treatment.</p>
+<ul>
+<li><p>They allow for the estimation of treatment effects at
+different time points relative to the treatment event.</p></li>
+<li><p>As with many contemporary DD designs, Miller et al. (2019) evaluate the pre-treatment leads instead of plotting the raw data by treatment and control. Post-estimation, they plotted regression coefficients with 95% confidence intervals on their treatment leads and lags. Including leads and lags into the DD model allowed the reader to check both the degree to which the post-treatment treatment effects were dynamic, and whether the two groups were comparable on outcome dynamics pre-treatment.</p></li>
+</ul>
+<p><strong>Typical Model:</strong></p>
+<p><span class="math display">\[ Y_{ist} = \alpha_s + \gamma_t + \sum_{x=-q}^{-1} \beta_x D_{sx} + \sum_{x=0}^{m} \delta_x D_{sx} + X_{ist} + \epsilon_{ist} \]</span></p>
+<p>You include <span class="math inline">\(q\)</span> leads or anticipatory effects and <span class="math inline">\(m\)</span> lags or post-treatment effects.</p>
+</div>
+<div id="importance-of-placebos-in-dd" class="section level2 hasAnchor" number="6.6">
+<h2><span class="header-section-number">6.6</span> Importance of Placebos in DD<a href="difference-in-differences-did-methods.html#importance-of-placebos-in-dd" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>It is a simple idea. For the minimum wage sttaudy, one candidate placebo falsification might simply be to use data for an alternative type of worker whose wages would not be affected by the binding minimum wage. This reasoning might lead us to consider the possibility that higher wage workers might function as a placebo.</p>
+<p>Many people like to be straightforward and simply fit the same DD design using high wage employment as the outcome. If the coefficient on minimum wages is zero when using high wage worker employment as the outcome, but the coefficient on minimum wages for low wage workers is negative, then we have provided stronger evidence that complements the earlier analysis we did when on the low wage workers.</p>
+<p>Another way to show placebo falsification. Triple DDD.</p>
+<div id="triple-differences" class="section level3 hasAnchor" number="6.6.1">
+<h3><span class="header-section-number">6.6.1</span> Triple Differences<a href="difference-in-differences-did-methods.html#triple-differences" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[ Y_{ijt} = \alpha + \beta_0X_{ist} + \beta_1\gamma_t + \beta_2\delta_j  + \beta_3 D_i + \beta_4 (\delta . \gamma)_{jt} +  \beta_5 (\gamma . D)_{ti} + \beta_6 (\delta . D)_{ij} +  \beta_7 (\delta . \gamma . D)_{ijt} + \epsilon_{ijt} \]</span></p>
+<p>where the parameter of interest is <span class="math inline">\(\beta_7\)</span>.</p>
+<ul>
+<li><p>This requires a stacking of the data into a panel structure by group, as well as state. Second, the DDD model requires that you include all possible interactions across the group dummy <span class="math inline">\(\delta_j\)</span>, post-treatment dummy <span class="math inline">\(\gamma_t\)</span> and treatment state dummy <span class="math inline">\(D_i\)</span>.</p></li>
+<li><p>The regression must include each dummy independently, each individual interaction, and the triple differences interaction. One of these will be dropped due to multicollinearity, but I include them in the equation so that you can visualize all the factors used in the product of these terms.</p></li>
+</ul>
+</div>
+</div>
+<div id="compositional-changes" class="section level2 hasAnchor" number="6.7">
+<h2><span class="header-section-number">6.7</span> Compositional Changes<a href="difference-in-differences-did-methods.html#compositional-changes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>DD can be applied to repeated cross-sections, as well as panel data. But one of the risks of working with the repeated cross-sections is that unlike panel data (e.g., individual-level panel data), repeated cross-sections run the risk of compositional changes.</p>
+<p>This kind of compositional change is a like an omitted variable bias built into the sample itself caused by time-variant unobservables. Diffusion of the Internet appears to be related to changing samples as younger music fans are early adopters. Identification of causal effects would need for the treatment itself to be exogenous to such changes in the composition.</p>
+</div>
+<div id="key-assumptions" class="section level2 hasAnchor" number="6.8">
+<h2><span class="header-section-number">6.8</span> Key Assumptions<a href="difference-in-differences-did-methods.html#key-assumptions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p><strong>Parallel Trends Assumption</strong>: The treatment and control groups
+would have followed the same trend over time in the absence of the
+treatment. This is the most critical assumption.</p></li>
+<li><p><strong>Common Shocks</strong>: Both groups are assumed to be subject to the same
+external factors over time.</p></li>
+</ul>
+<div id="implementation-steps" class="section level3 hasAnchor" number="6.8.1">
+<h3><span class="header-section-number">6.8.1</span> Implementation Steps<a href="difference-in-differences-did-methods.html#implementation-steps" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><p><strong>Identify Treatment and Control Groups</strong>: Clearly define which
+units are exposed to the treatment and which are not.</p></li>
+<li><p><strong>Collect Data</strong>: Obtain data on the outcome of interest for both
+groups before and after the treatment.</p></li>
+<li><p><strong>Check Parallel Trends</strong>: Visualize and statistically test if the
+pre-treatment trends of the groups are parallel.</p></li>
+<li><p><strong>Estimate the Model</strong>: Use regression analysis to estimate the DiD
+effect. The basic regression model is: <span class="math display">\[
+Y_{it} = \alpha + \beta_1 \text{Post}_t + \beta_2 \text{Treatment}_i + \beta_3 (\text{Post}_t \times \text{Treatment}_i) + \epsilon_{it}
+\]</span> where <span class="math inline">\(\beta_3\)</span> is the DiD estimator.</p></li>
+</ol>
+</div>
+<div id="advantages" class="section level3 hasAnchor" number="6.8.2">
+<h3><span class="header-section-number">6.8.2</span> Advantages<a href="difference-in-differences-did-methods.html#advantages" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Controls for Time-Invariant Differences</strong>: Differences between the
+treatment and control groups that do not change over time are
+accounted for.</p></li>
+<li><p><strong>Simple and Intuitive</strong>: The method is straightforward to
+understand and implement.</p></li>
+</ul>
+</div>
+<div id="limitations-1" class="section level3 hasAnchor" number="6.8.3">
+<h3><span class="header-section-number">6.8.3</span> Limitations<a href="difference-in-differences-did-methods.html#limitations-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Violation of Parallel Trends</strong>: If the parallel trends assumption
+is violated, the DiD estimate can be biased.</p></li>
+<li><p><strong>External Validity</strong>: The results are only valid for the sample and
+period studied.</p></li>
+<li><p><strong>Simultaneous Interventions</strong>: Other changes occurring
+simultaneously with the treatment can confound the results.</p></li>
+</ul>
+</div>
+<div id="q-how-would-you-test-the-parallel-trends-assumption" class="section level3 hasAnchor" number="6.8.4">
+<h3><span class="header-section-number">6.8.4</span> Q: How would you test the parallel trends assumption?<a href="difference-in-differences-did-methods.html#q-how-would-you-test-the-parallel-trends-assumption" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><p>Visual Inspection Plot the outcome variable over time for both the
+treatment and control groups. If the trends are parallel before the
+intervention, it suggests that the parallel trends assumption holds.</p></li>
+<li><p>Statistical Tests Conduct a regression test to formally check for
+parallel trends. This involves using only the pre-treatment data and
+checking if the interaction between time and treatment is
+statistically significant.</p></li>
+</ol>
+<p>Steps:</p>
+<ul>
+<li>Restrict your data to pre-treatment periods.</li>
+<li>Regress the outcome on time, treatment, and their interaction.</li>
+<li>Check if the coefficient of the interaction term is statistically
+significant.</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>Placebo Tests Conduct a placebo test by pretending that the
+treatment happened at a different time and check if you find a
+significant effect where none should exist.</li>
+</ol>
+<p>Steps:</p>
+<p>Choose a time period before the actual treatment period as the “placebo
+treatment period.” Perform a DiD analysis as if the treatment happened
+during this placebo period. Check for significant effects; finding none
+supports the parallel trends assumption.</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Event Study Analysis An event study involves plotting the estimated
+treatment effects at different time periods before and after the
+treatment to visually inspect if pre-treatment effects are close to
+zero.</li>
+</ol>
+<p>Steps:</p>
+<p>Create a series of dummy variables for each time period relative to the
+treatment. Regress the outcome on these time dummies and the interaction
+terms. Plot the coefficients of these interaction terms.</p>
+</div>
+<div id="q-how-would-you-address-potential-violations-of-the-parallel-trends-assumption" class="section level3 hasAnchor" number="6.8.5">
+<h3><span class="header-section-number">6.8.5</span> Q: How would you address potential violations of the parallel trends assumption?<a href="difference-in-differences-did-methods.html#q-how-would-you-address-potential-violations-of-the-parallel-trends-assumption" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Pre-Treatment Trends Analysis</strong></li>
+</ol>
+<p>Before conducting the DiD analysis, carefully examine the pre-treatment
+trends. If the trends are not parallel, you might need to reconsider
+your groups or the methodology.</p>
+<ul>
+<li><p><strong>Visual Inspection</strong>: Plot the pre-treatment trends for the
+treatment and control groups. If they are not parallel, consider
+this a red flag.</p></li>
+<li><p><strong>Statistical Testing</strong>: Perform a formal test by regressing the
+outcome on a time indicator, treatment indicator, and their
+interaction using only pre-treatment data. A significant interaction
+term suggests non-parallel trends.</p></li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Control for Covariates</strong></li>
+</ol>
+<p>Include control variables in your regression model to account for
+differences between the treatment and control groups that might affect
+the outcome variable.</p>
+<ul>
+<li>Collect relevant covariates that could influence the outcome.</li>
+<li>Include these covariates in your regression model: <span class="math display">\[
+Y_{it} = \alpha + \beta_1 \text{Post}_t + \beta_2 \text{Treatment}_i + \beta_3 (\text{Post}_t \times \text{Treatment}_i) + \gamma X_{it} + \epsilon_{it}
+\]</span> where <span class="math inline">\(X_{it}\)</span> represents the covariates.</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Matching</strong></li>
+</ol>
+<p>Use matching techniques to create a more comparable control group.
+Matching ensures that the treatment and control groups are similar in
+observed characteristics.</p>
+<ul>
+<li><p><strong>Propensity Score Matching (PSM)</strong>: Match treatment units with
+control units based on the propensity score, which is the
+probability of receiving treatment given covariates.</p></li>
+<li><p><strong>Coarsened Exact Matching (CEM)</strong>: Match units exactly on certain
+covariates.</p></li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li><strong>Synthetic Control Method</strong></li>
+</ol>
+<p>Construct a synthetic control group that closely resembles the treatment
+group in the pre-treatment period. This method is particularly useful
+when you have one treatment unit and many potential control units.</p>
+<ul>
+<li><p>Select control units to construct a weighted combination (synthetic
+control) that mirrors the treatment unit’s pre-treatment
+characteristics.</p></li>
+<li><p>Compare the post-treatment outcomes of the treatment unit with the
+synthetic control.</p></li>
+</ul>
+<ol start="5" style="list-style-type: decimal">
+<li><strong>Difference-in-Differences-in-Differences (DiDiD)</strong></li>
+</ol>
+<p>If you have an additional control group or variable, you can use DiDiD
+to control for potential violations. This method adds another layer of
+difference to control for unobserved confounders.</p>
+<ul>
+<li>Include a third group or dimension to add another difference. For
+example: <span class="math display">\[
+Y_{it} = \alpha + \beta_1 \text{Post}_t + \beta_2 \text{Treatment}_i + \beta_3 (\text{Post}_t \times \text{Treatment}_i) + \beta_4 \text{Group}_i + \beta_5 (\text{Group}_i \times \text{Post}_t) + \beta_6 (\text{Group}_i \times \text{Treatment}_i) + \beta_7 (\text{Group}_i \times \text{Post}_t \times \text{Treatment}_i) + \epsilon_{it}
+\]</span> where <span class="math inline">\(\text{Group}_i\)</span> represents the additional dimension.</li>
+</ul>
+<ol start="6" style="list-style-type: decimal">
+<li><strong>Sensitivity Analysis</strong></li>
+</ol>
+<p>Conduct sensitivity analyses to check how robust your results are to
+potential violations of the parallel trends assumption.</p>
+<ul>
+<li><p><strong>Placebo Tests</strong>: Perform DiD analysis using periods before the
+actual treatment to ensure no significant effects are detected.</p></li>
+<li><p><strong>Alternative Specifications</strong>: Use different model specifications
+or subsets of data to check the consistency of your results.</p></li>
+</ul>
+<ol start="7" style="list-style-type: decimal">
+<li><strong>Instrumental Variables (IV)</strong></li>
+</ol>
+<p>If you have a valid instrument, use it to address endogeneity issues
+that might violate the parallel trends assumption.</p>
+<ul>
+<li><p>Identify an instrument that affects the treatment but not directly
+the outcome.</p></li>
+<li><p>Use Two-Stage Least Squares (2SLS) to estimate the treatment effect.</p></li>
+</ul>
+<p>By applying these strategies, you can address potential violations of
+the parallel trends assumption, ensuring more robust and credible
+results from your DiD analysis.</p>
+</div>
+</div>
+<div id="notes" class="section level2 hasAnchor" number="6.9">
+<h2><span class="header-section-number">6.9</span> Notes<a href="difference-in-differences-did-methods.html#notes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p>Bertrand, Duflo, and Mullainathan (2004) point out that conventional
+robust standard errors usually overestimate the actual standard
+deviation of the estimator. The authors recommend clustering the
+standard errors at the level of randomization (e.g. classes,
+counties, villages, …).</p></li>
+<li><p>Minimum Wages and Employment: A Case Study of the Fast-Food Industry
+in New Jersey and Pennsylvania (1994) by Card and Krueger.</p></li>
+</ul>
+<div id="example-business" class="section level3 hasAnchor" number="6.9.1">
+<h3><span class="header-section-number">6.9.1</span> Example: Business<a href="difference-in-differences-did-methods.html#example-business" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A firm wants to test the impact of a TV advertisement campaign on
+revenue. The firm releases the ad on a random sample of municipalities
+and track the revenue over time, before and after the ad campaign.</p>
+</div>
+</div>
+<div id="extra-considerations" class="section level2 hasAnchor" number="6.10">
+<h2><span class="header-section-number">6.10</span> Extra Considerations<a href="difference-in-differences-did-methods.html#extra-considerations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>Two-way Fixed Effects (TWFE) model can give wrong estimates. This is
+very likely especially if treatments are heterogeneous (differential
+treatment timings, different treatment sizes, different treatment
+statuses over time) that can contaminate the treatment effects. This
+can result from “bad” treatment combinations biased the average
+treatment estimation to the point of even reversing the sign.</li>
+</ul>
+<p>The new DiD methods “correct” for these TWFE biases by combining various
+estimation techniques, such as bootstrapping, inverse probability
+weights, matching, influence functions, and imputations, to handle
+parallel trends, negative weights, covariates, and controls.</p>
+
+</div>
+<div id="synthetic-difference-in-differences-synthdid-method" class="section level2 hasAnchor" number="6.11">
+<h2><span class="header-section-number">6.11</span> Synthetic Difference-in-Differences (SynthDiD) method<a href="difference-in-differences-did-methods.html#synthetic-difference-in-differences-synthdid-method" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><a href="https://towardsdatascience.com/synthdid-101-a-beginners-guide-to-synthetic-difference-in-differences-84fed9b730ae">Reading</a></p>
+<p>SynthDiD is a generalized version of Synthetic Control Method (SCM) and DiD that combines the strengths of both methods. It enables causal inference with large panels, even with a short pretreatment period.</p>
+<p>On the other hand, synthetic DiD combines the synthetic control method with the difference-in-differences approach [1]. In this method, a synthetic control group is constructed using the same approach as in the synthetic control method. However, the treatment effect is estimated by comparing the change in outcomes between the treated unit and the synthetic control group before and after the treatment is introduced. This approach allows for a more robust estimation of the treatment effect by accounting for pre-existing differences between the treatment and control groups.</p>
+<p>In summary, while both methods use a synthetic control group, the synthetic control method estimates treatment effects by comparing the post-treatment outcomes of the treated unit to those of the synthetic control group, while synthetic DiD estimates treatment effects by comparing the change in outcomes between the treated unit and the synthetic control group before and after the treatment is introduced.</p>
+<p>It constructs a counterfactual for the treated group by optimally weighting the control group units to minimize the difference between the treated and control groups in the pretreatment period as in SCM.</p>
+<p>Then, the treatment effect is estimated by comparing the outcome changes in the treated unit and synthetic control group pre- and post-intervention as in DiD.</p>
+<div id="an-example" class="section level4 hasAnchor" number="6.11.0.1">
+<h4><span class="header-section-number">6.11.0.1</span> An Example:<a href="difference-in-differences-did-methods.html#an-example" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Suppose that we are a company that sells plant-based food products, such as soy milk or soy yogurt, and we operate in multiple countries. Some countries implement new legislation that prohibits us from marketing our plant-based products as ‘milk’ or ‘yogurt’ because it is claimed that only animal products can be marketed as ‘milk’ or ‘yogurt’. Thus, due to this new regulation in some countries, we have to market soy milk as soy drink instead of soy milk, etc. We want to know the impact of this legislation on our revenue as this might help guide our lobbying efforts and marketing activities in different countries.</p>
+<p>I simulated a balanced panel dataset that shows the revenue of our company in 30 different countries for 30 periods. Three of the countries implement this legislation in period 20. In the figure below, you can see a snapshot of the data. treat is a dummy variable indicating whether a country has implemented the legislation in a given period. revenueis the revenue in millions of EUR. You can find the simulation and estimation code in this Gist.</p>
+<pre><code># Install and load the required packages
+# devtools::install_github(&quot;synth-inference/synthdid&quot;)
+library(synthdid)
+library(ggplot2)
+library(fixest) # Fixed-effects regression
+library(data.table)</code></pre>
+<pre><code># Set seed for reproducibility
+set.seed(12345)
+
+source(&#39;sim_data.R&#39;) # Import simulation function and some utilities
+
+dt &lt;- sim_data()
+head(dt)</code></pre>
+<p>In Data, there are 30 units (3 units treated), 30 periods (10 periods treated), all units are treated at the same time.</p>
+<p>Next, we convert our panel data into a matrix required by the synthdid package. Given the outcome, treatment and control units and pretreatment periods, a synthetic control is created and treatment effect is estimated with synthdid_estimate function.</p>
+<pre><code># Convert the data into a matrix
+setup = panel.matrices(dt, unit = &#39;country&#39;, time = &#39;period&#39;, 
+                       outcome = &#39;revenue&#39;, treatment = &#39;treat&#39;)
+
+# Estimate treatment effect using SynthDiD
+tau.hat = synthdid_estimate(setup$Y, 
+                            setup$N0,
+                            setup$T0)
+print(summary(tau.hat))</code></pre>
+<p>To make inference, we also need to calculate the standard errors. I use jacknife method as I have more than one treated units. Placebo method is the only option if you have one treatment unit. Given the standard errors, I also calculate the 95% confidence interval for the treatment effect. I will report these in the figure below.</p>
+<p>When there are <strong>multiple treated units</strong> (more than one unit that received the treatment or intervention), one common approach to estimating standard errors is using the jackknife method. The jackknife method is a resampling technique where each observation (in this case, each treated unit) is systematically omitted from the dataset, and the analysis is repeated each time to estimate the variance of the treatment effect. This provides a robust estimate of the standard errors that accounts for the potential variability across different treated units.</p>
+<p>On the other hand, if there is only <strong>one treated unit</strong> (a single unit that received the treatment), using the jackknife method becomes impractical because there are not enough units to systematically leave out and still perform meaningful resampling. In such cases, the <strong>placebo method</strong> becomes a viable option.</p>
+<p>The placebo method involves creating placebo or synthetic treated units that mimic the characteristics of the treated unit but did not actually receive the treatment. By comparing the outcomes of the actual treated unit with those of the synthetic placebo units, researchers can estimate the variability and potential impact of the treatment effect more accurately.</p>
+<p>Therefore, the choice between the jackknife method and the placebo method depends on the number of treated units available for analysis within the synthetic control framework. Multiple treated units allow for the application of the jackknife method, whereas a single treated unit necessitates the use of the placebo method to estimate standard errors and make reliable inferences about the treatment effect.</p>
+<pre><code># Calculate standard errors 
+se = sqrt(vcov(tau.hat, method=&#39;jackknife&#39;))
+te_est &lt;- sprintf(&#39;Point estimate for the treatment effect: %1.2f&#39;, tau.hat)
+CI &lt;- sprintf(&#39;95%% CI (%1.2f, %1.2f)&#39;, tau.hat - 1.96 * se, tau.hat + 1.96 * se)
+</code></pre>
+<pre><code># Plot treatment effect estimates
+plot(tau.hat)
+plot(tau.hat, se.method=&#39;jackknife&#39;)</code></pre>
+<p>In the image below, the estimation results are displayed. Observe how the treated countries and the synthetic control exhibit fairly parallel trends on average (it might not look like a perfect parallel trends but that is not necessary for the sake of this example). The average for treated countries is more variable, primarily due to the presence of only three such countries, resulting in less smooth trends. Transparent gray lines represent different control countries. Following the treatment in period 20, a decline in revenue is observed in the treated countries, estimated to be 0.51 million EUR as indicated in the graph. This means that the new regulation has a negative impact on our company’s revenues and necessary actions should be taken to prevent further declines.</p>
+<pre><code># Check the number of treatment and control countries to report
+num_treated &lt;- length(unique(dt[treat==1]$country))
+num_control &lt;- length(unique(dt$country))-num_treated
+
+# Create spaghetti plot with top 10 control units
+top.controls = synthdid_controls(tau.hat)[1:10, , drop=FALSE]
+plot(tau.hat, spaghetti.units=rownames(top.controls),
+     trajectory.linetype = 1, line.width=.75, 
+     trajectory.alpha=.9, effect.alpha=.9,
+     diagram.alpha=1, onset.alpha=.9, ci.alpha = .3, spaghetti.line.alpha =.2,
+     spaghetti.label.alpha = .1, overlay = 1) + 
+  labs(x = &#39;Period&#39;, y = &#39;Revenue&#39;, title = &#39;Estimation Results&#39;, 
+       subtitle = paste0(te_est, &#39;, &#39;, CI, &#39;.&#39;), 
+       caption = paste0(&#39;The number of treatment and control units: &#39;, num_treated, &#39; and &#39;, num_control, &#39;.&#39;))</code></pre>
+<p>Let’s plot the weights use to estimate the synthetic control.</p>
+<pre><code># Plot control unit contributions
+synthdid_units_plot(tau.hat, se.method=&#39;jackknife&#39;) +
+  labs(x = &#39;Country&#39;, y = &#39;Treatment effect&#39;, 
+       caption = &#39;The black horizontal line shows the actual effect; 
+       the gray ones show the endpoints of a 95% confidence interval.&#39;)
+ggsave(&#39;../figures/unit_weights.png&#39;)</code></pre>
+<p>In the image below, you can observe how each country is weighted to construct the synthetic control. The treatment effects differ based on the untreated country selected as the control unit.</p>
+<pre><code># Check for pre-treatment parallel trends
+plot(tau.hat, overlay=1, se.method=&#39;jackknife&#39;)
+ggsave(&#39;../figures/results_simple.png&#39;)</code></pre>
+<pre><code># Check the number of treatment and control countries to report
+num_treated &lt;- length(unique(dt[treat==1]$country))
+num_control &lt;- length(unique(dt$country))-num_treated
+
+
+# Create spaghetti plot with top 10 control units
+top.controls = synthdid_controls(tau.hat)[1:10, , drop=FALSE]
+plot(tau.hat, spaghetti.units=rownames(top.controls),
+     trajectory.linetype = 1, line.width=.75, 
+     trajectory.alpha=.9, effect.alpha=.9,
+     diagram.alpha=1, onset.alpha=.9, ci.alpha = .3, spaghetti.line.alpha   =.2,
+     spaghetti.label.alpha = .1, overlay = 1) + 
+  labs(x = &#39;Period&#39;, y = &#39;Revenue&#39;, title = &#39;Estimation Results&#39;, 
+       subtitle = paste0(te_est, &#39;, &#39;, CI, &#39;.&#39;), 
+       caption = paste0(&#39;The number of treatment and control units: &#39;, num_treated, &#39; and &#39;, num_control, &#39;.&#39;))
+ggsave(&#39;../figures/results.png&#39;)
+
+fe &lt;- feols(revenue~treat, dt, cluster = &#39;country&#39;, panel.id = &#39;country&#39;, 
+      fixef = c(&#39;country&#39;, &#39;period&#39;))
+summary(fe)</code></pre>
+<p>Now that we understand more about SynthDiD let’s talk about pros and cons of this method.</p>
+<p>There are some advantages and disadvantages to SynthDiD like every method. Here are some pros and cons to keep in mind when getting started with this method.</p>
+<p>Advantages of SynthDiD method:
+The synthetic control method is usually used for a few treated and control units and needs long, balanced data before treatment. SynthDiD, on the other hand, works well even with a short data period before treatment, unlike the synthetic control method [4].
+This method is being preferred especially because it doesn’t have a strict parallel trends assumption (PTA) requirement like DiD.
+SynthDiD guarantees a suitable quantity of control units, considers possible pre-intervention patterns, and may accommodate a degree of endogenous treatment timing [4].
+Disadvantages of SynthDiD method:
+Can be computationally expensive (even with only one treated group/block).
+Requires a balanced panel (i.e., you can only use units observed for all time periods) and that the treatment timing is identical for all treated units.
+Requires enough pre-treatment periods for good estimation, so, if you don’t have enough pre-treatment period might be better to use just the regular DiD.
+Computing and comparing the average treatment effects for subgroups is tricky. One option is to split the sample into subgroups and compute the average treatment effects for each subgroup.
+Implementing SynthDiD where the treatment timing varies might be tricky. In the case of staggered treatment timing, as one solution, one can estimate the average treatment effect for each treatment cohort and then aggregate cohort-specific average treatment effects to an overall average treatment effects.
+Here are also some other points that you might want to know when getting started.
+Things to note:
+SynthDiD employs regularized ridge regression (L2) while ensuring that the resulting weights have a sum of one.
+In the process of pretreatment matching, SynthDiD tries to determine the average treatment effect across the entire sample. This approach might cause individual time period estimates to be less precise. Nonetheless, the overall average yields an unbiased evaluation.
+The standard errors for the treatment effects are estimated with jacknife or if a cohort has only one treated unit with placebo method.
+The estimator is considered consistent and asymptotically normal, given that the combination of the number of control units and pretreatment periods is sufficiently large relative to the combination of the number of treated units and posttreatment periods.
+In practice, pre-treatment variables play a minor role in Synthetic DiD, as lagged outcomes hold more predictive power, making the treatment of these variables less critical.
+Conclusion
+In this blog post, I introduce the SynthDiD method and discuss its relationship with traditional DiD and SCM. SynthDiD combines the strengths of both SCM and DiD, allowing for causal inference with large panels even when the pretreatment period is short. I demonstrate the method using the synthdid package in R. Although it has several advantages, such as not requiring a strict parallel trends assumption, it also has drawbacks, like being computationally expensive and requiring a balanced panel. Overall, SynthDiD is a valuable tool for researchers interested in estimating causal effects using observational data, providing an alternative to traditional DiD and SCM methods.</p>
+
+</div>
+</div>
+<div id="doubly-robust-models-in-econometrics" class="section level2 hasAnchor" number="6.12">
+<h2><span class="header-section-number">6.12</span> Doubly Robust Models in Econometrics<a href="difference-in-differences-did-methods.html#doubly-robust-models-in-econometrics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Doubly Robust (DR) Models</strong> are a class of estimators used to estimate causal effects, providing robustness against model misspecification. The key feature of DR models is that they combine elements of both outcome regression and propensity score methods. This dual approach ensures that the estimator remains consistent if at least one of the two models (outcome or treatment model) is correctly specified.</p>
+<p><a href="https://psantanna.com/DRDID/">DRDID website</a></p>
+<p><strong>DRDID</strong></p>
+<p>Average Treatment Effect on the Treated (ATT) in Difference-in-Differences (DiD) setups where the parallel trends assumption holds after conditioning on a vector of pre-treatment covariates.</p>
+<div id="key-concepts-3" class="section level3 hasAnchor" number="6.12.1">
+<h3><span class="header-section-number">6.12.1</span> Key Concepts<a href="difference-in-differences-did-methods.html#key-concepts-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Outcome Model</strong>:
+<ul>
+<li>This involves modeling the outcome <span class="math inline">\(Y\)</span> as a function of covariates <span class="math inline">\(X\)</span> and treatment <span class="math inline">\(D\)</span>.</li>
+<li>Example: Using a regression model <span class="math inline">\(E[Y | X, D]\)</span>.</li>
+</ul></li>
+<li><strong>Treatment Model (Propensity Score Model)</strong>:
+<ul>
+<li>This involves modeling the treatment assignment <span class="math inline">\(D\)</span> as a function of covariates <span class="math inline">\(X\)</span>.</li>
+<li>Example: Using logistic regression to estimate the propensity score <span class="math inline">\(P(D = 1 | X)\)</span>.</li>
+</ul></li>
+<li><strong>Doubly Robust Estimator</strong>:
+<ul>
+<li>Combines the predictions from both the outcome and treatment models to estimate the average treatment effect (ATE).</li>
+<li>The estimator is “doubly robust” because it remains unbiased if either the outcome model or the treatment model is correctly specified, but not necessarily both.</li>
+</ul></li>
+</ol>
+</div>
+<div id="steps-in-doubly-robust-estimation" class="section level3 hasAnchor" number="6.12.2">
+<h3><span class="header-section-number">6.12.2</span> Steps in Doubly Robust Estimation<a href="difference-in-differences-did-methods.html#steps-in-doubly-robust-estimation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Estimate the Propensity Score</strong>:
+<ul>
+<li>Use a logistic regression (or other suitable model) to estimate the probability of treatment given the covariates <span class="math inline">\(X\)</span>:
+<span class="math display">\[ \hat{p}(X) = P(D = 1 | X) \]</span></li>
+</ul></li>
+<li><strong>Estimate the Outcome Model</strong>:
+<ul>
+<li>Fit a regression model to estimate the expected outcome given covariates <span class="math inline">\(X\)</span> and treatment <span class="math inline">\(D\)</span>:
+<span class="math display">\[ \hat{E}[Y | X, D] \]</span></li>
+</ul></li>
+<li><strong>Compute the Inverse Probability Weights (IPW)</strong>:
+<ul>
+<li>Calculate the weights based on the estimated propensity scores:
+<span class="math display">\[ W = \frac{D}{\hat{p}(X)} + \frac{1 - D}{1 - \hat{p}(X)} \]</span></li>
+</ul></li>
+<li><strong>Calculate the Doubly Robust Estimator</strong>:
+<ul>
+<li>Combine the outcome model and the inverse probability weights to adjust the outcomes:
+<span class="math display">\[ \hat{\theta}_{DR} = \frac{1}{n} \sum_{i=1}^n \left( \hat{E}[Y | X_i, D_i] + \frac{D_i (Y_i - \hat{E}[Y | X_i, D_i])}{\hat{p}(X_i)} - \frac{(1 - D_i) (Y_i - \hat{E}[Y | X_i, D_i])}{1 - \hat{p}(X_i)} \right) \]</span></li>
+</ul></li>
+</ol>
+</div>
+<div id="advantages-1" class="section level3 hasAnchor" number="6.12.3">
+<h3><span class="header-section-number">6.12.3</span> Advantages<a href="difference-in-differences-did-methods.html#advantages-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Robustness</strong>:
+<ul>
+<li>The estimator is consistent if either the outcome model or the propensity score model is correctly specified.</li>
+</ul></li>
+<li><strong>Efficiency</strong>:
+<ul>
+<li>It often has lower variance compared to using either the outcome model or propensity score model alone.</li>
+</ul></li>
+<li><strong>Flexibility</strong>:
+<ul>
+<li>Can be applied in various settings, including observational studies and randomized experiments with imperfect compliance.</li>
+</ul></li>
+</ol>
+</div>
+<div id="examples-and-applications" class="section level3 hasAnchor" number="6.12.4">
+<h3><span class="header-section-number">6.12.4</span> Examples and Applications<a href="difference-in-differences-did-methods.html#examples-and-applications" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Healthcare</strong>:
+<ul>
+<li>Estimating the effect of a new treatment on patient outcomes, where treatment assignment may depend on patient characteristics.</li>
+</ul></li>
+<li><strong>Economics</strong>:
+<ul>
+<li>Evaluating the impact of job training programs on employment, accounting for non-random selection into the program.</li>
+</ul></li>
+<li><strong>Education</strong>:
+<ul>
+<li>Assessing the effect of educational interventions, such as after-school tutoring programs, on student performance, considering potential confounding factors.</li>
+</ul></li>
+</ol>
+</div>
+<div id="assumptions-and-considerations-1" class="section level3 hasAnchor" number="6.12.5">
+<h3><span class="header-section-number">6.12.5</span> Assumptions and Considerations<a href="difference-in-differences-did-methods.html#assumptions-and-considerations-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Consistency</strong>:
+<ul>
+<li>Assumes that the treatment and outcome models are correctly specified for the estimator to be unbiased.</li>
+</ul></li>
+<li><strong>Overlap</strong>:
+<ul>
+<li>Requires that for every value of covariates <span class="math inline">\(X\)</span>, there is a positive probability of receiving both treatment and control (common support assumption).</li>
+</ul></li>
+<li><strong>No Unmeasured Confounding</strong>:
+<ul>
+<li>Assumes that all confounders affecting both treatment and outcome are observed and correctly included in the models.</li>
+</ul></li>
+</ol>
+</div>
+<div id="conclusion-6" class="section level3 hasAnchor" number="6.12.6">
+<h3><span class="header-section-number">6.12.6</span> Conclusion<a href="difference-in-differences-did-methods.html#conclusion-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Doubly Robust models provide a powerful and flexible approach for causal inference in econometrics, offering robustness against model misspecification and improving efficiency. They are particularly useful in observational studies where the treatment assignment is not random, ensuring more reliable and credible estimates of causal effects.</p>
+
+</div>
+</div>
+<div id="twoway-fixed-effects-with-differential-timing" class="section level2 hasAnchor" number="6.13">
+<h2><span class="header-section-number">6.13</span> Twoway Fixed Effects with Differential Timing<a href="difference-in-differences-did-methods.html#twoway-fixed-effects-with-differential-timing" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><span class="math inline">\(y_{it} = \alpha_0 + \delta D_{it} + X_{it} + \alpha_i + \alpha_t + \epsilon_{it}\)</span></p>
+<p>When researchers estimate this regression these days, they usually use the linear fixed-effects model. These linear panel models have gotten the nickname “twoway fixed effects” because they include both time fixed effects and unit fixed effects.</p>
+</div>
+<div id="bacon-decomposition" class="section level2 hasAnchor" number="6.14">
+<h2><span class="header-section-number">6.14</span> Bacon Decomposition<a href="difference-in-differences-did-methods.html#bacon-decomposition" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The punchline of the Bacon decomposition theorem is that the twoway fixed effects estimator is a weighted average of all potential 2 x 2 DD estimates where weights are both based on group sizes and variance in treatment.</p>
+<div id="overview" class="section level3 hasAnchor" number="6.14.1">
+<h3><span class="header-section-number">6.14.1</span> Overview<a href="difference-in-differences-did-methods.html#overview" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Bacon Decomposition is a method introduced by Goodman-Bacon (2018) for decomposing the overall treatment effect estimated by a Two-Way Fixed Effects (TWFE) regression model in the context of Difference-in-Differences (DiD) settings with variation in treatment timing. The key insight from this decomposition is that the TWFE estimate in such settings can be understood as a weighted average of all possible 2x2 DiD estimates that can be constructed from the data. This decomposition helps identify the sources of bias, especially when treatment effects are heterogeneous or when there are differential pre-treatment trends.</p>
+</div>
+<div id="key-concepts-4" class="section level3 hasAnchor" number="6.14.2">
+<h3><span class="header-section-number">6.14.2</span> Key Concepts<a href="difference-in-differences-did-methods.html#key-concepts-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Two-Way Fixed Effects (TWFE) Models</strong>:
+<ul>
+<li>TWFE models are commonly used in DiD analyses to account for time-invariant differences between units and common shocks over time by including unit and time fixed effects.</li>
+<li>The model typically looks like:
+<span class="math display">\[ Y_{it} = \alpha_i + \lambda_t + \beta D_{it} + \epsilon_{it} \]</span>
+where <span class="math inline">\(Y_{it}\)</span> is the outcome for unit <span class="math inline">\(i\)</span> at time <span class="math inline">\(t\)</span>, <span class="math inline">\(\alpha_i\)</span> are unit fixed effects, <span class="math inline">\(\lambda_t\)</span> are time fixed effects, <span class="math inline">\(D_{it}\)</span> is the treatment indicator, and <span class="math inline">\(\beta\)</span> is the treatment effect.</li>
+</ul></li>
+<li><strong>Variation in Treatment Timing</strong>:
+<ul>
+<li>In many DiD applications, units receive treatment at different times rather than simultaneously. This leads to multiple possible comparisons between treated and control units at different points in time.</li>
+</ul></li>
+<li><strong>Bacon Decomposition</strong>:
+<ul>
+<li>The decomposition breaks down the overall TWFE estimate into a weighted average of all possible 2x2 DiD estimates. Each of these estimates compares treated and untreated units in specific periods.</li>
+<li>The decomposition reveals that the overall estimate is influenced by:
+<ul>
+<li>Comparisons between early-treated and late-treated units.</li>
+<li>Comparisons between treated and untreated units at different times.</li>
+<li>Comparisons within treated units (pre- and post-treatment).</li>
+</ul></li>
+</ul></li>
+</ol>
+</div>
+<div id="components-of-bacon-decomposition" class="section level3 hasAnchor" number="6.14.3">
+<h3><span class="header-section-number">6.14.3</span> Components of Bacon Decomposition<a href="difference-in-differences-did-methods.html#components-of-bacon-decomposition" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Early vs. Late Treated Units</strong>:
+<ul>
+<li>Comparing units treated early with those treated later. This can introduce bias if there are differential trends among these groups.</li>
+</ul></li>
+<li><strong>Treated vs. Untreated Units</strong>:
+<ul>
+<li>Standard DiD comparison where treated units are compared to untreated ones, assuming common trends between them.</li>
+</ul></li>
+<li><strong>Within-Unit Comparisons</strong>:
+<ul>
+<li>Comparing outcomes within the same unit before and after treatment.</li>
+</ul></li>
+</ol>
+</div>
+<div id="formula-for-decomposition" class="section level3 hasAnchor" number="6.14.4">
+<h3><span class="header-section-number">6.14.4</span> Formula for Decomposition<a href="difference-in-differences-did-methods.html#formula-for-decomposition" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The overall TWFE estimate <span class="math inline">\(\hat{\beta}_{TWFE}\)</span> can be decomposed as:
+<span class="math display">\[ \hat{\beta}_{TWFE} = \sum_{k} w_k \hat{\beta}_k \]</span>
+where <span class="math inline">\(\hat{\beta}_k\)</span> are the 2x2 DiD estimates, and <span class="math inline">\(w_k\)</span> are the weights that depend on the relative timing of treatment and the distribution of the treated and control units over time.</p>
+</div>
+<div id="implications-and-interpretation" class="section level3 hasAnchor" number="6.14.5">
+<h3><span class="header-section-number">6.14.5</span> Implications and Interpretation<a href="difference-in-differences-did-methods.html#implications-and-interpretation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Heterogeneous Treatment Effects</strong>:
+<ul>
+<li>When treatment effects vary over time or across units, the TWFE estimate can be biased. Bacon decomposition helps identify how much of the TWFE estimate is driven by comparisons that might be invalid due to treatment effect heterogeneity.</li>
+</ul></li>
+<li><strong>Differential Pre-treatment Trends</strong>:
+<ul>
+<li>If treated and control units follow different pre-treatment trends, this can also bias the TWFE estimate. Bacon decomposition highlights which comparisons are most affected by such trends.</li>
+</ul></li>
+<li><strong>Policy Implications</strong>:
+<ul>
+<li>Understanding the sources of bias through Bacon decomposition can inform better policy evaluations by revealing the need for more appropriate methods or robustness checks in the presence of staggered treatment adoption.</li>
+</ul></li>
+</ol>
+</div>
+<div id="example-9" class="section level3 hasAnchor" number="6.14.6">
+<h3><span class="header-section-number">6.14.6</span> Example<a href="difference-in-differences-did-methods.html#example-9" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Consider a study evaluating the impact of a new education policy implemented in different schools at different times. Using a TWFE model, the overall treatment effect might be estimated as:
+<span class="math display">\[ \hat{\beta}_{TWFE} = 0.5 \]</span></p>
+<p>Applying Bacon decomposition, we might find that:
+- Comparisons between schools treated in 2018 and those treated in 2020 contribute <span class="math inline">\(0.3\)</span> to the estimate.
+- Comparisons between treated schools and untreated schools contribute <span class="math inline">\(0.1\)</span>.
+- Comparisons within schools before and after treatment contribute <span class="math inline">\(0.1\)</span>.</p>
+<p>If early-treated schools experienced a different trend in outcomes compared to late-treated schools, this could explain the significant contribution from early vs. late comparisons, highlighting potential bias in the overall estimate.</p>
+</div>
+<div id="conclusion-7" class="section level3 hasAnchor" number="6.14.7">
+<h3><span class="header-section-number">6.14.7</span> Conclusion<a href="difference-in-differences-did-methods.html#conclusion-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Bacon decomposition provides a nuanced understanding of the TWFE estimates in DiD settings with staggered treatment adoption. By breaking down the overall estimate into its constituent comparisons, researchers can identify and address potential biases due to heterogeneous treatment effects and differential trends, leading to more accurate and reliable causal inferences.</p>
+
+<div id="self-driving-cars-experiment" class="section level4 hasAnchor" number="6.14.7.1">
+<h4><span class="header-section-number">6.14.7.1</span> Self Driving Cars Experiment<a href="difference-in-differences-did-methods.html#self-driving-cars-experiment" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>(Source)[<a href="https://matteocourthoud.github.io/post/synth/" class="uri">https://matteocourthoud.github.io/post/synth/</a>]</p>
+<p>Suppose you were a ride-sharing platform and you wanted to test the effect of self-driving cars in your fleet.</p>
+<p>As you can imagine, there are many limitations to running an AB/test for this type of feature. First of all, it’s complicated to randomize individual rides. Second, it’s a very expensive intervention. Third, and statistically most important, you cannot run this intervention at the ride level. The problem is that there are spillover effects from treated to control units: if indeed self-driving cars are more efficient, it means that they can serve more customers in the same amount of time, reducing the customers available to normal drivers (the control group). This spillover contaminates the experiment and prevents a causal interpretation of the results.</p>
+<p>For all these reasons, we select only one city. Given the synthetic vibe of the article we cannot but select… (drum roll)… Miami!</p>
+<p>We have information on the largest 46 U.S. cities for the period 2002-2019. The panel is balanced, which means that we observe all cities for all time periods. Self-driving cars were introduced in 2013.</p>
+<p>As expected, the groups are not balanced: Miami is more densely populated, poorer, larger and has lower employment rate than the other cities in the US in our sample.</p>
+<p>We are interested in understanding the impact of the introduction of self-driving cars on revenue.</p>
+<p>One initial idea could be to analyze the data as we would in an A/B test, comparing control and treatment group. We can estimate the treatment effect as a difference in means in revenue between the treatment and control group, after the introduction of self-driving cars.</p>
+
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ab-testing.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="synthetic-control-method-scm.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Causal Methods.pdf", "Causal Methods.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

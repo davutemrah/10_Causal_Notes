@@ -1,0 +1,752 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# Regression Discontinuity Designs (RDD)
+
+(Comprehensive Source)[<https://rdpackages.github.io>]
+
+In the absence of randomized treatment assignment, research designs that
+allow for the rigorous study of non-experimental interventions are
+particularly promising. One of these is the Regression Discontinuity
+(RD) design
+
+In the RD design, all units have a score, and a treatment is assigned to
+those units whose value of the score exceeds a known cutoff or
+threshold, and not assigned to those units whose value of the score is
+below the cutoff. The key feature of the design is that the probability
+of receiving the treatment changes abruptly at the known threshold.
+
+I units are unable to sort arount the cutoff point, units with scores
+barely below the cutoff can be used as a comparison group for units with
+scores barely above it.
+
+In order to study causal effects with an RD design, the score,
+treatment, and cutoff must exist
+
+**types of approaches**
+
+A. Continuity based approach: this ensures the smoothness of the
+    regression functions. Use least squares and polynomials, global or
+    local to cutoff.
+
+-   The reason is that global polynomial approximations tend to deliver
+    a good approximation overall, but a poor approximation at boundary
+    points—
+
+-   Local polynomial methods are much better
+
+The idea that the treatment assignment is “as good as” randomly assigned in a neighborhood of the cutoff has been often invoked in the continuity-based framework to describe the required identification assumptions in an intuitive way, and it has also been used to develop formal results. However, within the continuity-based framework, the formal derivation of identification and esti- mation results always ultimately relies on continuity and differentiability of regression functions, and the idea of local randomization is used as a heuristic device only.
+
+
+In contrast, the local randomization approach to RD analysis formalizes the idea that the RD design behaves like a randomized experiment near the cutoff by imposing explicit randomization-type assumptions that are stronger than the continuity-based conditions.
+
+
+
+-   less sensitive to outliers or other extreme features of the data
+
+-   Local polynomial methods implement linear regression fits using only
+    observations near the cutoff point, separately for control and
+    treatment units.
+
+-   h: bandwidth that determines the size of the neighborhood around the
+    cutoff where the empirical RD analysis is conducted.
+
+-   the weights are determined by a kernel function K(·)
+
+-   goal: fit the local polynomial that approximates the unknown
+    regression functions around the cutoff.
+
+-   Local polynomial estimation consists of the following basic steps.
+
+1.  Choose a polynomial order p and a kernel function K(·).\
+2.  Choose a bandwidth h.\
+3.  For observations above the cutoff (i.e., observations with Xi ≥ c),
+    fit a weighted least squares regression of the outcome Yi
+4.  For observations below the cutoff (i.e., observations with Xi \< c),
+    fit a weighted least squares regression of the outcome Yi
+
+-   Kernel: assigns weights to units based on the distance: Triangular,
+    uniform (simple linear regression), Epanechnikov
+
+-   polynomial order: 0 constant fit; increasing order means more
+    accuracy but more variability, overfitting.
+
+in general the local linear estimator seems to deliver a good trade-off
+between simplicity, precision, and stability in RD settings.
+
+-   bandwidth:
+
+Choosing a smaller h will reduce the misspecification error (also known
+as “smoothing bias”) of the local polynomial approximation, but will
+simultaneously tend to increase the variance of the estimated
+coefficients because fewer observations will be available for
+estimation.
+
+the choice of bandwidth is said to involve a “bias-variance trade-off.”
+
+MSE-optimal bandwidth for the local polynomial RD estimate,
+
+**Example**
+
+These are assuming uniform kernel, no weights and polynomial degree 1...
+
+local poly-nomial point estimation is simply a weighted least-squares
+fit.
+
+A.  
+
+-   linear reg y on x for both sides
+-   intercept 2 - intercept 1
+
+B. linear reg Y on X + T + X\*T within bandwidth
+
+coefficient of T
+
+C. rdrobust with p=1, kernel=uniform
+
+rdrobust has many more options to use fully non parametric
+
+
+B. Local Randomization:
+
+In a nutshell, the local randomization approach imposes conditions so that units above and below the cutoff whose score values lie in a small window around the cutoff are comparable to each other and thus can be studied “as if” they had been randomly assigned to treatment or control.
+
+When the running variable is continuous, the local randomization approach typically requires stronger assumptions than the continuity-based approach; in these cases, it is natural to use the continuity-based approach for the main RD analysis, and to use the local randomization approach as a robustness check. But in settings where the running variable is discrete or other departures from the canonical RD framework occur, the local randomization approach no longer imposes the strongest assumptions and can be a natural and useful method for analysis.
+
+https://rdpackages.github.io/references/Cattaneo-Idrobo-Titiunik_2024_CUP.pdf
+
+### Validation and Falsification
+
+If the RD cutoff is known to the units that will be the beneficiaries of
+the treatment, researchers must worry about the possibility of units
+actively changing or manipulating the value of their score when they
+miss the treatment barely
+
+Naturally, the continuity assumptions that guarantee the validity of the
+RD design are about unobservable features and as such are inherently
+untestable.
+
+**1.  Predetermined Covariates and Placebo Outcomes**
+
+One of the most important RD falsification tests involves examining whether, near the cutoff, treated units are similar to control units in terms of observable characteristics.
+
+if units lack the ability to precisely manipulate the score value they receive, there should be no systematic differences between units with similar values of the score
+
+-   Predetermined Covariates: variables determined before treatment.
+-   placebo outcomes: variables determined after treatment
+
+  placebo outcomes arealways specific to each application. For example, for the study investigating the impact of clean water on child mortality, road accidents for child mortaility. 
+  
+  Outcomes would not be affected by treatment if there is no coincidence.
+  
+
+In the continuity-based approach, this principle means that for each predetermined covariate or placebo outcome, researchers should first choose an optimal bandwidth, and then use local polynomial techniques within that bandwidth to estimate the “treatment effect” and employ valid inference procedures such as the robust bias-corrected methods discussed previously. 
+
+The fundamental idea behind this test is that, since the pre- determined covariate (or placebo outcome) could not have been affected by the treatment, the null hypothesis of no treatment effect should not be rejected if the RD design is valid.
+
+To implement this formal falsification test, we simply run rdrobust using each covariate of interest as the outcome variable.
+
+(Read page 94)[https://rdpackages.github.io/references/Cattaneo-Idrobo-Titiunik_2020_CUP.pdf]
+
+**2. Density of Running variable**
+
+Check whether there is sorting.
+
+Examine whether in a local neighborhood near the cutoff, the number of observations below the cutoff is surprisingly different from the number of observations above it.
+
+if units do not have the ability to precisely manipulate the value of the score that they receive, the number of treated observations just above the cutoff should be approximately similar to the number of control observations below it. 
+
+No guideline on bandwidth to be inspected, several bandwidths may be presented.
+
+Histogram would be helpful.
+
+Formal test uses binomial test. Choose a small neighborhood around the cutoff, and perform a simple Bernoulli test within that neighborhood with a probability of “success” equal to 1/2. This strategy tests whether the number of treated observations in the chosen neighborhood is compatible with what would have been observed if units had been assigned to the treatment group (i.e., to being above the cutoff) with a 50% probability. 
+
+Or rddensity test.
+
+-   Both the continuity-based approach and the local randomization
+    approach rely on the assumption that units that receive very similar
+    score values on opposite sides of the cutoff are comparable to each
+    other in all relevant aspects, except for their treatment status.
+
+-   The main distinction between these frameworks is how the idea of
+    comparability is formalized: in the continuity-based framework,
+    comparability is conceptualized as continuity of average (or some
+    other feature of) potential outcomes near the cutoff, while in the
+    local randomization framework, comparability is conceptualized as
+    conditions that mimic a randomized experiment in a neighborhood
+    around the cutoff.
+
+
+**3. Placebo Cutoffs**
+
+Another useful falsification analysis examines treatment effects at artificial or placebo cutoff values.
+
+Evidence of continuity away from the cutoff is, of course, neither necessary nor sufficient for continuity at the cutoff, but the presence of discontinuities away from the cutoff can be interpreted as potentially casting doubt on the RD design
+
+
+This test replaces the true cutoff value by another value at which the treatment status does not really change, and performs estimation and inference using this artificial cutoff point. The expectation is that no significant treatment effect will occur at placebo cutoff values.
+
+
+To avoid “contamination” due to real treatment effects, for artificial cutoffs above the real cutoff we use only treated observations, and for artificial cutoffs below the real cutoff we use only control observations. Restricting the observations in this way guarantees that the analysis of each placebo cutoff uses only observations with the same treatment status.
+
+
+**4. Sensitivity to Observations near the cutoff**
+
+
+If systematic manipulation of score values has occurred, it is natural to assume that the units closest to the cutoff are those most likely to have engaged in manipulation.
+
+The idea behind this approach is to exclude such units and then repeat the estimation and inference analysis using the remaining sample. This idea is sometimes referred to as a “donut hole” approach.
+
+In practice, it is natural to repeat this exercise a few times to assess the actual sensitivity for different amounts of excluded units. 
+
+
+**5. Sensitivity to Bandwidth Choice**
+
+The method now investigates sensitivity as units are added or removed at the end points of the neighborhood. 
+
+Choosing the bandwidth is one of the most consequential decisions in RD analysis, because the bandwidth may affect the results and conclusions.
+
+In the continuity-based approach, this falsification test is implemented by changing the bandwidth used for local polynomial estimation. 
+
+As h increases, bias of local polynomial estimator will increase and variance will decrease and CI will get narrower.
+
+## Regression Discontinuity Designs (RDD)
+
+Regression Discontinuity Designs (RDD) are quasi-experimental methods
+used to estimate causal effects when a treatment is assigned based on a
+cutoff point in a continuous assignment variable. The basic idea is to
+compare observations just above and below the cutoff, assuming they are
+similar except for the treatment.
+
+RDD is particularly suited to visual analysis. By plotting the running
+variable against the outcome variable, we can observe any "jumps" in the
+probability of treatment at the cutoff. These jumps indicate the
+treatment effect.
+
+## Key Concepts
+
+1.  **Assignment Variable**: A continuous (running) variable that
+    determines treatment assignment based on a cutoff point.
+
+2.  **Cutoff Point**: The threshold value of the assignment variable
+    that determines who receives the treatment.
+
+3.  **Treatment Group**: Observations with assignment variable values
+    above (or below) the cutoff.
+
+4.  **Control Group**: Observations with assignment variable values
+    below (or above) the cutoff.
+
+-   **Local Average Treatment Effect (LATE)**: In RDD, we focus on
+    estimating the treatment effect for observations near the cutoff.
+    Since the probability of receiving the treatment changes abruptly at
+    the cutoff, we compare outcomes for those just above and just below
+    this point to estimate LATE.
+
+-   **No Overlap/Common Support**: Unlike randomized controlled trials
+    (RCTs), RDD lacks overlap between treatment and control groups
+    across the entire range of the running variable. Instead, it relies
+    on extrapolation by comparing units with different values of the
+    running variable that are close to the cutoff. As we approach the
+    cutoff from either direction, the units become more comparable,
+    which allows us to estimate the causal effect.
+
+-   **Handling Extrapolation Bias**: All methods used in RDD aim to
+    address the bias arising from the need to extrapolate. These methods
+    ensure that the comparisons made are as clean and unbiased as
+    possible.
+
+### Types of RDD
+
+1.  **Sharp RDD**: Treatment assignment is strictly determined by the
+    cutoff. All units above (or below) the cutoff receive the treatment,
+    and none below (or above) do.
+
+2.  **Fuzzy RDD**: Treatment assignment is probabilistic at the cutoff.
+    Not all units above (or below) the cutoff receive the treatment, and
+    some units below (or above) the cutoff may receive the treatment.
+
+## Sharp RDD
+
+In Sharp RDD, the treatment is perfectly assigned based on the cutoff
+point. This can be represented as:
+
+$$ D_i = \begin{cases} 
+1 & \text{if } X_i \geq c \\
+0 & \text{if } X_i < c 
+\end{cases}$$
+
+Where:
+
+-   $D_i$ is the treatment indicator.\
+
+-   $X_i$ is the assignment variable.\
+
+-   $c$ is the cutoff point.
+
+-   Full compliance.
+
+-   only one cutoff.
+
+-   score is continuously distributed
+
+### Key Concepts
+
+The sharp RDD estimation is interpreted as an average causal effect of
+the treatment as the running variable approaches the cutoff in the
+limit, for it is only in the limit that we have overlap. This average
+causal effect is the **local average treatment effect (LATE)**.
+
+Notice the role that **extrapolation** plays in estimating treatment
+effects with sharp RDD. If unit $i$ is just below $c_0$, then $D_i = 0$.
+But if unit $i$ is just above $c_0$, then $D_i = 1$. But for any value
+of $X_i$, there are either units in the treatment group or the control
+group, but not both. Therefore, the RDD does not have common support,
+which is one of the reasons we rely on extrapolation for our estimation.
+
+1.  **Unit** $i$: Represents an individual observation in your dataset.
+2.  $c_0$: The cutoff value of the assignment variable $X$ that
+    determines treatment assignment.
+3.  $D_i$: The treatment indicator variable, where $D_i = 1$ if the unit
+    receives the treatment and $D_i = 0$ if it does not.
+4.  **Common Support**: A situation where there are treated and control
+    units with similar values of the assignment variable $X$.
+
+There is no common support because control and treated groups may not
+have same value of running variable.
+
+#### Explanation
+
+In a sharp RDD:
+
+**Treatment Assignment**: Units are assigned to treatment or control
+strictly based on whether their assignment variable $X$ is above or
+below the cutoff $c_0$.
+
+-   If $X_i$ (the assignment variable for unit $i$) is just below $c_0$,
+    then $D_i = 0$ (the unit is in the control group).
+
+-   If $X_i$ is just above $c_0$, then $D_i = 1$ (the unit is in the
+    treatment group).
+
+#### No Common Support in RDD
+
+-   **No Overlap**: For any given value of $X_i$, units are either in
+    the treatment group or the control group, but not both. This means
+    that at any specific value of $X_i$, you don't have both treated and
+    untreated units.
+    -   For example, if $X_i$ is exactly $c_0$, you don't have units
+        both treated and untreated at that exact point (in practical
+        terms, it’s often the case we look just below and just above
+        $c_0$).
+
+#### Extrapolation in RDD
+
+**Extrapolation**: To estimate the treatment effect at the cutoff, we
+essentially need to compare the outcomes of units just below and just
+above the cutoff. Since there are no units that have exactly the same
+value of $X$ but different treatment statuses, we use the units close to
+the cutoff to infer what would happen if a unit's treatment status were
+different.
+
+**Example**: Suppose the cutoff $c_0$ is 50. Units with $X_i = 49.9$ are
+in the control group and units with $X_i = 50.1$ are in the treatment
+group. We compare the outcomes of these units to estimate the treatment
+effect.
+
+#### Why Extrapolation is Needed
+
+**Local Comparisons**: In RDD, we rely on the assumption that units just
+below and just above the cutoff are very similar in all respects except
+for the treatment. Thus, we "extrapolate" the behavior of one group to
+understand the counterfactual of the other.
+
+**Local Treatment Effect**: This local comparison near the cutoff allows
+us to estimate the causal effect of the treatment precisely at $c_0$.
+
+#### Summary
+
+In summary, the lack of common support in RDD means we don't have units
+that are both treated and untreated at the same value of the assignment
+variable. As a result, we rely on extrapolation, comparing units just
+below and just above the cutoff to estimate the treatment effect. This
+is because these units are assumed to be similar except for the
+treatment, allowing us to infer what the outcome would be if their
+treatment status were different.
+
+### Assumptions for RDD
+
+#### Continuity Assumption in RDD
+
+1.  **Definition**: The potential outcomes (both treated and untreated)
+    must be continuous at the cutoff. This ensures that any jump in the
+    outcome at the cutoff can be attributed to the treatment.
+
+**Expected Potential Outcomes**: The assumption states that the expected
+potential outcomes are continuous at the cutoff. In simpler terms, if we
+plot the expected outcomes of the units just below and just above the
+cutoff, the outcomes would form a smooth curve **if there were no
+treatment effect**.
+
+-   If there were no treatment, there would not be a jump at the cutoff.
+
+**Ruling Out Competing Interventions**: If expected potential outcomes
+are continuous at the cutoff, it necessarily rules out competing
+interventions or other factors that might cause a discontinuity at the
+cutoff. This is crucial because we want to attribute any observed jump
+in the outcome to the treatment alone, not to some other unobserved
+factor.
+
+**Omitted Variable Bias**: Continuity explicitly rules out omitted
+variable bias at the cutoff. This means that all other unobserved
+determinants of the outcome variable $Y$ are smoothly related to the
+running variable $X$. Therefore, any abrupt change at the cutoff can be
+confidently attributed to the treatment effect.
+
+**Interpreting the Assumption Mathematically**:
+
+$E[Y^0 | X]$ and $E[Y^1 | X]$ are the expected outcomes if the unit did
+not receive and did receive the treatment, respectively.
+
+The continuity assumption means that $E[Y^0 | X]$ and $E[Y^1 | X]$ would
+not exhibit a sudden jump at the cutoff $c_0$ in the absence of
+treatment.
+
+If there is a jump at $c_0$, it indicates the presence of the treatment
+effect because in the absence of the treatment, $E[Y^1 | X]$ should not
+change abruptly.
+
+**Example to Illustrate Continuity Assumption**
+
+Imagine we are studying the effect of a scholarship program on student
+test scores, where the scholarship is given to students who score above
+a certain cutoff on a preliminary test.
+
+**Continuity without Treatment**: If there were no scholarship, the
+expected test scores of students just below and just above the cutoff
+should be very similar and form a smooth curve.
+
+**Jump Due to Treatment**: If we observe a jump in test scores exactly
+at the cutoff, this jump can be attributed to the effect of receiving
+the scholarship, assuming the continuity assumption holds.
+
+**Summary**
+
+The continuity assumption in RDD is crucial for identifying the causal
+effect of the treatment. It ensures that any observed discontinuity in
+the outcome at the cutoff can be attributed solely to the treatment and
+not to any other unobserved factors. This assumption rules out omitted
+variable bias at the cutoff, ensuring the reliability of the estimated
+treatment effect.
+
+In essence, the continuity assumption guarantees that the treatment
+effect is the only factor causing a jump in the outcome at the cutoff,
+allowing us to make causal inferences from the RDD design.
+
+#### No Manipulation (sorting)
+
+Units cannot precisely manipulate the assignment variable to end up on
+one side of the cutoff. This ensures that the units just above and below
+the cutoff are comparable.
+
+### Estimation in Sharp RDD
+
+**Parametric Approach**: Fit separate linear regressions on either side
+of the cutoff and estimate the treatment effect as the difference in the
+intercepts at the cutoff.
+
+$$ Y_i = \alpha_1 + \beta_1 X_i + \epsilon_i \quad \text{if } X_i \geq c $$
+$$ Y_i = \alpha_0 + \beta_0 X_i + \epsilon_i \quad \text{if } X_i < c $$
+
+The treatment effect is $\alpha_1 - \alpha_0$.
+
+**Non-Parametric Approach**: Use local polynomial regression or kernel
+regression to fit the data near the cutoff. This method is preferred
+because it makes fewer assumptions about the functional form of the
+relationship between the assignment variable and the outcome.
+
+-   cluster at running variable ( bad idea)
+
+-   use heteroskedastic robust standard errors
+
+-   kernel type, cutof window
+
+### Fuzzy RDD
+
+In Fuzzy RDD, the probability of receiving treatment changes
+discontinuously at the cutoff but is not perfectly deterministic. This
+can be represented as:
+
+$$ D_i = \begin{cases} 
+1 & \text{with probability } p_1 \text{ if } X_i \geq c \\
+0 & \text{with probability } p_0 \text{ if } X_i < c 
+\end{cases}
+$$
+
+Where $p_1$ and $p_0$ are the probabilities of receiving treatment above
+and below the cutoff, respectively.
+
+#### Estimation in Fuzzy RDD
+
+-   **Instrumental Variables (IV) Approach**: Use the cutoff as an
+    instrument for actual treatment receipt. The first stage estimates
+    the probability of treatment, and the second stage uses this to
+    estimate the treatment effect.
+
+First stage: $$ D_i = \pi_0 + \pi_1 Z_i + \eta_i $$
+
+Second stage: $$ Y_i = \alpha + \beta \hat{D}_i + \epsilon_i $$
+
+Where $Z_i$ is an indicator variable equal to 1 if $X_i \geq c$ and 0
+otherwise.
+
+### Parametric vs. Non-Parametric Applications
+
+**Parametric Applications**: Assume a specific functional form (e.g.,
+linear) for the relationship between the assignment variable and the
+outcome. Simpler to implement but relies heavily on the correct
+specification of the model.
+
+**Non-Parametric Applications**: Make fewer assumptions about the
+functional form. Typically use methods like local polynomial regression
+or kernel regression to fit the data near the cutoff. More flexible and
+robust but can be more complex to implement and interpret.
+
+### Example
+
+Suppose a school district awards scholarships to students who score
+above a certain threshold on a standardized test.
+
+-   **Sharp RDD**: All students who score above 80 receive the
+    scholarship, and none below 80 do. We compare students scoring just
+    above 80 to those just below to estimate the effect of receiving the
+    scholarship on academic outcomes.
+
+-   **Fuzzy RDD**: Students who score above 80 are more likely to
+    receive the scholarship, but not all do (e.g., due to additional
+    criteria or random factors). We use the score of 80 as an instrument
+    to estimate the causal effect of receiving the scholarship.
+
+### Summary
+
+Regression Discontinuity Designs are powerful tools for causal inference
+in observational studies where treatment assignment is based on a
+cutoff.
+
+Sharp RDDs assume perfect treatment assignment based on the cutoff,
+while Fuzzy RDDs allow for probabilistic treatment assignment.
+
+Both parametric and non-parametric approaches can be used, with
+non-parametric methods generally preferred for their flexibility. Key
+assumptions include the continuity of potential outcomes and the
+inability of units to manipulate their assignment variable precisely.
+
+The reason RDD is so appealing to many is because of its ability to
+convincingly eliminate selection bias.
+
+Assignment variable, is often called the “running variable”—is an
+observable confounder since it causes both Treatment and Outcome.
+
+The assignment variable assigns treatment on the basis of a cutoff, we
+are never able to observe units in both treatment and control for the
+same value of X.
+
+We can identify causal effects for those subjects whose score is in a
+close neighborhood around some cutoff $c_o$.
+
+### Challenges to Identification
+
+The requirement for RDD to estimate a causal effect are the continuity
+assumptions. That is, the expected potential outcomes change smoothly as
+a function of the running variable through the cutoff. In words, this
+means that the only thing that causes the outcome to change abruptly at
+is the treatment. But, this can be violated in practice if any of the
+following is true:
+
+-   The assignment rule is known in advance.
+
+-   Agents are interested in adjusting.
+
+-   Agents have time to adjust.
+
+-   The cutoff is endogenous to factors that independently cause
+    potential outcomes to shift.
+
+-   There is nonrandom heaping along the running variable.
+
+-   Examples include retaking an exam, self-reporting income, and so on.
+
+-   The cutoff is endogenous. An example would be age thresholds used
+    for policy, such as when a person turns 18 years old and faces more
+    severe penalties for crime. This age threshold triggers the
+    treatment (i.e., higher penalties for crime), but is also correlated
+    with variables that affect the outcomes, such as graduating from
+    high school and voting rights. Let’s tackle these problems
+    separately.
+
+Although assumptions may not be tested directly, indirect evidence may
+be show to be persuasive.
+
+#### Density Test
+
+density test is used to check whether units are sorting on the running
+variable.
+
+under the null, the density should be continuous at the cutoff point.
+Under the alternative hypothesis, the density should increase at the
+kink.
+
+#### Covariate balance and Other placebos
+
+For RDD to be valid in your study, there must not be an observable
+discontinuous change in the average values of reasonably chosen
+covariates around the cutoff.
+
+As these are pretreatment characteristics, they should be invariant to
+change in treatment assignment.
+
+This test is basically what is sometimes called a placebo test. That is,
+you are looking for there to be no effects where there shouldn’t be any.
+
+So a third kind of test is an extension of that—just as there shouldn’t
+be effects at the cutoff on pretreatment values, there shouldn’t be
+effects on the outcome of interest at arbitrarily chosen cutoffs. Guido
+W. Imbens and Lemieux (2008) suggest looking at one side of the
+discontinuity, taking the median value of the running variable in that
+section, and pretending it was a discontinuity, $c^{i}_0$. Then test
+whether there is a discontinuity in the outcome at $c^{i}_0$. You do not
+want to find anything.
+
+#### Non-random heaping in running variable
+
+Heaping occurs when there is an excess number of units at certain points
+along the running variable. In this case, it seems to happen at regular
+100-gram intervals, likely due to hospitals rounding to the nearest
+integer.
+
+This pattern is unlikely to occur naturally and is almost certainly
+caused by either sorting or rounding. It could result from less
+sophisticated scales or, more concerningly, from staff rounding a
+child's birth weight to 1,500 grams to make the child eligible for
+increased medical attention.
+
+In RDD, estimation compares means as we approach the threshold from
+either side, so the estimates should not be overly influenced by the
+observations at the threshold itself. One solution to address this issue
+is the "donut hole" RDD, where units in the vicinity of 1,500 grams are
+removed, and the model is re-estimated.
+
+### Examples
+
+#### Close Election
+
+Regression Discontinuity Design (RDD) can be effectively used in the
+context of close elections to identify causal effects. The key idea is
+that in very close elections, the outcome of the election (winning or
+losing) can be considered as good as random. This randomness allows
+researchers to estimate the causal effect of winning an election on
+various outcomes.
+
+They argue that just around that cutoff, random chance determined the
+Democratic win—hence the random assignment of $D_t$
+
+**Identifying the Impact of Political Office on Economic Policies:**
+
+**Scenario**: Consider a study aiming to determine whether holding
+political office affects a politician's subsequent policy decisions or
+economic outcomes in their district.
+
+**RDD Approach**: Researchers focus on elections decided by a very small
+margin of votes. For example, sample includes only observations where
+the Democrat vote share at time is strictly between 48 percent and 52
+percent.
+
+**Assumption**: In close elections, the distribution of voter
+preferences is assumed to be similar on both sides of the cutoff
+(winning or losing by a small margin). This similarity allows the
+comparison of outcomes just above and just below the threshold.
+
+**Application**: By comparing districts where the incumbent barely won
+to those where the incumbent barely lost, researchers can isolate the
+effect of holding office on policy decisions and economic outcomes.
+
+#### Education Policies
+
+**Identifying the Impact of Scholarship Programs:**
+
+**Scenario**: A scholarship program is awarded to students who score
+above a certain threshold on an entrance exam.
+
+**RDD Approach**: Researchers compare students who score just above the
+threshold (and receive the scholarship) to those who score just below
+(and do not receive the scholarship).
+
+**Assumption**: Students near the cutoff are similar in all respects
+except for receiving the scholarship.
+
+**Application**: By analyzing differences in educational attainment and
+future earnings between the two groups, researchers can estimate the
+causal impact of the scholarship program.
+
+#### Health Interventions
+
+**Identifying the Impact of Health Interventions:**
+
+**Scenario**: A public health intervention is provided to individuals
+whose health risk score exceeds a certain threshold.
+
+**RDD Approach**: Researchers compare individuals who just qualify for
+the intervention to those who just miss the qualification.
+
+**Assumption**: Individuals near the threshold are comparable in health
+status except for receiving the intervention.
+
+**Application**: By examining health outcomes such as disease incidence
+or hospitalization rates, researchers can infer the causal effect of the
+health intervention.
+
+### Types of RDD
+
+#### Sharp RDD
+
+In sharp RDD, the treatment assignment is strictly determined by whether
+the running variable crosses a threshold.
+
+-   **Example**: A tax credit is given to families whose income is below
+    a certain cutoff. Families just below the cutoff receive the tax
+    credit, while those just above do not.
+
+#### Fuzzy RDD
+
+In fuzzy RDD, the probability of treatment assignment jumps at the
+threshold but not perfectly.
+
+-   **Example**: Eligibility for a drug rehabilitation program is
+    determined by a cutoff on an addiction severity score, but not all
+    eligible individuals enroll in the program.
+
+### Parametric vs. Non-Parametric Applications
+
+#### Parametric RDD
+
+Parametric RDD involves fitting a parametric model (e.g., a polynomial
+regression) to estimate the relationship between the running variable
+and the outcome.
+
+-   **Example**: Using a polynomial regression model to estimate the
+    impact of an education intervention on test scores.
+
+#### Non-Parametric RDD
+
+Non-parametric RDD uses local polynomial regression or other
+non-parametric methods to estimate the treatment effect, focusing on
+observations near the cutoff.
+
+-   **Example**: Applying local linear regression to estimate the impact
+    of a health intervention on patient recovery rates.
+
+## Regression Kink Design

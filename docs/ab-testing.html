@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 AB Testing | Notes on Causal Models</title>
+  <meta name="description" content="This is a collection of notes from open sources" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 AB Testing | Notes on Causal Models" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is a collection of notes from open sources" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 AB Testing | Notes on Causal Models" />
+  
+  <meta name="twitter:description" content="This is a collection of notes from open sources" />
+  
+
+<meta name="author" content="DEA" />
+
+
+<meta name="date" content="2024-06-23" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="task-four-create-sample-distribution-using-bootsrapping.html"/>
+<link rel="next" href="difference-in-differences-did-methods.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Causal Model Notes</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Acknowledgement</a></li>
+<li class="chapter" data-level="1" data-path="causal-models.html"><a href="causal-models.html"><i class="fa fa-check"></i><b>1</b> Causal Models</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="causal-models.html"><a href="causal-models.html#ordinary-least-squares-ols"><i class="fa fa-check"></i><b>1.1</b> Ordinary Least Squares (OLS)</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="causal-models.html"><a href="causal-models.html#linearity"><i class="fa fa-check"></i><b>1.1.1</b> 1. <strong>Linearity</strong></a></li>
+<li class="chapter" data-level="1.1.2" data-path="causal-models.html"><a href="causal-models.html#exogeneity"><i class="fa fa-check"></i><b>1.1.2</b> 2. <strong>Exogeneity</strong></a></li>
+<li class="chapter" data-level="1.1.3" data-path="causal-models.html"><a href="causal-models.html#homoscedasticity"><i class="fa fa-check"></i><b>1.1.3</b> 3. <strong>Homoscedasticity</strong></a></li>
+<li class="chapter" data-level="1.1.4" data-path="causal-models.html"><a href="causal-models.html#no-autocorrelation"><i class="fa fa-check"></i><b>1.1.4</b> 4. <strong>No Autocorrelation</strong></a></li>
+<li class="chapter" data-level="1.1.5" data-path="causal-models.html"><a href="causal-models.html#no-perfect-multicollinearity"><i class="fa fa-check"></i><b>1.1.5</b> 5. <strong>No Perfect Multicollinearity</strong></a></li>
+<li class="chapter" data-level="1.1.6" data-path="causal-models.html"><a href="causal-models.html#normality-of-errors-for-inference"><i class="fa fa-check"></i><b>1.1.6</b> 6. <strong>Normality of Errors (for inference)</strong></a></li>
+<li class="chapter" data-level="1.1.7" data-path="causal-models.html"><a href="causal-models.html#practical-considerations-and-tests"><i class="fa fa-check"></i><b>1.1.7</b> Practical Considerations and Tests</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="causal-models.html"><a href="causal-models.html#concepts"><i class="fa fa-check"></i><b>1.2</b> Concepts</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="causal-models.html"><a href="causal-models.html#goodness-of-fit"><i class="fa fa-check"></i><b>1.2.1</b> Goodness of Fit</a></li>
+<li class="chapter" data-level="1.2.2" data-path="causal-models.html"><a href="causal-models.html#robustness-checks-and-validation-methods"><i class="fa fa-check"></i><b>1.2.2</b> Robustness checks and validation methods</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="causal-models.html"><a href="causal-models.html#multivariate-regression"><i class="fa fa-check"></i><b>1.3</b> Multivariate Regression</a></li>
+<li class="chapter" data-level="1.4" data-path="causal-models.html"><a href="causal-models.html#directed-acyclic-graphs-dags"><i class="fa fa-check"></i><b>1.4</b> Directed Acyclic Graphs (DAGs)</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="causal-models.html"><a href="causal-models.html#confounder"><i class="fa fa-check"></i><b>1.4.1</b> Confounder</a></li>
+<li class="chapter" data-level="1.4.2" data-path="causal-models.html"><a href="causal-models.html#collider"><i class="fa fa-check"></i><b>1.4.2</b> Collider</a></li>
+<li class="chapter" data-level="1.4.3" data-path="causal-models.html"><a href="causal-models.html#what-to-do"><i class="fa fa-check"></i><b>1.4.3</b> What to do</a></li>
+<li class="chapter" data-level="1.4.4" data-path="causal-models.html"><a href="causal-models.html#how-to-do"><i class="fa fa-check"></i><b>1.4.4</b> How to do</a></li>
+<li class="chapter" data-level="1.4.5" data-path="causal-models.html"><a href="causal-models.html#bad-controls"><i class="fa fa-check"></i><b>1.4.5</b> Bad Controls</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="causal-models.html"><a href="causal-models.html#external-and-internal-validity-in-econometrics"><i class="fa fa-check"></i><b>1.5</b> External and Internal Validity in Econometrics</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="causal-models.html"><a href="causal-models.html#internal-validity"><i class="fa fa-check"></i><b>1.5.1</b> Internal Validity</a></li>
+<li class="chapter" data-level="1.5.2" data-path="causal-models.html"><a href="causal-models.html#external-validity"><i class="fa fa-check"></i><b>1.5.2</b> External Validity</a></li>
+<li class="chapter" data-level="1.5.3" data-path="causal-models.html"><a href="causal-models.html#balancing-internal-and-external-validity"><i class="fa fa-check"></i><b>1.5.3</b> Balancing Internal and External Validity</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="causal-models.html"><a href="causal-models.html#endogeneity"><i class="fa fa-check"></i><b>1.6</b> Endogeneity</a>
+<ul>
+<li class="chapter" data-level="1.6.1" data-path="causal-models.html"><a href="causal-models.html#sources-of-endogeneity"><i class="fa fa-check"></i><b>1.6.1</b> Sources of Endogeneity:</a></li>
+<li class="chapter" data-level="1.6.2" data-path="causal-models.html"><a href="causal-models.html#consequences-of-endogeneity"><i class="fa fa-check"></i><b>1.6.2</b> Consequences of Endogeneity:</a></li>
+<li class="chapter" data-level="1.6.3" data-path="causal-models.html"><a href="causal-models.html#methods-to-address-endogeneity"><i class="fa fa-check"></i><b>1.6.3</b> Methods to Address Endogeneity:</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="causal-models.html"><a href="causal-models.html#reduced-form-model"><i class="fa fa-check"></i><b>1.7</b> Reduced Form Model</a>
+<ul>
+<li class="chapter" data-level="1.7.1" data-path="causal-models.html"><a href="causal-models.html#characteristics-of-reduced-form-models"><i class="fa fa-check"></i><b>1.7.1</b> Characteristics of Reduced Form Models:</a></li>
+<li class="chapter" data-level="1.7.2" data-path="causal-models.html"><a href="causal-models.html#uses-of-reduced-form-models"><i class="fa fa-check"></i><b>1.7.2</b> Uses of Reduced Form Models:</a></li>
+<li class="chapter" data-level="1.7.3" data-path="causal-models.html"><a href="causal-models.html#example-of-a-reduced-form-model"><i class="fa fa-check"></i><b>1.7.3</b> Example of a Reduced Form Model:</a></li>
+</ul></li>
+<li class="chapter" data-level="1.8" data-path="causal-models.html"><a href="causal-models.html#unobserved-variable-affecting-only-the-dependent-variable"><i class="fa fa-check"></i><b>1.8</b> Unobserved Variable Affecting Only the Dependent Variable</a></li>
+<li class="chapter" data-level="1.9" data-path="causal-models.html"><a href="causal-models.html#types-of-biases"><i class="fa fa-check"></i><b>1.9</b> Types of Biases</a>
+<ul>
+<li class="chapter" data-level="1.9.1" data-path="causal-models.html"><a href="causal-models.html#selection-bias"><i class="fa fa-check"></i><b>1.9.1</b> 1. Selection Bias</a></li>
+<li class="chapter" data-level="1.9.2" data-path="causal-models.html"><a href="causal-models.html#omitted-variable-bias"><i class="fa fa-check"></i><b>1.9.2</b> 2. Omitted Variable Bias</a></li>
+<li class="chapter" data-level="1.9.3" data-path="causal-models.html"><a href="causal-models.html#measurement-bias"><i class="fa fa-check"></i><b>1.9.3</b> 3. Measurement Bias</a></li>
+<li class="chapter" data-level="1.9.4" data-path="causal-models.html"><a href="causal-models.html#response-bias"><i class="fa fa-check"></i><b>1.9.4</b> 4. Response Bias</a></li>
+<li class="chapter" data-level="1.9.5" data-path="causal-models.html"><a href="causal-models.html#attrition-bias"><i class="fa fa-check"></i><b>1.9.5</b> 5. Attrition Bias</a></li>
+<li class="chapter" data-level="1.9.6" data-path="causal-models.html"><a href="causal-models.html#publication-bias"><i class="fa fa-check"></i><b>1.9.6</b> 6. Publication Bias</a></li>
+<li class="chapter" data-level="1.9.7" data-path="causal-models.html"><a href="causal-models.html#survivorship-bias"><i class="fa fa-check"></i><b>1.9.7</b> 7. Survivorship Bias</a></li>
+<li class="chapter" data-level="1.9.8" data-path="causal-models.html"><a href="causal-models.html#recall-bias"><i class="fa fa-check"></i><b>1.9.8</b> 8. Recall Bias</a></li>
+<li class="chapter" data-level="1.9.9" data-path="causal-models.html"><a href="causal-models.html#confirmation-bias"><i class="fa fa-check"></i><b>1.9.9</b> 9. Confirmation Bias</a></li>
+<li class="chapter" data-level="1.9.10" data-path="causal-models.html"><a href="causal-models.html#confounding-bias"><i class="fa fa-check"></i><b>1.9.10</b> 10. Confounding Bias</a></li>
+<li class="chapter" data-level="1.9.11" data-path="causal-models.html"><a href="causal-models.html#endogeneity-bias"><i class="fa fa-check"></i><b>1.9.11</b> 11. Endogeneity Bias</a></li>
+<li class="chapter" data-level="1.9.12" data-path="causal-models.html"><a href="causal-models.html#non-response-bias"><i class="fa fa-check"></i><b>1.9.12</b> 12. Non-Response Bias</a></li>
+<li class="chapter" data-level="1.9.13" data-path="causal-models.html"><a href="causal-models.html#observer-bias"><i class="fa fa-check"></i><b>1.9.13</b> 13. Observer Bias</a></li>
+<li class="chapter" data-level="1.9.14" data-path="causal-models.html"><a href="causal-models.html#overfitting-bias"><i class="fa fa-check"></i><b>1.9.14</b> 14. Overfitting Bias</a></li>
+<li class="chapter" data-level="1.9.15" data-path="causal-models.html"><a href="causal-models.html#addressing-biases"><i class="fa fa-check"></i><b>1.9.15</b> Addressing Biases</a></li>
+<li class="chapter" data-level="1.9.16" data-path="causal-models.html"><a href="causal-models.html#self-selection-bias"><i class="fa fa-check"></i><b>1.9.16</b> Self-Selection Bias</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="potential-outcomes.html"><a href="potential-outcomes.html"><i class="fa fa-check"></i><b>2</b> Potential Outcomes</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#key-concepts"><i class="fa fa-check"></i><b>2.1</b> Key Concepts</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#causal-effect"><i class="fa fa-check"></i><b>2.1.1</b> Causal Effect</a></li>
+<li class="chapter" data-level="2.1.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#average-treatment-effect-ate"><i class="fa fa-check"></i><b>2.1.2</b> Average Treatment Effect (ATE)</a></li>
+<li class="chapter" data-level="2.1.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#average-treatment-effect-on-the-treated-att"><i class="fa fa-check"></i><b>2.1.3</b> Average Treatment Effect on the Treated (ATT)</a></li>
+<li class="chapter" data-level="2.1.4" data-path="potential-outcomes.html"><a href="potential-outcomes.html#the-fundamental-problem-of-causal-inference"><i class="fa fa-check"></i><b>2.1.4</b> The Fundamental Problem of Causal Inference</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#assumptions-for-identifying-causal-effects"><i class="fa fa-check"></i><b>2.2</b> Assumptions for Identifying Causal Effects</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#independence"><i class="fa fa-check"></i><b>2.2.1</b> 1. <strong>Independence</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#methods-for-estimating-causal-effects"><i class="fa fa-check"></i><b>2.3</b> Methods for Estimating Causal Effects</a></li>
+<li class="chapter" data-level="2.4" data-path="potential-outcomes.html"><a href="potential-outcomes.html#example"><i class="fa fa-check"></i><b>2.4</b> Example</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#simple-difference-method"><i class="fa fa-check"></i><b>2.4.1</b> Simple Difference Method</a></li>
+<li class="chapter" data-level="2.4.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#conclusion-1"><i class="fa fa-check"></i><b>2.4.2</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="potential-outcomes.html"><a href="potential-outcomes.html#randomization-based-methods"><i class="fa fa-check"></i><b>2.5</b> Randomization-Based Methods</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#traditional-methods-vs.-randomization-based-methods"><i class="fa fa-check"></i><b>2.5.1</b> Traditional Methods vs. Randomization-Based Methods</a></li>
+<li class="chapter" data-level="2.5.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#why-use-randomization-based-methods"><i class="fa fa-check"></i><b>2.5.2</b> Why Use Randomization-Based Methods?</a></li>
+<li class="chapter" data-level="2.5.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#how-randomization-based-methods-work"><i class="fa fa-check"></i><b>2.5.3</b> How Randomization-Based Methods Work</a></li>
+<li class="chapter" data-level="2.5.4" data-path="potential-outcomes.html"><a href="potential-outcomes.html#example-2"><i class="fa fa-check"></i><b>2.5.4</b> Example</a></li>
+<li class="chapter" data-level="2.5.5" data-path="potential-outcomes.html"><a href="potential-outcomes.html#contribution-of-athey-and-imbens"><i class="fa fa-check"></i><b>2.5.5</b> Contribution of Athey and Imbens</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="potential-outcomes.html"><a href="potential-outcomes.html#on-how-parameters-are-calculated"><i class="fa fa-check"></i><b>2.6</b> On how parameters are calculated</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#propensity-score-matching-psm-and-maximum-likelihood-estimation-mle"><i class="fa fa-check"></i><b>2.6.1</b> Propensity Score Matching (PSM) and Maximum Likelihood Estimation (MLE)</a></li>
+<li class="chapter" data-level="2.6.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#logistic-regression"><i class="fa fa-check"></i><b>2.6.2</b> Logistic Regression</a></li>
+<li class="chapter" data-level="2.6.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#ordinary-least-squares-ols-regression"><i class="fa fa-check"></i><b>2.6.3</b> Ordinary Least Squares (OLS) Regression</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="matching.html"><a href="matching.html"><i class="fa fa-check"></i><b>3</b> Matching</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="matching.html"><a href="matching.html#subclassification"><i class="fa fa-check"></i><b>3.1</b> Subclassification</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="matching.html"><a href="matching.html#example-3"><i class="fa fa-check"></i><b>3.1.1</b> Example</a></li>
+<li class="chapter" data-level="3.1.2" data-path="matching.html"><a href="matching.html#step-by-step-example"><i class="fa fa-check"></i><b>3.1.2</b> Step-by-Step Example</a></li>
+<li class="chapter" data-level="3.1.3" data-path="matching.html"><a href="matching.html#considerations"><i class="fa fa-check"></i><b>3.1.3</b> Considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="matching.html"><a href="matching.html#exact-matching"><i class="fa fa-check"></i><b>3.2</b> Exact Matching</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="matching.html"><a href="matching.html#explanation"><i class="fa fa-check"></i><b>3.2.1</b> Explanation</a></li>
+<li class="chapter" data-level="3.2.2" data-path="matching.html"><a href="matching.html#example-4"><i class="fa fa-check"></i><b>3.2.2</b> Example</a></li>
+<li class="chapter" data-level="3.2.3" data-path="matching.html"><a href="matching.html#conclusion-2"><i class="fa fa-check"></i><b>3.2.3</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="matching.html"><a href="matching.html#approximate-matching-methods"><i class="fa fa-check"></i><b>3.3</b> Approximate Matching Methods</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="matching.html"><a href="matching.html#nearest-neighbor-covariate-matching"><i class="fa fa-check"></i><b>3.3.1</b> Nearest Neighbor Covariate Matching</a></li>
+<li class="chapter" data-level="3.3.2" data-path="matching.html"><a href="matching.html#example-5"><i class="fa fa-check"></i><b>3.3.2</b> Example</a></li>
+<li class="chapter" data-level="3.3.3" data-path="matching.html"><a href="matching.html#hypothetical-data"><i class="fa fa-check"></i><b>3.3.3</b> Hypothetical Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="matching.html"><a href="matching.html#propensity-score-methods"><i class="fa fa-check"></i><b>3.4</b> Propensity Score Methods</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="matching.html"><a href="matching.html#concept"><i class="fa fa-check"></i><b>3.4.1</b> Concept</a></li>
+<li class="chapter" data-level="3.4.2" data-path="matching.html"><a href="matching.html#steps"><i class="fa fa-check"></i><b>3.4.2</b> Steps</a></li>
+<li class="chapter" data-level="3.4.3" data-path="matching.html"><a href="matching.html#example-6"><i class="fa fa-check"></i><b>3.4.3</b> Example</a></li>
+<li class="chapter" data-level="3.4.4" data-path="matching.html"><a href="matching.html#assumptions-and-considerations"><i class="fa fa-check"></i><b>3.4.4</b> Assumptions and Considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="matching.html"><a href="matching.html#inverse-probability-weighting-weighting-on-the-propensity-score"><i class="fa fa-check"></i><b>3.5</b> Inverse Probability Weighting (Weighting on the propensity score)</a></li>
+<li class="chapter" data-level="3.6" data-path="matching.html"><a href="matching.html#nearest-neighbor-matching"><i class="fa fa-check"></i><b>3.6</b> Nearest-neighbor matching</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="matching.html"><a href="matching.html#example-in-r"><i class="fa fa-check"></i><b>3.6.1</b> Example in R</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="matching.html"><a href="matching.html#coarsened-exact-matching"><i class="fa fa-check"></i><b>3.7</b> Coarsened Exact Matching</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="matching.html"><a href="matching.html#example-7"><i class="fa fa-check"></i><b>3.7.1</b> Example</a></li>
+<li class="chapter" data-level="3.7.2" data-path="matching.html"><a href="matching.html#steps-in-coarsened-exact-matching"><i class="fa fa-check"></i><b>3.7.2</b> Steps in Coarsened Exact Matching</a></li>
+<li class="chapter" data-level="3.7.3" data-path="matching.html"><a href="matching.html#considerations-1"><i class="fa fa-check"></i><b>3.7.3</b> Considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="matching.html"><a href="matching.html#ab-test-article-from-medium"><i class="fa fa-check"></i><b>3.8</b> A/B Test article from Medium</a>
+<ul>
+<li class="chapter" data-level="3.8.1" data-path="matching.html"><a href="matching.html#example-conversion-rate-of-an-e-commerce-website"><i class="fa fa-check"></i><b>3.8.1</b> Example: Conversion Rate of an E-Commerce Website</a></li>
+<li class="chapter" data-level="3.8.2" data-path="matching.html"><a href="matching.html#example-ab-test"><i class="fa fa-check"></i><b>3.8.2</b> Example: A/B Test</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="matching.html"><a href="matching.html#task-1-load-the-data"><i class="fa fa-check"></i><b>3.9</b> Task 1: Load the data</a></li>
+<li class="chapter" data-level="3.10" data-path="matching.html"><a href="matching.html#task-2-set-up-hypothesis"><i class="fa fa-check"></i><b>3.10</b> Task 2: Set up Hypothesis</a></li>
+<li class="chapter" data-level="3.11" data-path="matching.html"><a href="matching.html#task-3-compute-the-difference-in-the-click-through-rate"><i class="fa fa-check"></i><b>3.11</b> Task 3: Compute the difference in the click-through rate</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html"><i class="fa fa-check"></i><b>4</b> Task four : create sample distribution using bootsrapping</a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#bootstrapping"><i class="fa fa-check"></i><b>4.0.1</b> Bootstrapping :</a></li>
+<li class="chapter" data-level="4.0.2" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#example-8"><i class="fa fa-check"></i><b>4.0.2</b> Example :</a></li>
+<li class="chapter" data-level="4.1" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#task-five-evaluate-the-null-hypothesis-and-draw-conclustions."><i class="fa fa-check"></i><b>4.1</b> Task five : Evaluate the null hypothesis and draw conclustions.</a></li>
+<li class="chapter" data-level="4.2" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#alternative-random-sampling-code"><i class="fa fa-check"></i><b>4.2</b> alternative random sampling code</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ab-testing.html"><a href="ab-testing.html"><i class="fa fa-check"></i><b>5</b> AB Testing</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ab-testing.html"><a href="ab-testing.html#sources"><i class="fa fa-check"></i><b>5.1</b> Sources</a></li>
+<li class="chapter" data-level="5.2" data-path="ab-testing.html"><a href="ab-testing.html#concepts-1"><i class="fa fa-check"></i><b>5.2</b> Concepts</a></li>
+<li class="chapter" data-level="5.3" data-path="ab-testing.html"><a href="ab-testing.html#ai-summary"><i class="fa fa-check"></i><b>5.3</b> AI Summary</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="ab-testing.html"><a href="ab-testing.html#ab-testing-randomized-controlled-trials"><i class="fa fa-check"></i><b>5.3.1</b> A/B Testing (Randomized Controlled Trials)</a></li>
+<li class="chapter" data-level="5.3.2" data-path="ab-testing.html"><a href="ab-testing.html#concepts-2"><i class="fa fa-check"></i><b>5.3.2</b> Concepts:</a></li>
+<li class="chapter" data-level="5.3.3" data-path="ab-testing.html"><a href="ab-testing.html#comparison-and-usage"><i class="fa fa-check"></i><b>5.3.3</b> Comparison and Usage</a></li>
+<li class="chapter" data-level="5.3.4" data-path="ab-testing.html"><a href="ab-testing.html#significance"><i class="fa fa-check"></i><b>5.3.4</b> Significance</a></li>
+<li class="chapter" data-level="5.3.5" data-path="ab-testing.html"><a href="ab-testing.html#group-size"><i class="fa fa-check"></i><b>5.3.5</b> Group Size</a></li>
+<li class="chapter" data-level="5.3.6" data-path="ab-testing.html"><a href="ab-testing.html#relationship-between-effect-size-significance-and-group-size"><i class="fa fa-check"></i><b>5.3.6</b> Relationship Between Effect Size, Significance, and Group Size</a></li>
+<li class="chapter" data-level="5.3.7" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-3"><i class="fa fa-check"></i><b>5.3.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="ab-testing.html"><a href="ab-testing.html#size-of-the-control-group"><i class="fa fa-check"></i><b>5.4</b> Size of the Control Group</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="ab-testing.html"><a href="ab-testing.html#sample-size-calculation-formula"><i class="fa fa-check"></i><b>5.4.1</b> Sample Size Calculation Formula</a></li>
+<li class="chapter" data-level="5.4.2" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-4"><i class="fa fa-check"></i><b>5.4.2</b> Conclusion</a></li>
+<li class="chapter" data-level="5.4.3" data-path="ab-testing.html"><a href="ab-testing.html#statistical-assumptions-for-randomized-controlled-trials-rcts"><i class="fa fa-check"></i><b>5.4.3</b> Statistical Assumptions for Randomized Controlled Trials (RCTs)</a></li>
+<li class="chapter" data-level="5.4.4" data-path="ab-testing.html"><a href="ab-testing.html#robustness-checks-1"><i class="fa fa-check"></i><b>5.4.4</b> Robustness Checks</a></li>
+<li class="chapter" data-level="5.4.5" data-path="ab-testing.html"><a href="ab-testing.html#validation-methods-1"><i class="fa fa-check"></i><b>5.4.5</b> Validation Methods</a></li>
+<li class="chapter" data-level="5.4.6" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-5"><i class="fa fa-check"></i><b>5.4.6</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html"><i class="fa fa-check"></i><b>6</b> Difference-in-Differences (DiD) Methods</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#simple-difference-in-differences-did"><i class="fa fa-check"></i><b>6.1</b> Simple Difference-in-Differences (DiD)</a></li>
+<li class="chapter" data-level="6.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#controversial-note"><i class="fa fa-check"></i><b>6.2</b> Controversial Note</a></li>
+<li class="chapter" data-level="6.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#placebo-tests-for-parallel-trends"><i class="fa fa-check"></i><b>6.3</b> Placebo tests for parallel trends</a></li>
+<li class="chapter" data-level="6.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#two-way-fixed-effects-model"><i class="fa fa-check"></i><b>6.4</b> Two-Way Fixed Effects Model</a></li>
+<li class="chapter" data-level="6.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#event-study-methods"><i class="fa fa-check"></i><b>6.5</b> Event Study Methods</a></li>
+<li class="chapter" data-level="6.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#importance-of-placebos-in-dd"><i class="fa fa-check"></i><b>6.6</b> Importance of Placebos in DD</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#triple-differences"><i class="fa fa-check"></i><b>6.6.1</b> Triple Differences</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#compositional-changes"><i class="fa fa-check"></i><b>6.7</b> Compositional Changes</a></li>
+<li class="chapter" data-level="6.8" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-assumptions"><i class="fa fa-check"></i><b>6.8</b> Key Assumptions</a>
+<ul>
+<li class="chapter" data-level="6.8.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#implementation-steps"><i class="fa fa-check"></i><b>6.8.1</b> Implementation Steps</a></li>
+<li class="chapter" data-level="6.8.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#advantages"><i class="fa fa-check"></i><b>6.8.2</b> Advantages</a></li>
+<li class="chapter" data-level="6.8.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#limitations-1"><i class="fa fa-check"></i><b>6.8.3</b> Limitations</a></li>
+<li class="chapter" data-level="6.8.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#q-how-would-you-test-the-parallel-trends-assumption"><i class="fa fa-check"></i><b>6.8.4</b> Q: How would you test the parallel trends assumption?</a></li>
+<li class="chapter" data-level="6.8.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#q-how-would-you-address-potential-violations-of-the-parallel-trends-assumption"><i class="fa fa-check"></i><b>6.8.5</b> Q: How would you address potential violations of the parallel trends assumption?</a></li>
+</ul></li>
+<li class="chapter" data-level="6.9" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#notes"><i class="fa fa-check"></i><b>6.9</b> Notes</a>
+<ul>
+<li class="chapter" data-level="6.9.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#example-business"><i class="fa fa-check"></i><b>6.9.1</b> Example: Business</a></li>
+</ul></li>
+<li class="chapter" data-level="6.10" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#extra-considerations"><i class="fa fa-check"></i><b>6.10</b> Extra Considerations</a></li>
+<li class="chapter" data-level="6.11" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#synthetic-difference-in-differences-synthdid-method"><i class="fa fa-check"></i><b>6.11</b> Synthetic Difference-in-Differences (SynthDiD) method</a></li>
+<li class="chapter" data-level="6.12" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#doubly-robust-models-in-econometrics"><i class="fa fa-check"></i><b>6.12</b> Doubly Robust Models in Econometrics</a>
+<ul>
+<li class="chapter" data-level="6.12.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-concepts-3"><i class="fa fa-check"></i><b>6.12.1</b> Key Concepts</a></li>
+<li class="chapter" data-level="6.12.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#steps-in-doubly-robust-estimation"><i class="fa fa-check"></i><b>6.12.2</b> Steps in Doubly Robust Estimation</a></li>
+<li class="chapter" data-level="6.12.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#advantages-1"><i class="fa fa-check"></i><b>6.12.3</b> Advantages</a></li>
+<li class="chapter" data-level="6.12.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#examples-and-applications"><i class="fa fa-check"></i><b>6.12.4</b> Examples and Applications</a></li>
+<li class="chapter" data-level="6.12.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#assumptions-and-considerations-1"><i class="fa fa-check"></i><b>6.12.5</b> Assumptions and Considerations</a></li>
+<li class="chapter" data-level="6.12.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-6"><i class="fa fa-check"></i><b>6.12.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.13" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#twoway-fixed-effects-with-differential-timing"><i class="fa fa-check"></i><b>6.13</b> Twoway Fixed Effects with Differential Timing</a></li>
+<li class="chapter" data-level="6.14" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#bacon-decomposition"><i class="fa fa-check"></i><b>6.14</b> Bacon Decomposition</a>
+<ul>
+<li class="chapter" data-level="6.14.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#overview"><i class="fa fa-check"></i><b>6.14.1</b> Overview</a></li>
+<li class="chapter" data-level="6.14.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-concepts-4"><i class="fa fa-check"></i><b>6.14.2</b> Key Concepts</a></li>
+<li class="chapter" data-level="6.14.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#components-of-bacon-decomposition"><i class="fa fa-check"></i><b>6.14.3</b> Components of Bacon Decomposition</a></li>
+<li class="chapter" data-level="6.14.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#formula-for-decomposition"><i class="fa fa-check"></i><b>6.14.4</b> Formula for Decomposition</a></li>
+<li class="chapter" data-level="6.14.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#implications-and-interpretation"><i class="fa fa-check"></i><b>6.14.5</b> Implications and Interpretation</a></li>
+<li class="chapter" data-level="6.14.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#example-9"><i class="fa fa-check"></i><b>6.14.6</b> Example</a></li>
+<li class="chapter" data-level="6.14.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-7"><i class="fa fa-check"></i><b>6.14.7</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html"><i class="fa fa-check"></i><b>7</b> Synthetic Control Method (SCM)</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#ai-summary-1"><i class="fa fa-check"></i><b>7.1</b> AI Summary</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#synthetic-control-method-scm-1"><i class="fa fa-check"></i><b>7.1.1</b> Synthetic Control Method (SCM)</a></li>
+<li class="chapter" data-level="7.1.2" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#placebo-tests"><i class="fa fa-check"></i><b>7.1.2</b> Placebo tests</a></li>
+<li class="chapter" data-level="7.1.3" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>7.1.3</b> Leave-One-Out Cross-Validation</a></li>
+<li class="chapter" data-level="7.1.4" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#detailed-example"><i class="fa fa-check"></i><b>7.1.4</b> Detailed Example</a></li>
+<li class="chapter" data-level="7.1.5" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-9"><i class="fa fa-check"></i><b>7.1.5</b> Conclusion</a></li>
+<li class="chapter" data-level="7.1.6" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data"><i class="fa fa-check"></i><b>7.1.6</b> Data</a></li>
+<li class="chapter" data-level="7.1.7" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data-setting"><i class="fa fa-check"></i><b>7.1.7</b> Data Setting</a></li>
+<li class="chapter" data-level="7.1.8" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#requirements-for-synthetic-control-method"><i class="fa fa-check"></i><b>7.1.8</b> Requirements for Synthetic Control Method</a></li>
+<li class="chapter" data-level="7.1.9" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data-requirements-summary"><i class="fa fa-check"></i><b>7.1.9</b> Data Requirements Summary</a></li>
+<li class="chapter" data-level="7.1.10" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#practical-considerations-1"><i class="fa fa-check"></i><b>7.1.10</b> Practical Considerations</a></li>
+<li class="chapter" data-level="7.1.11" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#example-12"><i class="fa fa-check"></i><b>7.1.11</b> Example</a></li>
+<li class="chapter" data-level="7.1.12" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-10"><i class="fa fa-check"></i><b>7.1.12</b> Conclusion</a></li>
+<li class="chapter" data-level="7.1.13" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#synthetic-did"><i class="fa fa-check"></i><b>7.1.13</b> Synthetic DID</a></li>
+<li class="chapter" data-level="7.1.14" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#robustness-checks-3"><i class="fa fa-check"></i><b>7.1.14</b> Robustness Checks</a></li>
+<li class="chapter" data-level="7.1.15" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#validation-methods-3"><i class="fa fa-check"></i><b>7.1.15</b> Validation Methods</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html"><i class="fa fa-check"></i><b>8</b> Instrumental Variables (IV)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#key-concepts-5"><i class="fa fa-check"></i><b>8.1</b> Key Concepts</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#requirements-for-a-valid-instrument"><i class="fa fa-check"></i><b>8.1.1</b> Requirements for a Valid Instrument</a></li>
+<li class="chapter" data-level="8.1.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#the-iv-estimation-process"><i class="fa fa-check"></i><b>8.1.2</b> The IV Estimation Process</a></li>
+<li class="chapter" data-level="8.1.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#example-13"><i class="fa fa-check"></i><b>8.1.3</b> Example</a></li>
+<li class="chapter" data-level="8.1.4" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#assumptions-and-considerations-2"><i class="fa fa-check"></i><b>8.1.4</b> Assumptions and Considerations</a></li>
+<li class="chapter" data-level="8.1.5" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#advantages-of-iv"><i class="fa fa-check"></i><b>8.1.5</b> Advantages of IV</a></li>
+<li class="chapter" data-level="8.1.6" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#disadvantages-of-iv"><i class="fa fa-check"></i><b>8.1.6</b> Disadvantages of IV</a></li>
+<li class="chapter" data-level="8.1.7" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#conclusion-11"><i class="fa fa-check"></i><b>8.1.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#difference-between-instrumental-variable-iv-method-and-two-stage-least-squares-2sls-method"><i class="fa fa-check"></i><b>8.2</b> Difference Between Instrumental Variable (IV) Method and Two-Stage Least Squares (2SLS) Method</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#instrumental-variable-iv-method"><i class="fa fa-check"></i><b>8.2.1</b> Instrumental Variable (IV) Method</a></li>
+<li class="chapter" data-level="8.2.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#two-stage-least-squares-2sls-method"><i class="fa fa-check"></i><b>8.2.2</b> Two-Stage Least Squares (2SLS) Method</a></li>
+<li class="chapter" data-level="8.2.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#summary-of-differences"><i class="fa fa-check"></i><b>8.2.3</b> Summary of Differences:</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#homogenous-treatment-effect"><i class="fa fa-check"></i><b>8.3</b> Homogenous Treatment Effect</a></li>
+<li class="chapter" data-level="8.4" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#heterogenous-treatment-effect"><i class="fa fa-check"></i><b>8.4</b> Heterogenous Treatment Effect</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html"><i class="fa fa-check"></i><b>9</b> Regression Discontinuity Designs (RDD)</a>
+<ul>
+<li class="chapter" data-level="9.0.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#validation-and-falsification"><i class="fa fa-check"></i><b>9.0.1</b> Validation and Falsification</a></li>
+<li class="chapter" data-level="9.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#regression-discontinuity-designs-rdd-1"><i class="fa fa-check"></i><b>9.1</b> Regression Discontinuity Designs (RDD)</a></li>
+<li class="chapter" data-level="9.2" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-6"><i class="fa fa-check"></i><b>9.2</b> Key Concepts</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#types-of-rdd"><i class="fa fa-check"></i><b>9.2.1</b> Types of RDD</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#sharp-rdd"><i class="fa fa-check"></i><b>9.3</b> Sharp RDD</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-7"><i class="fa fa-check"></i><b>9.3.1</b> Key Concepts</a></li>
+<li class="chapter" data-level="9.3.2" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#assumptions-for-rdd"><i class="fa fa-check"></i><b>9.3.2</b> Assumptions for RDD</a></li>
+<li class="chapter" data-level="9.3.3" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#estimation-in-sharp-rdd"><i class="fa fa-check"></i><b>9.3.3</b> Estimation in Sharp RDD</a></li>
+<li class="chapter" data-level="9.3.4" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#fuzzy-rdd"><i class="fa fa-check"></i><b>9.3.4</b> Fuzzy RDD</a></li>
+<li class="chapter" data-level="9.3.5" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications"><i class="fa fa-check"></i><b>9.3.5</b> Parametric vs. Non-Parametric Applications</a></li>
+<li class="chapter" data-level="9.3.6" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#example-14"><i class="fa fa-check"></i><b>9.3.6</b> Example</a></li>
+<li class="chapter" data-level="9.3.7" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#summary-2"><i class="fa fa-check"></i><b>9.3.7</b> Summary</a></li>
+<li class="chapter" data-level="9.3.8" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#challenges-to-identification"><i class="fa fa-check"></i><b>9.3.8</b> Challenges to Identification</a></li>
+<li class="chapter" data-level="9.3.9" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#examples"><i class="fa fa-check"></i><b>9.3.9</b> Examples</a></li>
+<li class="chapter" data-level="9.3.10" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#types-of-rdd-1"><i class="fa fa-check"></i><b>9.3.10</b> Types of RDD</a></li>
+<li class="chapter" data-level="9.3.11" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications-1"><i class="fa fa-check"></i><b>9.3.11</b> Parametric vs. Non-Parametric Applications</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#regression-kink-design"><i class="fa fa-check"></i><b>9.4</b> Regression Kink Design</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html"><i class="fa fa-check"></i><b>10</b> Fixed Effects and Panel Data Methods</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#pooled-regression"><i class="fa fa-check"></i><b>10.1</b> Pooled Regression</a></li>
+<li class="chapter" data-level="10.2" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#panel-data-methods"><i class="fa fa-check"></i><b>10.2</b> Panel Data Methods</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#fixed-effects-model"><i class="fa fa-check"></i><b>10.2.1</b> Fixed Effects Model</a></li>
+<li class="chapter" data-level="10.2.2" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#random-effects-model"><i class="fa fa-check"></i><b>10.2.2</b> Random Effects Model</a></li>
+<li class="chapter" data-level="10.2.3" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#example-economic-growth-and-education"><i class="fa fa-check"></i><b>10.2.3</b> Example: Economic Growth and Education</a></li>
+<li class="chapter" data-level="10.2.4" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#conclusion-12"><i class="fa fa-check"></i><b>10.2.4</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html"><i class="fa fa-check"></i><b>11</b> Ordinary Least Squares (OLS)</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#simple-linear-regression"><i class="fa fa-check"></i><b>11.1</b> Simple Linear Regression</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#summary-3"><i class="fa fa-check"></i><b>11.1.1</b> Summary</a></li>
+<li class="chapter" data-level="11.1.2" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#interpreting-model-coefficients-in-ols-models"><i class="fa fa-check"></i><b>11.1.2</b> Interpreting Model Coefficients in OLS Models</a></li>
+<li class="chapter" data-level="11.1.3" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#linear-models-linear-linear"><i class="fa fa-check"></i><b>11.1.3</b> 1. Linear Models (Linear-Linear)</a></li>
+<li class="chapter" data-level="11.1.4" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#log-linear-models"><i class="fa fa-check"></i><b>11.1.4</b> 2. Log-Linear Models</a></li>
+<li class="chapter" data-level="11.1.5" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#linear-log-models"><i class="fa fa-check"></i><b>11.1.5</b> 3. Linear-Log Models</a></li>
+<li class="chapter" data-level="11.1.6" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#log-log-models"><i class="fa fa-check"></i><b>11.1.6</b> 4. Log-Log Models</a></li>
+<li class="chapter" data-level="11.1.7" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#examples-of-dummy-and-continuous-variables"><i class="fa fa-check"></i><b>11.1.7</b> Examples of Dummy and Continuous Variables</a></li>
+<li class="chapter" data-level="11.1.8" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#assumptions-and-considerations-3"><i class="fa fa-check"></i><b>11.1.8</b> Assumptions and Considerations</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="resampling-methods.html"><a href="resampling-methods.html"><i class="fa fa-check"></i><b>12</b> Resampling methods</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="resampling-methods.html"><a href="resampling-methods.html#bootstrapping-1"><i class="fa fa-check"></i><b>12.1</b> Bootstrapping</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html"><i class="fa fa-check"></i><b>13</b> Hypotheis Testing</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#concepts-3"><i class="fa fa-check"></i><b>13.1</b> Concepts</a>
+<ul>
+<li class="chapter" data-level="13.1.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#significance-level-α"><i class="fa fa-check"></i><b>13.1.1</b> Significance Level (α)</a></li>
+<li class="chapter" data-level="13.1.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#p-value"><i class="fa fa-check"></i><b>13.1.2</b> P-Value</a></li>
+<li class="chapter" data-level="13.1.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-i-error"><i class="fa fa-check"></i><b>13.1.3</b> Type I Error</a></li>
+<li class="chapter" data-level="13.1.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-ii-error"><i class="fa fa-check"></i><b>13.1.4</b> Type II Error</a></li>
+<li class="chapter" data-level="13.1.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#relationship-between-type-i-and-type-ii-errors"><i class="fa fa-check"></i><b>13.1.5</b> Relationship Between Type I and Type II Errors</a></li>
+<li class="chapter" data-level="13.1.6" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#importance-in-research-and-decision-making"><i class="fa fa-check"></i><b>13.1.6</b> Importance in Research and Decision Making</a></li>
+<li class="chapter" data-level="13.1.7" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#statistical-power"><i class="fa fa-check"></i><b>13.1.7</b> Statistical power</a></li>
+</ul></li>
+<li class="chapter" data-level="13.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#null-hypothesis"><i class="fa fa-check"></i><b>13.2</b> Null Hypothesis</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fishers-sharp-null-hypothesis"><i class="fa fa-check"></i><b>13.2.1</b> Fisher’s Sharp Null Hypothesis</a></li>
+<li class="chapter" data-level="13.2.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#neymans-null-hypothesis"><i class="fa fa-check"></i><b>13.2.2</b> Neyman’s Null Hypothesis</a></li>
+<li class="chapter" data-level="13.2.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#key-differences"><i class="fa fa-check"></i><b>13.2.3</b> Key Differences</a></li>
+<li class="chapter" data-level="13.2.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-to-illustrate-the-difference"><i class="fa fa-check"></i><b>13.2.4</b> Example to Illustrate the Difference</a></li>
+<li class="chapter" data-level="13.2.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-13"><i class="fa fa-check"></i><b>13.2.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#permutation-tests"><i class="fa fa-check"></i><b>13.3</b> Permutation Tests</a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-and-why-to-use-permutation-tests"><i class="fa fa-check"></i><b>13.3.1</b> When and Why to Use Permutation Tests</a></li>
+<li class="chapter" data-level="13.3.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-to-perform-a-permutation-test"><i class="fa fa-check"></i><b>13.3.2</b> How to Perform a Permutation Test</a></li>
+<li class="chapter" data-level="13.3.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-calculation"><i class="fa fa-check"></i><b>13.3.3</b> Example Calculation</a></li>
+<li class="chapter" data-level="13.3.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-14"><i class="fa fa-check"></i><b>13.3.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fischers-exact-test"><i class="fa fa-check"></i><b>13.4</b> Fischer’s Exact Test</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-to-use-fishers-exact-test"><i class="fa fa-check"></i><b>13.4.1</b> When to Use Fisher’s Exact Test</a></li>
+<li class="chapter" data-level="13.4.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-fishers-exact-test-works"><i class="fa fa-check"></i><b>13.4.2</b> How Fisher’s Exact Test Works</a></li>
+<li class="chapter" data-level="13.4.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#step-by-step-example-1"><i class="fa fa-check"></i><b>13.4.3</b> Step-by-Step Example</a></li>
+<li class="chapter" data-level="13.4.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-15"><i class="fa fa-check"></i><b>13.4.4</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="maximum-likelihood-estimation.html"><a href="maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>14</b> Maximum Likelihood Estimation</a></li>
+<li class="divider"></li>
+<li><a href="https://davutemrah.github.io" target="blank">Back to Home Page</li>
+<li><a href="https://davutemrah.github.io/notebooks/" target="blank">Back to Collections</li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Notes on Causal Models</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ab-testing" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> AB Testing<a href="ab-testing.html#ab-testing" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>It is now widely accepted that the gold standard technique to compute the causal effect of a treatment (a drug, ad, product, …) on an outcome of interest (a disease, firm revenue, customer satisfaction, …) is AB testing, a.k.a. randomized experiments.</p>
+<p>We randomly split a set of subjects (patients, users, customers, …) into a treatment and a control group and give the treatment to the treatment group. This procedure ensures that, ex-ante, the only expected difference between the two groups is caused by the treatment.</p>
+<div id="sources" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Sources<a href="ab-testing.html#sources" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><a href="https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a">Sample Size Article</a></p>
+<p><a href="https://statsig.com/calculator?mde=10&amp;bcr=20&amp;twoSided=false&amp;splitRatio=0.5&amp;alpha=0.05&amp;power=0.8">Sample Size Calculator</a></p>
+<p><a href="https://www.scaler.com/topics/statistical-significance-calculator-excel/">Sample Size Calculator in Excel</a></p>
+</div>
+<div id="concepts-1" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Concepts<a href="ab-testing.html#concepts-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Contamination:</strong></p>
+<p>One of the key assumptions in AB testing is that there is no contamination between treatment and control group.</p>
+<p>Giving a drug to one patient in the treatment group does not affect the health of patients in the control group.</p>
+<p>This might not be the case for example if we are trying to cure a contageous disease and the two groups are not isolated.</p>
+<p>In the industry, frequent violations of the contamination assumption are network effects - my utility of using a social network increases as the number of friends on the network increases - and general equilibrium effects - if I improve one product, it might decrease the sales of another similar product.</p>
+<p>Because of this reason, often experiments are carried out at a sufficiently large scale so that there is no contamination across groups, such as cities, states or even countries. Then another problem arises because of the larger scale: the treatment becomes more expensive. Giving a drug to 50% of patients in a hospital is much less expensive than giving a drug to 50% of cities in a country. Therefore, often only few units are treated but often over a longer period of time.</p>
+<p>In these settings, a very powerful method emerged around 10 years age: Synthetic Control. The idea of synthetic control is to exploit the temporal variation in the data instead of the cross-sectional one (across time instead of across units).</p>
+<p>This method is extremely popular in the industry - e.g. in companies like Google, Uber, Facebook, Microsoft, Amazon - because it is easy to interpret and deals with a setting that emerges often at large scales.</p>
+</div>
+<div id="ai-summary" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> AI Summary<a href="ab-testing.html#ai-summary" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Studying A/B testing (also known as randomized controlled trials or RCTs) is a great way to understand experimental design in causal inference, particularly in contexts where random assignment is feasible and ethical considerations allow for manipulation of variables to observe their effects. Here’s a detailed overview to get you started:</p>
+<div id="ab-testing-randomized-controlled-trials" class="section level3 hasAnchor" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> A/B Testing (Randomized Controlled Trials)<a href="ab-testing.html#ab-testing-randomized-controlled-trials" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A/B testing, or randomized controlled trials (RCTs), is an experimental design where participants or subjects are randomly assigned to different groups (treatment and control) to test the effectiveness of a particular intervention or treatment.</p>
+<div id="key-concepts-2" class="section level4 hasAnchor" number="5.3.1.1">
+<h4><span class="header-section-number">5.3.1.1</span> Key Concepts<a href="ab-testing.html#key-concepts-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: decimal">
+<li><strong>Random Assignment:</strong>
+<ul>
+<li>Participants are assigned to either the treatment group (exposed to the intervention) or the control group (not exposed) through randomization. This helps ensure that any differences observed between the groups are due to the intervention rather than <strong>pre-existing differences.</strong></li>
+</ul></li>
+<li><strong>Controlled Environment:</strong>
+<ul>
+<li>The experiment is conducted in a controlled environment where researchers can manipulate variables and minimize external influences that could affect the outcomes.</li>
+</ul></li>
+<li><strong>Causal Inference:</strong>
+<ul>
+<li>A/B testing allows researchers to make causal inferences about the effect of the intervention on the outcome variable. By comparing outcomes between the treatment and control groups, researchers can estimate the causal impact of the intervention.</li>
+</ul></li>
+</ol>
+</div>
+<div id="steps-in-ab-testing" class="section level4 hasAnchor" number="5.3.1.2">
+<h4><span class="header-section-number">5.3.1.2</span> Steps in A/B Testing<a href="ab-testing.html#steps-in-ab-testing" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: decimal">
+<li><strong>Hypothesis Formulation:</strong>
+<ul>
+<li>Define a clear hypothesis about the expected effect of the intervention on the outcome variable.</li>
+</ul></li>
+<li><strong>Random Assignment:</strong>
+<ul>
+<li>Randomly assign participants or subjects to the treatment and control groups. Randomization helps ensure that the groups are comparable on average, reducing the risk of bias.</li>
+</ul></li>
+<li><strong>Implementation of Intervention:</strong>
+<ul>
+<li>Implement the intervention or treatment with the treatment group while keeping conditions unchanged for the control group.</li>
+</ul></li>
+<li><strong>Outcome Measurement:</strong>
+<ul>
+<li>Measure the outcome of interest for both the treatment and control groups after the intervention. This could be metrics like conversion rates, satisfaction scores, or health outcomes.</li>
+</ul></li>
+<li><strong>Statistical Analysis:</strong>
+<ul>
+<li>Compare the outcomes between the treatment and control groups using statistical methods (e.g., t-tests, regression analysis) to determine if there is a significant difference attributable to the intervention.</li>
+</ul></li>
+<li><strong>Interpretation of Results:</strong>
+<ul>
+<li>Interpret the results to determine whether the intervention had a causal effect on the outcome variable. Consider factors such as statistical significance, effect size, and practical significance.</li>
+</ul></li>
+</ol>
+</div>
+<div id="advantages-of-ab-testing" class="section level4 hasAnchor" number="5.3.1.3">
+<h4><span class="header-section-number">5.3.1.3</span> Advantages of A/B Testing<a href="ab-testing.html#advantages-of-ab-testing" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><p><strong>Causal Inference:</strong> Allows for strong causal claims about the impact of interventions.</p></li>
+<li><p><strong>Control Over Variables:</strong> Researchers have control over experimental conditions, minimizing confounding factors.</p></li>
+<li><p><strong>Versatility:</strong> Applicable across various fields including marketing, healthcare, education, and technology.</p></li>
+</ul>
+</div>
+<div id="example-application" class="section level4 hasAnchor" number="5.3.1.4">
+<h4><span class="header-section-number">5.3.1.4</span> Example Application<a href="ab-testing.html#example-application" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Imagine a company wants to test the effectiveness of two different website layouts (A and B) on user engagement:</p>
+<ul>
+<li><p><strong>Hypothesis:</strong> Layout B will lead to higher user engagement compared to Layout A.</p></li>
+<li><p><strong>Random Assignment:</strong> Users visiting the website are randomly assigned to either see Layout A or Layout B.</p></li>
+<li><p><strong>Outcome Measurement:</strong> Engagement metrics such as click-through rates or time spent on the website are measured for both groups.</p></li>
+<li><p><strong>Analysis:</strong> Statistical tests are conducted to compare engagement metrics between Layout A and Layout B.</p></li>
+<li><p><strong>Conclusion:</strong> If Layout B shows significantly higher engagement metrics, the company may decide to implement Layout B on their website.</p></li>
+</ul>
+</div>
+</div>
+<div id="concepts-2" class="section level3 hasAnchor" number="5.3.2">
+<h3><span class="header-section-number">5.3.2</span> Concepts:<a href="ab-testing.html#concepts-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="effect-size" class="section level4 hasAnchor" number="5.3.2.1">
+<h4><span class="header-section-number">5.3.2.1</span> Effect Size<a href="ab-testing.html#effect-size" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Definition:</strong>
+Effect size quantifies the magnitude of the difference or relationship between variables in a study. It provides a standardized measure of the strength of an effect or phenomenon being studied, independent of sample size.</p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><p><strong>Standardized Measure:</strong> Effect size is expressed in standard deviation units or other standardized metrics, making it comparable across different studies.</p></li>
+<li><p><strong>Interpretation:</strong> A larger effect size indicates a stronger relationship or more substantial difference between groups or conditions.</p></li>
+</ul>
+<p><strong>Example:</strong>
+In an A/B test measuring website conversion rates:</p>
+<ul>
+<li>If Group A (control) has a conversion rate of 5% and Group B (treatment) has a conversion rate of 7%, the effect size could be quantified using metrics like Cohen’s d or relative risk increase to indicate the practical significance of the difference.</li>
+</ul>
+<p>Certainly! Cohen’s d and relative risk are commonly used effect size measures in different contexts, providing standardized ways to quantify and compare the magnitude of effects between groups or conditions in research studies. Here’s an explanation of each:</p>
+</div>
+<div id="cohens-d" class="section level4 hasAnchor" number="5.3.2.2">
+<h4><span class="header-section-number">5.3.2.2</span> Cohen’s d<a href="ab-testing.html#cohens-d" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Definition:</strong>
+Cohen’s d is a standardized measure of effect size that indicates the difference between two means (e.g., treatment group mean and control group mean) in terms of standard deviation units.</p>
+<p><strong>Formula:</strong>
+$ d = $</p>
+<p>where:
+- $ {X}_1$ and ${X}_2 $ are the means of the two groups,
+- $ s $ is the pooled standard deviation of the two groups.</p>
+<p><strong>Interpretation:</strong>
+- <strong>Effect Size Magnitude:</strong> Cohen’s d values are interpreted as follows:
+- Small effect: d = 0.2
+- Medium effect: d = 0.5
+- Large effect: d = 0.8</p>
+<p><strong>Example:</strong>
+In a study comparing the effectiveness of two teaching methods on exam scores:
+- If the mean exam score in Method A (treatment) is 80 and in Method B (control) is 75, and the pooled standard deviation is 10, then Cohen’s d would be <span class="math inline">\(\frac{80 - 75}{10} = 0.5\)</span>, indicating a medium effect size.</p>
+</div>
+<div id="relative-risk" class="section level4 hasAnchor" number="5.3.2.3">
+<h4><span class="header-section-number">5.3.2.3</span> Relative Risk<a href="ab-testing.html#relative-risk" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Definition:</strong>
+Relative risk (RR) is a measure of the strength of association between a risk factor (or exposure) and an outcome in epidemiology and medical research. It compares the risk of an outcome occurring in the exposed group versus the unexposed (or control) group.</p>
+<p><strong>Formula:</strong>
+<span class="math display">\[ RR = \frac{\text{Risk in exposed group}}{\text{Risk in unexposed group}} \]</span></p>
+<p><strong>Interpretation:</strong>
+- <strong>RR = 1:</strong> Indicates no association between exposure and outcome.
+- <strong>RR &gt; 1:</strong> Indicates higher risk in the exposed group compared to the unexposed group.
+- <strong>RR &lt; 1:</strong> Indicates lower risk in the exposed group compared to the unexposed group.</p>
+<p><strong>Example:</strong>
+In a clinical trial evaluating a new drug for heart disease:
+- If the risk of heart attack among patients taking the new drug is 10% and among patients not taking the drug (control group) is 20%, then the relative risk would be <span class="math inline">\(\frac{0.10}{0.20} = 0.5\)</span>.
+- This means patients taking the drug have half the risk of experiencing a heart attack compared to those not taking the drug.</p>
+</div>
+</div>
+<div id="comparison-and-usage" class="section level3 hasAnchor" number="5.3.3">
+<h3><span class="header-section-number">5.3.3</span> Comparison and Usage<a href="ab-testing.html#comparison-and-usage" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Cohen’s d:</strong> Typically used in studies comparing means of continuous variables (e.g., exam scores, reaction times) between two groups.</p></li>
+<li><p><strong>Relative Risk:</strong> Primarily used in studies of binary outcomes (e.g., disease incidence, event occurrence) to compare the risk of an outcome between exposed and unexposed groups.</p></li>
+</ul>
+<p>Both measures provide valuable insights into the strength and direction of effects in research studies. The choice between Cohen’s d and relative risk depends on the nature of the data (continuous or binary) and the specific research question being addressed. Researchers often use these effect size measures alongside significance testing to provide a comprehensive assessment of the findings’ practical and statistical significance.</p>
+</div>
+<div id="significance" class="section level3 hasAnchor" number="5.3.4">
+<h3><span class="header-section-number">5.3.4</span> Significance<a href="ab-testing.html#significance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition:</strong>
+Statistical significance determines whether the observed results in a study are likely to be due to the intervention (or other factors being studied) rather than random chance. It is typically assessed through hypothesis testing.</p>
+<p><strong>Key Points:</strong>
+- <strong>Hypothesis Testing:</strong> Statistical tests (e.g., t-tests, ANOVA, chi-square tests) evaluate whether the observed differences between groups are statistically significant.</p>
+<ul>
+<li><p><strong>Threshold:</strong> Results are deemed statistically significant if the probability (p-value) of observing such differences due to chance alone is below a predefined significance level (commonly set at 0.05).</p></li>
+<li><p><strong>Does Not Equal Importance:</strong> Statistical significance does not necessarily equate to practical or clinical significance; it only indicates the reliability of the observed effect.</p></li>
+</ul>
+<p><strong>Example:</strong>
+In a clinical trial evaluating a new drug:
+- If the treatment group shows a significantly lower incidence of adverse effects compared to the control group (p &lt; 0.05), it suggests that the drug may have a beneficial effect on reducing adverse reactions.</p>
+</div>
+<div id="group-size" class="section level3 hasAnchor" number="5.3.5">
+<h3><span class="header-section-number">5.3.5</span> Group Size<a href="ab-testing.html#group-size" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition:</strong>
+Group size refers to the number of participants or subjects included in each experimental group or condition in a study. It directly influences the statistical power and precision of the study’s results.</p>
+<p><strong>Key Points:</strong>
+- <strong>Statistical Power:</strong> Larger group sizes generally increase the statistical power of a study, making it more likely to detect a true effect if one exists.
+- <strong>Precision:</strong> Larger group sizes reduce sampling variability and increase the precision of estimates (e.g., mean values, effect sizes).
+- <strong>Resource Allocation:</strong> Group size is often determined by practical considerations such as budget, time constraints, ethical considerations, and expected effect size.</p>
+<p><strong>Example:</strong>
+In an A/B test comparing two marketing strategies:
+- If Group A consists of 1000 customers and Group B consists of 500 customers, the study’s power to detect differences between the groups will be influenced by the unequal group sizes.</p>
+</div>
+<div id="relationship-between-effect-size-significance-and-group-size" class="section level3 hasAnchor" number="5.3.6">
+<h3><span class="header-section-number">5.3.6</span> Relationship Between Effect Size, Significance, and Group Size<a href="ab-testing.html#relationship-between-effect-size-significance-and-group-size" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>Effect Size and Significance:</strong> A larger effect size increases the likelihood of achieving statistical significance with smaller group sizes. Conversely, smaller effect sizes may require larger group sizes to achieve statistical significance.</li>
+<li><strong>Group Size and Precision:</strong> Larger group sizes generally provide more precise estimates of effects and reduce the impact of random variability in the data.</li>
+<li><strong>Balancing Factors:</strong> Researchers often balance effect size, significance level, and group size to achieve meaningful and reliable results within practical constraints.</li>
+</ul>
+</div>
+<div id="conclusion-3" class="section level3 hasAnchor" number="5.3.7">
+<h3><span class="header-section-number">5.3.7</span> Conclusion<a href="ab-testing.html#conclusion-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Understanding effect size, significance, and group size is crucial for interpreting and evaluating research findings accurately. Effect size measures the magnitude of effects, significance assesses the likelihood of results being due to chance, and group size influences the study’s statistical power and precision. Together, these concepts help researchers draw meaningful conclusions and inform decision-making based on empirical evidence.</p>
+<div id="baseline-conversion-rate" class="section level4 hasAnchor" number="5.3.7.1">
+<h4><span class="header-section-number">5.3.7.1</span> Baseline conversion rate<a href="ab-testing.html#baseline-conversion-rate" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The baseline conversion rate is the current conversion rate for the page you are testing. Conversion rate is the number of conversions divided by the total number of visitors.</p>
+</div>
+<div id="minimum-detectable-effect-mde" class="section level4 hasAnchor" number="5.3.7.2">
+<h4><span class="header-section-number">5.3.7.2</span> Minimum detectable effect (MDE)<a href="ab-testing.html#minimum-detectable-effect-mde" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>After baseline conversion rate, you need to decide how much change from the baseline (how big or small a lift) you want to detect. You wil need less traffic to detect big changes and more traffic to detect small changes.</p>
+<p>To demonstrate, let us use an example with a 20% baseline conversion rate and a 5% MDE. Based on these values, your experiment will be able to detect 80% of the time when a variation’s underlying conversion rate is actually 19% or 21% (20%, +/- 5% × 20%). If you try to detect differences smaller than 5%, your test is considered underpowered.</p>
+<p>Power is a measure of how well you can distinguish the difference you are detecting from no difference at all. So running an underpowered test is the equivalent of not being able to strongly declare whether your variations are winning or losing.</p>
+</div>
+</div>
+</div>
+<div id="size-of-the-control-group" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Size of the Control Group<a href="ab-testing.html#size-of-the-control-group" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Calculating the appropriate size of the control group in an experiment involves several important factors to ensure the study has sufficient power to detect a true effect if one exists. Here are the key factors that influence control group size calculation:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Effect Size (δ)</strong></li>
+</ol>
+<p>Effect size is a measure of the magnitude of the difference between groups or the strength of the relationship between variables. It quantifies the practical significance of the treatment effect.</p>
+<p><strong>Influence on Sample Size:</strong></p>
+<ul>
+<li>A larger effect size requires a smaller sample size to detect a significant difference.</li>
+<li>A smaller effect size requires a larger sample size to achieve the same level of power.</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Significance Level (α)</strong></li>
+</ol>
+<p>The significance level (α) is the threshold for determining whether the observed effect is statistically significant. It represents the probability of committing a Type I error (rejecting a true null hypothesis).</p>
+<p><strong>Common Values:</strong>
+- α is typically set at 0.05, meaning there is a 5% chance of rejecting the null hypothesis when it is true.</p>
+<p><strong>Influence on Sample Size:</strong></p>
+<ul>
+<li><p>A lower α (e.g., 0.01) requires a larger sample size to maintain the same power, as the test becomes more stringent.</p></li>
+<li><p>A higher α (e.g., 0.10) allows for a smaller sample size but increases the risk of Type I errors.</p></li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Power (1 - β)</strong></li>
+</ol>
+<p>Power is the probability of correctly rejecting a false null hypothesis. It reflects the study’s ability to detect an effect if one exists.</p>
+<p><strong>Common Values:</strong>
+- A common target for power is 0.80, indicating an 80% chance of detecting a true effect.</p>
+<p><strong>Influence on Sample Size:</strong>
+- Higher power (e.g., 0.90) requires a larger sample size.
+- Lower power (e.g., 0.70) allows for a smaller sample size but increases the risk of Type II errors (failing to detect a true effect).</p>
+<ol start="4" style="list-style-type: decimal">
+<li><strong>Variability (σ)</strong></li>
+</ol>
+<p>Variability refers to the spread or dispersion of data points within a population, often measured by the standard deviation (σ).</p>
+<p><strong>Influence on Sample Size:</strong>
+- Higher variability (greater standard deviation) requires a larger sample size to detect a significant difference.
+- Lower variability allows for a smaller sample size as the effect is easier to detect against a less noisy background.</p>
+<ol start="5" style="list-style-type: decimal">
+<li><strong>Allocation Ratio</strong></li>
+</ol>
+<p><strong>Definition:</strong>
+The allocation ratio determines the proportion of participants assigned to the treatment group versus the control group. An equal allocation ratio (1:1) means equal numbers in both groups.</p>
+<p><strong>Influence on Sample Size:</strong>
+- Unequal allocation ratios (e.g., 2:1 or 3:1) may be used based on study design or practical considerations but can affect the total sample size required to achieve the desired power.
+- An equal allocation ratio generally provides the most statistically efficient design, minimizing the total sample size required.</p>
+<ol start="6" style="list-style-type: decimal">
+<li><strong>Dropout Rate</strong></li>
+</ol>
+<p><strong>Definition:</strong>
+The dropout rate accounts for participants who may leave the study before its completion, affecting the effective sample size.</p>
+<p><strong>Influence on Sample Size:</strong>
+- Anticipated dropouts should be factored into the initial sample size calculation to ensure the study retains adequate power despite participant loss.</p>
+<div id="sample-size-calculation-formula" class="section level3 hasAnchor" number="5.4.1">
+<h3><span class="header-section-number">5.4.1</span> Sample Size Calculation Formula<a href="ab-testing.html#sample-size-calculation-formula" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For comparing two means, the sample size for each group can be calculated using:</p>
+<p><span class="math display">\[ n = \left( \frac{(Z_{\alpha/2} + Z_{\beta}) \cdot \sigma}{\delta} \right)^2 \]</span></p>
+<p>where:
+- <span class="math inline">\(n\)</span> is the sample size per group,
+- <span class="math inline">\(Z_{\alpha/2}\)</span> is the critical value for the desired significance level,
+- <span class="math inline">\(Z_{\beta}\)</span> is the critical value for the desired power,
+- <span class="math inline">\(\sigma\)</span> is the standard deviation,
+- <span class="math inline">\(\delta\)</span> is the effect size.</p>
+</div>
+<div id="conclusion-4" class="section level3 hasAnchor" number="5.4.2">
+<h3><span class="header-section-number">5.4.2</span> Conclusion<a href="ab-testing.html#conclusion-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Determining the control group size involves considering the desired effect size, significance level, power, variability in the data, allocation ratio, and potential dropout rates. Properly calculating the control group size ensures that the study is adequately powered to detect meaningful effects, thereby enhancing the validity and reliability of the research findings.</p>
+</div>
+<div id="statistical-assumptions-for-randomized-controlled-trials-rcts" class="section level3 hasAnchor" number="5.4.3">
+<h3><span class="header-section-number">5.4.3</span> Statistical Assumptions for Randomized Controlled Trials (RCTs)<a href="ab-testing.html#statistical-assumptions-for-randomized-controlled-trials-rcts" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Randomized Controlled Trials (RCTs) are considered the gold standard in experimental research due to their ability to minimize bias and establish causality. However, the validity of RCT results depends on several key statistical assumptions:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Randomization:</strong></p>
+<ul>
+<li><strong>Assumption:</strong> Participants are randomly assigned to treatment and control groups.</li>
+<li><strong>Purpose:</strong> Ensures that the groups are comparable on average, reducing selection bias and balancing both known and unknown confounders.</li>
+</ul></li>
+<li><p><strong>Independence:</strong></p>
+<ul>
+<li><strong>Assumption:</strong> Observations are independent of each other.</li>
+<li><strong>Purpose:</strong> Ensures that the outcome of one participant does not influence the outcome of another, which is crucial for valid statistical inference.</li>
+</ul></li>
+<li><p><strong>Consistency:</strong></p>
+<ul>
+<li><strong>Assumption:</strong> The treatment effect is consistent across all participants.</li>
+<li><strong>Purpose:</strong> Ensures that the treatment effect observed in the sample can be generalized to the broader population.</li>
+</ul></li>
+<li><p><strong>Exclusion of Confounders:</strong></p>
+<ul>
+<li><strong>Assumption:</strong> No confounding variables influence the treatment-outcome relationship.</li>
+<li><strong>Purpose:</strong> Ensures that the observed effect is due to the treatment and not due to other external factors.</li>
+</ul></li>
+<li><p><strong>Stable Unit Treatment Value Assumption (SUTVA):</strong></p>
+<ul>
+<li><strong>Assumption:</strong> The potential outcomes for any participant are not affected by the treatment assignment of other participants.</li>
+<li><strong>Purpose:</strong> Prevents interference between participants, ensuring that each participant’s outcome is solely a result of their treatment assignment.</li>
+</ul></li>
+<li><p><strong>No Systematic Differences in Measurement:</strong></p>
+<ul>
+<li><strong>Assumption:</strong> Measurement of outcomes is consistent and unbiased across treatment and control groups.</li>
+<li><strong>Purpose:</strong> Ensures that outcome measures are not systematically biased by the treatment assignment.</li>
+</ul></li>
+</ol>
+</div>
+<div id="robustness-checks-1" class="section level3 hasAnchor" number="5.4.4">
+<h3><span class="header-section-number">5.4.4</span> Robustness Checks<a href="ab-testing.html#robustness-checks-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Robustness checks involve testing the stability and reliability of the study’s findings under various assumptions and conditions. They help to confirm that the results are not sensitive to specific assumptions or potential biases. Key robustness checks for RCTs include:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Sensitivity Analysis:</strong>
+<ul>
+<li><strong>Purpose:</strong> Evaluates how the results change with different assumptions or parameters.</li>
+<li><strong>Method:</strong> Adjusting key assumptions or parameters (e.g., different definitions of the outcome variable) to see if the results remain consistent.</li>
+</ul></li>
+<li><strong>Subgroup Analysis:</strong>
+<ul>
+<li><strong>Purpose:</strong> Examines the effect of the treatment within different subgroups of the sample.</li>
+<li><strong>Method:</strong> Dividing the sample into subgroups (e.g., by age, gender, or baseline risk) and checking if the treatment effect is consistent across these groups.</li>
+</ul></li>
+<li><strong>Placebo Tests:</strong>
+<ul>
+<li><strong>Purpose:</strong> Tests whether the results hold when using a placebo treatment.</li>
+<li><strong>Method:</strong> Using a placebo group to confirm that the observed effects are specifically due to the treatment and not to other factors.</li>
+</ul></li>
+<li><strong>Alternative Specifications:</strong>
+<ul>
+<li><strong>Purpose:</strong> Tests the robustness of the results to different model specifications.</li>
+<li><strong>Method:</strong> Using alternative statistical models or different functional forms to ensure results are not model-dependent.</li>
+</ul></li>
+<li><strong>Attrition Analysis:</strong>
+<ul>
+<li><strong>Purpose:</strong> Examines the impact of participant dropout on the study results.</li>
+<li><strong>Method:</strong> Analyzing the characteristics of dropouts and conducting analyses to understand if and how attrition might bias the results.</li>
+</ul></li>
+</ol>
+</div>
+<div id="validation-methods-1" class="section level3 hasAnchor" number="5.4.5">
+<h3><span class="header-section-number">5.4.5</span> Validation Methods<a href="ab-testing.html#validation-methods-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Validation methods are used to confirm the internal and external validity of the study’s findings. These methods help to ensure that the results are credible and can be generalized to other settings or populations.</p>
+<ol style="list-style-type: decimal">
+<li><strong>Internal Validity Checks:</strong>
+<ul>
+<li><strong>Balance Checks:</strong>
+<ul>
+<li><strong>Purpose:</strong> Ensures that randomization created comparable groups.</li>
+<li><strong>Method:</strong> Comparing baseline characteristics between treatment and control groups to check for balance.</li>
+</ul></li>
+<li><strong>Compliance Checks:</strong>
+<ul>
+<li><strong>Purpose:</strong> Ensures participants adhere to the assigned treatment.</li>
+<li><strong>Method:</strong> Analyzing adherence rates and conducting per-protocol analyses if necessary.</li>
+</ul></li>
+</ul></li>
+<li><strong>External Validity Checks:</strong>
+<ul>
+<li><strong>Population Representativeness:</strong>
+<ul>
+<li><strong>Purpose:</strong> Ensures that the study sample is representative of the broader population.</li>
+<li><strong>Method:</strong> Comparing sample characteristics to the target population and discussing potential generalizability limitations.</li>
+</ul></li>
+<li><strong>Replication Studies:</strong>
+<ul>
+<li><strong>Purpose:</strong> Confirms the findings by replicating the study in different settings or with different populations.</li>
+<li><strong>Method:</strong> Conducting similar studies in various contexts to see if the results hold.</li>
+</ul></li>
+</ul></li>
+<li><strong>Model Validation:</strong>
+<ul>
+<li><strong>Cross-Validation:</strong>
+<ul>
+<li><strong>Purpose:</strong> Assesses the predictive accuracy of the statistical model.</li>
+<li><strong>Method:</strong> Using techniques like k-fold cross-validation to test the model’s performance on different subsets of the data.</li>
+</ul></li>
+<li><strong>Out-of-Sample Validation:</strong>
+<ul>
+<li><strong>Purpose:</strong> Ensures the model performs well on new, unseen data.</li>
+<li><strong>Method:</strong> Validating the model on a separate dataset that was not used for model training.</li>
+</ul></li>
+</ul></li>
+</ol>
+</div>
+<div id="conclusion-5" class="section level3 hasAnchor" number="5.4.6">
+<h3><span class="header-section-number">5.4.6</span> Conclusion<a href="ab-testing.html#conclusion-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The validity of RCT findings hinges on several key assumptions, and the credibility of these results is reinforced through robustness checks and validation methods. Robustness checks test the stability of findings under different conditions, while validation methods confirm the internal and external validity of the results, ensuring they are generalizable and reliable. Understanding and addressing these factors is crucial for conducting and interpreting high-quality research.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="task-four-create-sample-distribution-using-bootsrapping.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="difference-in-differences-did-methods.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Causal Methods.pdf", "Causal Methods.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

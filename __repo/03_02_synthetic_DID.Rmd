@@ -1,0 +1,187 @@
+## Synthetic Difference-in-Differences (SynthDiD) method 
+
+
+[Reading](https://towardsdatascience.com/synthdid-101-a-beginners-guide-to-synthetic-difference-in-differences-84fed9b730ae)
+
+SynthDiD is a generalized version of Synthetic Control Method (SCM) and DiD that combines the strengths of both methods. It enables causal inference with large panels, even with a short pretreatment period.
+
+On the other hand, synthetic DiD combines the synthetic control method with the difference-in-differences approach [1]. In this method, a synthetic control group is constructed using the same approach as in the synthetic control method. However, the treatment effect is estimated by comparing the change in outcomes between the treated unit and the synthetic control group before and after the treatment is introduced. This approach allows for a more robust estimation of the treatment effect by accounting for pre-existing differences between the treatment and control groups.
+
+
+In summary, while both methods use a synthetic control group, the synthetic control method estimates treatment effects by comparing the post-treatment outcomes of the treated unit to those of the synthetic control group, while synthetic DiD estimates treatment effects by comparing the change in outcomes between the treated unit and the synthetic control group before and after the treatment is introduced.
+
+
+It constructs a counterfactual for the treated group by optimally weighting the control group units to minimize the difference between the treated and control groups in the pretreatment period as in SCM.
+
+Then, the treatment effect is estimated by comparing the outcome changes in the treated unit and synthetic control group pre- and post-intervention as in DiD.
+
+
+#### An Example:
+
+
+Suppose that we are a company that sells plant-based food products, such as soy milk or soy yogurt, and we operate in multiple countries. Some countries implement new legislation that prohibits us from marketing our plant-based products as ‘milk’ or ‘yogurt’ because it is claimed that only animal products can be marketed as ‘milk’ or ‘yogurt’. Thus, due to this new regulation in some countries, we have to market soy milk as soy drink instead of soy milk, etc. We want to know the impact of this legislation on our revenue as this might help guide our lobbying efforts and marketing activities in different countries.
+
+I simulated a balanced panel dataset that shows the revenue of our company in 30 different countries for 30 periods. Three of the countries implement this legislation in period 20. In the figure below, you can see a snapshot of the data. treat is a dummy variable indicating whether a country has implemented the legislation in a given period. revenueis the revenue in millions of EUR. You can find the simulation and estimation code in this Gist.
+
+
+```
+# Install and load the required packages
+# devtools::install_github("synth-inference/synthdid")
+library(synthdid)
+library(ggplot2)
+library(fixest) # Fixed-effects regression
+library(data.table)
+```
+
+
+```
+# Set seed for reproducibility
+set.seed(12345)
+
+source('sim_data.R') # Import simulation function and some utilities
+
+dt <- sim_data()
+head(dt)
+```
+
+In Data, there are 30 units (3 units treated), 30 periods (10 periods treated), all units are treated at the same time.
+
+Next, we convert our panel data into a matrix required by the synthdid package. Given the outcome, treatment and control units and pretreatment periods, a synthetic control is created and treatment effect is estimated with synthdid_estimate function. 
+
+
+```
+# Convert the data into a matrix
+setup = panel.matrices(dt, unit = 'country', time = 'period', 
+                       outcome = 'revenue', treatment = 'treat')
+
+# Estimate treatment effect using SynthDiD
+tau.hat = synthdid_estimate(setup$Y, 
+                            setup$N0,
+                            setup$T0)
+print(summary(tau.hat))
+```
+
+To make inference, we also need to calculate the standard errors. I use jacknife method as I have more than one treated units. Placebo method is the only option if you have one treatment unit. Given the standard errors, I also calculate the 95% confidence interval for the treatment effect. I will report these in the figure below.
+
+
+When there are **multiple treated units** (more than one unit that received the treatment or intervention), one common approach to estimating standard errors is using the jackknife method. The jackknife method is a resampling technique where each observation (in this case, each treated unit) is systematically omitted from the dataset, and the analysis is repeated each time to estimate the variance of the treatment effect. This provides a robust estimate of the standard errors that accounts for the potential variability across different treated units.
+
+On the other hand, if there is only **one treated unit** (a single unit that received the treatment), using the jackknife method becomes impractical because there are not enough units to systematically leave out and still perform meaningful resampling. In such cases, the **placebo method** becomes a viable option. 
+
+The placebo method involves creating placebo or synthetic treated units that mimic the characteristics of the treated unit but did not actually receive the treatment. By comparing the outcomes of the actual treated unit with those of the synthetic placebo units, researchers can estimate the variability and potential impact of the treatment effect more accurately.
+
+Therefore, the choice between the jackknife method and the placebo method depends on the number of treated units available for analysis within the synthetic control framework. Multiple treated units allow for the application of the jackknife method, whereas a single treated unit necessitates the use of the placebo method to estimate standard errors and make reliable inferences about the treatment effect.
+
+
+```
+# Calculate standard errors 
+se = sqrt(vcov(tau.hat, method='jackknife'))
+te_est <- sprintf('Point estimate for the treatment effect: %1.2f', tau.hat)
+CI <- sprintf('95%% CI (%1.2f, %1.2f)', tau.hat - 1.96 * se, tau.hat + 1.96 * se)
+
+```
+
+```
+# Plot treatment effect estimates
+plot(tau.hat)
+plot(tau.hat, se.method='jackknife')
+```
+
+
+
+
+In the image below, the estimation results are displayed. Observe how the treated countries and the synthetic control exhibit fairly parallel trends on average (it might not look like a perfect parallel trends but that is not necessary for the sake of this example). The average for treated countries is more variable, primarily due to the presence of only three such countries, resulting in less smooth trends. Transparent gray lines represent different control countries. Following the treatment in period 20, a decline in revenue is observed in the treated countries, estimated to be 0.51 million EUR as indicated in the graph. This means that the new regulation has a negative impact on our company’s revenues and necessary actions should be taken to prevent further declines.
+
+
+```
+# Check the number of treatment and control countries to report
+num_treated <- length(unique(dt[treat==1]$country))
+num_control <- length(unique(dt$country))-num_treated
+
+# Create spaghetti plot with top 10 control units
+top.controls = synthdid_controls(tau.hat)[1:10, , drop=FALSE]
+plot(tau.hat, spaghetti.units=rownames(top.controls),
+     trajectory.linetype = 1, line.width=.75, 
+     trajectory.alpha=.9, effect.alpha=.9,
+     diagram.alpha=1, onset.alpha=.9, ci.alpha = .3, spaghetti.line.alpha =.2,
+     spaghetti.label.alpha = .1, overlay = 1) + 
+  labs(x = 'Period', y = 'Revenue', title = 'Estimation Results', 
+       subtitle = paste0(te_est, ', ', CI, '.'), 
+       caption = paste0('The number of treatment and control units: ', num_treated, ' and ', num_control, '.'))
+```
+
+
+Let’s plot the weights use to estimate the synthetic control.
+
+
+```
+# Plot control unit contributions
+synthdid_units_plot(tau.hat, se.method='jackknife') +
+  labs(x = 'Country', y = 'Treatment effect', 
+       caption = 'The black horizontal line shows the actual effect; 
+       the gray ones show the endpoints of a 95% confidence interval.')
+ggsave('../figures/unit_weights.png')
+```
+
+In the image below, you can observe how each country is weighted to construct the synthetic control. The treatment effects differ based on the untreated country selected as the control unit.
+
+
+```
+# Check for pre-treatment parallel trends
+plot(tau.hat, overlay=1, se.method='jackknife')
+ggsave('../figures/results_simple.png')
+```
+
+
+
+```
+# Check the number of treatment and control countries to report
+num_treated <- length(unique(dt[treat==1]$country))
+num_control <- length(unique(dt$country))-num_treated
+
+
+# Create spaghetti plot with top 10 control units
+top.controls = synthdid_controls(tau.hat)[1:10, , drop=FALSE]
+plot(tau.hat, spaghetti.units=rownames(top.controls),
+     trajectory.linetype = 1, line.width=.75, 
+     trajectory.alpha=.9, effect.alpha=.9,
+     diagram.alpha=1, onset.alpha=.9, ci.alpha = .3, spaghetti.line.alpha	=.2,
+     spaghetti.label.alpha = .1, overlay = 1) + 
+  labs(x = 'Period', y = 'Revenue', title = 'Estimation Results', 
+       subtitle = paste0(te_est, ', ', CI, '.'), 
+       caption = paste0('The number of treatment and control units: ', num_treated, ' and ', num_control, '.'))
+ggsave('../figures/results.png')
+
+fe <- feols(revenue~treat, dt, cluster = 'country', panel.id = 'country', 
+      fixef = c('country', 'period'))
+summary(fe)
+```
+
+
+
+
+
+
+Now that we understand more about SynthDiD let’s talk about pros and cons of this method. 
+
+There are some advantages and disadvantages to SynthDiD like every method. Here are some pros and cons to keep in mind when getting started with this method.
+
+Advantages of SynthDiD method:
+The synthetic control method is usually used for a few treated and control units and needs long, balanced data before treatment. SynthDiD, on the other hand, works well even with a short data period before treatment, unlike the synthetic control method [4].
+This method is being preferred especially because it doesn’t have a strict parallel trends assumption (PTA) requirement like DiD.
+SynthDiD guarantees a suitable quantity of control units, considers possible pre-intervention patterns, and may accommodate a degree of endogenous treatment timing [4].
+Disadvantages of SynthDiD method:
+Can be computationally expensive (even with only one treated group/block).
+Requires a balanced panel (i.e., you can only use units observed for all time periods) and that the treatment timing is identical for all treated units.
+Requires enough pre-treatment periods for good estimation, so, if you don’t have enough pre-treatment period might be better to use just the regular DiD.
+Computing and comparing the average treatment effects for subgroups is tricky. One option is to split the sample into subgroups and compute the average treatment effects for each subgroup.
+Implementing SynthDiD where the treatment timing varies might be tricky. In the case of staggered treatment timing, as one solution, one can estimate the average treatment effect for each treatment cohort and then aggregate cohort-specific average treatment effects to an overall average treatment effects.
+Here are also some other points that you might want to know when getting started.
+Things to note:
+SynthDiD employs regularized ridge regression (L2) while ensuring that the resulting weights have a sum of one.
+In the process of pretreatment matching, SynthDiD tries to determine the average treatment effect across the entire sample. This approach might cause individual time period estimates to be less precise. Nonetheless, the overall average yields an unbiased evaluation.
+The standard errors for the treatment effects are estimated with jacknife or if a cohort has only one treated unit with placebo method.
+The estimator is considered consistent and asymptotically normal, given that the combination of the number of control units and pretreatment periods is sufficiently large relative to the combination of the number of treated units and posttreatment periods.
+In practice, pre-treatment variables play a minor role in Synthetic DiD, as lagged outcomes hold more predictive power, making the treatment of these variables less critical.
+Conclusion
+In this blog post, I introduce the SynthDiD method and discuss its relationship with traditional DiD and SCM. SynthDiD combines the strengths of both SCM and DiD, allowing for causal inference with large panels even when the pretreatment period is short. I demonstrate the method using the synthdid package in R. Although it has several advantages, such as not requiring a strict parallel trends assumption, it also has drawbacks, like being computationally expensive and requiring a balanced panel. Overall, SynthDiD is a valuable tool for researchers interested in estimating causal effects using observational data, providing an alternative to traditional DiD and SCM methods.

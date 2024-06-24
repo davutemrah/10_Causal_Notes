@@ -1,0 +1,416 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# Difference-in-Differences (DiD) Methods
+
+**Difference-in-Differences (DiD)** is a quasi-experimental technique
+used in econometrics to estimate causal relationships. It compares the
+changes in outcomes over time between a treatment group and a control
+group.
+
+**Some resource links** [Comprehensive
+resource](https://asjadnaqvi.github.io/DiD/)
+
+[Extra reading 2](https://matteocourthoud.github.io/post/diff_in_diffs/)
+
+[Mixtape](https://mixtape.scunning.com/09-difference_in_differences)
+
+[youtube series](https://www.youtube.com/watch?v=mbYTZ0w-QTw)
+
+**Books**
+
+[The Effect](https://theeffectbook.net)
+
+[What
+if?](https://www.hsph.harvard.edu/miguel-hernan/wp-content/uploads/sites/1268/2024/04/hernanrobins_WhatIf_26apr24.pdf)
+
+[Mathaeus - personal](Extra reading -
+python](<https://matheusfacure.github.io/python-causality-handbook/13-Difference-in-Differences.htm>)
+
+## Simple Difference-in-Differences (DiD)
+
+-   **Basic Idea**: Difference-in-Differences (DiD) is a
+    quasi-experimental design used in econometrics to estimate causal
+    relationships. It compares the changes in outcomes over time between
+    a treatment group and a control group.
+
+-   Treatment assignment is not random, but we observe both treated and
+    untreated units before and after treatment.
+
+-Under certain structural assumptions, especially parallel outcome
+trends in the absence of treatment, we can recover the average treatment
+effect.
+
+-   **Formula**: The basic DiD estimator is:
+
+$$
+  \text{DiD} = (\text{Y}_{\text{post-treatment, treatment group}} - \text{Y}_{\text{pre-treatment, treatment group}}) - (\text{Y}_{\text{post-treatment, control group}} - \text{Y}_{\text{pre-treatment, control group}})
+$$
+
+**Concept**:
+
+**DiD** is used when we have data from before and after a treatment is
+applied to a treatment group, and we also have a control group that does
+not receive the treatment.
+
+The key assumption is that in the absence of treatment, the difference
+between the treatment and control groups would have remained constant
+over time (parallel trends assumption).
+
+-   Simple 2x2 DD collapses to true ATT when parallel trend holds true.
+
+-   ATT can be calculated through differencing outcomes but regression
+    can be used instead if we want to control for some more covariates.
+
+-   if you need to avoid omitted variable bias through controlling for
+    endogenous covariates that vary over time, then you may want to use
+    regression. Such strategies are another way of saying that you will
+    need to close some known critical backdoor.
+
+-   Another reason for the equation is that by controlling for more
+    appropriate covariates, you can reduce residual variance and improve
+    the precision of your DD estimate.
+
+**Model**:
+
+$$ Y_{it} = \alpha + \beta_1 \text{Post}_t + \beta_2 \text{Treated}_i + \beta_3 (\text{Post}_t \times \text{Treated}_i) + \epsilon_{it} $$
+
+where:
+
+-   $Y_{it}$ is the outcome variable for entity $i$ at time $t$.
+
+-   $\text{Post}_t$ is a dummy variable equal to 1 for periods after the
+    treatment and 0 otherwise.
+
+-   $\text{Treated}_i$ is a dummy variable equal to 1 for the treatment
+    group and 0 for the control group.
+
+-   $\beta_3$ is the DiD estimator, representing the treatment effect
+    (ATT).
+
+
+
+## Controversial Note
+
+ The variables of interest in many of these setups only vary at a group level, such as the state, and outcome variables are often serially correlated. In Card and Krueger (1994), it is very likely for instance that employment in each state is not only correlated within the state but also serially correlated. 
+ 
+ Bertrand, Duflo, and Mullainathan (2004) point out that the conventional standard errors often severely understate the standard deviation of the estimators, and so standard errors are biased downward, “too small,” and therefore overreject the null hypothesis. Bertrand, Duflo, and Mullainathan (2004) propose the following solutions:
+
+- **Block bootstrapping** standard errors.
+
+- **Aggregating** the data into one pre and one post period.
+
+This approach ignores the time-series dimensions altogether, and if there is only one pre and post period and one untreated group, it’s as simple as it sounds.
+
+- **Clustering** standard errors at the group level.
+
+You simply adjust standard errors by clustering at the group level, as we discussed in the earlier chapter, or the level of treatment. For state-level panels, that would mean clustering at the state level, which allows for arbitrary serial correlation in errors within a state over time. This is the most common solution employed.
+
+If number of groups is small, then you may use wild bootstrap technique, or randomization inference.
+
+
+## Placebo tests for parallel trends
+
+- We can test palcebo effects in the pre-treatment years to show in the pretreatment years both groups have similar trends. However, this may not prove that those groups will behave similarly after the treatment in the absence of treatment.
+
+- Just because they were similar before does not logically require they be the same after. 
+
+- Likewise, we are not obligated to believe that that counterfactual trends would be the same post-treatment because they had been similar pre-treatment without further assumptions about the predictive power of pre-treatment trends.
+
+- But this is a nice attempt anyway.
+
+- While the test is important, technically pre-treatment similarities are neither necessary nor sufficient to guarantee parallel counterfactual trends (Kahn-Lang and Lang 2019).
+
+
+- Any DD is a combination of a comparison between the treatment and the never treated, an early treated compared to a late treated, and a late treated compared to an early treated. Thus only showing the comparison with the never treated is actually a misleading presentation of the underlying mechanization of identification using an twoway fixed-effects model with differential timing.
+
+
+## Two-Way Fixed Effects Model
+
+**Concept**:
+
+The **two-way fixed effects model** extends the simple DiD approach by
+controlling for time-invariant characteristics of the entities and
+common shocks over time.
+
+It adds fixed effects for both entities and time periods to control for
+unobserved heterogeneity.
+
+**Model**:
+
+$$ Y_{it} = \alpha_0 + \beta_1\text{Treat}_i + \beta_2\text{Post}_t + \beta_3 (\text{Post}_t \times \text{Treat}_i) + \epsilon_{it} $$
+
+where:
+
+- $\beta_1$ represents entity fixed effects.
+
+- $\beta_2$ represents time fixed effects. 
+
+- $\beta_3$ remains the DiD estimator.
+
+**Example**: Using the job training program example, this model would
+account for fixed characteristics of individuals (such as inherent
+employability) and time-specific effects (such as economic conditions).
+
+$$ Y_{it} = \alpha_i + \gamma_t + \beta_3 (\text{Post}_t \times \text{Treated}_i) + \epsilon_{it} $$
+
+This controls for both individual-specific and time-specific unobserved
+heterogeneity, providing a more robust estimate of the treatment effect.
+
+## Event Study Methods
+
+**Concept**: 
+
+**Event studies** extend DiD by examining the dynamics of
+the treatment effect over multiple periods before and after the
+treatment. 
+
+- They allow for the estimation of treatment effects at
+different time points relative to the treatment event.
+
+- As with many contemporary DD designs, Miller et al. (2019) evaluate the pre-treatment leads instead of plotting the raw data by treatment and control. Post-estimation, they plotted regression coefficients with 95% confidence intervals on their treatment leads and lags. Including leads and lags into the DD model allowed the reader to check both the degree to which the post-treatment treatment effects were dynamic, and whether the two groups were comparable on outcome dynamics pre-treatment. 
+
+**Typical Model:**
+
+$$ Y_{ist} = \alpha_s + \gamma_t + \sum_{x=-q}^{-1} \beta_x D_{sx} + \sum_{x=0}^{m} \delta_x D_{sx} + X_{ist} + \epsilon_{ist} $$
+
+You include $q$ leads or anticipatory effects and $m$ lags or post-treatment effects.
+
+## Importance of Placebos in DD
+
+It is a simple idea. For the minimum wage sttaudy, one candidate placebo falsification might simply be to use data for an alternative type of worker whose wages would not be affected by the binding minimum wage. This reasoning might lead us to consider the possibility that higher wage workers might function as a placebo. 
+
+Many people like to be straightforward and simply fit the same DD design using high wage employment as the outcome. If the coefficient on minimum wages is zero when using high wage worker employment as the outcome, but the coefficient on minimum wages for low wage workers is negative, then we have provided stronger evidence that complements the earlier analysis we did when on the low wage workers.
+
+Another way to show placebo falsification. Triple DDD.
+
+
+### Triple Differences
+
+
+$$ Y_{ijt} = \alpha + \beta_0X_{ist} + \beta_1\gamma_t + \beta_2\delta_j  + \beta_3 D_i + \beta_4 (\delta . \gamma)_{jt} +  \beta_5 (\gamma . D)_{ti} + \beta_6 (\delta . D)_{ij} +  \beta_7 (\delta . \gamma . D)_{ijt} + \epsilon_{ijt} $$
+
+where the parameter of interest is $\beta_7$.
+
+- This requires a stacking of the data into a panel structure by group, as well as state. Second, the DDD model requires that you include all possible interactions across the group dummy $\delta_j$, post-treatment dummy $\gamma_t$ and treatment state dummy $D_i$.
+
+- The regression must include each dummy independently, each individual interaction, and the triple differences interaction. One of these will be dropped due to multicollinearity, but I include them in the equation so that you can visualize all the factors used in the product of these terms.
+
+
+## Compositional Changes
+
+DD can be applied to repeated cross-sections, as well as panel data. But one of the risks of working with the repeated cross-sections is that unlike panel data (e.g., individual-level panel data), repeated cross-sections run the risk of compositional changes. 
+
+
+This kind of compositional change is a like an omitted variable bias built into the sample itself caused by time-variant unobservables. Diffusion of the Internet appears to be related to changing samples as younger music fans are early adopters. Identification of causal effects would need for the treatment itself to be exogenous to such changes in the composition.
+
+
+
+## Key Assumptions
+
+-   **Parallel Trends Assumption**: The treatment and control groups
+    would have followed the same trend over time in the absence of the
+    treatment. This is the most critical assumption.
+
+-   **Common Shocks**: Both groups are assumed to be subject to the same
+    external factors over time.
+
+### Implementation Steps
+
+1.  **Identify Treatment and Control Groups**: Clearly define which
+    units are exposed to the treatment and which are not.
+
+2.  **Collect Data**: Obtain data on the outcome of interest for both
+    groups before and after the treatment.
+
+3.  **Check Parallel Trends**: Visualize and statistically test if the
+    pre-treatment trends of the groups are parallel.
+
+4.  **Estimate the Model**: Use regression analysis to estimate the DiD
+    effect. The basic regression model is: $$
+    Y_{it} = \alpha + \beta_1 \text{Post}_t + \beta_2 \text{Treatment}_i + \beta_3 (\text{Post}_t \times \text{Treatment}_i) + \epsilon_{it}
+    $$ where $\beta_3$ is the DiD estimator.
+
+### Advantages
+
+-   **Controls for Time-Invariant Differences**: Differences between the
+    treatment and control groups that do not change over time are
+    accounted for.
+
+-   **Simple and Intuitive**: The method is straightforward to
+    understand and implement.
+
+### Limitations
+
+-   **Violation of Parallel Trends**: If the parallel trends assumption
+    is violated, the DiD estimate can be biased.
+
+-   **External Validity**: The results are only valid for the sample and
+    period studied.
+
+-   **Simultaneous Interventions**: Other changes occurring
+    simultaneously with the treatment can confound the results.
+
+### Q: How would you test the parallel trends assumption?
+
+1.  Visual Inspection Plot the outcome variable over time for both the
+    treatment and control groups. If the trends are parallel before the
+    intervention, it suggests that the parallel trends assumption holds.
+
+2.  Statistical Tests Conduct a regression test to formally check for
+    parallel trends. This involves using only the pre-treatment data and
+    checking if the interaction between time and treatment is
+    statistically significant.
+
+Steps:
+
+-   Restrict your data to pre-treatment periods.
+-   Regress the outcome on time, treatment, and their interaction.
+-   Check if the coefficient of the interaction term is statistically
+    significant.
+
+3.  Placebo Tests Conduct a placebo test by pretending that the
+    treatment happened at a different time and check if you find a
+    significant effect where none should exist.
+
+Steps:
+
+Choose a time period before the actual treatment period as the "placebo
+treatment period." Perform a DiD analysis as if the treatment happened
+during this placebo period. Check for significant effects; finding none
+supports the parallel trends assumption.
+
+4.  Event Study Analysis An event study involves plotting the estimated
+    treatment effects at different time periods before and after the
+    treatment to visually inspect if pre-treatment effects are close to
+    zero.
+
+Steps:
+
+Create a series of dummy variables for each time period relative to the
+treatment. Regress the outcome on these time dummies and the interaction
+terms. Plot the coefficients of these interaction terms.
+
+### Q: How would you address potential violations of the parallel trends assumption?
+
+1.  **Pre-Treatment Trends Analysis**
+
+Before conducting the DiD analysis, carefully examine the pre-treatment
+trends. If the trends are not parallel, you might need to reconsider
+your groups or the methodology.
+
+-   **Visual Inspection**: Plot the pre-treatment trends for the
+    treatment and control groups. If they are not parallel, consider
+    this a red flag.
+
+-   **Statistical Testing**: Perform a formal test by regressing the
+    outcome on a time indicator, treatment indicator, and their
+    interaction using only pre-treatment data. A significant interaction
+    term suggests non-parallel trends.
+
+2.  **Control for Covariates**
+
+Include control variables in your regression model to account for
+differences between the treatment and control groups that might affect
+the outcome variable.
+
+-   Collect relevant covariates that could influence the outcome.
+-   Include these covariates in your regression model: $$
+    Y_{it} = \alpha + \beta_1 \text{Post}_t + \beta_2 \text{Treatment}_i + \beta_3 (\text{Post}_t \times \text{Treatment}_i) + \gamma X_{it} + \epsilon_{it}
+    $$ where $X_{it}$ represents the covariates.
+
+3.  **Matching**
+
+Use matching techniques to create a more comparable control group.
+Matching ensures that the treatment and control groups are similar in
+observed characteristics.
+
+-   **Propensity Score Matching (PSM)**: Match treatment units with
+    control units based on the propensity score, which is the
+    probability of receiving treatment given covariates.
+
+-   **Coarsened Exact Matching (CEM)**: Match units exactly on certain
+    covariates.
+
+4.  **Synthetic Control Method**
+
+Construct a synthetic control group that closely resembles the treatment
+group in the pre-treatment period. This method is particularly useful
+when you have one treatment unit and many potential control units.
+
+-   Select control units to construct a weighted combination (synthetic
+    control) that mirrors the treatment unit's pre-treatment
+    characteristics.
+
+-   Compare the post-treatment outcomes of the treatment unit with the
+    synthetic control.
+
+5.  **Difference-in-Differences-in-Differences (DiDiD)**
+
+If you have an additional control group or variable, you can use DiDiD
+to control for potential violations. This method adds another layer of
+difference to control for unobserved confounders.
+
+-   Include a third group or dimension to add another difference. For
+    example: $$
+    Y_{it} = \alpha + \beta_1 \text{Post}_t + \beta_2 \text{Treatment}_i + \beta_3 (\text{Post}_t \times \text{Treatment}_i) + \beta_4 \text{Group}_i + \beta_5 (\text{Group}_i \times \text{Post}_t) + \beta_6 (\text{Group}_i \times \text{Treatment}_i) + \beta_7 (\text{Group}_i \times \text{Post}_t \times \text{Treatment}_i) + \epsilon_{it}
+    $$ where $\text{Group}_i$ represents the additional dimension.
+
+6.  **Sensitivity Analysis**
+
+Conduct sensitivity analyses to check how robust your results are to
+potential violations of the parallel trends assumption.
+
+-   **Placebo Tests**: Perform DiD analysis using periods before the
+    actual treatment to ensure no significant effects are detected.
+
+-   **Alternative Specifications**: Use different model specifications
+    or subsets of data to check the consistency of your results.
+
+7.  **Instrumental Variables (IV)**
+
+If you have a valid instrument, use it to address endogeneity issues
+that might violate the parallel trends assumption.
+
+-   Identify an instrument that affects the treatment but not directly
+    the outcome.
+
+-   Use Two-Stage Least Squares (2SLS) to estimate the treatment effect.
+
+By applying these strategies, you can address potential violations of
+the parallel trends assumption, ensuring more robust and credible
+results from your DiD analysis.
+
+## Notes
+
+-   Bertrand, Duflo, and Mullainathan (2004) point out that conventional
+    robust standard errors usually overestimate the actual standard
+    deviation of the estimator. The authors recommend clustering the
+    standard errors at the level of randomization (e.g. classes,
+    counties, villages, …).
+
+-   Minimum Wages and Employment: A Case Study of the Fast-Food Industry
+    in New Jersey and Pennsylvania (1994) by Card and Krueger.
+
+### Example: Business
+
+A firm wants to test the impact of a TV advertisement campaign on
+revenue. The firm releases the ad on a random sample of municipalities
+and track the revenue over time, before and after the ad campaign.
+
+## Extra Considerations
+
+-   Two-way Fixed Effects (TWFE) model can give wrong estimates. This is
+    very likely especially if treatments are heterogeneous (differential
+    treatment timings, different treatment sizes, different treatment
+    statuses over time) that can contaminate the treatment effects. This
+    can result from “bad” treatment combinations biased the average
+    treatment estimation to the point of even reversing the sign.
+
+The new DiD methods “correct” for these TWFE biases by combining various
+estimation techniques, such as bootstrapping, inverse probability
+weights, matching, influence functions, and imputations, to handle
+parallel trends, negative weights, covariates, and controls.

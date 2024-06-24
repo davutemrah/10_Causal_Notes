@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1 Causal Models | Notes on Causal Models</title>
+  <meta name="description" content="This is a collection of notes from open sources" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1 Causal Models | Notes on Causal Models" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is a collection of notes from open sources" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 Causal Models | Notes on Causal Models" />
+  
+  <meta name="twitter:description" content="This is a collection of notes from open sources" />
+  
+
+<meta name="author" content="DEA" />
+
+
+<meta name="date" content="2024-06-23" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="potential-outcomes.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Causal Model Notes</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Acknowledgement</a></li>
+<li class="chapter" data-level="1" data-path="causal-models.html"><a href="causal-models.html"><i class="fa fa-check"></i><b>1</b> Causal Models</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="causal-models.html"><a href="causal-models.html#ordinary-least-squares-ols"><i class="fa fa-check"></i><b>1.1</b> Ordinary Least Squares (OLS)</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="causal-models.html"><a href="causal-models.html#linearity"><i class="fa fa-check"></i><b>1.1.1</b> 1. <strong>Linearity</strong></a></li>
+<li class="chapter" data-level="1.1.2" data-path="causal-models.html"><a href="causal-models.html#exogeneity"><i class="fa fa-check"></i><b>1.1.2</b> 2. <strong>Exogeneity</strong></a></li>
+<li class="chapter" data-level="1.1.3" data-path="causal-models.html"><a href="causal-models.html#homoscedasticity"><i class="fa fa-check"></i><b>1.1.3</b> 3. <strong>Homoscedasticity</strong></a></li>
+<li class="chapter" data-level="1.1.4" data-path="causal-models.html"><a href="causal-models.html#no-autocorrelation"><i class="fa fa-check"></i><b>1.1.4</b> 4. <strong>No Autocorrelation</strong></a></li>
+<li class="chapter" data-level="1.1.5" data-path="causal-models.html"><a href="causal-models.html#no-perfect-multicollinearity"><i class="fa fa-check"></i><b>1.1.5</b> 5. <strong>No Perfect Multicollinearity</strong></a></li>
+<li class="chapter" data-level="1.1.6" data-path="causal-models.html"><a href="causal-models.html#normality-of-errors-for-inference"><i class="fa fa-check"></i><b>1.1.6</b> 6. <strong>Normality of Errors (for inference)</strong></a></li>
+<li class="chapter" data-level="1.1.7" data-path="causal-models.html"><a href="causal-models.html#practical-considerations-and-tests"><i class="fa fa-check"></i><b>1.1.7</b> Practical Considerations and Tests</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="causal-models.html"><a href="causal-models.html#concepts"><i class="fa fa-check"></i><b>1.2</b> Concepts</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="causal-models.html"><a href="causal-models.html#goodness-of-fit"><i class="fa fa-check"></i><b>1.2.1</b> Goodness of Fit</a></li>
+<li class="chapter" data-level="1.2.2" data-path="causal-models.html"><a href="causal-models.html#robustness-checks-and-validation-methods"><i class="fa fa-check"></i><b>1.2.2</b> Robustness checks and validation methods</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="causal-models.html"><a href="causal-models.html#multivariate-regression"><i class="fa fa-check"></i><b>1.3</b> Multivariate Regression</a></li>
+<li class="chapter" data-level="1.4" data-path="causal-models.html"><a href="causal-models.html#directed-acyclic-graphs-dags"><i class="fa fa-check"></i><b>1.4</b> Directed Acyclic Graphs (DAGs)</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="causal-models.html"><a href="causal-models.html#confounder"><i class="fa fa-check"></i><b>1.4.1</b> Confounder</a></li>
+<li class="chapter" data-level="1.4.2" data-path="causal-models.html"><a href="causal-models.html#collider"><i class="fa fa-check"></i><b>1.4.2</b> Collider</a></li>
+<li class="chapter" data-level="1.4.3" data-path="causal-models.html"><a href="causal-models.html#what-to-do"><i class="fa fa-check"></i><b>1.4.3</b> What to do</a></li>
+<li class="chapter" data-level="1.4.4" data-path="causal-models.html"><a href="causal-models.html#how-to-do"><i class="fa fa-check"></i><b>1.4.4</b> How to do</a></li>
+<li class="chapter" data-level="1.4.5" data-path="causal-models.html"><a href="causal-models.html#bad-controls"><i class="fa fa-check"></i><b>1.4.5</b> Bad Controls</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="causal-models.html"><a href="causal-models.html#external-and-internal-validity-in-econometrics"><i class="fa fa-check"></i><b>1.5</b> External and Internal Validity in Econometrics</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="causal-models.html"><a href="causal-models.html#internal-validity"><i class="fa fa-check"></i><b>1.5.1</b> Internal Validity</a></li>
+<li class="chapter" data-level="1.5.2" data-path="causal-models.html"><a href="causal-models.html#external-validity"><i class="fa fa-check"></i><b>1.5.2</b> External Validity</a></li>
+<li class="chapter" data-level="1.5.3" data-path="causal-models.html"><a href="causal-models.html#balancing-internal-and-external-validity"><i class="fa fa-check"></i><b>1.5.3</b> Balancing Internal and External Validity</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="causal-models.html"><a href="causal-models.html#endogeneity"><i class="fa fa-check"></i><b>1.6</b> Endogeneity</a>
+<ul>
+<li class="chapter" data-level="1.6.1" data-path="causal-models.html"><a href="causal-models.html#sources-of-endogeneity"><i class="fa fa-check"></i><b>1.6.1</b> Sources of Endogeneity:</a></li>
+<li class="chapter" data-level="1.6.2" data-path="causal-models.html"><a href="causal-models.html#consequences-of-endogeneity"><i class="fa fa-check"></i><b>1.6.2</b> Consequences of Endogeneity:</a></li>
+<li class="chapter" data-level="1.6.3" data-path="causal-models.html"><a href="causal-models.html#methods-to-address-endogeneity"><i class="fa fa-check"></i><b>1.6.3</b> Methods to Address Endogeneity:</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="causal-models.html"><a href="causal-models.html#reduced-form-model"><i class="fa fa-check"></i><b>1.7</b> Reduced Form Model</a>
+<ul>
+<li class="chapter" data-level="1.7.1" data-path="causal-models.html"><a href="causal-models.html#characteristics-of-reduced-form-models"><i class="fa fa-check"></i><b>1.7.1</b> Characteristics of Reduced Form Models:</a></li>
+<li class="chapter" data-level="1.7.2" data-path="causal-models.html"><a href="causal-models.html#uses-of-reduced-form-models"><i class="fa fa-check"></i><b>1.7.2</b> Uses of Reduced Form Models:</a></li>
+<li class="chapter" data-level="1.7.3" data-path="causal-models.html"><a href="causal-models.html#example-of-a-reduced-form-model"><i class="fa fa-check"></i><b>1.7.3</b> Example of a Reduced Form Model:</a></li>
+</ul></li>
+<li class="chapter" data-level="1.8" data-path="causal-models.html"><a href="causal-models.html#unobserved-variable-affecting-only-the-dependent-variable"><i class="fa fa-check"></i><b>1.8</b> Unobserved Variable Affecting Only the Dependent Variable</a></li>
+<li class="chapter" data-level="1.9" data-path="causal-models.html"><a href="causal-models.html#types-of-biases"><i class="fa fa-check"></i><b>1.9</b> Types of Biases</a>
+<ul>
+<li class="chapter" data-level="1.9.1" data-path="causal-models.html"><a href="causal-models.html#selection-bias"><i class="fa fa-check"></i><b>1.9.1</b> 1. Selection Bias</a></li>
+<li class="chapter" data-level="1.9.2" data-path="causal-models.html"><a href="causal-models.html#omitted-variable-bias"><i class="fa fa-check"></i><b>1.9.2</b> 2. Omitted Variable Bias</a></li>
+<li class="chapter" data-level="1.9.3" data-path="causal-models.html"><a href="causal-models.html#measurement-bias"><i class="fa fa-check"></i><b>1.9.3</b> 3. Measurement Bias</a></li>
+<li class="chapter" data-level="1.9.4" data-path="causal-models.html"><a href="causal-models.html#response-bias"><i class="fa fa-check"></i><b>1.9.4</b> 4. Response Bias</a></li>
+<li class="chapter" data-level="1.9.5" data-path="causal-models.html"><a href="causal-models.html#attrition-bias"><i class="fa fa-check"></i><b>1.9.5</b> 5. Attrition Bias</a></li>
+<li class="chapter" data-level="1.9.6" data-path="causal-models.html"><a href="causal-models.html#publication-bias"><i class="fa fa-check"></i><b>1.9.6</b> 6. Publication Bias</a></li>
+<li class="chapter" data-level="1.9.7" data-path="causal-models.html"><a href="causal-models.html#survivorship-bias"><i class="fa fa-check"></i><b>1.9.7</b> 7. Survivorship Bias</a></li>
+<li class="chapter" data-level="1.9.8" data-path="causal-models.html"><a href="causal-models.html#recall-bias"><i class="fa fa-check"></i><b>1.9.8</b> 8. Recall Bias</a></li>
+<li class="chapter" data-level="1.9.9" data-path="causal-models.html"><a href="causal-models.html#confirmation-bias"><i class="fa fa-check"></i><b>1.9.9</b> 9. Confirmation Bias</a></li>
+<li class="chapter" data-level="1.9.10" data-path="causal-models.html"><a href="causal-models.html#confounding-bias"><i class="fa fa-check"></i><b>1.9.10</b> 10. Confounding Bias</a></li>
+<li class="chapter" data-level="1.9.11" data-path="causal-models.html"><a href="causal-models.html#endogeneity-bias"><i class="fa fa-check"></i><b>1.9.11</b> 11. Endogeneity Bias</a></li>
+<li class="chapter" data-level="1.9.12" data-path="causal-models.html"><a href="causal-models.html#non-response-bias"><i class="fa fa-check"></i><b>1.9.12</b> 12. Non-Response Bias</a></li>
+<li class="chapter" data-level="1.9.13" data-path="causal-models.html"><a href="causal-models.html#observer-bias"><i class="fa fa-check"></i><b>1.9.13</b> 13. Observer Bias</a></li>
+<li class="chapter" data-level="1.9.14" data-path="causal-models.html"><a href="causal-models.html#overfitting-bias"><i class="fa fa-check"></i><b>1.9.14</b> 14. Overfitting Bias</a></li>
+<li class="chapter" data-level="1.9.15" data-path="causal-models.html"><a href="causal-models.html#addressing-biases"><i class="fa fa-check"></i><b>1.9.15</b> Addressing Biases</a></li>
+<li class="chapter" data-level="1.9.16" data-path="causal-models.html"><a href="causal-models.html#self-selection-bias"><i class="fa fa-check"></i><b>1.9.16</b> Self-Selection Bias</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="potential-outcomes.html"><a href="potential-outcomes.html"><i class="fa fa-check"></i><b>2</b> Potential Outcomes</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#key-concepts"><i class="fa fa-check"></i><b>2.1</b> Key Concepts</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#causal-effect"><i class="fa fa-check"></i><b>2.1.1</b> Causal Effect</a></li>
+<li class="chapter" data-level="2.1.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#average-treatment-effect-ate"><i class="fa fa-check"></i><b>2.1.2</b> Average Treatment Effect (ATE)</a></li>
+<li class="chapter" data-level="2.1.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#average-treatment-effect-on-the-treated-att"><i class="fa fa-check"></i><b>2.1.3</b> Average Treatment Effect on the Treated (ATT)</a></li>
+<li class="chapter" data-level="2.1.4" data-path="potential-outcomes.html"><a href="potential-outcomes.html#the-fundamental-problem-of-causal-inference"><i class="fa fa-check"></i><b>2.1.4</b> The Fundamental Problem of Causal Inference</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#assumptions-for-identifying-causal-effects"><i class="fa fa-check"></i><b>2.2</b> Assumptions for Identifying Causal Effects</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#independence"><i class="fa fa-check"></i><b>2.2.1</b> 1. <strong>Independence</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#methods-for-estimating-causal-effects"><i class="fa fa-check"></i><b>2.3</b> Methods for Estimating Causal Effects</a></li>
+<li class="chapter" data-level="2.4" data-path="potential-outcomes.html"><a href="potential-outcomes.html#example"><i class="fa fa-check"></i><b>2.4</b> Example</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#simple-difference-method"><i class="fa fa-check"></i><b>2.4.1</b> Simple Difference Method</a></li>
+<li class="chapter" data-level="2.4.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#conclusion-1"><i class="fa fa-check"></i><b>2.4.2</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="potential-outcomes.html"><a href="potential-outcomes.html#randomization-based-methods"><i class="fa fa-check"></i><b>2.5</b> Randomization-Based Methods</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#traditional-methods-vs.-randomization-based-methods"><i class="fa fa-check"></i><b>2.5.1</b> Traditional Methods vs. Randomization-Based Methods</a></li>
+<li class="chapter" data-level="2.5.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#why-use-randomization-based-methods"><i class="fa fa-check"></i><b>2.5.2</b> Why Use Randomization-Based Methods?</a></li>
+<li class="chapter" data-level="2.5.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#how-randomization-based-methods-work"><i class="fa fa-check"></i><b>2.5.3</b> How Randomization-Based Methods Work</a></li>
+<li class="chapter" data-level="2.5.4" data-path="potential-outcomes.html"><a href="potential-outcomes.html#example-2"><i class="fa fa-check"></i><b>2.5.4</b> Example</a></li>
+<li class="chapter" data-level="2.5.5" data-path="potential-outcomes.html"><a href="potential-outcomes.html#contribution-of-athey-and-imbens"><i class="fa fa-check"></i><b>2.5.5</b> Contribution of Athey and Imbens</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="potential-outcomes.html"><a href="potential-outcomes.html#on-how-parameters-are-calculated"><i class="fa fa-check"></i><b>2.6</b> On how parameters are calculated</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#propensity-score-matching-psm-and-maximum-likelihood-estimation-mle"><i class="fa fa-check"></i><b>2.6.1</b> Propensity Score Matching (PSM) and Maximum Likelihood Estimation (MLE)</a></li>
+<li class="chapter" data-level="2.6.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#logistic-regression"><i class="fa fa-check"></i><b>2.6.2</b> Logistic Regression</a></li>
+<li class="chapter" data-level="2.6.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#ordinary-least-squares-ols-regression"><i class="fa fa-check"></i><b>2.6.3</b> Ordinary Least Squares (OLS) Regression</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="matching.html"><a href="matching.html"><i class="fa fa-check"></i><b>3</b> Matching</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="matching.html"><a href="matching.html#subclassification"><i class="fa fa-check"></i><b>3.1</b> Subclassification</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="matching.html"><a href="matching.html#example-3"><i class="fa fa-check"></i><b>3.1.1</b> Example</a></li>
+<li class="chapter" data-level="3.1.2" data-path="matching.html"><a href="matching.html#step-by-step-example"><i class="fa fa-check"></i><b>3.1.2</b> Step-by-Step Example</a></li>
+<li class="chapter" data-level="3.1.3" data-path="matching.html"><a href="matching.html#considerations"><i class="fa fa-check"></i><b>3.1.3</b> Considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="matching.html"><a href="matching.html#exact-matching"><i class="fa fa-check"></i><b>3.2</b> Exact Matching</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="matching.html"><a href="matching.html#explanation"><i class="fa fa-check"></i><b>3.2.1</b> Explanation</a></li>
+<li class="chapter" data-level="3.2.2" data-path="matching.html"><a href="matching.html#example-4"><i class="fa fa-check"></i><b>3.2.2</b> Example</a></li>
+<li class="chapter" data-level="3.2.3" data-path="matching.html"><a href="matching.html#conclusion-2"><i class="fa fa-check"></i><b>3.2.3</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="matching.html"><a href="matching.html#approximate-matching-methods"><i class="fa fa-check"></i><b>3.3</b> Approximate Matching Methods</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="matching.html"><a href="matching.html#nearest-neighbor-covariate-matching"><i class="fa fa-check"></i><b>3.3.1</b> Nearest Neighbor Covariate Matching</a></li>
+<li class="chapter" data-level="3.3.2" data-path="matching.html"><a href="matching.html#example-5"><i class="fa fa-check"></i><b>3.3.2</b> Example</a></li>
+<li class="chapter" data-level="3.3.3" data-path="matching.html"><a href="matching.html#hypothetical-data"><i class="fa fa-check"></i><b>3.3.3</b> Hypothetical Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="matching.html"><a href="matching.html#propensity-score-methods"><i class="fa fa-check"></i><b>3.4</b> Propensity Score Methods</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="matching.html"><a href="matching.html#concept"><i class="fa fa-check"></i><b>3.4.1</b> Concept</a></li>
+<li class="chapter" data-level="3.4.2" data-path="matching.html"><a href="matching.html#steps"><i class="fa fa-check"></i><b>3.4.2</b> Steps</a></li>
+<li class="chapter" data-level="3.4.3" data-path="matching.html"><a href="matching.html#example-6"><i class="fa fa-check"></i><b>3.4.3</b> Example</a></li>
+<li class="chapter" data-level="3.4.4" data-path="matching.html"><a href="matching.html#assumptions-and-considerations"><i class="fa fa-check"></i><b>3.4.4</b> Assumptions and Considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="matching.html"><a href="matching.html#inverse-probability-weighting-weighting-on-the-propensity-score"><i class="fa fa-check"></i><b>3.5</b> Inverse Probability Weighting (Weighting on the propensity score)</a></li>
+<li class="chapter" data-level="3.6" data-path="matching.html"><a href="matching.html#nearest-neighbor-matching"><i class="fa fa-check"></i><b>3.6</b> Nearest-neighbor matching</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="matching.html"><a href="matching.html#example-in-r"><i class="fa fa-check"></i><b>3.6.1</b> Example in R</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="matching.html"><a href="matching.html#coarsened-exact-matching"><i class="fa fa-check"></i><b>3.7</b> Coarsened Exact Matching</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="matching.html"><a href="matching.html#example-7"><i class="fa fa-check"></i><b>3.7.1</b> Example</a></li>
+<li class="chapter" data-level="3.7.2" data-path="matching.html"><a href="matching.html#steps-in-coarsened-exact-matching"><i class="fa fa-check"></i><b>3.7.2</b> Steps in Coarsened Exact Matching</a></li>
+<li class="chapter" data-level="3.7.3" data-path="matching.html"><a href="matching.html#considerations-1"><i class="fa fa-check"></i><b>3.7.3</b> Considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="matching.html"><a href="matching.html#ab-test-article-from-medium"><i class="fa fa-check"></i><b>3.8</b> A/B Test article from Medium</a>
+<ul>
+<li class="chapter" data-level="3.8.1" data-path="matching.html"><a href="matching.html#example-conversion-rate-of-an-e-commerce-website"><i class="fa fa-check"></i><b>3.8.1</b> Example: Conversion Rate of an E-Commerce Website</a></li>
+<li class="chapter" data-level="3.8.2" data-path="matching.html"><a href="matching.html#example-ab-test"><i class="fa fa-check"></i><b>3.8.2</b> Example: A/B Test</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="matching.html"><a href="matching.html#task-1-load-the-data"><i class="fa fa-check"></i><b>3.9</b> Task 1: Load the data</a></li>
+<li class="chapter" data-level="3.10" data-path="matching.html"><a href="matching.html#task-2-set-up-hypothesis"><i class="fa fa-check"></i><b>3.10</b> Task 2: Set up Hypothesis</a></li>
+<li class="chapter" data-level="3.11" data-path="matching.html"><a href="matching.html#task-3-compute-the-difference-in-the-click-through-rate"><i class="fa fa-check"></i><b>3.11</b> Task 3: Compute the difference in the click-through rate</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html"><i class="fa fa-check"></i><b>4</b> Task four : create sample distribution using bootsrapping</a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#bootstrapping"><i class="fa fa-check"></i><b>4.0.1</b> Bootstrapping :</a></li>
+<li class="chapter" data-level="4.0.2" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#example-8"><i class="fa fa-check"></i><b>4.0.2</b> Example :</a></li>
+<li class="chapter" data-level="4.1" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#task-five-evaluate-the-null-hypothesis-and-draw-conclustions."><i class="fa fa-check"></i><b>4.1</b> Task five : Evaluate the null hypothesis and draw conclustions.</a></li>
+<li class="chapter" data-level="4.2" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#alternative-random-sampling-code"><i class="fa fa-check"></i><b>4.2</b> alternative random sampling code</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ab-testing.html"><a href="ab-testing.html"><i class="fa fa-check"></i><b>5</b> AB Testing</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ab-testing.html"><a href="ab-testing.html#sources"><i class="fa fa-check"></i><b>5.1</b> Sources</a></li>
+<li class="chapter" data-level="5.2" data-path="ab-testing.html"><a href="ab-testing.html#concepts-1"><i class="fa fa-check"></i><b>5.2</b> Concepts</a></li>
+<li class="chapter" data-level="5.3" data-path="ab-testing.html"><a href="ab-testing.html#ai-summary"><i class="fa fa-check"></i><b>5.3</b> AI Summary</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="ab-testing.html"><a href="ab-testing.html#ab-testing-randomized-controlled-trials"><i class="fa fa-check"></i><b>5.3.1</b> A/B Testing (Randomized Controlled Trials)</a></li>
+<li class="chapter" data-level="5.3.2" data-path="ab-testing.html"><a href="ab-testing.html#concepts-2"><i class="fa fa-check"></i><b>5.3.2</b> Concepts:</a></li>
+<li class="chapter" data-level="5.3.3" data-path="ab-testing.html"><a href="ab-testing.html#comparison-and-usage"><i class="fa fa-check"></i><b>5.3.3</b> Comparison and Usage</a></li>
+<li class="chapter" data-level="5.3.4" data-path="ab-testing.html"><a href="ab-testing.html#significance"><i class="fa fa-check"></i><b>5.3.4</b> Significance</a></li>
+<li class="chapter" data-level="5.3.5" data-path="ab-testing.html"><a href="ab-testing.html#group-size"><i class="fa fa-check"></i><b>5.3.5</b> Group Size</a></li>
+<li class="chapter" data-level="5.3.6" data-path="ab-testing.html"><a href="ab-testing.html#relationship-between-effect-size-significance-and-group-size"><i class="fa fa-check"></i><b>5.3.6</b> Relationship Between Effect Size, Significance, and Group Size</a></li>
+<li class="chapter" data-level="5.3.7" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-3"><i class="fa fa-check"></i><b>5.3.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="ab-testing.html"><a href="ab-testing.html#size-of-the-control-group"><i class="fa fa-check"></i><b>5.4</b> Size of the Control Group</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="ab-testing.html"><a href="ab-testing.html#sample-size-calculation-formula"><i class="fa fa-check"></i><b>5.4.1</b> Sample Size Calculation Formula</a></li>
+<li class="chapter" data-level="5.4.2" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-4"><i class="fa fa-check"></i><b>5.4.2</b> Conclusion</a></li>
+<li class="chapter" data-level="5.4.3" data-path="ab-testing.html"><a href="ab-testing.html#statistical-assumptions-for-randomized-controlled-trials-rcts"><i class="fa fa-check"></i><b>5.4.3</b> Statistical Assumptions for Randomized Controlled Trials (RCTs)</a></li>
+<li class="chapter" data-level="5.4.4" data-path="ab-testing.html"><a href="ab-testing.html#robustness-checks-1"><i class="fa fa-check"></i><b>5.4.4</b> Robustness Checks</a></li>
+<li class="chapter" data-level="5.4.5" data-path="ab-testing.html"><a href="ab-testing.html#validation-methods-1"><i class="fa fa-check"></i><b>5.4.5</b> Validation Methods</a></li>
+<li class="chapter" data-level="5.4.6" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-5"><i class="fa fa-check"></i><b>5.4.6</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html"><i class="fa fa-check"></i><b>6</b> Difference-in-Differences (DiD) Methods</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#simple-difference-in-differences-did"><i class="fa fa-check"></i><b>6.1</b> Simple Difference-in-Differences (DiD)</a></li>
+<li class="chapter" data-level="6.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#controversial-note"><i class="fa fa-check"></i><b>6.2</b> Controversial Note</a></li>
+<li class="chapter" data-level="6.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#placebo-tests-for-parallel-trends"><i class="fa fa-check"></i><b>6.3</b> Placebo tests for parallel trends</a></li>
+<li class="chapter" data-level="6.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#two-way-fixed-effects-model"><i class="fa fa-check"></i><b>6.4</b> Two-Way Fixed Effects Model</a></li>
+<li class="chapter" data-level="6.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#event-study-methods"><i class="fa fa-check"></i><b>6.5</b> Event Study Methods</a></li>
+<li class="chapter" data-level="6.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#importance-of-placebos-in-dd"><i class="fa fa-check"></i><b>6.6</b> Importance of Placebos in DD</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#triple-differences"><i class="fa fa-check"></i><b>6.6.1</b> Triple Differences</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#compositional-changes"><i class="fa fa-check"></i><b>6.7</b> Compositional Changes</a></li>
+<li class="chapter" data-level="6.8" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-assumptions"><i class="fa fa-check"></i><b>6.8</b> Key Assumptions</a>
+<ul>
+<li class="chapter" data-level="6.8.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#implementation-steps"><i class="fa fa-check"></i><b>6.8.1</b> Implementation Steps</a></li>
+<li class="chapter" data-level="6.8.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#advantages"><i class="fa fa-check"></i><b>6.8.2</b> Advantages</a></li>
+<li class="chapter" data-level="6.8.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#limitations-1"><i class="fa fa-check"></i><b>6.8.3</b> Limitations</a></li>
+<li class="chapter" data-level="6.8.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#q-how-would-you-test-the-parallel-trends-assumption"><i class="fa fa-check"></i><b>6.8.4</b> Q: How would you test the parallel trends assumption?</a></li>
+<li class="chapter" data-level="6.8.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#q-how-would-you-address-potential-violations-of-the-parallel-trends-assumption"><i class="fa fa-check"></i><b>6.8.5</b> Q: How would you address potential violations of the parallel trends assumption?</a></li>
+</ul></li>
+<li class="chapter" data-level="6.9" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#notes"><i class="fa fa-check"></i><b>6.9</b> Notes</a>
+<ul>
+<li class="chapter" data-level="6.9.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#example-business"><i class="fa fa-check"></i><b>6.9.1</b> Example: Business</a></li>
+</ul></li>
+<li class="chapter" data-level="6.10" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#extra-considerations"><i class="fa fa-check"></i><b>6.10</b> Extra Considerations</a></li>
+<li class="chapter" data-level="6.11" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#synthetic-difference-in-differences-synthdid-method"><i class="fa fa-check"></i><b>6.11</b> Synthetic Difference-in-Differences (SynthDiD) method</a></li>
+<li class="chapter" data-level="6.12" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#doubly-robust-models-in-econometrics"><i class="fa fa-check"></i><b>6.12</b> Doubly Robust Models in Econometrics</a>
+<ul>
+<li class="chapter" data-level="6.12.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-concepts-3"><i class="fa fa-check"></i><b>6.12.1</b> Key Concepts</a></li>
+<li class="chapter" data-level="6.12.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#steps-in-doubly-robust-estimation"><i class="fa fa-check"></i><b>6.12.2</b> Steps in Doubly Robust Estimation</a></li>
+<li class="chapter" data-level="6.12.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#advantages-1"><i class="fa fa-check"></i><b>6.12.3</b> Advantages</a></li>
+<li class="chapter" data-level="6.12.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#examples-and-applications"><i class="fa fa-check"></i><b>6.12.4</b> Examples and Applications</a></li>
+<li class="chapter" data-level="6.12.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#assumptions-and-considerations-1"><i class="fa fa-check"></i><b>6.12.5</b> Assumptions and Considerations</a></li>
+<li class="chapter" data-level="6.12.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-6"><i class="fa fa-check"></i><b>6.12.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.13" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#twoway-fixed-effects-with-differential-timing"><i class="fa fa-check"></i><b>6.13</b> Twoway Fixed Effects with Differential Timing</a></li>
+<li class="chapter" data-level="6.14" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#bacon-decomposition"><i class="fa fa-check"></i><b>6.14</b> Bacon Decomposition</a>
+<ul>
+<li class="chapter" data-level="6.14.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#overview"><i class="fa fa-check"></i><b>6.14.1</b> Overview</a></li>
+<li class="chapter" data-level="6.14.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-concepts-4"><i class="fa fa-check"></i><b>6.14.2</b> Key Concepts</a></li>
+<li class="chapter" data-level="6.14.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#components-of-bacon-decomposition"><i class="fa fa-check"></i><b>6.14.3</b> Components of Bacon Decomposition</a></li>
+<li class="chapter" data-level="6.14.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#formula-for-decomposition"><i class="fa fa-check"></i><b>6.14.4</b> Formula for Decomposition</a></li>
+<li class="chapter" data-level="6.14.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#implications-and-interpretation"><i class="fa fa-check"></i><b>6.14.5</b> Implications and Interpretation</a></li>
+<li class="chapter" data-level="6.14.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#example-9"><i class="fa fa-check"></i><b>6.14.6</b> Example</a></li>
+<li class="chapter" data-level="6.14.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-7"><i class="fa fa-check"></i><b>6.14.7</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html"><i class="fa fa-check"></i><b>7</b> Synthetic Control Method (SCM)</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#ai-summary-1"><i class="fa fa-check"></i><b>7.1</b> AI Summary</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#synthetic-control-method-scm-1"><i class="fa fa-check"></i><b>7.1.1</b> Synthetic Control Method (SCM)</a></li>
+<li class="chapter" data-level="7.1.2" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#placebo-tests"><i class="fa fa-check"></i><b>7.1.2</b> Placebo tests</a></li>
+<li class="chapter" data-level="7.1.3" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>7.1.3</b> Leave-One-Out Cross-Validation</a></li>
+<li class="chapter" data-level="7.1.4" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#detailed-example"><i class="fa fa-check"></i><b>7.1.4</b> Detailed Example</a></li>
+<li class="chapter" data-level="7.1.5" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-9"><i class="fa fa-check"></i><b>7.1.5</b> Conclusion</a></li>
+<li class="chapter" data-level="7.1.6" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data"><i class="fa fa-check"></i><b>7.1.6</b> Data</a></li>
+<li class="chapter" data-level="7.1.7" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data-setting"><i class="fa fa-check"></i><b>7.1.7</b> Data Setting</a></li>
+<li class="chapter" data-level="7.1.8" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#requirements-for-synthetic-control-method"><i class="fa fa-check"></i><b>7.1.8</b> Requirements for Synthetic Control Method</a></li>
+<li class="chapter" data-level="7.1.9" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data-requirements-summary"><i class="fa fa-check"></i><b>7.1.9</b> Data Requirements Summary</a></li>
+<li class="chapter" data-level="7.1.10" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#practical-considerations-1"><i class="fa fa-check"></i><b>7.1.10</b> Practical Considerations</a></li>
+<li class="chapter" data-level="7.1.11" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#example-12"><i class="fa fa-check"></i><b>7.1.11</b> Example</a></li>
+<li class="chapter" data-level="7.1.12" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-10"><i class="fa fa-check"></i><b>7.1.12</b> Conclusion</a></li>
+<li class="chapter" data-level="7.1.13" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#synthetic-did"><i class="fa fa-check"></i><b>7.1.13</b> Synthetic DID</a></li>
+<li class="chapter" data-level="7.1.14" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#robustness-checks-3"><i class="fa fa-check"></i><b>7.1.14</b> Robustness Checks</a></li>
+<li class="chapter" data-level="7.1.15" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#validation-methods-3"><i class="fa fa-check"></i><b>7.1.15</b> Validation Methods</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html"><i class="fa fa-check"></i><b>8</b> Instrumental Variables (IV)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#key-concepts-5"><i class="fa fa-check"></i><b>8.1</b> Key Concepts</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#requirements-for-a-valid-instrument"><i class="fa fa-check"></i><b>8.1.1</b> Requirements for a Valid Instrument</a></li>
+<li class="chapter" data-level="8.1.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#the-iv-estimation-process"><i class="fa fa-check"></i><b>8.1.2</b> The IV Estimation Process</a></li>
+<li class="chapter" data-level="8.1.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#example-13"><i class="fa fa-check"></i><b>8.1.3</b> Example</a></li>
+<li class="chapter" data-level="8.1.4" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#assumptions-and-considerations-2"><i class="fa fa-check"></i><b>8.1.4</b> Assumptions and Considerations</a></li>
+<li class="chapter" data-level="8.1.5" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#advantages-of-iv"><i class="fa fa-check"></i><b>8.1.5</b> Advantages of IV</a></li>
+<li class="chapter" data-level="8.1.6" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#disadvantages-of-iv"><i class="fa fa-check"></i><b>8.1.6</b> Disadvantages of IV</a></li>
+<li class="chapter" data-level="8.1.7" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#conclusion-11"><i class="fa fa-check"></i><b>8.1.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#difference-between-instrumental-variable-iv-method-and-two-stage-least-squares-2sls-method"><i class="fa fa-check"></i><b>8.2</b> Difference Between Instrumental Variable (IV) Method and Two-Stage Least Squares (2SLS) Method</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#instrumental-variable-iv-method"><i class="fa fa-check"></i><b>8.2.1</b> Instrumental Variable (IV) Method</a></li>
+<li class="chapter" data-level="8.2.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#two-stage-least-squares-2sls-method"><i class="fa fa-check"></i><b>8.2.2</b> Two-Stage Least Squares (2SLS) Method</a></li>
+<li class="chapter" data-level="8.2.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#summary-of-differences"><i class="fa fa-check"></i><b>8.2.3</b> Summary of Differences:</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#homogenous-treatment-effect"><i class="fa fa-check"></i><b>8.3</b> Homogenous Treatment Effect</a></li>
+<li class="chapter" data-level="8.4" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#heterogenous-treatment-effect"><i class="fa fa-check"></i><b>8.4</b> Heterogenous Treatment Effect</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html"><i class="fa fa-check"></i><b>9</b> Regression Discontinuity Designs (RDD)</a>
+<ul>
+<li class="chapter" data-level="9.0.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#validation-and-falsification"><i class="fa fa-check"></i><b>9.0.1</b> Validation and Falsification</a></li>
+<li class="chapter" data-level="9.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#regression-discontinuity-designs-rdd-1"><i class="fa fa-check"></i><b>9.1</b> Regression Discontinuity Designs (RDD)</a></li>
+<li class="chapter" data-level="9.2" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-6"><i class="fa fa-check"></i><b>9.2</b> Key Concepts</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#types-of-rdd"><i class="fa fa-check"></i><b>9.2.1</b> Types of RDD</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#sharp-rdd"><i class="fa fa-check"></i><b>9.3</b> Sharp RDD</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-7"><i class="fa fa-check"></i><b>9.3.1</b> Key Concepts</a></li>
+<li class="chapter" data-level="9.3.2" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#assumptions-for-rdd"><i class="fa fa-check"></i><b>9.3.2</b> Assumptions for RDD</a></li>
+<li class="chapter" data-level="9.3.3" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#estimation-in-sharp-rdd"><i class="fa fa-check"></i><b>9.3.3</b> Estimation in Sharp RDD</a></li>
+<li class="chapter" data-level="9.3.4" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#fuzzy-rdd"><i class="fa fa-check"></i><b>9.3.4</b> Fuzzy RDD</a></li>
+<li class="chapter" data-level="9.3.5" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications"><i class="fa fa-check"></i><b>9.3.5</b> Parametric vs. Non-Parametric Applications</a></li>
+<li class="chapter" data-level="9.3.6" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#example-14"><i class="fa fa-check"></i><b>9.3.6</b> Example</a></li>
+<li class="chapter" data-level="9.3.7" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#summary-2"><i class="fa fa-check"></i><b>9.3.7</b> Summary</a></li>
+<li class="chapter" data-level="9.3.8" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#challenges-to-identification"><i class="fa fa-check"></i><b>9.3.8</b> Challenges to Identification</a></li>
+<li class="chapter" data-level="9.3.9" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#examples"><i class="fa fa-check"></i><b>9.3.9</b> Examples</a></li>
+<li class="chapter" data-level="9.3.10" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#types-of-rdd-1"><i class="fa fa-check"></i><b>9.3.10</b> Types of RDD</a></li>
+<li class="chapter" data-level="9.3.11" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications-1"><i class="fa fa-check"></i><b>9.3.11</b> Parametric vs. Non-Parametric Applications</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#regression-kink-design"><i class="fa fa-check"></i><b>9.4</b> Regression Kink Design</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html"><i class="fa fa-check"></i><b>10</b> Fixed Effects and Panel Data Methods</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#pooled-regression"><i class="fa fa-check"></i><b>10.1</b> Pooled Regression</a></li>
+<li class="chapter" data-level="10.2" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#panel-data-methods"><i class="fa fa-check"></i><b>10.2</b> Panel Data Methods</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#fixed-effects-model"><i class="fa fa-check"></i><b>10.2.1</b> Fixed Effects Model</a></li>
+<li class="chapter" data-level="10.2.2" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#random-effects-model"><i class="fa fa-check"></i><b>10.2.2</b> Random Effects Model</a></li>
+<li class="chapter" data-level="10.2.3" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#example-economic-growth-and-education"><i class="fa fa-check"></i><b>10.2.3</b> Example: Economic Growth and Education</a></li>
+<li class="chapter" data-level="10.2.4" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#conclusion-12"><i class="fa fa-check"></i><b>10.2.4</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html"><i class="fa fa-check"></i><b>11</b> Ordinary Least Squares (OLS)</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#simple-linear-regression"><i class="fa fa-check"></i><b>11.1</b> Simple Linear Regression</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#summary-3"><i class="fa fa-check"></i><b>11.1.1</b> Summary</a></li>
+<li class="chapter" data-level="11.1.2" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#interpreting-model-coefficients-in-ols-models"><i class="fa fa-check"></i><b>11.1.2</b> Interpreting Model Coefficients in OLS Models</a></li>
+<li class="chapter" data-level="11.1.3" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#linear-models-linear-linear"><i class="fa fa-check"></i><b>11.1.3</b> 1. Linear Models (Linear-Linear)</a></li>
+<li class="chapter" data-level="11.1.4" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#log-linear-models"><i class="fa fa-check"></i><b>11.1.4</b> 2. Log-Linear Models</a></li>
+<li class="chapter" data-level="11.1.5" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#linear-log-models"><i class="fa fa-check"></i><b>11.1.5</b> 3. Linear-Log Models</a></li>
+<li class="chapter" data-level="11.1.6" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#log-log-models"><i class="fa fa-check"></i><b>11.1.6</b> 4. Log-Log Models</a></li>
+<li class="chapter" data-level="11.1.7" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#examples-of-dummy-and-continuous-variables"><i class="fa fa-check"></i><b>11.1.7</b> Examples of Dummy and Continuous Variables</a></li>
+<li class="chapter" data-level="11.1.8" data-path="ordinary-least-squares-ols-1.html"><a href="ordinary-least-squares-ols-1.html#assumptions-and-considerations-3"><i class="fa fa-check"></i><b>11.1.8</b> Assumptions and Considerations</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="resampling-methods.html"><a href="resampling-methods.html"><i class="fa fa-check"></i><b>12</b> Resampling methods</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="resampling-methods.html"><a href="resampling-methods.html#bootstrapping-1"><i class="fa fa-check"></i><b>12.1</b> Bootstrapping</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html"><i class="fa fa-check"></i><b>13</b> Hypotheis Testing</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#concepts-3"><i class="fa fa-check"></i><b>13.1</b> Concepts</a>
+<ul>
+<li class="chapter" data-level="13.1.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#significance-level-α"><i class="fa fa-check"></i><b>13.1.1</b> Significance Level (α)</a></li>
+<li class="chapter" data-level="13.1.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#p-value"><i class="fa fa-check"></i><b>13.1.2</b> P-Value</a></li>
+<li class="chapter" data-level="13.1.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-i-error"><i class="fa fa-check"></i><b>13.1.3</b> Type I Error</a></li>
+<li class="chapter" data-level="13.1.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-ii-error"><i class="fa fa-check"></i><b>13.1.4</b> Type II Error</a></li>
+<li class="chapter" data-level="13.1.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#relationship-between-type-i-and-type-ii-errors"><i class="fa fa-check"></i><b>13.1.5</b> Relationship Between Type I and Type II Errors</a></li>
+<li class="chapter" data-level="13.1.6" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#importance-in-research-and-decision-making"><i class="fa fa-check"></i><b>13.1.6</b> Importance in Research and Decision Making</a></li>
+<li class="chapter" data-level="13.1.7" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#statistical-power"><i class="fa fa-check"></i><b>13.1.7</b> Statistical power</a></li>
+</ul></li>
+<li class="chapter" data-level="13.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#null-hypothesis"><i class="fa fa-check"></i><b>13.2</b> Null Hypothesis</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fishers-sharp-null-hypothesis"><i class="fa fa-check"></i><b>13.2.1</b> Fisher’s Sharp Null Hypothesis</a></li>
+<li class="chapter" data-level="13.2.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#neymans-null-hypothesis"><i class="fa fa-check"></i><b>13.2.2</b> Neyman’s Null Hypothesis</a></li>
+<li class="chapter" data-level="13.2.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#key-differences"><i class="fa fa-check"></i><b>13.2.3</b> Key Differences</a></li>
+<li class="chapter" data-level="13.2.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-to-illustrate-the-difference"><i class="fa fa-check"></i><b>13.2.4</b> Example to Illustrate the Difference</a></li>
+<li class="chapter" data-level="13.2.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-13"><i class="fa fa-check"></i><b>13.2.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#permutation-tests"><i class="fa fa-check"></i><b>13.3</b> Permutation Tests</a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-and-why-to-use-permutation-tests"><i class="fa fa-check"></i><b>13.3.1</b> When and Why to Use Permutation Tests</a></li>
+<li class="chapter" data-level="13.3.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-to-perform-a-permutation-test"><i class="fa fa-check"></i><b>13.3.2</b> How to Perform a Permutation Test</a></li>
+<li class="chapter" data-level="13.3.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-calculation"><i class="fa fa-check"></i><b>13.3.3</b> Example Calculation</a></li>
+<li class="chapter" data-level="13.3.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-14"><i class="fa fa-check"></i><b>13.3.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fischers-exact-test"><i class="fa fa-check"></i><b>13.4</b> Fischer’s Exact Test</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-to-use-fishers-exact-test"><i class="fa fa-check"></i><b>13.4.1</b> When to Use Fisher’s Exact Test</a></li>
+<li class="chapter" data-level="13.4.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-fishers-exact-test-works"><i class="fa fa-check"></i><b>13.4.2</b> How Fisher’s Exact Test Works</a></li>
+<li class="chapter" data-level="13.4.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#step-by-step-example-1"><i class="fa fa-check"></i><b>13.4.3</b> Step-by-Step Example</a></li>
+<li class="chapter" data-level="13.4.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-15"><i class="fa fa-check"></i><b>13.4.4</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="maximum-likelihood-estimation.html"><a href="maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>14</b> Maximum Likelihood Estimation</a></li>
+<li class="divider"></li>
+<li><a href="https://davutemrah.github.io" target="blank">Back to Home Page</li>
+<li><a href="https://davutemrah.github.io/notebooks/" target="blank">Back to Collections</li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Notes on Causal Models</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="causal-models" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Causal Models<a href="causal-models.html#causal-models" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<ol style="list-style-type: decimal">
+<li><p>Hypothesis Testing</p></li>
+<li><p>Experiments</p></li>
+<li><p>Difference in Differences</p></li>
+<li><p>Synthetic Control</p></li>
+<li><p>Resampling Techniques</p></li>
+</ol>
+<div id="ordinary-least-squares-ols" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Ordinary Least Squares (OLS)<a href="causal-models.html#ordinary-least-squares-ols" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Ordinary Least Squares (OLS) is a fundamental technique in regression analysis used to estimate the parameters of a linear model.</p>
+<p>For OLS estimators to be the <strong>Best Linear Unbiased Estimators (BLUE)</strong>, certain assumptions must hold. Violations of these assumptions can lead to biased, inconsistent, or inefficient estimates. Here are the key assumptions and the potential consequences of their violations:</p>
+<div id="linearity" class="section level3 hasAnchor" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> 1. <strong>Linearity</strong><a href="causal-models.html#linearity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Assumption</strong>: The relationship between the independent variables (X) and the dependent variable (Y) is linear.</p>
+<p><strong>Violation</strong>: If the true relationship is not linear, the OLS estimates may be biased and inefficient. This can be addressed by transforming variables, adding polynomial terms, or using other non-linear models.</p>
+<p><strong>Note:</strong> Angrist and Pischke (2009) argue that linear regression may be useful even if the underlying CEF itself is not linear, because regression is a good approximation of the CEF. So keep an open mind as I break this down a little bit more.</p>
+</div>
+<div id="exogeneity" class="section level3 hasAnchor" number="1.1.2">
+<h3><span class="header-section-number">1.1.2</span> 2. <strong>Exogeneity</strong><a href="causal-models.html#exogeneity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Assumption</strong>: The independent variables are not correlated with the error term. Formally, <span class="math inline">\(E(\epsilon | X) = 0\)</span>.</p>
+<p><strong>Violation</strong>: If this assumption is violated (endogeneity), the OLS estimates are biased and inconsistent. This can occur due to omitted variable bias, measurement error, or simultaneity. Instrumental Variables (IV) or other techniques may be used to address endogeneity.</p>
+</div>
+<div id="homoscedasticity" class="section level3 hasAnchor" number="1.1.3">
+<h3><span class="header-section-number">1.1.3</span> 3. <strong>Homoscedasticity</strong><a href="causal-models.html#homoscedasticity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Assumption</strong>: The variance of the error term is constant across all levels of the independent variables, i.e., <span class="math inline">\(Var(\epsilon | X) = \sigma^2\)</span>.</p>
+<p><strong>Violation</strong>: If there is heteroscedasticity (non-constant variance of errors), the OLS estimates remain unbiased, but they are no longer efficient, and the standard errors are biased, leading to unreliable hypothesis tests. Heteroscedasticity-Robust standard errors or Generalized Least Squares (GLS) can be used to address heteroscedasticity.</p>
+<ul>
+<li><p>Eiker-Huber-White: Heteroscedasticity-Robust standard errors</p></li>
+<li><p>Cluster-robust standard errors (geographic units)</p></li>
+</ul>
+<p>This assumption is not related to unbiased-ness:</p>
+<ul>
+<li><p>Without homoskedasticity assumption, OLS estimator will still be unbiased but not efficient. Robust standard error usage will not change the OLS estimator but will change the standard errors.</p></li>
+<li><p>Without constant variance, mean squared errors are not minimum anymore. Estimated standard errors are biased.</p></li>
+<li><p>In real life, errors will mostly be heteroskedastic</p></li>
+<li><p>Solution for heteroskedasticity is mostly known as ‘robust’ standard errors.</p></li>
+</ul>
+<p><strong>Weighted Least Squares (WLS)</strong></p>
+<p>WLS is a special case of GLS where the variance-covariance matrix Σ of the error terms is diagonal. This means that the errors are uncorrelated but may have different variances. WLS is used specifically to address heteroscedasticity by assigning different weights to different observations based on their error variances.</p>
+<p>Weights: In WLS, each observation is assigned a weight that is inversely proportional to the variance of its error term. If an observation has a high variance, it receives a lower weight, and vice versa.</p>
+<p><strong>The sandwich standard error estimator</strong></p>
+<p>Also known as robust standard errors or heteroskedasticity-consistent standard errors, is a technique used to obtain valid standard errors in the presence of heteroskedasticity. These standard errors are “robust” because they do not assume that the error terms have constant variance (homoscedasticity), making them useful for hypothesis testing and confidence intervals when the usual OLS assumptions are violated.</p>
+<p>Why Use Sandwich Standard Errors?</p>
+<p>In OLS regression, if the assumption of homoscedasticity is violated (i.e., the error variance is not constant), the usual standard errors of the estimated coefficients are biased. This bias can lead to incorrect inferences, such as invalid hypothesis tests and confidence intervals. Sandwich standard errors correct for this bias, providing more reliable inference.</p>
+<p>How It Works</p>
+<p>The sandwich estimator adjusts the standard errors of the OLS estimates to account for heteroscedasticity. The name “sandwich” comes from the structure of the formula, where the “bread” parts are the matrices that involve the model’s design matrix, and the “meat” part is a matrix involving the residuals.</p>
+<p><strong>Clustering Standard Errors</strong></p>
+<ul>
+<li><p>In the real world, though, you can never assume that errors are independent draws from the same distribution. You need to know how your variables were constructed in the first place in order to choose the correct error structure for calculating your standard errors. If you have aggregate variables, like class size, then you’ll need to cluster at that level. If some treatment occurred at the state level, then you’ll need to cluster at that level.</p></li>
+<li><p>When the units of analysis are clustered into groups and the researcher suspects that the errors are correlated within (but not across) groups, it may be appropriate to employ variance estimators that are robust to the clustered nature of the data.</p></li>
+<li><p>When we cluster standard errors at the state level, we allow for arbitrary serial correlation within state.</p></li>
+<li><p>multi way clustering</p></li>
+</ul>
+<p><strong>When Should You Adjust Standard Errors for Clustering? - Abadie et al 2022</strong></p>
+<p>Formally, clustered standard errors adjust for the correlations induced by sampling the outcome variable from a data-generating process with unobserved cluster- level components.</p>
+<p>(Source)[<a href="https://blogs.worldbank.org/en/impactevaluations/when-should-you-cluster-standard-errors-new-wisdom-econometrics-oracle" class="uri">https://blogs.worldbank.org/en/impactevaluations/when-should-you-cluster-standard-errors-new-wisdom-econometrics-oracle</a>]</p>
+<p>The authors argue that there are two reasons for clustering standard errors:</p>
+<p>1- a sampling design reason, which arises because you have sampled data from a population using clustered sampling, and want to say something about the broader population;</p>
+<p>2- and an experimental design reason, where the assignment mechanism for some causal treatment of interest is clustered. Let me go through each in turn, by way of examples, and end with some of their takeaways.</p>
+<p><strong>A Sampling Design reason</strong></p>
+<p>Consider running a simple Mincer earnings regression of the form:
+Log(wages) = a + b<em>years of schooling + c</em>experience + d*experience^2 + e</p>
+<p>You present this model, and are deciding whether to cluster the standard errors. Referee 1 tells you “the wage residual is likely to be correlated within local labor markets, so you should cluster your standard errors by state or village.”. But referee 2 argues “The wage residual is likely to be correlated for people working in the same industry, so you should cluster your standard errors by industry”, and referee 3 argues that “the wage residual is likely to be correlated by age cohort, so you should cluster your standard errors by cohort”. What should you do?</p>
+<p>Under the sampling perspective, what matters for clustering is how the sample was selected and whether there are clusters in the population of interest that are not represented in the sample. So, we can imagine different scenarios here:</p>
+<ol style="list-style-type: decimal">
+<li><p>You want to say something about the association between schooling and wages in a particular population, and are using a random sample of workers from this population. Then there is no need to adjust the standard errors for clustering at all, even if clustering would change the standard errors.</p></li>
+<li><p>The sample was selected by randomly sampling 100 towns and villages from within the country, and then randomly sampling people in each; and your goal is to say something about the return to education in the overall population. Here you should cluster standard errors by village, since there are villages in the population of interest beyond those seen in the sample.</p></li>
+<li><p>This same logic makes it clear why you generally wouldn’t cluster by age cohort (it seems unlikely that we would randomly sample some age cohorts and not others, and then try and say something about all ages);</p></li>
+<li><p>and that we would only want to cluster by industry if the sample was drawn by randomly selecting a sample of industries, and then sampling individuals from within each.</p></li>
+</ol>
+<p>Even in the second case, Abadie et al. note that both the usual robust (Eicker-Huber-White or EHW) standard errors, and the clustered standard errors (which they call Liang-Zeger or LZ standard errors) can both be correct, it is just that they are correct for different estimands. That is, if you are content on just saying something about the particular sample of individuals you have, without trying to generalize to the population, the EHW standard errors are all you need; but if you want to say something about the broader population, the LZ standard errors are necessary.</p>
+<p><strong>The Experimental Design Reason for Clustering</strong></p>
+<p>The second reason for clustering is the one we are probably more familiar with, which is when clusters of units, rather than individual units, are assigned to a treatment. Let’s take the same equation as above, but assume that we have a binary treatment that assigns more schooling to people. So now we have:
+Log(wages) = a +b*Treatment + e</p>
+<p>Then if the treatment is assigned at the individual level, there is no need to cluster (*).</p>
+<p>There has been much confusion about this, as Chris Blattman explored in two earlier posts about this issue (the fabulously titled clusterjerk and clusterjerk the sequel), and I still occasionally get referees suggesting I try clustering by industry or something similar in an individually-randomized experiment. This Abadie et al. paper is now finally a good reference to explain why this is not necessary.</p>
+<p>(*) unless you are using multiple time periods, and then you will want to cluster by individual, since the unit of randomization is individual, and not individual-time period.</p>
+<p>What about if your treatment is assigned at the village level. Then cluster by village. This is also why you want to cluster difference-in-differences at the state-level when you have a source of variation that comes from differences across states, and why a “treatment” like being on one side of a border vs the other is problematic (because you have only 2 clusters).</p>
+</div>
+<div id="no-autocorrelation" class="section level3 hasAnchor" number="1.1.4">
+<h3><span class="header-section-number">1.1.4</span> 4. <strong>No Autocorrelation</strong><a href="causal-models.html#no-autocorrelation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Assumption</strong>: The error terms are not correlated with each other, i.e., <span class="math inline">\(E(\epsilon_i \epsilon_j) = 0\)</span> for <span class="math inline">\(i \neq j\)</span>.</p>
+<p><strong>Violation</strong>: If there is autocorrelation (correlated errors), the OLS estimates remain unbiased, but they are inefficient, and standard errors are biased, leading to incorrect inferences. This is common in time series data. Techniques such as Newey-West standard errors or autoregressive models can be used to correct for autocorrelation.</p>
+</div>
+<div id="no-perfect-multicollinearity" class="section level3 hasAnchor" number="1.1.5">
+<h3><span class="header-section-number">1.1.5</span> 5. <strong>No Perfect Multicollinearity</strong><a href="causal-models.html#no-perfect-multicollinearity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Assumption</strong>: There is no perfect linear relationship among the independent variables.</p>
+<p><strong>Violation</strong>: Perfect multicollinearity makes it impossible to estimate the coefficients uniquely. High but imperfect multicollinearity can inflate the variances of the coefficient estimates, making them unstable and sensitive to changes in the model. This can be addressed by removing or combining collinear variables, or using techniques such as Ridge Regression.</p>
+<p>How to measure collinearity?</p>
+<p>what if there is high collinearity</p>
+</div>
+<div id="normality-of-errors-for-inference" class="section level3 hasAnchor" number="1.1.6">
+<h3><span class="header-section-number">1.1.6</span> 6. <strong>Normality of Errors (for inference)</strong><a href="causal-models.html#normality-of-errors-for-inference" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Assumption</strong>: The error terms are normally distributed, particularly important for small sample sizes to conduct valid hypothesis tests.</p>
+<p><strong>Violation</strong>: If the errors are not normally distributed, the OLS estimates are still unbiased and consistent, but the hypothesis tests may be invalid. For large samples, the Central Limit Theorem mitigates this issue, but for small samples, transformations or non-parametric methods might be necessary.</p>
+</div>
+<div id="practical-considerations-and-tests" class="section level3 hasAnchor" number="1.1.7">
+<h3><span class="header-section-number">1.1.7</span> Practical Considerations and Tests<a href="causal-models.html#practical-considerations-and-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>Detecting Violations</strong>:
+<ul>
+<li><strong>Linearity</strong>: Scatter plots, residual plots, and tests like the RESET test.</li>
+<li><strong>Exogeneity</strong>: Hausman test for endogeneity, instrumental variable techniques.</li>
+<li><strong>Homoscedasticity</strong>: Residual plots, Breusch-Pagan test, White test.</li>
+<li><strong>Autocorrelation</strong>: Durbin-Watson test, Ljung-Box test.</li>
+<li><strong>Multicollinearity</strong>: Variance Inflation Factor (VIF), condition index.</li>
+<li><strong>Normality</strong>: Q-Q plots, Shapiro-Wilk test, Kolmogorov-Smirnov test.</li>
+</ul></li>
+</ul>
+<p>Understanding these assumptions and how to address their violations is crucial for robust regression analysis and accurate inference using OLS.</p>
+</div>
+</div>
+<div id="concepts" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Concepts<a href="causal-models.html#concepts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="goodness-of-fit" class="section level3 hasAnchor" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> Goodness of Fit<a href="causal-models.html#goodness-of-fit" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>I would encourage you not to fixate on R-squared in research projects where the aim is to estimate some causal effect, though. It’s a useful summary measure, but it does not tell us about causality. Remember, you aren’t trying to explain variation in <span class="math inline">\(y\)</span> if you are trying to estimate some causal effect. The <span class="math inline">\(R^2\)</span> tells us how much of the variation in <span class="math inline">\(y\)</span> is explained by the explanatory variables. But if we are interested in the causal effect of a single variable, <span class="math inline">\(R^2\)</span> is irrelevant</p>
+</div>
+<div id="robustness-checks-and-validation-methods" class="section level3 hasAnchor" number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> Robustness checks and validation methods<a href="causal-models.html#robustness-checks-and-validation-methods" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Robustness checks and validation methods are essential aspects of evaluating the reliability and credibility of empirical research findings, including those derived from the Synthetic Control Method (SCM). Although they are related and sometimes overlap, they serve distinct purposes in the research process. Here’s a detailed explanation of the differences between them and why each is important:</p>
+<div id="robustness-checks" class="section level4 hasAnchor" number="1.2.2.1">
+<h4><span class="header-section-number">1.2.2.1</span> Robustness Checks<a href="causal-models.html#robustness-checks" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Definition:</strong>
+Robustness checks are procedures used to assess the sensitivity and stability of research findings to various assumptions, model specifications, and data perturbations. The goal is to determine whether the results hold under different conditions and to identify any potential weaknesses in the analysis.</p>
+<p><strong>Purpose:</strong>
+- <strong>Assess Stability:</strong> Ensure that the findings are not unduly influenced by specific choices made in the analysis (e.g., selection of control units, predictor variables).
+- <strong>Identify Key Drivers:</strong> Determine which aspects of the model or data are most influential in driving the results.
+- <strong>Evaluate Generalizability:</strong> Check whether the results are consistent across different sub-samples or alternative model specifications.</p>
+<p><strong>Examples of Robustness Checks:</strong>
+1. <strong>Leave-One-Out Cross-Validation:</strong> Assess how the results change when each control unit is excluded one at a time.
+2. <strong>Alternative Model Specifications:</strong> Test different sets of predictor variables or alternative functional forms of the model.
+3. <strong>Sensitivity Analysis:</strong> Evaluate the impact of small changes in the data or assumptions on the estimated treatment effect.
+4. <strong>In-Sample Prediction:</strong> Check the model’s performance in predicting the outcome variable within the pre-intervention period.</p>
+</div>
+<div id="validation-methods" class="section level4 hasAnchor" number="1.2.2.2">
+<h4><span class="header-section-number">1.2.2.2</span> Validation Methods<a href="causal-models.html#validation-methods" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Definition:</strong>
+Validation methods are procedures used to confirm that the analytical approach and findings are credible and correctly specified. The goal is to ensure that the methodology accurately captures the causal relationship of interest and that the results are not artifacts of methodological flaws.</p>
+<p><strong>Purpose:</strong>
+- <strong>Establish Credibility:</strong> Demonstrate that the research design and methods are sound and that the findings are credible.
+- <strong>Detect Biases:</strong> Identify and correct any biases or errors in the analysis that could distort the results.
+- <strong>Provide Evidence for Causal Claims:</strong> Strengthen the argument that the observed effects are truly caused by the intervention rather than other factors.</p>
+<p><strong>Examples of Validation Methods:</strong>
+1. <strong>Placebo Tests:</strong> Apply the methodology to units or time periods where no intervention occurred to ensure that no significant effects are detected.
+2. <strong>Pre-Intervention Fit:</strong> Ensure that the synthetic control closely matches the treated unit’s trajectory in the pre-intervention period.
+3. <strong>Falsification Tests:</strong> Use outcomes that should not be affected by the intervention to check for false positives.
+4. <strong>External Validation:</strong> Compare the findings with results from other studies or alternative methodologies to check for consistency.</p>
+</div>
+<div id="differences-between-robustness-checks-and-validation-methods" class="section level4 hasAnchor" number="1.2.2.3">
+<h4><span class="header-section-number">1.2.2.3</span> Differences Between Robustness Checks and Validation Methods<a href="causal-models.html#differences-between-robustness-checks-and-validation-methods" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Scope and Focus:</strong></p>
+<ul>
+<li><p><strong>Robustness Checks:</strong> Focus on testing the sensitivity of the results to various assumptions and choices within the study. They address questions like “Do the results change if we tweak the model or data in specific ways?”</p></li>
+<li><p><strong>Validation Methods:</strong> Focus on verifying the correctness and credibility of the methodology and findings. They address questions like “Is the methodology sound and are the findings believable?”</p></li>
+</ul>
+<p><strong>When Applied:</strong></p>
+<ul>
+<li><p><strong>Robustness Checks:</strong> Often applied after the main analysis to ensure the findings are not artifacts of specific decisions or assumptions.</p></li>
+<li><p><strong>Validation Methods:</strong> Applied throughout the research process to ensure that the approach is valid and the results are credible from the outset.</p></li>
+</ul>
+<p><strong>Why Both Are Important:</strong></p>
+<ul>
+<li><p><strong>Robustness Checks:</strong></p>
+<ul>
+<li><strong>Credibility:</strong> Helps build confidence that the results are not fragile or overly dependent on specific conditions.</li>
+<li><strong>Transparency:</strong> Provides a clear understanding of how various factors influence the findings.</li>
+<li><strong>Comprehensive Insight:</strong> Identifies which components of the analysis are most crucial and robust.</li>
+</ul></li>
+<li><p><strong>Validation Methods:</strong></p>
+<ul>
+<li><strong>Reliability:</strong> Ensures that the methodological approach is correct and that the findings are not due to methodological flaws.</li>
+<li><strong>Accuracy:</strong> Confirms that the causal claims are well-founded and not spurious.</li>
+<li><strong>Scientific Rigor:</strong> Strengthens the overall validity of the research by providing multiple lines of evidence supporting the findings.</li>
+</ul></li>
+</ul>
+<p><strong>Conclusion</strong></p>
+<p>Robustness checks and validation methods are complementary approaches that together enhance the credibility and reliability of research findings. Robustness checks focus on the sensitivity and stability of the results, while validation methods ensure the correctness and credibility of the methodology. Both are crucial for demonstrating that the findings are both reliable and valid, thereby providing a comprehensive evaluation of the research’s strength and integrity.</p>
+</div>
+</div>
+</div>
+<div id="multivariate-regression" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Multivariate Regression<a href="causal-models.html#multivariate-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>It will eventually become second nature for you to talk about including more variables on the right side of a regression as “controlling for” those variables.</p>
+</div>
+<div id="directed-acyclic-graphs-dags" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Directed Acyclic Graphs (DAGs)<a href="causal-models.html#directed-acyclic-graphs-dags" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p>causality runs in one direction, it runs forward in time.</p></li>
+<li><p>There are no cycles in a DAG. To show reverse causality, one would need to create multiple nodes, most likely with two versions of the same node separated by a time index.</p></li>
+<li><p>To handle either simultaneity or reverse causality, it is recommended that you take a completely different approach to the problem than the one presented in this chapter.</p></li>
+<li><p>DAGs explain causality in terms of counterfactuals. That is, a causal effect is defined as a comparison between two states of the world—one state that actually happened when some intervention took on some value and another state that didn’t happen (the “counterfactual”) under some other intervention.</p></li>
+<li><p>Arrows represent a causal effect between two random variables moving in the intuitive direction of the arrow. The direction of the arrow captures the direction of causality.</p></li>
+<li><p>Causal effects can happen in two ways. They can either be direct (e.g., D -&gt; Y), or they can be mediated by a third variable (e.g., D -&gt; X -&gt; Y). When they are mediated by a third variable, we are capturing a sequence of events originating with , which may or may not be important to you depending on the question you’re asking.</p></li>
+<li><p>A complete DAG will have all direct causal effects among the variables in the graph as well as all common causes of any pair of variables in the graph.</p></li>
+</ul>
+<div id="confounder" class="section level3 hasAnchor" number="1.4.1">
+<h3><span class="header-section-number">1.4.1</span> Confounder<a href="causal-models.html#confounder" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Direct path is causal: D -&gt; Y;</p>
+<p>Backdoor path is not causal: X -&gt; D and X -&gt; Y</p>
+<ul>
+<li><p>Backdoor path, it is a process that creates spurious correlations between D and Y that are driven solely by fluctuations in the X random variable.</p></li>
+<li><p>Therefore, not controlling for a variable like that in a regression creates omitted variable bias, leaving a backdoor open creates bias.</p></li>
+<li><p>We therefore call X a confounder because it jointly determines D and Y, and so confounds our ability to discern the effect of D on Y in naı̈ve comparisons.</p></li>
+</ul>
+<p>Think of the backdoor path like this: Sometimes when D takes on different values, Y takes on different values because D causes Y. But sometimes D and Y take on different values because X takes on different values, and that bit of the correlation between D and Y is purely spurious. The existence of two causal pathways is contained within the correlation between D and Y.</p>
+<p>When X is observed and put in the model, then the backdoor path is closed.</p>
+</div>
+<div id="collider" class="section level3 hasAnchor" number="1.4.2">
+<h3><span class="header-section-number">1.4.2</span> Collider<a href="causal-models.html#collider" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Direct path is causal: D -&gt; Y;</p>
+<p>Backdoor path is not causal: D -&gt; X and Y -&gt; X</p>
+<ul>
+<li><p>Like above, there are two ways to get to Y from D.</p></li>
+<li><p>X is a collider along this backdoor path because D and the causal effects of Y collide at X.</p></li>
+<li><p>Colliders are special in part because when they appear along a backdoor path, that backdoor path is <strong>closed</strong> simply because of their presence.</p></li>
+</ul>
+</div>
+<div id="what-to-do" class="section level3 hasAnchor" number="1.4.3">
+<h3><span class="header-section-number">1.4.3</span> What to do<a href="causal-models.html#what-to-do" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>Open backdoor paths introduce omitted variable bias and, the bias is so bad that it flips the sign entirely.</p></li>
+<li><p>Our goal is to close these backdoor paths.</p></li>
+<li><p>And if we can close all of the open backdoor paths, then we can isolate the causal effect of D on Y using one of the research designs and identification strategies discussed in this book.</p></li>
+</ul>
+</div>
+<div id="how-to-do" class="section level3 hasAnchor" number="1.4.4">
+<h3><span class="header-section-number">1.4.4</span> How to do<a href="causal-models.html#how-to-do" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>First, if you have a confounder that has created an open backdoor path, then you can close that path by conditioning on the confounder. Conditioning requires holding the variable fixed using something like subclassification, matching, regression, or another method. It is equivalent to “controlling for” the variable in a regression.</p></li>
+<li><p>The second way to close a backdoor path is the appearance of a collider along that backdoor path. Since colliders always close backdoor paths, and conditioning on a collider always opens a backdoor path, choosing to ignore the colliders is part of your overall strategy to estimate the causal effect itself. By not conditioning on a collider, you will have closed that backdoor path and that takes you closer to your larger ambition to isolate some causal effect.</p></li>
+</ul>
+<p><strong>Backdoor Criterian:</strong> if there is a confounder, then control for it; if there is a collider, then keep it outside your model</p>
+<ul>
+<li>Avoid controlling for a collider in your model. To identify a collider, carefully analyze the directions and relationships between variables. If a variable acts as a collider (i.e., it is influenced by both the treatment and the outcome), including it in your model can introduce bias. Therefore, do not include colliders in your analysis.</li>
+</ul>
+<p><strong>Sample Selection and collider bias</strong></p>
+<p>lets assume that ability and beauty is independent, but both required for being an star actor.</p>
+<p>It can be shown in a simulation that the collider bias has created a negative correlation between talent and beauty in the non-movie-star sample as well. Yet we know that there is in fact no relationship between the two variables. This kind of sample selection creates spurious correlations.</p>
+<p>A random sample of the full population would be sufficient to show that there is no relationship between the two variables, but splitting the sample into movie stars only, we introduce spurious correlations between the two variables of interest.</p>
+</div>
+<div id="bad-controls" class="section level3 hasAnchor" number="1.4.5">
+<h3><span class="header-section-number">1.4.5</span> Bad Controls<a href="causal-models.html#bad-controls" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Joshua Angrist, a prominent economist known for his work in econometrics, discusses “bad controls” in the context of causal inference. “Bad controls” are variables that, when included in a regression model, can introduce bias rather than help control for it. Here are the key points on how Angrist addresses “bad controls”:</p>
+<div id="key-points-on-bad-controls-by-joshua-angrist" class="section level4 hasAnchor" number="1.4.5.1">
+<h4><span class="header-section-number">1.4.5.1</span> Key Points on “Bad Controls” by Joshua Angrist:<a href="causal-models.html#key-points-on-bad-controls-by-joshua-angrist" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: decimal">
+<li><strong>Definition of Bad Controls</strong>:
+<ul>
+<li><p>Bad controls are variables that are themselves affected by the treatment or are post-treatment variables. Including these in your model can distort the causal relationship between the treatment and the outcome.</p></li>
+<li><p>They can also be variables that are endogenous, meaning they are correlated with the error term, leading to biased and inconsistent estimates.</p></li>
+</ul></li>
+<li><strong>Examples of Bad Controls</strong>:
+<ul>
+<li><p>Variables that are outcomes of the treatment: If a variable is influenced by the treatment, including it as a control can create spurious correlations.</p></li>
+<li><p>Colliders: Variables that are influenced by both the treatment and the outcome. Controlling for colliders can open a backdoor path, leading to biased estimates.</p></li>
+</ul></li>
+<li><strong>Why Bad Controls are Problematic</strong>:
+<ul>
+<li>Including bad controls can lead to incorrect inferences about the causal effect of the treatment.</li>
+<li>They can introduce bias by creating or amplifying spurious relationships.</li>
+</ul></li>
+<li><strong>Identifying Good Controls</strong>:
+<ul>
+<li><p>Good controls are variables that help to isolate the causal effect by accounting for confounding factors.</p></li>
+<li><p>These are typically pre-treatment variables that influence the outcome but are not influenced by the treatment.</p></li>
+</ul></li>
+<li><strong>Best Practices</strong>:
+<ul>
+<li><p>Focus on pre-treatment variables that are potential confounders: Variables that affect both the treatment and the outcome but are not affected by the treatment.</p></li>
+<li><p>Use robustness checks to ensure that the inclusion of controls does not unduly influence the estimates.</p></li>
+</ul></li>
+</ol>
+</div>
+<div id="example-from-angrist-and-pischkes-mostly-harmless-econometrics" class="section level4 hasAnchor" number="1.4.5.2">
+<h4><span class="header-section-number">1.4.5.2</span> Example from Angrist and Pischke’s “Mostly Harmless Econometrics”:<a href="causal-models.html#example-from-angrist-and-pischkes-mostly-harmless-econometrics" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>In “Mostly Harmless Econometrics,” Angrist and Pischke illustrate these concepts with practical examples. For instance, they explain how including a variable like “post-treatment earnings” in a model where the treatment is “education level” can be a bad control. This is because earnings are influenced by education (the treatment), and controlling for it can obscure the true effect of education on other outcomes.</p>
+</div>
+<div id="practical-advice" class="section level4 hasAnchor" number="1.4.5.3">
+<h4><span class="header-section-number">1.4.5.3</span> Practical Advice:<a href="causal-models.html#practical-advice" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><p>When building your regression model, carefully consider whether each control variable is a confounder, a mediator, or a collider.</p></li>
+<li><p>Avoid including variables that lie on the causal path between the treatment and the outcome (mediators).</p></li>
+<li><p>Avoid controlling for variables that are outcomes of the treatment or are influenced by both the treatment and the outcome (colliders).</p></li>
+</ul>
+</div>
+<div id="summary" class="section level4 hasAnchor" number="1.4.5.4">
+<h4><span class="header-section-number">1.4.5.4</span> Summary:<a href="causal-models.html#summary" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Joshua Angrist emphasizes the importance of identifying and avoiding bad controls in regression models to ensure unbiased causal inference. By focusing on appropriate pre-treatment controls and being wary of endogenous variables and post-treatment variables, researchers can make more accurate and reliable causal claims.</p>
+</div>
+</div>
+</div>
+<div id="external-and-internal-validity-in-econometrics" class="section level2 hasAnchor" number="1.5">
+<h2><span class="header-section-number">1.5</span> External and Internal Validity in Econometrics<a href="causal-models.html#external-and-internal-validity-in-econometrics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="internal-validity" class="section level3 hasAnchor" number="1.5.1">
+<h3><span class="header-section-number">1.5.1</span> Internal Validity<a href="causal-models.html#internal-validity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Internal validity</strong> refers to the extent to which a study accurately establishes a causal relationship between the treatment (independent variable) and the outcome (dependent variable) within the context of the study. In other words, it measures how well the study avoids biases and errors that can lead to incorrect conclusions about causal relationships.</p>
+<div id="key-points-on-internal-validity" class="section level4 hasAnchor" number="1.5.1.1">
+<h4><span class="header-section-number">1.5.1.1</span> Key Points on Internal Validity:<a href="causal-models.html#key-points-on-internal-validity" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: decimal">
+<li><p><strong>Causal Inference</strong>: Internal validity ensures that the observed effects on the outcome can be confidently attributed to the treatment and not to other confounding factors.</p></li>
+<li><p><strong>Elimination of Bias</strong>: It involves controlling for confounding variables, avoiding omitted variable bias, ensuring proper randomization, and addressing issues like measurement error and simultaneity bias.</p></li>
+<li><p><strong>Common Threats</strong>:</p>
+<ul>
+<li><strong>Confounding Variables</strong>: Variables that are correlated with both the treatment and the outcome.</li>
+<li><strong>Selection Bias</strong>: Non-random assignment of subjects to treatment and control groups.</li>
+<li><strong>Measurement Error</strong>: Inaccurate measurement of variables.</li>
+<li><strong>Attrition</strong>: Loss of participants during the study.</li>
+<li><strong>Reverse Causality</strong>: Difficulty in determining the direction of causality.</li>
+<li><strong>Omitted Variable Bias</strong>: Failing to include a relevant variable that affects both the treatment and the outcome.</li>
+</ul></li>
+</ol>
+</div>
+<div id="examples-in-econometrics" class="section level4 hasAnchor" number="1.5.1.2">
+<h4><span class="header-section-number">1.5.1.2</span> Examples in Econometrics:<a href="causal-models.html#examples-in-econometrics" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><p><strong>Randomized Controlled Trials (RCTs)</strong>: RCTs are considered the gold standard for internal validity because random assignment of treatment ensures that confounding variables are evenly distributed across treatment and control groups.</p></li>
+<li><p><strong>Instrumental Variables (IV)</strong>: Using instruments to address endogeneity helps ensure that the treatment effect is not biased by omitted variables or reverse causality.</p></li>
+</ul>
+</div>
+</div>
+<div id="external-validity" class="section level3 hasAnchor" number="1.5.2">
+<h3><span class="header-section-number">1.5.2</span> External Validity<a href="causal-models.html#external-validity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>External validity</strong> refers to the extent to which the results of a study can be generalized beyond the specific context of the study to other settings, populations, times, and circumstances. It measures the applicability of the study’s findings to real-world scenarios outside the study environment.</p>
+<div id="key-points-on-external-validity" class="section level4 hasAnchor" number="1.5.2.1">
+<h4><span class="header-section-number">1.5.2.1</span> Key Points on External Validity:<a href="causal-models.html#key-points-on-external-validity" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: decimal">
+<li><p><strong>Generalizability</strong>: Ensures that the conclusions drawn from the study sample can be applied to the broader population or different contexts.</p></li>
+<li><p><strong>Population Validity</strong>: The degree to which the study sample represents the target population.</p></li>
+<li><p><strong>Ecological Validity</strong>: The extent to which study findings can be generalized to other settings or environments.</p></li>
+<li><p><strong>Temporal Validity</strong>: Whether the results hold over different time periods.</p></li>
+</ol>
+</div>
+<div id="common-threats-to-external-validity" class="section level4 hasAnchor" number="1.5.2.2">
+<h4><span class="header-section-number">1.5.2.2</span> Common Threats to External Validity:<a href="causal-models.html#common-threats-to-external-validity" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><p><strong>Non-representative Samples</strong>: If the study sample is not representative of the target population, the findings may not be generalizable.</p></li>
+<li><p><strong>Specific Contexts</strong>: Results from a specific geographic location, industry, or demographic may not apply elsewhere.</p></li>
+<li><p><strong>Temporal Changes</strong>: Changes over time in technology, behavior, or policy can limit the generalizability of findings from past studies.</p></li>
+</ul>
+</div>
+<div id="examples-in-econometrics-1" class="section level4 hasAnchor" number="1.5.2.3">
+<h4><span class="header-section-number">1.5.2.3</span> Examples in Econometrics:<a href="causal-models.html#examples-in-econometrics-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><p><strong>Field Experiments</strong>: Conducting experiments in real-world settings can enhance external validity compared to laboratory experiments.</p></li>
+<li><p><strong>Replication Studies</strong>: Replicating studies in different contexts and with different populations helps assess the robustness and generalizability of findings.</p></li>
+<li><p><strong>Heterogeneous Treatment Effects</strong>: Analyzing how treatment effects vary across different subgroups can provide insights into the external validity of the findings.</p></li>
+</ul>
+</div>
+</div>
+<div id="balancing-internal-and-external-validity" class="section level3 hasAnchor" number="1.5.3">
+<h3><span class="header-section-number">1.5.3</span> Balancing Internal and External Validity<a href="causal-models.html#balancing-internal-and-external-validity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>There is often a trade-off between internal and external validity:</p>
+<ul>
+<li><p><strong>High Internal Validity</strong>: Studies with strong internal validity, such as RCTs, often have controlled environments that may limit generalizability.</p></li>
+<li><p><strong>High External Validity</strong>: Observational studies and natural experiments might have higher external validity because they are conducted in real-world settings, but they may suffer from issues related to internal validity due to uncontrolled confounding variables.</p></li>
+</ul>
+<div id="practical-considerations" class="section level4 hasAnchor" number="1.5.3.1">
+<h4><span class="header-section-number">1.5.3.1</span> Practical Considerations:<a href="causal-models.html#practical-considerations" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: decimal">
+<li><p><strong>Study Design</strong>: Carefully design studies to address both internal and external validity. For instance, use randomization to enhance internal validity while selecting a representative sample to improve external validity.</p></li>
+<li><p><strong>Mixed Methods</strong>: Combining different methodological approaches, such as RCTs for internal validity and observational studies for external validity, can provide a more comprehensive understanding of causal relationships.</p></li>
+<li><p><strong>Transparency and Replication</strong>: Ensure transparency in research design and analysis, and encourage replication studies to verify findings across different contexts and populations.</p></li>
+</ol>
+<p>By understanding and addressing both internal and external validity, researchers can produce more reliable and applicable econometric analyses that contribute to evidence-based decision-making.</p>
+</div>
+</div>
+</div>
+<div id="endogeneity" class="section level2 hasAnchor" number="1.6">
+<h2><span class="header-section-number">1.6</span> Endogeneity<a href="causal-models.html#endogeneity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Endogeneity</strong> refers to a situation in econometrics where an explanatory variable is correlated with the error term in a regression model. This correlation can lead to biased and inconsistent estimates of the coefficients, making it difficult to establish causal relationships.</p>
+<div id="sources-of-endogeneity" class="section level3 hasAnchor" number="1.6.1">
+<h3><span class="header-section-number">1.6.1</span> Sources of Endogeneity:<a href="causal-models.html#sources-of-endogeneity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><p><strong>Omitted Variable Bias</strong>: When a relevant variable that affects both the dependent and independent variables is left out of the model, its effect is captured by the error term, leading to endogeneity.</p></li>
+<li><p><strong>Measurement Error</strong>: Errors in measuring the independent variable can cause it to be correlated with the error term.</p></li>
+<li><p><strong>Simultaneity (Reverse Causality)</strong>: When the independent variable and the dependent variable mutually influence each other, leading to a two-way causation.</p></li>
+</ol>
+</div>
+<div id="consequences-of-endogeneity" class="section level3 hasAnchor" number="1.6.2">
+<h3><span class="header-section-number">1.6.2</span> Consequences of Endogeneity:<a href="causal-models.html#consequences-of-endogeneity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Biased Estimates</strong>: The estimated coefficients do not accurately reflect the true relationship between the variables.</p></li>
+<li><p><strong>Inconsistent Estimates</strong>: As the sample size increases, the estimates do not converge to the true population parameters.</p></li>
+</ul>
+</div>
+<div id="methods-to-address-endogeneity" class="section level3 hasAnchor" number="1.6.3">
+<h3><span class="header-section-number">1.6.3</span> Methods to Address Endogeneity:<a href="causal-models.html#methods-to-address-endogeneity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Instrumental Variables (IV)</strong>:
+<ul>
+<li><p><strong>Instrumental Variables</strong>: Use variables (instruments) that are correlated with the endogenous explanatory variable but uncorrelated with the error term.</p></li>
+<li><p><strong>Two-Stage Least Squares (2SLS)</strong>: First stage involves regressing the endogenous variable on the instruments. The second stage uses the predicted values from the first stage as the independent variable in the main regression.</p></li>
+</ul></li>
+<li><strong>Fixed Effects Models</strong>:
+<ul>
+<li><p><strong>Panel Data</strong>: Use fixed effects to control for time-invariant unobserved heterogeneity.</p></li>
+<li><p><strong>Difference-in-Differences (DiD)</strong>: Control for unobserved confounding by comparing changes over time between treatment and control groups.</p></li>
+</ul></li>
+<li><strong>Control Function Approach</strong>:</li>
+</ol>
+<ul>
+<li>Include the residuals from the first stage regression of the endogenous variable on instruments in the second stage regression to account for endogeneity.</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li><strong>Natural Experiments</strong>:
+<ul>
+<li>Utilize exogenous variations caused by external events or policies that affect the treatment variable but are unrelated to the error term.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div id="reduced-form-model" class="section level2 hasAnchor" number="1.7">
+<h2><span class="header-section-number">1.7</span> Reduced Form Model<a href="causal-models.html#reduced-form-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Reduced Form Models</strong> refer to econometric models where the endogenous variables are expressed solely in terms of exogenous variables and error terms. These models simplify the relationship between variables by avoiding the need to specify the underlying structural model, focusing instead on the observed correlations.</p>
+<div id="characteristics-of-reduced-form-models" class="section level3 hasAnchor" number="1.7.1">
+<h3><span class="header-section-number">1.7.1</span> Characteristics of Reduced Form Models:<a href="causal-models.html#characteristics-of-reduced-form-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><p><strong>Simplified Representation</strong>: Reduced form models express endogenous variables directly as functions of exogenous variables and error terms.</p></li>
+<li><p><strong>Focus on Exogeneity</strong>: They rely on exogenous variation to identify causal effects, avoiding direct specification of the structural relationships between variables.</p></li>
+</ol>
+</div>
+<div id="uses-of-reduced-form-models" class="section level3 hasAnchor" number="1.7.2">
+<h3><span class="header-section-number">1.7.2</span> Uses of Reduced Form Models:<a href="causal-models.html#uses-of-reduced-form-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><p><strong>Policy Evaluation</strong>: Reduced form models are often used in policy evaluation to estimate the causal impact of policies by leveraging exogenous variation.</p></li>
+<li><p><strong>Instrumental Variables</strong>: In IV estimation, the first stage regression (predicting the endogenous variable with instruments) is a reduced form model.</p></li>
+<li><p><strong>Natural Experiments</strong>: Reduced form models are frequently used in natural experiments where exogenous shocks provide a source of variation.</p></li>
+</ol>
+</div>
+<div id="example-of-a-reduced-form-model" class="section level3 hasAnchor" number="1.7.3">
+<h3><span class="header-section-number">1.7.3</span> Example of a Reduced Form Model:<a href="causal-models.html#example-of-a-reduced-form-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Suppose we want to estimate the impact of education (<span class="math inline">\(E\)</span>) on earnings (<span class="math inline">\(Y\)</span>):</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Structural Model</strong>:
+<span class="math display">\[
+Y = \alpha + \beta E + \epsilon
+\]</span></p></li>
+<li><p><strong>Endogeneity Problem</strong>:</p>
+<ul>
+<li>Education (<span class="math inline">\(E\)</span>) might be endogenous due to omitted variables like ability or family background.</li>
+</ul></li>
+<li><p><strong>Reduced Form Model</strong>:</p>
+<ul>
+<li>Use an instrument <span class="math inline">\(Z\)</span> (e.g., proximity to a college) that affects education but is exogenous with respect to earnings:</li>
+</ul>
+<p><span class="math inline">\(E = \pi_0 + \pi_1 Z + \nu\)</span></p>
+<ul>
+<li>The reduced form equation for earnings in terms of the instrument:</li>
+</ul>
+<p><span class="math inline">\(Y = \gamma_0 + \gamma_1 Z + \eta\)</span></p></li>
+</ol>
+<p>Here, <span class="math inline">\(\gamma_1\)</span> provides an estimate of the causal effect of $ Z $ on $ Y $, which, under certain conditions, can be used to infer the effect of <span class="math inline">\(E\)</span> on <span class="math inline">\(Y\)</span> through <span class="math inline">\(Z\)</span>.</p>
+<p>In summary, understanding and addressing endogeneity is crucial for accurate causal inference in econometrics. Reduced form models provide a simplified framework to estimate relationships using exogenous variation, often serving as a preliminary step before more complex structural modeling.</p>
+</div>
+</div>
+<div id="unobserved-variable-affecting-only-the-dependent-variable" class="section level2 hasAnchor" number="1.8">
+<h2><span class="header-section-number">1.8</span> Unobserved Variable Affecting Only the Dependent Variable<a href="causal-models.html#unobserved-variable-affecting-only-the-dependent-variable" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If you have an unobserved variable that affects only the dependent variable and not the independent variables, the primary concern is <strong>increased variability</strong> in the error term, but it does not bias the coefficient estimates of the independent variables. Here’s a more detailed explanation:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>No Endogeneity Problem</strong>: Since the unobserved variable does not affect the independent variables, it does not create a correlation between the independent variables and the error term. Hence, it does not introduce endogeneity, and the OLS estimates of the coefficients remain unbiased and consistent.</p></li>
+<li><p><strong>Increased Variance in Error Term</strong>: The presence of an unobserved variable affecting only the dependent variable will increase the variability (variance) of the error term. This leads to less precise (more variable) estimates of the coefficients, but these estimates are still unbiased.</p></li>
+<li><p><strong>Standard Errors</strong>: Due to the increased variability in the error term, the standard errors of the estimated coefficients will be larger, resulting in wider confidence intervals and potentially less statistical power to detect significant effects.</p></li>
+</ol>
+<p>In summary, while the presence of such an unobserved variable does not introduce bias into the coefficient estimates, it affects the precision of these estimates, leading to larger standard errors.</p>
+</div>
+<div id="types-of-biases" class="section level2 hasAnchor" number="1.9">
+<h2><span class="header-section-number">1.9</span> Types of Biases<a href="causal-models.html#types-of-biases" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In econometrics and statistical analysis, various types of biases can affect the validity and reliability of estimates and inferences. Here are some common types of bias:</p>
+<div id="selection-bias" class="section level3 hasAnchor" number="1.9.1">
+<h3><span class="header-section-number">1.9.1</span> 1. Selection Bias<a href="causal-models.html#selection-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong>: Occurs when the sample is not representative of the population due to non-random selection of observations.</p>
+<p><strong>Examples</strong>:</p>
+<ul>
+<li><p><strong>Sample Selection Bias</strong>: When individuals are selected into the sample based on criteria related to the outcome of interest (e.g., studying the impact of education on earnings but only sampling employed individuals).</p></li>
+<li><p><strong>Survivorship Bias</strong>: When only surviving or existing subjects are included in the analysis, ignoring those that have dropped out or failed (e.g., analyzing the performance of mutual funds without including funds that have closed).</p></li>
+</ul>
+</div>
+<div id="omitted-variable-bias" class="section level3 hasAnchor" number="1.9.2">
+<h3><span class="header-section-number">1.9.2</span> 2. Omitted Variable Bias<a href="causal-models.html#omitted-variable-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong>: Arises when a relevant variable that affects both the dependent and independent variables is left out of the model, causing the included variables to capture the effect of the omitted variable.</p>
+<p><strong>Examples</strong>:
+- Studying the effect of education on earnings without controlling for ability, where ability affects both education and earnings.</p>
+</div>
+<div id="measurement-bias" class="section level3 hasAnchor" number="1.9.3">
+<h3><span class="header-section-number">1.9.3</span> 3. Measurement Bias<a href="causal-models.html#measurement-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong>: Occurs when there are errors in measuring the variables, leading to inaccuracies in the estimated relationships.</p>
+<p><strong>Examples</strong>:</p>
+<ul>
+<li><p><strong>Systematic Measurement Error</strong>: Consistent, predictable errors (e.g., a scale that always adds 2 pounds).</p></li>
+<li><p><strong>Random Measurement Error</strong>: Errors that vary without pattern (e.g., human errors in data entry).</p></li>
+</ul>
+</div>
+<div id="response-bias" class="section level3 hasAnchor" number="1.9.4">
+<h3><span class="header-section-number">1.9.4</span> 4. Response Bias<a href="causal-models.html#response-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong>: Happens when respondents give inaccurate or false answers, often due to social desirability, recall issues, or misunderstanding the questions.</p>
+<p><strong>Examples</strong>:
+- Survey participants underreporting their alcohol consumption due to social desirability.</p>
+</div>
+<div id="attrition-bias" class="section level3 hasAnchor" number="1.9.5">
+<h3><span class="header-section-number">1.9.5</span> 5. Attrition Bias<a href="causal-models.html#attrition-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong>: Results from systematic differences between those who drop out of a study and those who remain, leading to a non-representative sample over time.</p>
+<p><strong>Examples</strong>:
+- A long-term study on the effects of a diet where participants who do not see results drop out, leaving only those who benefit.</p>
+</div>
+<div id="publication-bias" class="section level3 hasAnchor" number="1.9.6">
+<h3><span class="header-section-number">1.9.6</span> 6. Publication Bias<a href="causal-models.html#publication-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong>: Arises when studies with significant or positive results are more likely to be published than studies with non-significant or negative results.</p>
+<p><strong>Examples</strong>:
+- Meta-analyses showing inflated effects due to the exclusion of unpublished studies with null results.</p>
+</div>
+<div id="survivorship-bias" class="section level3 hasAnchor" number="1.9.7">
+<h3><span class="header-section-number">1.9.7</span> 7. Survivorship Bias<a href="causal-models.html#survivorship-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong>: Occurs when only successful subjects or cases are considered, ignoring those that failed or were excluded from the sample.</p>
+<p><strong>Examples</strong>:</p>
+<ul>
+<li>Analyzing the performance of companies that are currently listed on the stock exchange, ignoring those that went bankrupt.</li>
+</ul>
+</div>
+<div id="recall-bias" class="section level3 hasAnchor" number="1.9.8">
+<h3><span class="header-section-number">1.9.8</span> 8. Recall Bias<a href="causal-models.html#recall-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong>: Happens when participants do not remember past events accurately, leading to inaccurate data.</p>
+<p><strong>Examples</strong>:
+- Patients in a medical study failing to accurately recall past health behaviors.</p>
+</div>
+<div id="confirmation-bias" class="section level3 hasAnchor" number="1.9.9">
+<h3><span class="header-section-number">1.9.9</span> 9. Confirmation Bias<a href="causal-models.html#confirmation-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong>: The tendency to search for, interpret, and remember information that confirms pre-existing beliefs, leading to biased outcomes.</p>
+<p><strong>Examples</strong>:
+- Researchers focusing on data that supports their hypothesis while disregarding data that contradicts it.</p>
+</div>
+<div id="confounding-bias" class="section level3 hasAnchor" number="1.9.10">
+<h3><span class="header-section-number">1.9.10</span> 10. Confounding Bias<a href="causal-models.html#confounding-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong>: Occurs when the effect of the primary explanatory variable on the outcome is mixed with the effect of another variable (confounder) that is related to both the explanatory variable and the outcome.</p>
+<p><strong>Examples</strong>:
+- Studying the effect of smoking on lung cancer without controlling for age, where age is a confounder.</p>
+</div>
+<div id="endogeneity-bias" class="section level3 hasAnchor" number="1.9.11">
+<h3><span class="header-section-number">1.9.11</span> 11. Endogeneity Bias<a href="causal-models.html#endogeneity-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong>: Arises when an explanatory variable is correlated with the error term in the model, often due to omitted variables, measurement error, or reverse causality.</p>
+<p><strong>Examples</strong>:
+- Estimating the impact of education on earnings without accounting for the fact that higher ability individuals are more likely to obtain more education and earn higher wages.</p>
+</div>
+<div id="non-response-bias" class="section level3 hasAnchor" number="1.9.12">
+<h3><span class="header-section-number">1.9.12</span> 12. Non-Response Bias<a href="causal-models.html#non-response-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong>: Occurs when individuals who do not respond to a survey differ in meaningful ways from those who do respond.</p>
+<p><strong>Examples</strong>:
+- A survey on household income where higher-income households are less likely to respond, skewing results towards lower-income households.</p>
+</div>
+<div id="observer-bias" class="section level3 hasAnchor" number="1.9.13">
+<h3><span class="header-section-number">1.9.13</span> 13. Observer Bias<a href="causal-models.html#observer-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong>: Happens when researchers’ expectations or knowledge influence the outcome of the study or the interpretation of results.</p>
+<p><strong>Examples</strong>:
+- A researcher subtly influencing participants’ responses in a study on therapy effectiveness due to their belief in the therapy’s efficacy.</p>
+</div>
+<div id="overfitting-bias" class="section level3 hasAnchor" number="1.9.14">
+<h3><span class="header-section-number">1.9.14</span> 14. Overfitting Bias<a href="causal-models.html#overfitting-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong>: In predictive modeling, overfitting occurs when the model is too complex and captures noise rather than the underlying relationship, leading to poor generalization to new data.</p>
+<p><strong>Examples</strong>:
+- A regression model with too many parameters that fits the training data very well but performs poorly on validation data.</p>
+</div>
+<div id="addressing-biases" class="section level3 hasAnchor" number="1.9.15">
+<h3><span class="header-section-number">1.9.15</span> Addressing Biases<a href="causal-models.html#addressing-biases" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To mitigate these biases, researchers can use various strategies, including:
+- <strong>Randomization</strong>: Randomly assigning subjects to treatment and control groups to avoid selection bias and confounding.
+- <strong>Control Groups</strong>: Including control groups to help identify causal effects.
+- <strong>Instrumental Variables</strong>: Using instruments to address endogeneity.
+- <strong>Robustness Checks</strong>: Performing sensitivity analyses to check the stability of results under different assumptions.
+- <strong>Data Cleaning and Validation</strong>: Ensuring accurate measurement and data entry.
+- <strong>Blinding</strong>: Keeping participants and researchers unaware of group assignments to reduce observer and response biases.</p>
+<p>Understanding and addressing these biases is crucial for improving the validity and reliability of econometric analyses.</p>
+</div>
+<div id="self-selection-bias" class="section level3 hasAnchor" number="1.9.16">
+<h3><span class="header-section-number">1.9.16</span> Self-Selection Bias<a href="causal-models.html#self-selection-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Self-Selection Bias</strong> occurs when individuals select themselves into a group, causing a non-random sample that may not be representative of the population. This type of bias can severely impact the validity of causal inferences because the differences in outcomes between groups may be driven by the self-selection process rather than the treatment or intervention itself.</p>
+<div id="examples-of-self-selection-bias" class="section level4 hasAnchor" number="1.9.16.1">
+<h4><span class="header-section-number">1.9.16.1</span> Examples of Self-Selection Bias:<a href="causal-models.html#examples-of-self-selection-bias" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: decimal">
+<li><strong>Online Surveys</strong>:
+<ul>
+<li>If participation in an online survey is voluntary, those who choose to respond may have different characteristics or opinions compared to those who do not participate.</li>
+</ul></li>
+<li><strong>Program Participation</strong>:
+<ul>
+<li>When studying the impact of a job training program, individuals who opt into the program might be more motivated or have better baseline skills than those who do not, leading to biased estimates of the program’s effectiveness.</li>
+</ul></li>
+<li><strong>Product Reviews</strong>:
+<ul>
+<li>Customers who leave reviews for a product might have extreme opinions (either very positive or very negative), while those with moderate opinions are less likely to leave a review, skewing the perception of the product’s quality.</li>
+</ul></li>
+<li><strong>Health Studies</strong>:
+<ul>
+<li>People who enroll in health studies or clinical trials might be more health-conscious or have a particular interest in their health, which could lead to differences in health outcomes compared to the general population.</li>
+</ul></li>
+</ol>
+</div>
+<div id="addressing-self-selection-bias" class="section level4 hasAnchor" number="1.9.16.2">
+<h4><span class="header-section-number">1.9.16.2</span> Addressing Self-Selection Bias<a href="causal-models.html#addressing-self-selection-bias" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: decimal">
+<li><strong>Randomized Controlled Trials (RCTs)</strong>:
+<ul>
+<li>The gold standard for addressing self-selection bias is to conduct an RCT where participants are randomly assigned to treatment and control groups, ensuring any differences in outcomes are due to the intervention.</li>
+</ul></li>
+<li><strong>Propensity Score Matching (PSM)</strong>:
+<ul>
+<li>This method involves matching participants in the treatment group with similar participants in the control group based on a set of observed characteristics, aiming to mimic randomization.</li>
+</ul></li>
+<li><strong>Instrumental Variables (IV)</strong>:
+<ul>
+<li>Using instruments that affect participation in the treatment but do not directly affect the outcome can help isolate the causal effect of the treatment by accounting for the self-selection.</li>
+</ul></li>
+<li><strong>Heckman Correction (Selection Models)</strong>:
+<ul>
+<li>The Heckman two-step correction involves modeling the selection process and then incorporating this model into the outcome equation to correct for self-selection bias.</li>
+</ul></li>
+<li><strong>Difference-in-Differences (DiD)</strong>:
+<ul>
+<li>This approach compares changes in outcomes over time between a treatment group and a control group, assuming that any differences in trends can be attributed to the intervention.</li>
+</ul></li>
+<li><strong>Control Variables</strong>:
+<ul>
+<li>Including control variables in the regression model that capture the factors influencing self-selection can help mitigate bias, although it relies on the assumption that all relevant factors are observed and included.</li>
+</ul></li>
+</ol>
+</div>
+<div id="conclusion" class="section level4 hasAnchor" number="1.9.16.3">
+<h4><span class="header-section-number">1.9.16.3</span> Conclusion<a href="causal-models.html#conclusion" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Self-selection bias is a common challenge in observational studies where individuals choose their own treatment or participation status. It can lead to biased and inconsistent estimates if not properly addressed. Methods such as propensity score matching, instrumental variables, and randomized controlled trials can help mitigate self-selection bias and provide more reliable causal inferences.</p>
+
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="potential-outcomes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Causal Methods.pdf", "Causal Methods.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

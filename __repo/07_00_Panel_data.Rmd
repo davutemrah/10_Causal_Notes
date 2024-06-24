@@ -1,0 +1,99 @@
+# Fixed Effects and Panel Data Methods
+
+## Pooled Regression
+
+**Pooled regression** refers to combining cross-sectional and time series data into a single dataset and estimating a common model without accounting for individual or time-specific effects. This method assumes that all individual observations (from different time periods and entities) share the same underlying regression model.
+
+**Model Form**:
+
+\[ Y_{it} = \beta_0 + \beta_1 X_{it} + \epsilon_{it} \]
+where:
+- \( Y_{it} \) is the dependent variable for entity \( i \) at time \( t \).
+- \( X_{it} \) is the independent variable for entity \( i \) at time \( t \).
+- \( \epsilon_{it} \) is the error term.
+
+**Limitations**:
+
+**Homogeneity Assumption**: Assumes that the same relationship between \( X \) and \( Y \) holds for all individuals and over time, which may not be realistic.
+
+**Ignored Heterogeneity**: Fails to account for unobserved heterogeneity across entities or over time.
+
+## Panel Data Methods
+
+**Panel data methods** leverage the structure of data that follows the same entities over multiple time periods, allowing for more sophisticated modeling that accounts for individual heterogeneity.
+
+**Advantages**:
+
+**Control for Unobserved Heterogeneity**: By following the same entities over time, we can control for time-invariant characteristics of those entities.
+
+**More Observations**: Increases the number of data points, improving the efficiency of estimations.
+
+**Dynamic Analysis**: Allows studying the dynamics of change over time.
+
+### Fixed Effects Model
+
+The **Fixed Effects (FE) model** is a popular method in panel data analysis that controls for unobserved heterogeneity by allowing each entity to have its own intercept. This method removes time-invariant characteristics from the data, effectively focusing on within-entity variation.
+
+**Model Form**:
+\[ Y_{it} = \alpha_i + \beta X_{it} + \epsilon_{it} \]
+where:
+- \( \alpha_i \) is the entity-specific intercept.
+- \( Y_{it} \) and \( X_{it} \) are as defined above.
+
+**Why Fixed Effects Work**:
+
+**Control for Unobserved Heterogeneity**: By allowing each entity its own intercept, the FE model controls for all time-invariant differences between entities. This is particularly useful if there are omitted variables that are correlated with the included independent variables.
+
+**Elimination of Bias**: Time-invariant characteristics (e.g., cultural factors, institutional differences) are differenced out, reducing the risk of omitted variable bias.
+
+**Within Transformation**:
+
+The FE model can be estimated by demeaning the data:
+
+\[ \overline{Y}_{i} = \frac{1}{T} \sum_{t=1}^{T} Y_{it} \]
+\[ \overline{X}_{i} = \frac{1}{T} \sum_{t=1}^{T} X_{it} \]
+\[ \overline{\epsilon}_{i} = \frac{1}{T} \sum_{t=1}^{T} \epsilon_{it} \]
+Then subtract these averages from the original equation:
+\[ Y_{it} - \overline{Y}_{i} = \beta (X_{it} - \overline{X}_{i}) + (\epsilon_{it} - \overline{\epsilon}_{i}) \]
+This transformation removes \( \alpha_i \) from the equation, allowing for consistent estimation of \( \beta \).
+
+### Random Effects Model
+
+**Random Effects (RE) model** assumes that the entity-specific intercepts are random and uncorrelated with the independent variables. It is more efficient than FE if the assumption holds, but biased if the intercepts are correlated with the regressors.
+
+**Model Form**:
+\[ Y_{it} = \alpha + \beta X_{it} + u_i + \epsilon_{it} \]
+where \( u_i \) is the random effect.
+
+**Hausman Test**:
+
+- Used to decide between FE and RE models. It tests whether the unique errors (random effects) are correlated with the regressors.
+
+- If the null hypothesis (no correlation) is rejected, the FE model is preferred.
+
+### Example: Economic Growth and Education
+
+Suppose we want to study the impact of education on economic growth using panel data from different countries over several years.
+
+- **Pooled Regression**:
+  - Assumes the relationship between education and economic growth is the same across all countries and years.
+  - Model: \( \text{Growth}_{it} = \beta_0 + \beta_1 \text{Education}_{it} + \epsilon_{it} \)
+  - Limitation: Ignores country-specific factors (e.g., institutional quality) that might affect growth.
+
+- **Fixed Effects**:
+  - Accounts for country-specific unobserved factors that are constant over time (e.g., cultural factors, geographical characteristics).
+  - Model: \( \text{Growth}_{it} = \alpha_i + \beta_1 \text{Education}_{it} + \epsilon_{it} \)
+  - Interpretation: The coefficient \( \beta_1 \) shows the effect of education on economic growth within the same country over time, controlling for time-invariant factors.
+
+- **Random Effects**:
+  - Assumes that the unobserved country-specific effects are uncorrelated with the independent variables.
+  - Model: \( \text{Growth}_{it} = \alpha + \beta_1 \text{Education}_{it} + u_i + \epsilon_{it} \)
+  - Interpretation: The coefficient \( \beta_1 \) shows the overall effect of education on economic growth, assuming that the country-specific effects are random.
+
+### Conclusion
+
+- **Pooled Regression**: Simple but ignores heterogeneity.
+- **Fixed Effects**: Controls for unobserved time-invariant heterogeneity but only uses within-entity variation.
+- **Random Effects**: More efficient if the assumption holds but biased if unobserved effects are correlated with the regressors.
+
+Understanding these methods and their assumptions is crucial for correctly modeling and interpreting data in econometrics. For your interview, be prepared to explain these concepts, their applications, and when to use each method based on the data characteristics and research question.

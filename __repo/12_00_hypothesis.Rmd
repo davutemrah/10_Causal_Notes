@@ -1,0 +1,122 @@
+# Hypotheis Testing
+
+
+## Concepts
+
+
+### Significance Level (α)
+
+**Definition:**
+The significance level (α) is the probability threshold used in hypothesis testing to determine whether to reject the null hypothesis. It represents the maximum probability of incorrectly rejecting the null hypothesis when it is actually true.
+
+**Commonly Used Values:**
+
+- **Typical Value:** α is commonly set at 0.05, meaning there is a 5% chance of incorrectly rejecting the null hypothesis.
+
+- **Other Values:** Researchers may choose α levels such as 0.01 or 0.10 depending on the study’s requirements and the desired balance between Type I and Type II errors.
+
+**Interpretation:**
+
+- If the calculated p-value is less than or equal to α, the results are considered statistically significant.
+
+- If the p-value is greater than α, the results are not statistically significant, suggesting that the null hypothesis cannot be rejected.
+
+### P-Value
+
+**Definition:**
+The p-value is the probability of obtaining test results at least as extreme as the observed results, under the assumption that the null hypothesis is true. It measures the strength of evidence against the null hypothesis.
+
+**Key Points:**
+
+- **Lower p-value:** Indicates stronger evidence against the null hypothesis. A small p-value (typically ≤ α) suggests that the observed results are unlikely to occur if the null hypothesis is true, leading to rejection of the null hypothesis.
+
+- **Higher p-value:** Indicates weaker evidence against the null hypothesis. A larger p-value (typically > α) suggests that the observed results are reasonably likely to occur even if the null hypothesis is true, leading to failure to reject the null hypothesis.
+
+**Interpretation:**
+
+- **p ≤ α:** The results are statistically significant, suggesting that the observed effect is unlikely due to chance alone.
+
+- **p > α:** The results are not statistically significant, suggesting that the observed effect could reasonably occur due to chance.
+
+
+Type I and Type II errors are concepts used in hypothesis testing and statistical decision-making, describing the errors that can occur when making conclusions about the population based on sample data. Here’s an explanation of each:
+
+### Type I Error
+
+**Definition:**
+A Type I error occurs when the null hypothesis (H₀) is incorrectly rejected, even though it is actually true. In other words, it represents the situation where the researcher concludes there is an effect or relationship when, in fact, there is no such effect or relationship in the population.
+
+**Probability and Significance Level:**
+- The probability of committing a Type I error is equal to the significance level (α) chosen for the hypothesis test.
+
+- For example, if α is set at 0.05, there is a 5% chance of mistakenly rejecting the null hypothesis when it is true.
+
+**Type I error**
+
+-   This happens when we reject the null hypothesis when it should not
+    be rejected.
+
+-   Type I error rate is the probability when Type I error happens, also
+    known as significance level, or $\alpha$.
+
+-   A common value for alpha is 0.05.
+
+### Type II Error
+
+**Definition:**
+A Type II error occurs when the null hypothesis (H₀) is incorrectly not rejected, even though it is false. It represents the situation where the researcher fails to detect an effect or relationship that actually exists in the population.
+
+**Probability and Power:**
+- The probability of committing a Type II error is denoted as β (beta).
+- Power (1 - β) represents the probability of correctly rejecting the null hypothesis when it is false.
+- Type II error rate is influenced by factors such as sample size, effect size, and variability in the data.
+
+**Type II error**
+
+-   This happens when we fail to reject the null hypothesis when it
+    should be rejected.
+
+-   Type II error rate is also known as $\beta$.
+
+
+### Relationship Between Type I and Type II Errors
+
+- **Inverse Relationship:** As the significance level (α) decreases (making Type I errors less likely), the probability of committing a Type II error (β) tends to increase, and vice versa.
+- **Balancing Act:** Researchers aim to strike a balance between Type I and Type II errors depending on the context and consequences of each error type.
+- **Power Analysis:** Conducted to determine an appropriate sample size to minimize both types of errors and maximize the likelihood of detecting real effects.
+
+### Importance in Research and Decision Making
+
+- **Statistical Rigor:** Understanding and controlling Type I and Type II error rates are essential for maintaining the integrity and reliability of research findings.
+- **Impact:** Errors can have significant implications in fields such as medicine, psychology, economics, and policy-making, influencing decisions based on study results.
+
+In summary, Type I and Type II errors are critical concepts in hypothesis testing, highlighting the trade-offs and risks involved in drawing conclusions from sample data about the population. Proper consideration and calculation of these errors are vital for ensuring valid and meaningful research outcomes.
+  
+  
+
+### Statistical power
+
+Statistical power refers to the probability that a hypothesis test correctly rejects the null hypothesis when it should be rejected. It is denoted as \( 1 - \beta \), where \( \beta \) is the probability of a Type II error (failing to reject the null hypothesis when it is false).
+
+A commonly accepted level of statistical power is 0.80, which corresponds to a Type II error rate (β) of 0.20.
+
+Achieving sufficient statistical power is crucial for obtaining reliable and meaningful results in research. Sample size plays a critical role in determining statistical power. 
+
+For instance, when comparing two means, the calculation of statistical power can be based on factors such as the significance level (α), effect size (δ), and sample size (n).
+
+In summary, statistical power measures the ability of a study to detect a true effect or relationship, and it depends on various factors that should be carefully considered during the design and interpretation of experiments.
+
+
+The formula for calculating statistical power is given by:
+
+$$
+\text{Power} = 1 - \beta = 1 - P(\text{Type II Error}) = P(\text{Reject } H_0 | H_0 \text{ is false}) 
+$$
+
+where: 
+$ \beta : \text{ Probability of Type II Error}$   
+$ H_0 : \text{ Null Hypothesis}$
+
+Increasing sample size or effect size generally increases statistical power, while reducing the significance level increases the probability of Type II Error.
+
+As sample size increases, the statistical power increases. Therefore, for our test to have desirable statistical power (usually 0.80), we want to estimate the minimum sample size required.

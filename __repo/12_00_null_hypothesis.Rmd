@@ -1,0 +1,41 @@
+## Null Hypothesis
+
+The debate between Fisher and Neyman on the null hypothesis in causal inference revolves around different interpretations and implications of the null hypothesis in the context of randomized experiments.
+
+### Fisher’s Sharp Null Hypothesis
+
+- **Sharp Null Hypothesis**: Fisher's sharp null hypothesis is the assertion that every single unit in the population has a treatment effect of zero.
+  - **Implication**: Under this null hypothesis, the treatment has no effect whatsoever on any unit. This is a very strong statement, implying that the treatment effect is exactly zero for all individuals.
+  - **Testing**: This allows for a precise and exact test of the null hypothesis because it specifies the potential outcomes for every unit. In this scenario, you can use randomization tests to calculate exact p-values by comparing observed outcomes to those expected under complete nullification of treatment effects.
+
+### Neyman’s Null Hypothesis
+
+- **Average Treatment Effect (ATE) Null Hypothesis**: Neyman, in contrast, proposed a weaker form of the null hypothesis, which asserts that the average treatment effect (ATE) across all units is zero.
+  - **Implication**: This means that, on average, the treatment does not have an effect, but it allows for the possibility that some units could have positive treatment effects while others have negative effects, as long as they cancel out in the aggregate.
+  - **Testing**: Testing this hypothesis typically involves estimating the average treatment effect and assessing its statistical significance. This approach does not specify the exact potential outcomes for each unit, making it more general but less powerful for exact testing.
+
+### Key Differences
+
+1. **Stringency**:
+   - Fisher’s sharp null hypothesis is more stringent because it makes a precise statement about every unit’s treatment effect being zero.
+   - Neyman’s null hypothesis is less stringent because it only concerns the average effect across the population.
+
+2. **Testing Methodologies**:
+   - Under Fisher’s sharp null, one can use permutation or randomization tests to obtain exact p-values, as the null hypothesis specifies the exact distribution of outcomes under no treatment effect.
+   - Under Neyman’s null, one typically relies on estimations and asymptotic properties to test the significance of the estimated ATE. This involves confidence intervals and standard errors.
+
+3. **Implications for Experimental Design**:
+   - Fisher’s approach allows for stronger conclusions in terms of causality for each unit but requires stronger assumptions.
+   - Neyman’s approach provides a broader inference about the average effect, which is often more realistic in practical scenarios where treatment effects can vary across units.
+
+### Example to Illustrate the Difference
+
+Suppose we conduct an experiment to test the effect of a new drug on blood pressure. We have two groups: a treatment group and a control group.
+
+- **Fisher’s Sharp Null Hypothesis**: The null hypothesis here would state that the new drug has no effect on blood pressure for every individual in the treatment group. This means if an individual's blood pressure would be 120 without the drug, it remains 120 with the drug. If we observe a difference between the treatment and control groups, we can use randomization tests to see if this difference is likely to occur by chance under the sharp null.
+
+- **Neyman’s ATE Null Hypothesis**: The null hypothesis here would state that the average change in blood pressure due to the drug across all individuals is zero. This allows for some individuals to experience a decrease in blood pressure and others an increase, as long as these changes average out to zero. Here, we would estimate the ATE and test if it is significantly different from zero using statistical inference methods.
+
+### Conclusion
+
+The debate between Fisher and Neyman highlights a fundamental difference in how causal effects are conceptualized and tested in statistics. Fisher's sharp null hypothesis allows for precise testing with exact p-values but requires stronger assumptions, while Neyman's ATE null hypothesis is more flexible and realistic but relies on estimation and inference methods that are less precise in defining individual treatment effects. Understanding both approaches provides a comprehensive view of hypothesis testing in the context of causal inference.

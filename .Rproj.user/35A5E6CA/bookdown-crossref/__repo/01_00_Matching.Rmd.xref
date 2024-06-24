@@ -1,0 +1,37 @@
+h1:matching Matching
+h2:subclassification Subclassification
+h3:example Example
+h3:step-by-step-example Step-by-Step Example
+h4:implementation Implementation
+h3:considerations Considerations
+h2:exact-matching Exact Matching
+h3:explanation Explanation
+h3:example-1 Example
+h4:step-by-step-process Step-by-Step Process
+h4:example-data Example Data
+h4:att-calculation ATT Calculation
+h3:conclusion Conclusion
+h2:approximate-matching-methods Approximate Matching Methods
+h3:nearest-neighbor-covariate-matching Nearest Neighbor Covariate Matching
+h4:euclidean-distance Euclidean Distance
+h4:normalized-euclidean-distance Normalized Euclidean Distance
+h4:mahalanobis-distance Mahalanobis Distance
+h3:example-2 Example
+h4:step-by-step-process-1 Step-by-Step Process
+h3:hypothetical-data Hypothetical Data
+h4:matching-process Matching Process
+h2:propensity-score-methods Propensity Score Methods
+h3:concept Concept
+h3:steps Steps
+h3:example-3 Example
+h4:step-by-step-process-2 Step-by-Step Process
+h4:example-data-1 Example Data
+h3:assumptions-and-considerations Assumptions and Considerations
+h2:inverse-probability-weighting-weighting-on-the-propensity-score Inverse Probability Weighting (Weighting on the propensity score)
+h2:nearest-neighbor-matching Nearest-neighbor matching
+h3:example-in-r Example in R
+h2:coarsened-exact-matching Coarsened Exact Matching
+h3:example-4 Example
+h3:steps-in-coarsened-exact-matching Steps in Coarsened Exact Matching
+h3:considerations-1 Considerations
+

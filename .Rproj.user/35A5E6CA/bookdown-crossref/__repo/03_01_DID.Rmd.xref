@@ -1,0 +1,19 @@
+h1:difference-in-differences-did-methods Difference-in-Differences (DiD) Methods
+h2:simple-difference-in-differences-did Simple Difference-in-Differences (DiD)
+h2:controversial-note Controversial Note
+h2:placebo-tests-for-parallel-trends Placebo tests for parallel trends
+h2:two-way-fixed-effects-model Two-Way Fixed Effects Model
+h2:event-study-methods Event Study Methods
+h2:importance-of-placebos-in-dd Importance of Placebos in DD
+h3:triple-differences Triple Differences
+h2:compositional-changes Compositional Changes
+h2:key-assumptions Key Assumptions
+h3:implementation-steps Implementation Steps
+h3:advantages Advantages
+h3:limitations Limitations
+h3:q-how-would-you-test-the-parallel-trends-assumption Q: How would you test the parallel trends assumption?
+h3:q-how-would-you-address-potential-violations-of-the-parallel-trends-assumption Q: How would you address potential violations of the parallel trends assumption?
+h2:notes Notes
+h3:example-business Example: Business
+h2:extra-considerations Extra Considerations
+

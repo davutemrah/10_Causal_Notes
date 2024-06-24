@@ -1,0 +1,65 @@
+
+## Permutation Tests
+
+A permutation test (also known as a randomization test or re-randomization test). This method is used in econometrics and statistics to test the null hypothesis when the assumptions required for traditional parametric tests (like the t-test) may not hold, particularly in the context of small sample sizes or when the distribution of the test statistic under the null hypothesis is complex or unknown.
+
+### When and Why to Use Permutation Tests
+
+1. **Non-Parametric Nature**:
+   - **When**: Permutation tests are useful when the data do not necessarily meet the assumptions of parametric tests, such as normality or homogeneity of variance.
+   - **Why**: Because they are non-parametric, permutation tests do not rely on the underlying distribution of the data, making them more robust in certain situations.
+
+2. **Small Sample Sizes**:
+   - **When**: They are particularly valuable when dealing with small sample sizes where the Central Limit Theory may not apply, and thus, the sampling distribution of the test statistic under the null hypothesis is not well-approximated by a normal distribution.
+   - **Why**: In small samples, traditional methods like the t-test may not be reliable. Permutation tests use the actual data to construct the distribution of the test statistic, which can provide a more accurate p-value.
+
+3. **Exact Test**:
+   - **When**: When you need an exact test rather than an approximate one.
+   - **Why**: Permutation tests generate the exact distribution of the test statistic under the null hypothesis by considering all possible reassignments of treatment labels, ensuring an accurate p-value.
+
+4. **Complex Experimental Designs**:
+   - **When**: In complex experimental designs where the structure of the data or the treatment assignment mechanism does not fit well with the assumptions of standard tests.
+   - **Why**: Permutation tests are flexible and can be adapted to a wide variety of experimental designs and data structures.
+
+### How to Perform a Permutation Test
+
+Here's a step-by-step outline of the permutation test procedure:
+
+1. **Calculate the Original Test Statistic**:
+   - Compute the test statistic (e.g., the difference in means between treatment and control groups) for the observed data.
+
+2. **Drop the Treatment Variable**:
+   - Remove the treatment labels from the data, essentially pooling all the data together.
+
+3. **Reassign Treatment Labels**:
+   - Randomly reassign the treatment labels to the data, ensuring the same number of treatment and control units as in the original data.
+
+4. **Calculate the Test Statistic for the New Assignment**:
+   - Compute the test statistic for this new random assignment of treatment labels.
+
+5. **Repeat the Process**:
+   - Repeat the re-randomization and calculation of the test statistic many times (e.g., 1,000 or more) to build a distribution of the test statistic under the null hypothesis.
+
+6. **Create the Empirical Distribution**:
+   - Collect all the computed test statistics from the repeated random assignments to form an empirical distribution of the test statistic under the null hypothesis.
+
+7. **Calculate the Empirical P-Value**:
+   - Compare the original test statistic to this empirical distribution. The p-value is the proportion of test statistics in the empirical distribution that are as extreme as, or more extreme than, the original test statistic.
+
+### Example Calculation
+
+1. **Observed Data**: Suppose you have two groups, treatment (\(Y_T\)) and control (\(Y_C\)), and you calculate the observed difference in means, \(\Delta_{obs} = \bar{Y}_T - \bar{Y}_C\).
+
+2. **Reassign Labels**: Randomly shuffle the combined data and reassign the treatment and control labels.
+
+3. **Compute New Statistic**: Calculate the new difference in means for this re-randomized data, \(\Delta_{rand}\).
+
+4. **Repeat**: Perform steps 2 and 3, say 1,000 times, to get a distribution of \(\Delta_{rand}\).
+
+5. **Compare**: Determine where \(\Delta_{obs}\) falls within the distribution of \(\Delta_{rand}\). If \(\Delta_{obs}\) is in the extreme tails of this distribution, it suggests that the observed effect is unlikely to have occurred by random chance.
+
+6. **P-Value**: Calculate the p-value as the proportion of \(\Delta_{rand}\) values that are as extreme or more extreme than \(\Delta_{obs}\).
+
+### Conclusion
+
+Permutation tests are a powerful tool for testing hypotheses in situations where traditional assumptions may not hold. By using the actual data to generate the null distribution of the test statistic, permutation tests provide a robust, non-parametric method for hypothesis testing, ensuring accurate p-values even in complex or small-sample scenarios.

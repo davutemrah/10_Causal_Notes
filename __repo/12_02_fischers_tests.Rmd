@@ -1,0 +1,73 @@
+## Fischer's Exact Test
+
+Fisher's Exact Test is a statistical test used to determine if there are nonrandom associations between two categorical variables. It is particularly useful when sample sizes are small, and the assumptions of the chi-square test (like the expected frequency in each cell being at least 5) are not met. The test is named after the famous statistician Ronald A. Fisher.
+
+### When to Use Fisher’s Exact Test
+
+1. **Small Sample Sizes**: Fisher’s Exact Test is often used when dealing with small sample sizes, where the chi-square test may not be appropriate.
+2. **Categorical Data**: It is used for categorical data to test for independence between two variables.
+3. **2x2 Contingency Tables**: While the test can be extended to larger tables, it is most commonly applied to 2x2 contingency tables.
+
+### How Fisher's Exact Test Works
+
+#### Example
+
+Consider the following 2x2 contingency table:
+
+|               | Treatment | Control | Total |
+|---------------|-----------|---------|-------|
+| **Success**   | a         | b       | a + b |
+| **Failure**   | c         | d       | c + d |
+| **Total**     | a + c     | b + d   | n     |
+
+Where:
+- \(a\): Number of successes in the treatment group
+- \(b\): Number of successes in the control group
+- \(c\): Number of failures in the treatment group
+- \(d\): Number of failures in the control group
+- \(n\): Total number of observations
+
+#### Calculating the P-Value
+
+Fisher's Exact Test calculates the exact probability of obtaining a distribution of values in the contingency table given the observed marginal totals. The p-value is computed by summing the probabilities of all possible tables that have the same row and column totals as the observed table and have a test statistic as extreme as, or more extreme than, the observed one.
+
+The probability of any particular table is given by the hypergeometric distribution:
+
+\[ P = \frac{\binom{a+b}{a} \binom{c+d}{c}}{\binom{n}{a+c}} \]
+
+Where \(\binom{n}{k}\) is the binomial coefficient, representing the number of ways to choose \(k\) successes out of \(n\) trials.
+
+### Step-by-Step Example
+
+Let’s say we have the following data from a clinical trial:
+
+|               | Treatment | Control |
+|---------------|-----------|---------|
+| **Improved**  | 8         | 2       |
+| **Not Improved** | 1         | 5       |
+
+We want to test if there is a significant association between the treatment and the improvement.
+
+1. **Construct the Contingency Table**:
+
+   |               | Treatment | Control | Total |
+   |---------------|-----------|---------|-------|
+   | **Improved**  | 8         | 2       | 10    |
+   | **Not Improved** | 1         | 5       | 6     |
+   | **Total**     | 9         | 7       | 16    |
+
+2. **Calculate the P-Value**:
+
+   The p-value for Fisher's Exact Test is the sum of the probabilities of all tables that are as extreme as or more extreme than the observed table, given the marginal totals.
+
+   For the given table:
+
+   \[ P = \frac{\binom{10}{8} \binom{6}{1}}{\binom{16}{9}} = \frac{45 \times 6}{11440} \approx 0.0236 \]
+
+3. **Interpret the Result**:
+
+   If the p-value (0.0236) is less than the chosen significance level (commonly 0.05), we reject the null hypothesis and conclude that there is a significant association between the treatment and the improvement.
+
+### Conclusion
+
+Fisher’s Exact Test is a powerful tool for analyzing contingency tables, especially when sample sizes are small. It provides an exact p-value for the test of independence between two categorical variables, making it a preferred choice when the assumptions of the chi-square test are not satisfied. By using this test, researchers can make accurate inferences about the relationships between categorical variables even in studies with limited data.

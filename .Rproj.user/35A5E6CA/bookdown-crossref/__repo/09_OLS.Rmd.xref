@@ -1,0 +1,14 @@
+h1:ordinary-least-squares-ols Ordinary Least Squares (OLS)
+h2:simple-linear-regression Simple Linear Regression
+h3:summary Summary
+h3:interpreting-model-coefficients-in-ols-models Interpreting Model Coefficients in OLS Models
+h3:linear-models-linear-linear 1. Linear Models (Linear-Linear)
+h3:log-linear-models 2. Log-Linear Models
+h3:linear-log-models 3. Linear-Log Models
+h3:log-log-models 4. Log-Log Models
+h3:examples-of-dummy-and-continuous-variables Examples of Dummy and Continuous Variables
+h4:example-1-linear-model-with-dummy-and-continuous-variables Example 1: Linear Model with Dummy and Continuous Variables
+h4:example-2-log-linear-model-with-continuous-variables Example 2: Log-Linear Model with Continuous Variables
+h4:example-3-log-log-model-with-continuous-variables Example 3: Log-Log Model with Continuous Variables
+h3:assumptions-and-considerations Assumptions and Considerations
+

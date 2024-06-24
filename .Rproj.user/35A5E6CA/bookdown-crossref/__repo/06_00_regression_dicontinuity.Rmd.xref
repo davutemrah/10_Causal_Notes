@@ -1,0 +1,37 @@
+h1:regression-discontinuity-designs-rdd Regression Discontinuity Designs (RDD)
+h3:validation-and-falsification Validation and Falsification
+h2:regression-discontinuity-designs-rdd-1 Regression Discontinuity Designs (RDD)
+h2:key-concepts Key Concepts
+h3:types-of-rdd Types of RDD
+h2:sharp-rdd Sharp RDD
+h3:key-concepts-1 Key Concepts
+h4:explanation Explanation
+h4:no-common-support-in-rdd No Common Support in RDD
+h4:extrapolation-in-rdd Extrapolation in RDD
+h4:why-extrapolation-is-needed Why Extrapolation is Needed
+h4:summary Summary
+h3:assumptions-for-rdd Assumptions for RDD
+h4:continuity-assumption-in-rdd Continuity Assumption in RDD
+h4:no-manipulation-sorting No Manipulation (sorting)
+h3:estimation-in-sharp-rdd Estimation in Sharp RDD
+h3:fuzzy-rdd Fuzzy RDD
+h4:estimation-in-fuzzy-rdd Estimation in Fuzzy RDD
+h3:parametric-vs.-non-parametric-applications Parametric vs. Non-Parametric Applications
+h3:example Example
+h3:summary-1 Summary
+h3:challenges-to-identification Challenges to Identification
+h4:density-test Density Test
+h4:covariate-balance-and-other-placebos Covariate balance and Other placebos
+h4:non-random-heaping-in-running-variable Non-random heaping in running variable
+h3:examples Examples
+h4:close-election Close Election
+h4:education-policies Education Policies
+h4:health-interventions Health Interventions
+h3:types-of-rdd-1 Types of RDD
+h4:sharp-rdd-1 Sharp RDD
+h4:fuzzy-rdd-1 Fuzzy RDD
+h3:parametric-vs.-non-parametric-applications-1 Parametric vs. Non-Parametric Applications
+h4:parametric-rdd Parametric RDD
+h4:non-parametric-rdd Non-Parametric RDD
+h2:regression-kink-design Regression Kink Design
+

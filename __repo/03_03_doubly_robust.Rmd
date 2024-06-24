@@ -1,0 +1,79 @@
+## Doubly Robust Models in Econometrics
+
+**Doubly Robust (DR) Models** are a class of estimators used to estimate causal effects, providing robustness against model misspecification. The key feature of DR models is that they combine elements of both outcome regression and propensity score methods. This dual approach ensures that the estimator remains consistent if at least one of the two models (outcome or treatment model) is correctly specified.
+
+
+[DRDID website](https://psantanna.com/DRDID/)
+
+**DRDID**
+
+Average Treatment Effect on the Treated (ATT) in Difference-in-Differences (DiD) setups where the parallel trends assumption holds after conditioning on a vector of pre-treatment covariates.
+
+### Key Concepts
+
+1. **Outcome Model**:
+   - This involves modeling the outcome \(Y\) as a function of covariates \(X\) and treatment \(D\).
+   - Example: Using a regression model \(E[Y | X, D]\).
+
+2. **Treatment Model (Propensity Score Model)**:
+   - This involves modeling the treatment assignment \(D\) as a function of covariates \(X\).
+   - Example: Using logistic regression to estimate the propensity score \(P(D = 1 | X)\).
+
+3. **Doubly Robust Estimator**:
+   - Combines the predictions from both the outcome and treatment models to estimate the average treatment effect (ATE).
+   - The estimator is "doubly robust" because it remains unbiased if either the outcome model or the treatment model is correctly specified, but not necessarily both.
+
+### Steps in Doubly Robust Estimation
+
+1. **Estimate the Propensity Score**:
+   - Use a logistic regression (or other suitable model) to estimate the probability of treatment given the covariates \(X\):
+     \[ \hat{p}(X) = P(D = 1 | X) \]
+
+2. **Estimate the Outcome Model**:
+   - Fit a regression model to estimate the expected outcome given covariates \(X\) and treatment \(D\):
+     \[ \hat{E}[Y | X, D] \]
+
+3. **Compute the Inverse Probability Weights (IPW)**:
+   - Calculate the weights based on the estimated propensity scores:
+     \[ W = \frac{D}{\hat{p}(X)} + \frac{1 - D}{1 - \hat{p}(X)} \]
+
+4. **Calculate the Doubly Robust Estimator**:
+   - Combine the outcome model and the inverse probability weights to adjust the outcomes:
+     \[ \hat{\theta}_{DR} = \frac{1}{n} \sum_{i=1}^n \left( \hat{E}[Y | X_i, D_i] + \frac{D_i (Y_i - \hat{E}[Y | X_i, D_i])}{\hat{p}(X_i)} - \frac{(1 - D_i) (Y_i - \hat{E}[Y | X_i, D_i])}{1 - \hat{p}(X_i)} \right) \]
+
+### Advantages
+
+1. **Robustness**:
+   - The estimator is consistent if either the outcome model or the propensity score model is correctly specified.
+   
+2. **Efficiency**:
+   - It often has lower variance compared to using either the outcome model or propensity score model alone.
+
+3. **Flexibility**:
+   - Can be applied in various settings, including observational studies and randomized experiments with imperfect compliance.
+
+### Examples and Applications
+
+1. **Healthcare**:
+   - Estimating the effect of a new treatment on patient outcomes, where treatment assignment may depend on patient characteristics.
+   
+2. **Economics**:
+   - Evaluating the impact of job training programs on employment, accounting for non-random selection into the program.
+
+3. **Education**:
+   - Assessing the effect of educational interventions, such as after-school tutoring programs, on student performance, considering potential confounding factors.
+
+### Assumptions and Considerations
+
+1. **Consistency**:
+   - Assumes that the treatment and outcome models are correctly specified for the estimator to be unbiased.
+
+2. **Overlap**:
+   - Requires that for every value of covariates \(X\), there is a positive probability of receiving both treatment and control (common support assumption).
+
+3. **No Unmeasured Confounding**:
+   - Assumes that all confounders affecting both treatment and outcome are observed and correctly included in the models.
+
+### Conclusion
+
+Doubly Robust models provide a powerful and flexible approach for causal inference in econometrics, offering robustness against model misspecification and improving efficiency. They are particularly useful in observational studies where the treatment assignment is not random, ensuring more reliable and credible estimates of causal effects.
