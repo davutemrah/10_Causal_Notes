@@ -1,4 +1,12 @@
 h1:ordinary-least-squares-ols Ordinary Least Squares (OLS)
+h2:ordinary-least-squares-ols-1 Ordinary Least Squares (OLS)
+h3:linearity 
+h3:exogeneity 
+h3:homoscedasticity 
+h3:no-autocorrelation 
+h3:no-perfect-multicollinearity 
+h3:normality-of-errors-for-inference 
+h3:practical-considerations-and-tests Practical Considerations and Tests
 h2:simple-linear-regression Simple Linear Regression
 h3:summary Summary
 h3:interpreting-model-coefficients-in-ols-models Interpreting Model Coefficients in OLS Models
@@ -11,4 +19,8 @@ h4:example-1-linear-model-with-dummy-and-continuous-variables Example 1: Linear 
 h4:example-2-log-linear-model-with-continuous-variables Example 2: Log-Linear Model with Continuous Variables
 h4:example-3-log-log-model-with-continuous-variables Example 3: Log-Log Model with Continuous Variables
 h3:assumptions-and-considerations Assumptions and Considerations
+h2:multivariate-regression Multivariate Regression
+h2:generalized-linear-model Generalized Linear Model
+h2:generalised-least-square Generalised Least Square
+h2:weighted-least-squares-wls Weighted Least Squares (WLS)
 

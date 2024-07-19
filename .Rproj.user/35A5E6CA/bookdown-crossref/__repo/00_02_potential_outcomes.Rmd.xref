@@ -5,7 +5,9 @@ h3:average-treatment-effect-ate Average Treatment Effect (ATE)
 h3:average-treatment-effect-on-the-treated-att Average Treatment Effect on the Treated (ATT)
 h3:the-fundamental-problem-of-causal-inference The Fundamental Problem of Causal Inference
 h2:assumptions-for-identifying-causal-effects Assumptions for Identifying Causal Effects
-h3:independence 1. 
+h3:independence 
+h4:conditional-independence Conditional Independence
+h3:stable-unit-treatment-value-assumption-sutva Stable Unit Treatment Value Assumption (SUTVA)
 h2:methods-for-estimating-causal-effects Methods for Estimating Causal Effects
 h2:example Example
 h3:simple-difference-method Simple Difference Method
@@ -16,10 +18,4 @@ h4:limitations Limitations
 h4:example-1 Example
 h4:addressing-limitations Addressing Limitations
 h3:conclusion Conclusion
-h2:randomization-based-methods Randomization-Based Methods
-h3:traditional-methods-vs.-randomization-based-methods Traditional Methods vs. Randomization-Based Methods
-h3:why-use-randomization-based-methods Why Use Randomization-Based Methods?
-h3:how-randomization-based-methods-work How Randomization-Based Methods Work
-h3:example-2 Example
-h3:contribution-of-athey-and-imbens Contribution of Athey and Imbens
 

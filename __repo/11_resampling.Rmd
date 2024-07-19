@@ -1,6 +1,54 @@
 # Resampling methods
 
 
+## Randomization-Based Methods
+
+Athey and Imbens are prominent economists who have contributed significantly to the development and application of randomization-based methods in econometrics. These methods are particularly valuable for inferring the probability that an estimated coefficient is not simply a result of chance. Here's an explanation of the context and importance of their work:
+
+### Traditional Methods vs. Randomization-Based Methods
+
+- **Traditional Methods**: Economists often use parametric tests (like t-tests or F-tests) which rely on assumptions about the distribution of the error terms (e.g., normality, homoscedasticity). These methods use asymptotic approximations to calculate p-values, which may not always be accurate, especially in small samples or when assumptions are violated.
+
+- **Randomization-Based Methods**: These methods, such as permutation tests, do not rely on these distributional assumptions. Instead, they use the actual data to construct the distribution of the test statistic under the null hypothesis. This approach involves reshuffling the treatment labels or data points multiple times to create a distribution of the test statistic that purely reflects random chance.
+
+### Why Use Randomization-Based Methods?
+
+1. **Exact P-Values**: Randomization methods can construct exact p-values, which provide a more precise measure of the probability that the observed effect could have arisen by chance. This is especially important in cases where traditional assumptions do not hold.
+
+2. **Robustness**: These methods are robust to violations of common statistical assumptions (e.g., non-normality, heteroscedasticity). They rely on the randomization process used in the experiment or observational study, ensuring that the inferences are valid regardless of the underlying data distribution.
+
+3. **Small Samples**: In small sample sizes, randomization-based methods are particularly advantageous because traditional asymptotic approximations may be unreliable.
+
+### How Randomization-Based Methods Work
+
+1. **Calculate the Observed Statistic**: First, calculate the test statistic (e.g., the difference in means, regression coefficient) from the observed data.
+
+2. **Randomize Data**: Randomly reassign the treatment labels or shuffle the data points many times (typically thousands). Each randomization should maintain the structure of the data but break any systematic association between treatment and outcome.
+
+3. **Calculate Test Statistics for Randomizations**: For each randomization, calculate the test statistic. This generates a distribution of the test statistic under the null hypothesis of no treatment effect.
+
+4. **Compare Observed Statistic**: Compare the observed test statistic to this distribution. The p-value is the proportion of randomized test statistics that are as extreme as or more extreme than the observed statistic.
+
+### Example
+
+Suppose Athey and Imbens are evaluating the effect of a training program on income:
+
+1. **Observed Difference in Means**: The difference in mean income between the treatment (received training) and control (no training) groups is calculated.
+
+2. **Randomization**: The treatment labels (received training or not) are randomly shuffled, and the difference in means is recalculated for each shuffle. This process is repeated many times.
+
+3. **Distribution of Differences**: The randomization process generates a distribution of differences in means under the null hypothesis that training has no effect.
+
+4. **Calculate P-Value**: The p-value is the proportion of differences from the randomization distribution that are as extreme or more extreme than the observed difference.
+
+### Contribution of Athey and Imbens
+
+Athey and Imbens' work emphasizes the use of these robust, non-parametric methods to provide more reliable and exact p-values. Their approach is part of a broader trend in econometrics and other social sciences toward more reliable inference methods that do not heavily rely on restrictive assumptions. By focusing on randomization-based methods, they help ensure that the conclusions drawn from empirical studies are more credible and less sensitive to potential violations of traditional model assumptions.
+
+This methodology is particularly valuable in experimental economics, field experiments, and observational studies where treatment effects are being evaluated. By using randomization-based methods, researchers can make stronger causal inferences and provide more robust evidence for policy and decision-making.
+
+
+
 #### Jackknife
 
 

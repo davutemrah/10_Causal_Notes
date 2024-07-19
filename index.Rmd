@@ -20,7 +20,24 @@ body {text-align: justify}
 
 <div class="boxy">
 
-I would like to acknowledge the following sources that have greatly contributed to the preparation of this notebook on causal models. Firstly, I am grateful to the wealth of knowledge shared by various open-source websites, which have provided invaluable insights and information. Lastly, I would like to thank the authors of the "Mixtape" book for their comprehensive coverage of econometric concepts, which has been instrumental in shaping this notebook. These resources have collectively enhanced my learning experience and preparation.
+I would like to acknowledge the following sources that have greatly contributed to the preparation of this notebook on causal models. I have collected and prepared this collection to keep myself up-to-date and to serve as a resource for reviewing all aspects of causal models. Please use it at your own risk and let me know if you have any comments, find any errors, or notice any typos.
+
+Here are the excellent online resources and references in no particular order:
+
+
+1. [Program Evaluation](https://evalf20.classes.andrewheiss.com/example/)
+
+2. [Causal Inference for the Brave and True](https://matheusfacure.github.io/python-causality-handbook/)
+
+3. [A guide on Data analysis](https://bookdown.org/mike/data_analysis/)
+
+4. [The Mixtape](https://mixtape.scunning.com)
+
+5. [The Effect](https://theeffectbook.net)
+
+6. [What if](https://www.hsph.harvard.edu/miguel-hernan/wp-content/uploads/sites/1268/2024/01/hernanrobins_WhatIf_2jan24.pdf)
+
+
 
 </div>
 
