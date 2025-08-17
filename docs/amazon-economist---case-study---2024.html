@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 8 Instrumental Variables (IV) | Notes on Causal Models</title>
+  <title>Chapter 17 Amazon Economist - Case Study - 2024 | Notes on Causal Models</title>
   <meta name="description" content="This is a collection of notes from open sources" />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 8 Instrumental Variables (IV) | Notes on Causal Models" />
+  <meta property="og:title" content="Chapter 17 Amazon Economist - Case Study - 2024 | Notes on Causal Models" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a collection of notes from open sources" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 8 Instrumental Variables (IV) | Notes on Causal Models" />
+  <meta name="twitter:title" content="Chapter 17 Amazon Economist - Case Study - 2024 | Notes on Causal Models" />
   
   <meta name="twitter:description" content="This is a collection of notes from open sources" />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="synthetic-control-method-scm.html"/>
-<link rel="next" href="regression-discontinuity-designs-rdd.html"/>
+<link rel="prev" href="maximum-likelihood-estimation.html"/>
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -612,176 +612,790 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="instrumental-variables-iv" class="section level1 hasAnchor" number="8">
-<h1><span class="header-section-number">Chapter 8</span> Instrumental Variables (IV)<a href="instrumental-variables-iv.html#instrumental-variables-iv" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Instrumental Variables (IV) is a method used in econometrics and statistics to estimate causal relationships when controlled experiments are not feasible and there is an endogeneity problem—typically due to omitted variable bias, measurement error, or simultaneity.</p>
-<div id="key-concepts-4" class="section level2 hasAnchor" number="8.1">
-<h2><span class="header-section-number">8.1</span> Key Concepts<a href="instrumental-variables-iv.html#key-concepts-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ol style="list-style-type: decimal">
-<li><p><strong>Endogeneity</strong>: Occurs when an explanatory variable is correlated with the error term. This correlation violates the OLS assumption that the regressors are exogenous, leading to biased and inconsistent estimates.</p></li>
-<li><p><strong>Instrumental Variable</strong>: A variable (or set of variables) that is correlated with the endogenous explanatory variable but uncorrelated with the error term. It helps to isolate the exogenous variation in the endogenous explanatory variable.</p></li>
-</ol>
-<div id="requirements-for-a-valid-instrument" class="section level3 hasAnchor" number="8.1.1">
-<h3><span class="header-section-number">8.1.1</span> Requirements for a Valid Instrument<a href="instrumental-variables-iv.html#requirements-for-a-valid-instrument" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>A valid instrument must satisfy two key conditions:
-1. <strong>Relevance</strong>: The instrument must be correlated with the endogenous explanatory variable.
-- <em>Mathematically</em>: $ (Z, X) $
-- This ensures that the instrument can explain some of the variations in the endogenous regressor.</p>
-<ol start="2" style="list-style-type: decimal">
-<li><strong>Exogeneity</strong>: The instrument must be uncorrelated with the error term in the structural equation.
+<div id="amazon-economist---case-study---2024" class="section level1 hasAnchor" number="17">
+<h1><span class="header-section-number">Chapter 17</span> Amazon Economist - Case Study - 2024<a href="amazon-economist---case-study---2024.html#amazon-economist---case-study---2024" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="concept-2" class="section level2 hasAnchor" number="17.1">
+<h2><span class="header-section-number">17.1</span> Concept<a href="amazon-economist---case-study---2024.html#concept-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Reduced Form Causal Analysis (RFCA)</strong> RFCA economists specialize in econometric methods to identify causal relationships, handling challenges like selection bias and omitted variables. They use tools such as difference-in-differences, regression discontinuity, matching, synthetic control, and DML, and may conduct surveys or RCTs when needed.</p>
+<p>They work on program/product evaluations, elasticity estimation, customer behavior analysis, long-term effect prediction, and translating results into business decisions.</p>
+<p>Communication with non-technical partners is key. In interviews, you’ll be given an ambiguous business case to test your breadth (range of methods you can propose) and depth (ability to implement and explain one method in detail).</p>
+<p>I suggest asking clarifying questions on the front end before diving into a strategy.</p>
+<p><strong>Sample Technical Questions</strong></p>
 <ul>
-<li><em>Mathematically</em>: $ (Z, u) = 0 $</li>
-<li>This ensures that the instrument does not suffer from the same endogeneity problem as the endogenous regressor.</li>
-</ul></li>
+<li><p>How would you measure the effect of a training program for Fulfillment Center associates on performance?</p></li>
+<li><p>How would you help business leaders think about whether they should invest in creating tools to help AWS customers reduce their costs by optimizing the cloud services they use?</p></li>
+<li><p>There’s an intervention X that we tried or are thinking of trying. Leaders want to know if it was or will be a good idea. How would you help them answer that question?</p></li>
+</ul>
+<p><strong>They’re testing:</strong></p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Tech breadth</strong> → can you list a range of reasonable evaluation approaches?</p></li>
+<li><p><strong>Tech depth</strong> → can you dive into one and explain it rigorously (causal inference).</p></li>
 </ol>
 </div>
-<div id="the-iv-estimation-process" class="section level3 hasAnchor" number="8.1.2">
-<h3><span class="header-section-number">8.1.2</span> The IV Estimation Process<a href="instrumental-variables-iv.html#the-iv-estimation-process" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The IV estimation is typically carried out in two stages, known as Two-Stage Least Squares (2SLS):</p>
-<ol style="list-style-type: decimal">
-<li><strong>First Stage</strong>: Regress the endogenous variable on the instrument(s) to obtain the predicted values of the endogenous variable.
+<div id="the-scenario" class="section level2 hasAnchor" number="17.2">
+<h2><span class="header-section-number">17.2</span> 📦 The Scenario<a href="amazon-economist---case-study---2024.html#the-scenario" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Amazon rolls out a <strong>new delivery program</strong> (1-day delivery) in <strong>20–30 cities</strong>. They ask:</p>
+<p><strong>“How do you evaluate it? What outcomes would you look at?”</strong></p>
+</div>
+<div id="step-1-clarify-the-business-question-and-data" class="section level2 hasAnchor" number="17.3">
+<h2><span class="header-section-number">17.3</span> Step 1: Clarify the Business Question and Data<a href="amazon-economist---case-study---2024.html#step-1-clarify-the-business-question-and-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Data Availability</strong></p>
 <ul>
-<li><em>Equation</em>: <span class="math inline">\(X = \pi_0 + \pi_1 Z + v\)</span></li>
-<li>Obtain the fitted values <span class="math inline">\(\hat{X}\)</span> from this regression.</li>
+<li><p>“Do we have pre-period data on orders, customer demographics, costs?”</p></li>
+<li><p>If they don’t specify, assume city-level panel data (treated vs. untreated cities across time).</p></li>
+<li><p>But it’s good to show breadth by saying something like:</p></li>
+</ul>
+<hr />
+<p>“I’d expect the data at the city-week level: orders, revenue, Prime retention, etc. If more granular data is available, like customer-level transactions, I could run matching or micro-level causal models. But even at the city level, difference-in-differences or synthetic control would be natural.”</p>
+<p>“At the city-week panel level, many characteristics like population or median income won’t change, so they’ll be absorbed by city fixed effects. That way, I’m comparing each city to itself over time.
+For time-varying factors, like seasonality, local unemployment, or weather disruptions, I’d include them as controls in the regression. This ensures that my difference-in-differences estimate isn’t confounded by local shocks that vary over time.”</p>
+<hr />
+<p>Before jumping into methods, clarify:</p>
+<ul>
+<li><p><strong>Primary outcomes</strong>:</p>
+<ul>
+<li><p>Customer satisfaction (ratings, NPS, repeat purchase).</p></li>
+<li><p>Order volume (total orders, frequency).</p></li>
+<li><p>Revenue/profit per customer.</p></li>
+<li><p>Prime signups / retention.</p></li>
 </ul></li>
-<li><strong>Second Stage</strong>: Regress the dependent variable on the predicted values from the first stage.
+<li><p><strong>Secondary outcomes</strong>:</p>
 <ul>
-<li><em>Equation</em>: <span class="math inline">\(Y = \beta_0 + \beta_1 \hat{X} + \epsilon\)</span></li>
-<li>The coefficient <span class="math inline">\(\beta_1\)</span> from this regression is the IV estimate of the effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span>.</li>
+<li><p>Operational costs (delivery costs, fulfillment costs).</p></li>
+<li><p>Spillovers (did 1-day shift demand from 2-day, or increase net new orders?).</p></li>
+</ul></li>
+</ul>
+<p>This shows you think <strong>like an economist</strong>, not just a statistician.</p>
+<p><strong>Outcomes of Interest</strong></p>
+<ul>
+<li><p>“What does success mean for this program — more orders, more Prime signups, higher revenue, or customer satisfaction?”</p></li>
+<li><p>This tells them you know different outcomes may imply different models.</p></li>
+<li><p>order frequency, customer retention, order size, sign-ups, customer satisfaction - NPS, revenue per customer, profit margin, delivery cost per order, on time delivery rates.</p></li>
+</ul>
+<p><strong>Unit of Rollout</strong></p>
+<ul>
+<li>“Was the rollout done at the city level, ZIP code level, or customer level?”
+Helps you know what level of aggregation to use in analysis.</li>
+</ul>
+<p><strong>Timing / Staggering</strong></p>
+<ul>
+<li><p>“Were all 20–30 cities rolled out at once, or was it staggered over time?”</p></li>
+<li><p>If staggered, you can talk about staggered diff-in-diff or event studies.</p></li>
+</ul>
+<p><strong>Selection of Cities</strong></p>
+<ul>
+<li><p>“How were the rollout cities chosen? Were they the largest markets, or chosen randomly?”</p></li>
+<li><p>Critical: if not random, you’ll need to account for bias (synthetic control, matching, IV).</p></li>
+</ul>
+<p>Lets you judge whether parallel trends can be tested.</p>
+<hr />
+<p>“First, I’d want to clarify what outcome Amazon cares most about. For a delivery program like this, possible outcomes could be order volume, customer satisfaction, revenue per customer, or Prime retention.</p>
+<p>I’d also ask how the rollout was done — were the 20–30 cities chosen randomly, or were they the biggest markets? And was the rollout staggered or simultaneous?</p>
+<p>Those details matter because they influence whether I can use difference-in-differences, a staggered event study, or whether I’d need something like synthetic control to address selection bias.</p>
+<p>Assuming we have pre- and post-data on treated and untreated cities, a clean way to evaluate would be a difference-in-differences design. I’d compare order volumes before and after in rollout cities relative to control cities. The key assumption is parallel trends, and I’d test that using pre-trends.</p>
+<p>The outcomes I’d look at would include both customer-side measures (orders per customer, conversion rates, Prime retention) and cost-side measures (delivery cost per order, overall fulfillment cost).</p>
+<p>The goal is to see not only if customers are ordering more, but also if it’s profitable.</p>
+<p>For robustness, I’d also try synthetic control if the rollout wasn’t random, or event study if adoption was staggered.</p>
+<p><strong>The idea is to triangulate the effect with multiple methods to make sure the result is credible.”</strong></p>
+<hr />
+</div>
+<div id="step-2-possible-evaluation-designs-tech-breadth" class="section level2 hasAnchor" number="17.4">
+<h2><span class="header-section-number">17.4</span> Step 2: Possible Evaluation Designs (Tech Breadth)<a href="amazon-economist---case-study---2024.html#step-2-possible-evaluation-designs-tech-breadth" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>You want to list several designs, then choose one to dive into:</p>
+<div id="randomized-controlled-trial-rct" class="section level3 hasAnchor" number="17.4.1">
+<h3><span class="header-section-number">17.4.1</span> <strong>Randomized Controlled Trial (RCT)</strong><a href="amazon-economist---case-study---2024.html#randomized-controlled-trial-rct" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>The gold standard would be a randomized controlled trial.</p></li>
+<li><p>For example, Amazon could randomly assign some cities, ZIP codes, or customers to get the 1-day delivery program, and others to stay at 2-day delivery.</p></li>
+<li><p>We’d then compare outcomes like order frequency, customer retention, order size, sign-ups, customer satisfaction - NPS, revenue per customer, profit margin, delivery cost per order, on time delivery rates.</p></li>
+<li><p>The strength of an RCT is that it removes selection bias, since treated and control groups are comparable by design.</p></li>
+<li><p>The challenge, of course, is feasibility — Amazon may not want to hold back 1-day delivery in some places once it’s available.</p></li>
+<li><p>That’s why in practice, we might rely more on natural experiments, difference-in-differences, or synthetic controls. But if we could do it, an RCT would give the cleanest causal estimate.</p></li>
+</ul>
+</div>
+<div id="difference-in-differences-did" class="section level3 hasAnchor" number="17.4.2">
+<h3><span class="header-section-number">17.4.2</span> <strong>Difference-in-Differences (DiD)</strong><a href="amazon-economist---case-study---2024.html#difference-in-differences-did" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>🔹 What DiD Does in This Case</strong></p>
+<ul>
+<li><p><strong>Setup:</strong> Amazon rolls out <strong>1-day delivery</strong> in 20–30 cities (treated group). Other cities don’t get it (control group).</p></li>
+<li><p><strong>Idea:</strong> Compare how outcomes (orders, revenue, Prime retention, etc.) change <strong>before vs. after rollout</strong> in treated cities, relative to the same change in control cities.</p></li>
+<li><p><strong>Why it works:</strong> Controls for time trends affecting <em>all</em> cities (e.g., seasonality, holidays, economic shocks).</p></li>
+</ul>
+<p><strong>🔹 The Core Equation</strong></p>
+<p>At the <strong>city-week level</strong>, you’d estimate something like:</p>
+<p><span class="math display">\[
+Y_{it} = \alpha + \beta \cdot Treatment_{it} + \gamma_i + \delta_t + \epsilon_{it}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(Y_{it}\)</span>: outcome (e.g., orders per capita).</p></li>
+<li><p><span class="math inline">\(Treatment_{it}\)</span>: 1 if city i has 1-day delivery at time t.</p></li>
+<li><p><span class="math inline">\(\gamma_i\)</span>: city fixed effects (control for time-invariant city differences).</p></li>
+<li><p><span class="math inline">\(\delta_t\)</span>: time fixed effects (control for shocks affecting all cities).</p></li>
+<li><p><span class="math inline">\(\beta\)</span>: DiD estimate = causal effect of 1-day delivery.</p></li>
+</ul>
+<p><strong>Key Assumption</strong></p>
+<ul>
+<li><p><strong>Parallel Trends</strong>: In absence of treatment, treated and control cities would have had similar outcome trends.</p></li>
+<li><p>You test this using <strong>pre-trends</strong> (plot outcomes over time before rollout).</p></li>
+<li><p>If treated cities were already diverging, plain DiD won’t be valid.</p></li>
+</ul>
+<p><strong>Variants / Extensions</strong></p>
+<p><strong>Event Study / Dynamic DiD</strong>:</p>
+<ul>
+<li><p>Estimate effects over time (e.g., 1 week after rollout, 4 weeks after, 12 weeks after).</p></li>
+<li><p>Lets you see whether effects grow, fade, or persist.</p></li>
+<li><p><strong>Staggered Adoption</strong>:</p></li>
+<li><p>If cities rolled out at different times, you use modern DiD estimators (like Sun &amp; Abraham 2020 or Callaway &amp; Sant’Anna 2021) to avoid bias from naive two-way fixed effects.</p></li>
+<li><p><strong>Matched DiD</strong>:</p>
+<ul>
+<li>Pre-match cities on observables (size, income, Prime penetration) before applying DiD.</li>
+</ul></li>
+</ul>
+<p><strong>🔹 Strengths</strong></p>
+<ul>
+<li><p>Straightforward to implement.</p></li>
+<li><p>Widely used and easy to explain to business stakeholders.</p></li>
+<li><p>Naturally fits rollout experiments where not everyone is treated.</p></li>
+</ul>
+<p><strong>🔹 Limitations</strong></p>
+<ul>
+<li><p>Relies heavily on <strong>parallel trends assumption</strong>.</p></li>
+<li><p>Vulnerable to <strong>spillovers</strong>: if control cities benefit indirectly (e.g., nearby customers crossing into treated areas).</p></li>
+<li><p>If treatment timing is staggered, naive TWFE (two-way FE) DiD can be biased — must use updated estimators.</p></li>
+</ul>
+<hr />
+<p><strong>🔹 How You’d Say It in Interview</strong></p>
+<p>A natural evaluation method here would be <strong>difference-in-differences</strong>. I’d compare changes in order volume and customer retention in the 20–30 rollout cities before vs. after treatment, relative to similar changes in non-rollout cities. The DiD model would include <strong>city fixed effects</strong> to control for time-invariant differences and <strong>time fixed effects</strong> for national shocks. The key assumption is <strong>parallel trends</strong>, so I’d test pre-trends carefully. If rollout was staggered, I’d use a modern staggered DiD estimator to avoid bias. The nice thing about DiD is it controls for shared seasonality, like Prime Day or holiday shopping, and gives a clear causal estimate.</p>
+<hr />
+</div>
+<div id="event-study-staggered-adoption" class="section level3 hasAnchor" number="17.4.3">
+<h3><span class="header-section-number">17.4.3</span> <strong>Event Study / Staggered Adoption</strong><a href="amazon-economist---case-study---2024.html#event-study-staggered-adoption" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>If rollout timing differs across cities, use staggered DiD (good for program evaluation with multiple cohorts).</li>
+</ul>
+</div>
+<div id="synthetic-control" class="section level3 hasAnchor" number="17.4.4">
+<h3><span class="header-section-number">17.4.4</span> <strong>Synthetic Control</strong><a href="amazon-economist---case-study---2024.html#synthetic-control" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>What Synthetic Control Is</strong></p>
+<ul>
+<li><p>Synthetic Control builds a <strong>counterfactual</strong> for a treated unit (e.g., a city that got one-day delivery).</p></li>
+<li><p>Instead of picking one “control city,” you create a <strong>weighted combination of multiple control cities</strong> that best mimics the treated city’s pre-treatment outcomes.</p></li>
+<li><p>After rollout, you compare the treated city to its synthetic version.</p></li>
+</ul>
+<p><strong>Why It’s Useful Here</strong></p>
+<ul>
+<li><p>Rollout cities are <strong>not random</strong> — Amazon likely chose large, high-Prime, high-volume cities.</p></li>
+<li><p>Those treated cities may look nothing like the average untreated city.</p></li>
+<li><p>A <strong>synthetic control</strong> lets you construct a “look-alike” city from weighted controls. Example:</p>
+<ul>
+<li>Seattle = 0.5 Portland + 0.3 Denver + 0.2 Kansas City (weights chosen to minimize pre-treatment differences).</li>
+</ul></li>
+<li><p>This gives a more credible counterfactual than just comparing Seattle vs. one city.</p></li>
+</ul>
+<p><strong>Implementation Steps</strong></p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Choose predictors</strong>: Pre-rollout outcomes (orders, revenue, retention), demographics, Prime penetration.</p></li>
+<li><p><strong>Fit weights</strong>: Find nonnegative weights for control cities so that the weighted average matches the treated city’s pre-treatment trajectory.</p></li>
+<li><p><strong>Compare outcomes post-rollout</strong>: The gap between actual treated city and its synthetic twin = estimated treatment effect.</p></li>
+</ol>
+<p><strong>Strengths</strong></p>
+<ul>
+<li><p>Transparent: You can show stakeholders that treated and synthetic city had nearly identical trends before rollout.</p></li>
+<li><p>Handles <strong>selection bias</strong> better than plain DiD when treated units differ a lot from untreated.</p></li>
+<li><p>Useful when the <strong>number of treated units is small</strong> (like 20–30 cities).</p></li>
+</ul>
+<p><strong>Limitations</strong></p>
+<ul>
+<li><p>Works best with <strong>one or a few treated units</strong> — gets tricky with many treated cities at once.</p></li>
+<li><p>Sensitive to choice of predictors and pre-treatment period.</p></li>
+<li><p>Cannot easily capture <strong>spillovers</strong> (e.g., if nearby untreated cities are indirectly affected).</p></li>
+</ul>
+<p><strong>Extensions</strong></p>
+<ul>
+<li><p><strong>Multiple Synthetic Controls</strong>: Build one synthetic twin per treated city.</p></li>
+<li><p><strong>Generalized Synthetic Control</strong>: Matrix factorization methods allow handling multiple treated units and staggered adoption.</p></li>
+</ul>
+<hr />
+<p>Another approach is <strong>Synthetic Control</strong>. For each rollout city, I could build a weighted combination of untreated cities that closely tracks its pre-treatment outcomes.</p>
+<p>For example, if Seattle got 1-day delivery, its synthetic twin might be 50% Portland, 30% Denver, and 20% Kansas City. If Seattle diverges from its synthetic twin after rollout, that gap gives us the treatment effect. This is powerful when rollout cities are very different from average controls, and it makes the counterfactual more credible than simple before-after or DiD. The limitation is that it works best with a small number of treated units and needs stable pre-treatment data.</p>
+<hr />
+</div>
+<div id="propensity-score-matching-reweighting" class="section level3 hasAnchor" number="17.4.5">
+<h3><span class="header-section-number">17.4.5</span> <strong>Propensity Score Matching / Reweighting</strong><a href="amazon-economist---case-study---2024.html#propensity-score-matching-reweighting" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>Match treated cities with comparable controls (population size, Prime penetration, order frequency).</p></li>
+<li><p>Propensity Score Matching (PSM) was originally designed for individual-level data (like patients in medical studies, or customers in marketing experiments), where you have many units to match across treatment/control.</p></li>
+<li><p>In the Amazon delivery rollout case, your “units” are cities — and you only have 20–30 treated cities. That’s a small sample, which makes PSM less powerful.</p></li>
+<li><p>But PSM can still apply at the city level if:</p>
+<ul>
+<li><p>You have a large enough pool of potential control cities (e.g., 200+ U.S. cities not in the rollout).</p></li>
+<li><p>You include rich covariates (population, income, Prime penetration, baseline orders, etc.) to balance them.</p></li>
+<li><p>You treat PSM as a preprocessing step before running DiD or regression — so it reduces imbalance but doesn’t stand alone.</p></li>
+</ul></li>
+</ul>
+<hr />
+<p><strong>Propensity Score Matching</strong> is often most effective at the individual level, because you have many units to match. With cities, the sample size is small, so matching quality can be limited.</p>
+<p>That said, if we had a large enough pool of untreated cities, we could use PSM as a preprocessing step — match treated and control cities on observables like population, income, and baseline demand, and then run a difference-in-differences. This way, we reduce observable imbalance while still accounting for time trends. But I’d be careful about relying on PSM alone here, because unobserved differences across cities could still bias the estimate.</p>
+<hr />
+</div>
+<div id="instrumental-variables-iv-if-spillovers-or-selection-bias-is-a-concern." class="section level3 hasAnchor" number="17.4.6">
+<h3><span class="header-section-number">17.4.6</span> <strong>Instrumental Variables (IV)</strong> (if spillovers or selection bias is a concern).<a href="amazon-economist---case-study---2024.html#instrumental-variables-iv-if-spillovers-or-selection-bias-is-a-concern." class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Why IV Might Be Needed</strong></p>
+<ul>
+<li><p>Rollout to 20–30 cities is <strong>not random</strong> — Amazon may have picked <strong>biggest cities, high-Prime penetration, or operationally easier locations</strong>.</p></li>
+<li><p>This creates <strong>selection bias</strong> → treated cities differ systematically from controls.</p></li>
+<li><p>Spillovers are also possible → if neighboring cities benefit (e.g., customers order from a nearby one-day delivery area), it contaminates the control group.</p></li>
+<li><p>IV is useful when treatment assignment is <strong>endogenous</strong> (correlated with unobserved demand).</p></li>
+</ul>
+<p><strong>How IV Works Here</strong></p>
+<ol style="list-style-type: decimal">
+<li><p><strong>We want</strong>: the causal effect of one-day delivery availability on outcomes (orders, revenue, Prime signups).</p></li>
+<li><p><strong>Problem</strong>: rollout cities are chosen strategically → treatment is endogenous.</p></li>
+<li><p><strong>Solution</strong>: find a variable (<strong>instrument</strong>) that:</p>
+<ul>
+<li><p>Is correlated with rollout (affects likelihood a city gets one-day delivery).</p></li>
+<li><p>Does not directly affect demand, except through rollout.</p></li>
 </ul></li>
 </ol>
+<p><strong>Example Instruments</strong></p>
+<ul>
+<li><p><strong>Distance to Nearest Fulfillment Center (FC)</strong></p>
+<ul>
+<li><p>Closer cities are cheaper to serve → more likely to get one-day rollout.</p></li>
+<li><p>Conditional on city demand trends, distance itself doesn’t directly change customer ordering.</p></li>
+</ul></li>
+<li><p><strong>Weather Disruptions / Storm Patterns</strong></p>
+<ul>
+<li>If rollout timing depends on logistical feasibility (e.g., avoiding regions with winter weather bottlenecks), this variation can serve as an instrument.</li>
+</ul></li>
+<li><p><strong>Logistical Capacity Constraints</strong></p>
+<ul>
+<li>Cities where delivery stations had available excess capacity vs. constrained ones.</li>
+</ul></li>
+<li><p><strong>Historical Route Density</strong></p>
+<ul>
+<li>Areas with high density of delivery routes may be more likely to get rollout — conditional on demand, this variable proxies operational feasibility, not demand growth.</li>
+</ul></li>
+</ul>
+<p><strong>Assumptions</strong></p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Exclusion Restriction:</strong> The instrument (Z) must affect the outcome (Y) only through its effect on the treatment (T).</p></li>
+<li><p><strong>Relevance Condition:</strong></p></li>
+</ol>
+<ul>
+<li>The instrument needs to be correlated with treatment variable, which is rollout cities.</li>
+</ul>
+<p><strong>🔹 Example in the Amazon 1-Day Delivery Rollout</strong></p>
+<ul>
+<li><p>Instrument: Distance to nearest fulfillment center.</p></li>
+<li><p>Treatment: Whether the city received 1-day delivery.</p></li>
+<li><p>Outcome: Orders per customer.</p></li>
+<li><p>✅ Valid if: Distance influences orders only because it changes the likelihood of 1-day delivery.</p></li>
+<li><p>❌ Invalid if: Distance also affects delivery cost and therefore pricing, or if rural/urban proximity to FC changes customer demand for unrelated reasons.</p></li>
+</ul>
+<hr />
+<p>If rollout selection was endogenous, I’d consider an instrumental variables approach.</p>
+<p>For example, <strong>distance to the nearest fulfillment center</strong> is a strong predictor of whether a city can support one-day delivery. That satisfies the relevance condition — closer cities are more likely to be rolled out first.</p>
+<p>The more challenging part is the <strong>exclusion restriction:</strong> distance should affect customer orders only through its impact on rollout, not directly. If distance is correlated with other demand drivers like urban density or competition, that could violate the assumption. I’d address this by controlling for observables and checking robustness, and if multiple instruments are available, I’d run overidentification tests.</p>
+<p>In practice, I’d test instrument strength using the first-stage regression, making sure the F-statistic is comfortably above 10 to avoid weak instruments. I’d also check whether the instrument predicts pre-treatment outcomes — if it does, that would raise concerns about independence.
+Finally, IV also relies on monotonicity: the instrument should push all units in the same direction (e.g., no city becomes less likely to get rollout just because it’s closer to a fulfillment center). That’s typically a theoretical assumption but important to state.
+If these assumptions hold, I’d use 2SLS: the first stage predicts rollout using distance, and the second stage estimates the causal effect of rollout on outcomes like orders and revenue. This approach helps isolate a credible causal effect even when rollout isn’t random.</p>
+<hr />
+<p>👉 Key is:</p>
+<ul>
+<li><p><strong>Show you know when IV is appropriate</strong> (endogeneity, selection bias).</p></li>
+<li><p><strong>Give realistic instruments</strong> (distance to FC, logistics capacity).</p></li>
+<li><p><strong>Acknowledge assumptions</strong> (exclusion restriction).</p></li>
+</ul>
+<hr />
 </div>
-<div id="example-12" class="section level3 hasAnchor" number="8.1.3">
-<h3><span class="header-section-number">8.1.3</span> Example<a href="instrumental-variables-iv.html#example-12" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="context-education-and-earnings" class="section level4 hasAnchor" number="8.1.3.1">
-<h4><span class="header-section-number">8.1.3.1</span> Context: Education and Earnings<a href="instrumental-variables-iv.html#context-education-and-earnings" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+</div>
+<div id="step-3-tech-depth-example-with-difference-in-differences" class="section level2 hasAnchor" number="17.5">
+<h2><span class="header-section-number">17.5</span> Step 3: Tech Depth — Example with <strong>Difference-in-Differences</strong><a href="amazon-economist---case-study---2024.html#step-3-tech-depth-example-with-difference-in-differences" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If pressed, go deep on one (Amazon loves DiD for these questions):</p>
 <ul>
-<li><p><strong>Endogeneity Problem</strong>: In estimating the effect of education on earnings, the variable “years of education” might be endogenous due to omitted variables like ability or family background.</p></li>
-<li><p><strong>Instrument</strong>: Distance to the nearest college could be used as an instrument for education.</p>
+<li><p><strong>Setup</strong>:</p>
+<p><span class="math display">\[
+Y_{it} = \alpha + \beta \cdot Treatment_{it} + \gamma_i + \delta_t + \epsilon_{it}
+\]</span></p>
 <ul>
-<li><strong>Relevance</strong>: Distance to college affects the likelihood of obtaining more education.</li>
-<li><strong>Exogeneity</strong>: Distance to college is unlikely to be directly related to individual earnings, apart from its effect on education.</li>
+<li><span class="math inline">\(Y_{it}\)</span>: outcome for city <em>i</em> at time <em>t</em> (e.g., orders per capita).</li>
+<li><span class="math inline">\(Treatment_{it}\)</span>: indicator for cities after rollout.</li>
+<li><span class="math inline">\(\gamma_i\)</span>: city fixed effects (control for time-invariant city differences).</li>
+<li><span class="math inline">\(\delta_t\)</span>: time fixed effects (control for global shocks like seasonality).</li>
+<li><span class="math inline">\(\beta\)</span>: causal effect of 1-day delivery.</li>
+</ul></li>
+<li><p><strong>Parallel Trends Assumption</strong>: Treated and control cities would have followed similar trends without the program. You’d test this with pre-trends.</p></li>
+<li><p><strong>Robustness Checks</strong>:</p>
+<ul>
+<li><p>Add covariates (city size, Prime penetration).</p></li>
+<li><p>Check for heterogeneous effects (small vs. large cities).</p></li>
+<li><p>Placebo tests (pretend rollout earlier).</p></li>
 </ul></li>
 </ul>
 </div>
-<div id="steps-1" class="section level4 hasAnchor" number="8.1.3.2">
-<h4><span class="header-section-number">8.1.3.2</span> Steps:<a href="instrumental-variables-iv.html#steps-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<ol style="list-style-type: decimal">
-<li><strong>First Stage</strong>: Regress “years of education” on “distance to college”.
+<div id="step-3-with-rcts" class="section level2 hasAnchor" number="17.6">
+<h2><span class="header-section-number">17.6</span> Step 3 with RCTs<a href="amazon-economist---case-study---2024.html#step-3-with-rcts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="design-choices" class="section level3 hasAnchor" number="17.6.1">
+<h3><span class="header-section-number">17.6.1</span> 🔹 Design Choices<a href="amazon-economist---case-study---2024.html#design-choices" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li><em>Equation</em>: <span class="math inline">\(\text{Education} = \pi_0 + \pi_1 (\text{Distance to College}) + v\)</span></li>
-<li>Obtain the fitted values <span class="math inline">\(\widehat{\text{Education}}\)</span>.</li>
-</ul></li>
-<li><strong>Second Stage</strong>: Regress “earnings” on the fitted values from the first stage.
-<ul>
-<li><em>Equation</em>: <span class="math inline">\(\text{Earnings} = \beta_0 + \beta_1 (\widehat{\text{Education}}) + \epsilon\)</span></li>
-<li>The coefficient <span class="math inline">\(\beta_1\)</span> is the IV estimate of the effect of education on earnings.</li>
-</ul></li>
-</ol>
-</div>
-</div>
-<div id="assumptions-and-considerations-1" class="section level3 hasAnchor" number="8.1.4">
-<h3><span class="header-section-number">8.1.4</span> Assumptions and Considerations<a href="instrumental-variables-iv.html#assumptions-and-considerations-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<ol style="list-style-type: decimal">
-<li><strong>Instrument Strength</strong>: Weak instruments can lead to biased estimates even in large samples. The relevance condition must be strong enough.</li>
-</ol>
-<p><em>Test</em>: First stage F-statistic (rule of thumb: F &gt; 10). As F gets larger, then bias goes 0.</p>
-<ol start="2" style="list-style-type: decimal">
-<li><p><strong>Over-Identification Test</strong>: When there are multiple instruments, it’s possible to test for the exogeneity of instruments using over-identification tests like the Sargan or Hansen J test.</p></li>
-<li><p><strong>Single vs. Multiple Instruments</strong>: Using multiple instruments can improve the efficiency of the IV estimator, provided all instruments are valid.</p></li>
-</ol>
-</div>
-<div id="advantages-of-iv" class="section level3 hasAnchor" number="8.1.5">
-<h3><span class="header-section-number">8.1.5</span> Advantages of IV<a href="instrumental-variables-iv.html#advantages-of-iv" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<ul>
-<li>Provides consistent estimates in the presence of endogeneity.</li>
-<li>Can be used when randomized experiments are not feasible.</li>
+<li><p><strong>Unit of randomization</strong>: city, ZIP code, or customer.</p></li>
+<li><p><strong>Blocking/stratification</strong>: ensure balance on baseline order volume, Prime penetration, region.</p></li>
+<li><p><strong>Stepped-wedge design</strong>: randomize order of rollout if Amazon doesn’t want to hold back treatment indefinitely.</p></li>
+<li><p><strong>Guarding against spillovers</strong>: buffer zones between treated and control ZIPs.</p></li>
 </ul>
 </div>
-<div id="disadvantages-of-iv" class="section level3 hasAnchor" number="8.1.6">
-<h3><span class="header-section-number">8.1.6</span> Disadvantages of IV<a href="instrumental-variables-iv.html#disadvantages-of-iv" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="assumptions-3" class="section level3 hasAnchor" number="17.6.2">
+<h3><span class="header-section-number">17.6.2</span> 🔹 Assumptions<a href="amazon-economist---case-study---2024.html#assumptions-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li>Finding valid instruments can be difficult.</li>
-<li>Weak instruments can lead to biased and imprecise estimates.</li>
-<li>Interpretation of the IV estimate can be less straightforward, often reflecting a Local Average Treatment Effect (LATE) rather than the Average Treatment Effect (ATE).</li>
+<li><p><strong>SUTVA (no interference)</strong> → one unit’s treatment shouldn’t affect another. Need cluster-level randomization if spillovers exist.</p></li>
+<li><p><strong>Stable treatment</strong> → customers offered “1-day” see the same version (not free for some, paid for others).</p></li>
+<li><p><strong>Compliance</strong> → customers in treatment group may not use 1-day; customers in control might still access it. Handle with ITT (intent-to-treat) and IV (assignment → actual usage).</p></li>
 </ul>
 </div>
-<div id="conclusion-10" class="section level3 hasAnchor" number="8.1.7">
-<h3><span class="header-section-number">8.1.7</span> Conclusion<a href="instrumental-variables-iv.html#conclusion-10" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Instrumental Variables (IV) is a powerful method for addressing endogeneity in observational studies, allowing researchers to estimate causal effects more accurately. Understanding the conditions for valid instruments and the proper application of the 2SLS method is crucial for leveraging this technique effectively. For your interview, be prepared to discuss the theory, assumptions, applications, and potential pitfalls of IV estimation.</p>
-</div>
-</div>
-<div id="difference-between-instrumental-variable-iv-method-and-two-stage-least-squares-2sls-method" class="section level2 hasAnchor" number="8.2">
-<h2><span class="header-section-number">8.2</span> Difference Between Instrumental Variable (IV) Method and Two-Stage Least Squares (2SLS) Method<a href="instrumental-variables-iv.html#difference-between-instrumental-variable-iv-method-and-two-stage-least-squares-2sls-method" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The terms “Instrumental Variable (IV) method” and “Two-Stage Least Squares (2SLS) method” are closely related but not identical. Here’s a detailed explanation of the differences:</p>
-<div id="instrumental-variable-iv-method" class="section level3 hasAnchor" number="8.2.1">
-<h3><span class="header-section-number">8.2.1</span> Instrumental Variable (IV) Method<a href="instrumental-variables-iv.html#instrumental-variable-iv-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><strong>Instrumental Variable (IV) method</strong> is a general approach used to address endogeneity in regression models. It involves using instruments—variables that are correlated with the endogenous explanatory variable but uncorrelated with the error term. The IV method can be implemented in various ways, one of which is the 2SLS method.</p>
+<div id="measurement-plan" class="section level3 hasAnchor" number="17.6.3">
+<h3><span class="header-section-number">17.6.3</span> 🔹 Measurement Plan<a href="amazon-economist---case-study---2024.html#measurement-plan" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li><p><strong>Purpose</strong>: To obtain consistent estimates when there is endogeneity due to omitted variable bias, measurement error, or simultaneity.</p></li>
-<li><p><strong>Instruments</strong>: The choice of instruments is crucial. Valid instruments must satisfy two key conditions:</p>
+<li><p><strong>Primary outcomes</strong>: orders per customer, revenue, contribution margin.</p></li>
+<li><p><strong>Secondary outcomes</strong>: Prime retention, customer satisfaction, delivery costs.</p></li>
+<li><p><strong>Timing</strong>: define ramp-up period vs. stable period for evaluation.</p></li>
+<li><p><strong>Heterogeneity</strong>: look at effects by city size, income level, Prime vs. non-Prime.</p></li>
+</ul>
+</div>
+<div id="estimation" class="section level3 hasAnchor" number="17.6.4">
+<h3><span class="header-section-number">17.6.4</span> 🔹 Estimation<a href="amazon-economist---case-study---2024.html#estimation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Difference-in-means</strong> if balanced.</p></li>
+<li><p><strong>Regression framework</strong> to increase precision:</p>
+<p><span class="math display">\[
+Y_i = \alpha + \beta \cdot Treatment_i + \gamma X_i + \epsilon_i
+\]</span></p></li>
+<li><p><strong>Cluster-robust SEs</strong> at the randomization level (city or ZIP).</p></li>
+<li><p><strong>ITT</strong>: average effect of being assigned treatment.</p></li>
+<li><p><strong>LATE</strong>: if compliance issues, estimate via IV using assignment as instrument for actual usage.</p></li>
+</ul>
+</div>
+<div id="power-and-sample-size" class="section level3 hasAnchor" number="17.6.5">
+<h3><span class="header-section-number">17.6.5</span> 🔹 Power and Sample Size<a href="amazon-economist---case-study---2024.html#power-and-sample-size" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>City-level RCT</strong>: fewer clusters, higher intra-cluster correlation → need careful power analysis.</p></li>
+<li><p><strong>Customer-level RCT</strong>: more units, easier to detect smaller effects.</p></li>
+<li><p><strong>Rule of thumb</strong>: detect +3–5% lift in orders → need enough units to get 80% power at 5% significance.</p></li>
+</ul>
+</div>
+<div id="threats-and-mitigations" class="section level3 hasAnchor" number="17.6.6">
+<h3><span class="header-section-number">17.6.6</span> 🔹 Threats and Mitigations<a href="amazon-economist---case-study---2024.html#threats-and-mitigations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Spillovers</strong> → cluster-level assignment + buffer ZIPs.</p></li>
+<li><p><strong>Noncompliance</strong> → ITT + IV.</p></li>
+<li><p><strong>Seasonality</strong> → block by time or include time FE.</p></li>
+<li><p><strong>Attrition</strong> → track if customers in control “drop out” differently.</p></li>
+</ul>
+<hr />
+<p>If I could design it, the cleanest evaluation would be a randomized controlled trial. For example, we could randomize ZIP codes to get 1-day delivery, with blocking on baseline demand and Prime penetration. To avoid spillovers, I’d use buffer zones between treated and control areas. The primary outcomes would be orders per customer, revenue, and contribution margin, with Prime retention as a secondary outcome. I’d analyze intent-to-treat using a regression with cluster-robust SEs. If some customers don’t comply — for example, they’re eligible but don’t use 1-day — I’d also estimate the local average treatment effect using assignment as an instrument. Finally, I’d check power carefully: at the city level, the number of clusters is small, so stepped-wedge or customer-level randomization might be better. This way, the RCT gives us a credible causal estimate while accounting for real-world constraints.</p>
+<hr />
+<p>👉 In short, you can go as deep as:</p>
+<ul>
+<li><strong>Design → Assumptions → Outcomes → Estimation → Power → Threats → Mitigation.</strong></li>
+</ul>
+</div>
+</div>
+<div id="step-4-communicate-results" class="section level2 hasAnchor" number="17.7">
+<h2><span class="header-section-number">17.7</span> Step 4: Communicate Results<a href="amazon-economist---case-study---2024.html#step-4-communicate-results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>When they ask “what would you look at?”, emphasize:</p>
+<ul>
+<li><p><em>Direct Effect</em>: more orders, higher revenue.</p></li>
+<li><p><em>Customer Value</em>: repeat purchase, Prime retention.</p></li>
+<li><p><em>Efficiency</em>: did cost per order go up or down?</p></li>
+<li><p><em>Net Impact</em>: did 1-day cannibalize 2-day, or add new demand?</p></li>
+</ul>
+<p>✅ <strong>Good Interview Flow</strong>:</p>
 <ol style="list-style-type: decimal">
-<li><strong>Relevance</strong>: The instrument must be correlated with the endogenous explanatory variable.</li>
-<li><strong>Exogeneity</strong>: The instrument must be uncorrelated with the error term in the regression model.</li>
+<li><p>Clarify outcomes (business impact).</p></li>
+<li><p>Lay out multiple approaches (breadth).</p></li>
+<li><p>Dive into one rigorously (depth).</p></li>
+<li><p>Acknowledge assumptions + limitations.</p></li>
+<li><p>Tie back to business implications.</p></li>
+</ol>
+</div>
+<div id="more-on-instrumental-variables" class="section level2 hasAnchor" number="17.8">
+<h2><span class="header-section-number">17.8</span> More on Instrumental Variables<a href="amazon-economist---case-study---2024.html#more-on-instrumental-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>🔹 What is Overidentification?</strong></p>
+<ul>
+<li><p>In IV, you need at least as many <strong>instruments</strong> as <strong>endogenous variables</strong> (this is “just identified”).</p></li>
+<li><p>If you have <strong>more instruments than endogenous variables</strong>, the model is <strong>overidentified</strong>.</p></li>
+<li><p>Example: Suppose treatment = rollout of 1-day delivery. If you have two instruments — (1) distance to fulfillment center and (2) local logistical capacity — then you’re overidentified.</p></li>
+</ul>
+<p><strong>🔹 Why it Matters</strong></p>
+<ul>
+<li><p>With more instruments than needed, you can test whether the instruments are consistent with each other.</p></li>
+<li><p>If they all satisfy the exclusion restriction, they should give the same causal estimate.</p></li>
+<li><p>If not, at least one instrument is invalid.</p></li>
+</ul>
+<p><strong>The Overidentification Test</strong></p>
+<ul>
+<li><p><strong>Hansen J-test (robust)</strong> or <strong>Sargan test (classic)</strong>.</p></li>
+<li><p>Null hypothesis: <em>all instruments are valid (exogenous)</em>.</p></li>
+<li><p>If p-value is low → reject the null → at least one instrument likely violates exclusion restriction.</p></li>
+</ul>
+<p><strong>Example in Amazon Case</strong></p>
+<ul>
+<li><p><strong>Treatment:</strong> Whether a city got one-day rollout.</p></li>
+<li><p><strong>Instruments:</strong></p>
+<ol style="list-style-type: decimal">
+<li>Distance to nearest fulfillment center.</li>
+<li>Historical route density (proxy for logistical feasibility).</li>
 </ol></li>
+<li><p>If both are valid instruments, the IV estimate of rollout effect should be consistent across them.</p></li>
+<li><p>Overidentification test helps check that.</p></li>
 </ul>
-</div>
-<div id="two-stage-least-squares-2sls-method" class="section level3 hasAnchor" number="8.2.2">
-<h3><span class="header-section-number">8.2.2</span> Two-Stage Least Squares (2SLS) Method<a href="instrumental-variables-iv.html#two-stage-least-squares-2sls-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><strong>Two-Stage Least Squares (2SLS) method</strong> is a specific implementation of the IV method. It involves a two-step estimation process to address endogeneity.</p>
+<hr />
+<p>If I had more than one instrument — say, distance to fulfillment center and logistical capacity — the model would be overidentified. That allows me to run an overidentification test, like the Hansen J-test. The null is that all instruments are valid. If the test rejects, it suggests at least one instrument violates the exclusion restriction. Of course, it’s not a perfect guarantee, but it provides evidence about instrument validity.”</p>
+<hr />
+<p>👉 So in short:</p>
 <ul>
-<li><p><strong>Step 1 (First Stage)</strong>: Regress the endogenous explanatory variable on the instruments to obtain the predicted values.</p>
-<p><span class="math display">\[X = \pi_0 + \pi_1 Z + \nu\]</span></p>
-<p>Here, <span class="math inline">\(X\)</span> is the endogenous variable, <span class="math inline">\(Z\)</span> is the instrument, and <span class="math inline">\(\nu\)</span> is the error term. This regression yields the predicted values <span class="math inline">\(\hat{X}\)</span>.</p></li>
-<li><p><strong>Step 2 (Second Stage)</strong>: Regress the dependent variable on the predicted values of the endogenous variable obtained from the first stage.</p>
-<p><span class="math display">\[Y = \alpha + \beta \hat{X} + \epsilon\]</span></p></li>
+<li><p><strong>Overidentified = more instruments than needed.</strong></p></li>
+<li><p><strong>Test = Hansen J or Sargan.</strong></p></li>
+<li><p><strong>Purpose = check whether exclusion restriction holds across instruments.</strong></p></li>
 </ul>
-<p>The 2SLS method ensures that the endogenous variable <span class="math inline">\(X\)</span> is replaced by its predicted value <span class="math inline">\(\hat{X}\)</span>, which is purged of the endogenous component, thus providing consistent estimates of <span class="math inline">\(\beta\)</span>.</p>
-</div>
-<div id="summary-of-differences" class="section level3 hasAnchor" number="8.2.3">
-<h3><span class="header-section-number">8.2.3</span> Summary of Differences:<a href="instrumental-variables-iv.html#summary-of-differences" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Testing Assumptions</strong></p>
+<p><strong>1. Relevance (testable)</strong></p>
 <ul>
-<li><strong>General Approach vs. Specific Method</strong>: The IV method is a general approach for dealing with endogeneity, while 2SLS is a specific implementation of the IV method.</li>
-<li><strong>Implementation</strong>: 2SLS involves a two-step process to obtain consistent estimates using instruments, whereas the IV method can be implemented in various ways, not just through 2SLS.</li>
-<li><strong>Application</strong>: In practice, 2SLS is the most commonly used method for implementing the IV approach because it is straightforward and provides clear steps for estimation.</li>
+<li><p><strong>What it is:</strong> Instrument is correlated with treatment.</p></li>
+<li><p><strong>How to test:</strong> Look at the <strong>first-stage regression</strong>.</p>
+<p><span class="math display">\[
+T_i = \pi_0 + \pi_1 Z_i + \pi_2 X_i + \nu_i
+\]</span></p>
+<ul>
+<li><span class="math inline">\(T_i\)</span>: treatment (e.g., rollout city).</li>
+<li><span class="math inline">\(Z_i\)</span>: instrument (e.g., distance to FC).</li>
+</ul></li>
+<li><p><strong>Check:</strong></p>
+<ul>
+<li>F-statistic for <span class="math inline">\(\pi_1\)</span> &gt; 10 (rule of thumb).</li>
+<li>Weak instruments → biased estimates.</li>
+</ul></li>
+</ul>
+<p><strong>2. Exclusion Restriction (not directly testable)</strong></p>
+<ul>
+<li><p><strong>What it is:</strong> Instrument affects outcome only through treatment.</p></li>
+<li><p><strong>How to check credibility:</strong></p>
+<ul>
+<li><p><strong>Theoretical argument:</strong> Why would “distance to FC” affect orders <em>only</em> through rollout?</p></li>
+<li><p><strong>Balance checks:</strong> See if instrument is correlated with baseline outcomes or covariates (e.g., cities closer to FC also richer?). If so, risk of violation.</p></li>
+<li><p><strong>Overidentification tests</strong> (if &gt;1 instrument): Hansen J-test or Sargan test.</p>
+<ul>
+<li>Null: all instruments valid.</li>
+<li>If rejected → at least one violates exclusion.</li>
+</ul></li>
+</ul></li>
+</ul>
+<p><strong>3. Independence (as-if random)</strong></p>
+<ul>
+<li><p><strong>What it is:</strong> Instrument is independent of unobserved factors affecting outcomes.</p></li>
+<li><p><strong>How to check:</strong></p>
+<ul>
+<li>Test if instrument predicts <strong>pre-treatment outcomes</strong>.</li>
+<li>If distance to FC predicts <em>pre-rollout</em> order volume, then it’s confounded.</li>
+</ul></li>
+</ul>
+<p><strong>🔹 4. Monotonicity (no defiers)</strong></p>
+<ul>
+<li><p><strong>What it is:</strong> Instrument pushes all units in the same direction (no one is less likely to get treatment <em>because</em> of the instrument).</p></li>
+<li><p><strong>How to check:</strong> Can’t test directly. Rely on logic. Example: Closer distance can’t make a city <em>less</em> likely to get one-day delivery.</p></li>
 </ul>
 </div>
+<div id="more-questions" class="section level2 hasAnchor" number="17.9">
+<h2><span class="header-section-number">17.9</span> More Questions<a href="amazon-economist---case-study---2024.html#more-questions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="in-ab-test-how-do-you-communicate-significance-level-change-1-5-to-non-technicals" class="section level3 hasAnchor" number="17.9.1">
+<h3><span class="header-section-number">17.9.1</span> In ab test, how do you communicate significance level change, 1%, 5% to non-technicals?<a href="amazon-economist---case-study---2024.html#in-ab-test-how-do-you-communicate-significance-level-change-1-5-to-non-technicals" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Translate Significance into “Risk of False Alarm”</strong></p>
+<ul>
+<li><p><strong>5% significance</strong> → we’re okay with a <strong>1 in 20 chance</strong> that the result looks real but isn’t.</p></li>
+<li><p><strong>1% significance</strong> → we’re stricter: only <strong>1 in 100 chance</strong> of a false alarm.</p></li>
+</ul>
+<p>👉 Analogy: <em>“If we flip a coin, and it comes up heads five times in a row, would you believe it’s a weighted coin? At 5% significance, we’d say yes sooner. At 1%, we’d demand even more evidence.”</em></p>
+<p><strong>Framing for Business Leaders</strong></p>
+<ul>
+<li><p>At <strong>5%</strong>, we’re balancing speed and certainty — good for most product/marketing tests.</p></li>
+<li><p>At <strong>1%</strong>, we’re asking for stronger proof — good when the decision is <strong>costly or risky</strong> (e.g., changing logistics, pricing).</p></li>
+<li><p>So: <em>“Lowering the significance threshold reduces the chance of being fooled by random noise, but requires more data or a bigger effect size before we call something a win.”</em></p></li>
+</ul>
+<p><strong>How to Phrase It in Plain English</strong></p>
+<ul>
+<li><p>“At 5%, we’re saying we’re comfortable being wrong 1 in 20 times. At 1%, we’re saying we only want to be wrong 1 in 100 times. The stricter we are, the more confident we are in the result — but it also means we might need a larger sample or stronger effect before we see significance.”</p></li>
+<li><p>Business framing:
+<em>“Think of it as how strict a referee is. At 5%, we allow close calls to count as fouls. At 1%, the referee only calls fouls when it’s really obvious. That reduces false alarms but sometimes misses subtle, real effects.”</em></p></li>
+</ul>
+<hr />
+<blockquote>
+<p>“To a non-technical audience, I’d explain significance as the risk of a false alarm. At 5% significance, we’re okay being wrong 1 in 20 times; at 1%, we’re stricter and only accept being wrong 1 in 100 times. Lowering the threshold gives us more confidence in the result, but it means we need more evidence — either a bigger effect or a larger sample size. I’d frame it as a trade-off between speed and certainty, so stakeholders can align the level of risk with the importance of the decision.”</p>
+</blockquote>
+<hr />
+<p>👉 This way you show you can bridge <strong>statistical rigor</strong> with <strong>business communication</strong>, which is exactly what Amazon will test you on.</p>
 </div>
-<div id="homogenous-treatment-effect" class="section level2 hasAnchor" number="8.3">
-<h2><span class="header-section-number">8.3</span> Homogenous Treatment Effect<a href="instrumental-variables-iv.html#homogenous-treatment-effect" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="in-synthetic-control-how-do-you-calculate-weigths" class="section level3 hasAnchor" number="17.9.2">
+<h3><span class="header-section-number">17.9.2</span> In synthetic control how do you calculate weigths?<a href="amazon-economist---case-study---2024.html#in-synthetic-control-how-do-you-calculate-weigths" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Core Idea</strong></p>
+<p>You want to build a <strong>synthetic twin</strong> for a treated unit (e.g., Seattle after 1-day rollout) by combining multiple untreated units (e.g., Portland, Denver, Kansas City) with <strong>weights</strong> that make their <strong>pre-treatment trajectory</strong> as close as possible to Seattle’s.</p>
+<p>The weights (<span class="math inline">\(w_j\)</span>) are chosen so that the <strong>synthetic city</strong> matches the treated city in:</p>
+<ul>
+<li><p>Pre-treatment outcomes (e.g., orders per capita, revenue, retention).</p></li>
+<li><p>Predictors (e.g., population, income, Prime penetration).</p></li>
+</ul>
+<p><strong>How Weights Are Calculated</strong></p>
+<p>Formally:</p>
+<ul>
+<li><p>Suppose treated city = <span class="math inline">\(i^*\)</span>.</p></li>
+<li><p>Potential controls = <span class="math inline">\(j = 1, \dots, J\)</span>.</p></li>
+<li><p>We want weights <span class="math inline">\(w_j\)</span> (nonnegative, sum to 1).</p></li>
+<li><p>Synthetic control outcome:</p>
+<p><span class="math display">\[
+Y_{it}^{SC} = \sum_{j=1}^J w_j Y_{jt}
+\]</span></p></li>
+<li><p>Goal: Choose <span class="math inline">\(w_j\)</span> to minimize the distance between pre-treatment outcomes of treated vs. synthetic:</p>
+<p><span class="math display">\[
+\min_{w} \; (X_{i^*} - \sum_{j=1}^J w_j X_j)&#39; V (X_{i^*} - \sum_{j=1}^J w_j X_j)
+\]</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(X_{i^*}\)</span> = vector of predictors for treated city.</li>
+<li><span class="math inline">\(X_j\)</span> = predictors for control cities.</li>
+<li><span class="math inline">\(V\)</span> = weighting matrix that reflects importance of predictors (chosen via cross-validation or researcher judgment).</li>
+</ul></li>
+</ul>
+<p><strong>Intuition</strong></p>
+<ul>
+<li><p>If Seattle had pre-treatment outcomes [10, 12, 15], and Portland [11, 13, 14], Denver [9, 11, 16], Kansas City [8, 10, 15]…</p></li>
+<li><p>The algorithm finds weights like 0.5 Portland + 0.3 Denver + 0.2 Kansas City = [10.1, 12.2, 15.0].</p></li>
+<li><p>That’s almost identical to Seattle’s pre-trends → good synthetic twin.</p></li>
+</ul>
+<p><strong>Tools / Implementation</strong></p>
+<ul>
+<li><p><strong>R:</strong> <code>Synth</code> package.</p></li>
+<li><p><strong>Python:</strong> <code>SyntheticControlMethods</code> or <code>econml</code>.</p></li>
+<li><p>The software automates the minimization problem and produces weights + gaps.</p></li>
+</ul>
+<hr />
+<p>In synthetic control, we calculate weights by finding the convex combination of control cities that best matches the treated city’s pre-treatment outcomes and characteristics. The weights are nonnegative and sum to one. The algorithm solves an optimization problem: minimize the difference between treated and synthetic in the pre-treatment period, using a weighted distance measure. After rollout, the gap between the treated city and its synthetic twin gives the causal effect. For example, Seattle might be represented as 50% Portland, 30% Denver, and 20% Kansas City if that best reproduces its pre-treatment trajectory.</p>
+<hr />
+<p>👉 So:</p>
+<ul>
+<li><p><strong>Mathematically</strong> → optimization problem with constraints.</p></li>
+<li><p><strong>Intuitively</strong> → weighted average of control cities to mimic treated city.</p></li>
+<li><p><strong>Practically</strong> → solved by <code>Synth</code> or similar packages.</p></li>
+</ul>
 </div>
-<div id="heterogenous-treatment-effect" class="section level2 hasAnchor" number="8.4">
-<h2><span class="header-section-number">8.4</span> Heterogenous Treatment Effect<a href="instrumental-variables-iv.html#heterogenous-treatment-effect" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Note that the treatment effect differes by individual i.</p>
-<p><span class="math display">\[Y^{1}_i - Y^{0}_i = \delta_i\]</span></p>
-<p>The main questions we have now are:</p>
+<div id="how-do-you-make-sure-your-analysis-is-good" class="section level3 hasAnchor" number="17.9.3">
+<h3><span class="header-section-number">17.9.3</span> How do you make sure your analysis is good?<a href="amazon-economist---case-study---2024.html#how-do-you-make-sure-your-analysis-is-good" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Internal Validity Checks</strong></p>
+<ul>
+<li><p><strong>Parallel trends / pre-trends (for DiD):</strong> Check that treated and control cities had similar outcome trends before rollout. If not, adjust with controls, matching, or synthetic control.</p></li>
+<li><p><strong>Placebo tests:</strong> Pretend rollout happened earlier and see if you still get an effect (shouldn’t).</p></li>
+<li><p><strong>Balance checks:</strong> Make sure treatment and control groups are comparable on observables (population, Prime %, baseline demand).</p></li>
+<li><p><strong>Robustness to specification:</strong> Try different model forms (levels vs. logs, alternative time windows) and see if results are consistent.</p></li>
+</ul>
+<p><strong>Statistical Validity</strong></p>
+<ul>
+<li><p><strong>Standard errors:</strong> Use clustering (e.g., at city level) to account for correlation.</p></li>
+<li><p><strong>Multiple testing / false positives:</strong> If testing many outcomes, adjust or at least note risk.</p></li>
+<li><p><strong>Power:</strong> Confirm sample size is sufficient to detect the effect you care about.</p></li>
+</ul>
+<p><strong>External Validity</strong></p>
+<ul>
+<li><p><strong>Heterogeneity:</strong> Test if effect varies by city size, region, Prime penetration, customer demographics. Helps tell the business <em>where</em> rollout is most valuable.</p></li>
+<li><p><strong>Scalability:</strong> Ask: does the effect in these 20–30 cities generalize to the rest of the country? If not, what adjustments might be needed?</p></li>
+</ul>
+<p><strong>Operational / Business Sense Check</strong></p>
+<ul>
+<li><p><strong>Order of magnitude check:</strong> If the model says “1-day delivery increased orders by 50%,” is that realistic? Cross-check with survey results, pilot data, or industry benchmarks.</p></li>
+<li><p><strong>Consistency across metrics:</strong> If orders went up but contribution margin plummeted, something’s off—dig deeper.</p></li>
+<li><p><strong>Trace through mechanism:</strong> Did faster delivery actually improve retention, basket size, Prime sign-ups? Evidence should align with the story.</p></li>
+</ul>
+<p><strong>Communicating Reliability</strong></p>
+<p>When talking to <strong>non-technical stakeholders</strong>:</p>
+<ul>
+<li><p>Instead of “p &lt; 0.05,” say: <em>“We’re 95% confident this isn’t due to chance.”</em></p></li>
+<li><p>Emphasize consistency: <em>“No matter how we cut the data—by time period, city size, or statistical model—the effect size is similar.”</em></p></li>
+<li><p>Highlight what’s <strong>directionally robust</strong> (sign and order of magnitude), even if precise estimates shift a bit.</p></li>
+</ul>
+<hr />
+<p>I’d make sure the analysis is valid by first checking assumptions—like parallel trends in a DiD—and running placebo tests to see if I find effects where none should exist. I’d test robustness by trying different model forms and checking heterogeneity across cities. On the statistical side, I’d use clustered standard errors and check power. Finally, I’d do a business sanity check—do the numbers make sense compared to historical demand and benchmarks? When I share results, I don’t just show a coefficient, I show robustness across methods and whether the effect is consistent with business logic.</p>
+<hr />
+</div>
+<div id="what-if-leadership-says-implement-his-program-in-big-cities" class="section level3 hasAnchor" number="17.9.4">
+<h3><span class="header-section-number">17.9.4</span> What if leadership says implement his program in big cities?<a href="amazon-economist---case-study---2024.html#what-if-leadership-says-implement-his-program-in-big-cities" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Reframe the Question</strong></p>
+<ul>
+<li><p>Leadership says: <em>“Only big cities should get the program.”</em></p></li>
+<li><p>That means rollout is <strong>non-random</strong> and likely <strong>correlated with demand drivers</strong> (population, density, income, existing infrastructure).</p></li>
+<li><p>The key challenge = <strong>selection bias</strong> → big cities are systematically different.</p></li>
+</ul>
+<p><strong>How to Adjust Analysis</strong></p>
 <ol style="list-style-type: decimal">
-<li><p>what is IV estimating when we have heterogeneous treatment effects, and</p></li>
-<li><p>under what assumptions will IV identify a causal effect with heterogeneous treatment effects?</p></li>
+<li><p><strong>Difference-in-Differences with Big City Controls</strong></p>
+<ul>
+<li><p>Use other <strong>big cities not yet treated</strong> as control group.</p></li>
+<li><p>Still check <strong>parallel pre-trends</strong>: do big rollout cities look like big non-rollout cities before the program?</p></li>
+</ul></li>
+<li><p><strong>Synthetic Control</strong></p>
+<ul>
+<li><p>Build synthetic versions of rollout cities using a weighted combo of other big cities.</p></li>
+<li><p>Helps mimic “what would have happened” in the absence of rollout.</p></li>
+</ul></li>
+<li><p><strong>Matching or Weighting</strong></p>
+<ul>
+<li><p>Match rollout cities with similar non-rollout big cities on observables (population, Prime penetration, demand history).</p></li>
+<li><p>Use <strong>balancing weights</strong> to adjust comparisons.</p></li>
+</ul></li>
+<li><p><strong>Instrumental Variables</strong> (if feasible)</p>
+<ul>
+<li>If rollout timing among big cities is staggered, or depends on something like proximity to FCs, use that as an instrument.</li>
+</ul></li>
 </ol>
-<p>we introduce a distinction between the internal validity of a study and its external validity. Internal validity means our strategy identified a causal effect for the population we studied. But external validity means the study’s finding applied to different populations (not in the study).</p>
-<p>There are considerably more assumptions necessary for identification once we introduce heterogeneous treatment effects—specifically five assumptions.</p>
+<p><strong>Communicating the Challenge</strong></p>
+<p>When explaining to <strong>leadership / non-technical</strong>:</p>
+<blockquote>
+<p>“Since rollout is limited to large cities, we can’t just compare treated vs. untreated cities directly—bigger cities naturally have higher demand. To get a fair estimate, I’d compare treated big cities to similar big cities that haven’t rolled out yet, or construct a synthetic benchmark. This helps us isolate the true effect of faster delivery, not just the fact that big cities behave differently.”</p>
+</blockquote>
+<hr />
+<p>If leadership only implements in big cities, selection bias becomes a concern since big cities differ from smaller ones. I’d adjust by comparing rollout cities only against similar large cities not yet treated, checking pre-trends carefully. If needed, I’d use synthetic control or matching to build a valid counterfactual. That way, even though we can’t randomize, we still get a credible estimate of the causal effect.</p>
+<hr />
+</div>
+<div id="what-if-leadership-want-to-do-it-within-east-and-west-coast" class="section level3 hasAnchor" number="17.9.5">
+<h3><span class="header-section-number">17.9.5</span> What if leadership want to do it within east and west coast?<a href="amazon-economist---case-study---2024.html#what-if-leadership-want-to-do-it-within-east-and-west-coast" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ol style="list-style-type: decimal">
-<li>A stable unit treatment value assumption (SUTVA) that states that the potential outcomes for each person are unrelated to the treatment status of other individuals.</li>
+<li><strong>Recognize the New Challenge</strong></li>
 </ol>
-<p>2.The independence assumption. The independence assumption is also sometimes called the “as good as random assignment” assumption. It states that the IV is independent of the potential outcomes and potential treatment assignments.</p>
-<p>we can check pretreatment covariate balance.</p>
+<ul>
+<li><p>Rollout limited to <strong>coastal cities</strong>.</p></li>
+<li><p>East/West Coast cities differ systematically from Midwest/South (population density, urbanization, shipping routes, demographics).</p></li>
+<li><p>Direct comparisons would be <strong>biased</strong> if you don’t account for these geographic differences.</p></li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li><p><strong>Analytical Adjustments</strong></p></li>
+<li><p><strong>Within-region DiD</strong></p>
+<ul>
+<li><p>Compare <strong>treated vs. untreated</strong> cities <em>within the same coast</em>.</p></li>
+<li><p>Example: rollout city in East Coast vs. similar East Coast control city.</p></li>
+<li><p>Controls for geography-specific demand drivers.</p></li>
+</ul></li>
+<li><p><strong>Staggered Rollout Leverage</strong></p>
+<ul>
+<li>If rollout timing differs within coasts, exploit that variation → compare early adopters vs. later adopters on the same coast.</li>
+</ul></li>
+<li><p><strong>Synthetic Control / Matching</strong></p>
+<ul>
+<li><p>Construct a synthetic version of New York rollout using weighted combo of other East Coast cities not rolled out.</p></li>
+<li><p>Same for San Francisco using other West Coast cities.</p></li>
+</ul></li>
+<li><p><strong>Control Variables</strong></p>
+<ul>
+<li><p>Explicitly control for coast-wide economic shocks (e.g., hurricanes, port strikes, regional seasonality).</p></li>
+<li><p>This addresses region-specific confounders.</p></li>
+</ul></li>
+<li><p><strong>Communicating to Leadership</strong></p></li>
+</ol>
+<blockquote>
+<p>“If rollout is restricted to the coasts, we need to be careful not to attribute natural coastal differences to the program. I’d evaluate using only coastal cities as comparisons—treated vs. untreated within East and West. Where possible, I’d use staggered timing or synthetic controls to create credible counterfactuals. That way, even though the rollout is geographically concentrated, we still get a clean read on the program’s causal impact.”</p>
+</blockquote>
+<hr />
+<blockquote>
+<p>“If rollout is only on the East and West Coast, I’d avoid comparing against inland cities since those differ structurally. Instead, I’d design the evaluation within each coast, comparing treated cities to untreated coastal peers or using synthetic controls. If there’s staggered rollout, I’d leverage that timing. This ensures we’re isolating the effect of 1-day delivery, not just regional demand differences.”</p>
+</blockquote>
+<hr />
+</div>
+<div id="how-i-determine-sample-size-significance-and-mde" class="section level3 hasAnchor" number="17.9.6">
+<h3><span class="header-section-number">17.9.6</span> How I determine sample size, significance, and MDE<a href="amazon-economist---case-study---2024.html#how-i-determine-sample-size-significance-and-mde" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Effect Size</strong></li>
+</ol>
+<ul>
+<li><p>The <strong>minimum meaningful difference</strong> we care about detecting (e.g., 2% uplift in orders, $1 increase in revenue per customer).</p></li>
+<li><p>Should be <strong>business-driven</strong>: what size of change justifies program cost?</p></li>
+</ul>
+<p><strong>How I’d phrase in an interview:</strong></p>
+<blockquote>
+<p>“I’d align effect size with business impact. For example, if a 2% uplift in conversions covers the cost of rollout, that becomes the effect size I power the test around.”</p>
+</blockquote>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Power (1 – β)</strong></li>
+</ol>
+<ul>
+<li><p>Probability of detecting a true effect when it exists (commonly 80%).</p></li>
+<li><p>Balances sample size and effect size.</p></li>
+</ul>
 <ol start="3" style="list-style-type: decimal">
-<li><p>There is the exclusion restriction. The exclusion restriction states that any effect of Z on Y must be via the effect of Z on D.</p></li>
-<li><p>First stage.</p></li>
-<li><p>The monotonicity assumption. Monotonicity requires that the instrumental variable (weakly) operate in the same direction on all individual units. In other words, while the instrument may have no effect on some people, all those who are affected are affected in the same direction (i.e., positively or negatively, but not both).</p></li>
+<li><strong>Significance (α)</strong></li>
 </ol>
-<p>If all 5 assumptions hold truem then valid IV strategy estimates the <strong>local average treatment effect (LATE)</strong> of on D on Y.</p>
-<p>The <strong>LATE</strong> framework partitions the population of units with an instrument into potentially four mutually exclusive groups. Those groups are:</p>
-<p><strong>1. Compliers:</strong> This is the subpopulation whose treatment status is affected by the instrument in the correct direction. That is, <span class="math inline">\(D^{1}_i=1\)</span> and <span class="math inline">\(D^{0}_i=0\)</span>.</p>
-<p><strong>2. Defiers:</strong> This is the subpopulation whose treatment status is affected by the instrument in the wrong direction. That is, <span class="math inline">\(D^{1}_i=0\)</span> and <span class="math inline">\(D^{0}_i=1\)</span>.</p>
-<p><strong>3. Never takers:</strong> This is the subpopulation of units that never take the treatment regardless of the value of the instrument. So, <span class="math inline">\(D^{1}_i=D^{0}_i=0\)</span>. They simply never take the treatment</p>
-<p><strong>4. Always takers:</strong> This is the subpopulation of units that always take the treatment regardless of the value of the instrument. So, <span class="math inline">\(D^{1}_i=D^{0}_i=1\)</span>. They simply always take the instrument.</p>
-<p><strong>CAVEAT</strong></p>
-<p>With all five assumptions satisfied, IV estimates the average treatment effect for compliers, which is the parameter we’ve called the local average treatment effect.</p>
-<p>Without further assumptions, LATE is not informative about effects on never-takers or always-takers because the instrument does not affect their treatment status.</p>
-<p>It matters because in most applications, we would be mostly interested in estimating the average treatment effect on the whole population, but that’s not usually possible with IV.</p>
+<ul>
+<li><p>Probability of <strong>Type I error</strong> (false positive).</p></li>
+<li><p>Common levels: 5% (standard), 1% (stricter).</p></li>
+<li><p>Tighter significance → need larger sample or stronger effect.</p></li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li><strong>Sample Size</strong></li>
+</ol>
+<ul>
+<li><p>Driven by: baseline variability, expected effect size, desired confidence.</p></li>
+<li><p>Larger sample = more precise estimate.</p></li>
+<li><p>Formula-wise: depends on variance of outcome, desired power (often 80%), and significance level (α).</p></li>
+</ul>
+<p><strong>How I’d explain it simply:</strong></p>
+<blockquote>
+<p>“Sample size tells us how many observations we need to confidently detect an effect. The more variable the outcome, or the smaller the effect we expect, the more data we need.”</p>
+</blockquote>
+<ol start="5" style="list-style-type: decimal">
+<li><strong>Putting It Together (Interview Version)</strong></li>
+</ol>
+<blockquote>
+<p>“When planning an evaluation, I’d first work with business teams to define the effect size that matters—say, a 2% uplift that makes the program profitable. Then I’d calculate the sample size required to detect that effect with 80% power at a 5% significance level. If leadership wants stricter confidence, like 1%, we’d need either more data or accept that only larger effects will show up as significant. This way, the statistics are tied directly to the business decision.”</p>
+</blockquote>
+</div>
+<div id="how-do-you-communicate-10-15-significance-to-non-technicals" class="section level3 hasAnchor" number="17.9.7">
+<h3><span class="header-section-number">17.9.7</span> How do you communicate 10-15% significance to non-technicals<a href="amazon-economist---case-study---2024.html#how-do-you-communicate-10-15-significance-to-non-technicals" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Translate into everyday risk</strong></li>
+</ol>
+<ul>
+<li>At 5% significance: <em>“We’re okay being wrong 1 in 20 times.”</em></li>
+<li>At 10% significance: <em>“We’re okay being wrong 1 in 10 times.”</em></li>
+<li>At 15% significance: <em>“We’re okay being wrong about 1 in 7 times.”</em></li>
+</ul>
+<p>👉 So the trade-off is: <strong>more chance of a false alarm</strong>, but <strong>faster and easier to declare a result</strong>.</p>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Use a business analogy</strong></li>
+</ol>
+<blockquote>
+<p>“If we set the bar at 5%, we only act when we’re 95% sure it’s real. At 10–15%, we act when we’re about 85–90% sure. That means we might make a few more false calls, but it lets us move faster when time is valuable.”</p>
+</blockquote>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Frame as speed vs. certainty</strong></li>
+</ol>
+<ul>
+<li><p><strong>Stricter (5%)</strong>: safer, but needs more data → longer, costlier test.</p></li>
+<li><p><strong>Looser (10–15%)</strong>: faster insights, but with more risk of being wrong.</p></li>
+</ul>
+<p>👉 Useful when:</p>
+<ul>
+<li><p>Testing is expensive or slow.</p></li>
+<li><p>Business needs quick directional answers.</p></li>
+<li><p>You’re in an exploratory phase, not final rollout.</p></li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li><strong>Contextualize with decision stakes</strong></li>
+</ol>
+<ul>
+<li><p><em>“If the cost of a false positive is high—like rolling out a bad product—we stick to 5%.”</em></p></li>
+<li><p><em>“If the cost is low—like trying a new ad creative—we may accept 10–15% to move faster.”</em></p></li>
+</ul>
+<p>✅ <strong>One-liner for interviews / non-techs:</strong></p>
+<blockquote>
+<p>“At 10–15% significance, we’re trading some confidence for speed. Instead of being 95% sure, we’re about 85–90% sure, which means quicker tests but more risk of a false positive. Whether that’s okay depends on how costly a wrong decision is.”</p>
+</blockquote>
 
+</div>
 </div>
 </div>
             </section>
@@ -789,8 +1403,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="synthetic-control-method-scm.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="regression-discontinuity-designs-rdd.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="maximum-likelihood-estimation.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

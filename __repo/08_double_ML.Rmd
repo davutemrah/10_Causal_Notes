@@ -1,0 +1,73 @@
+
+# Double/Debiased Machine Learning (Double ML)
+
+
+**Core Idea**: Use machine learning (ML) for high-dimensional confounding control, while applying econometric techniques (orthogonalization + sample splitting) to obtain valid causal effect estimates.
+
+## Motivation
+
+* **Challenge**: In high-dimensional settings (hundreds of covariates $X$), ML methods excel at prediction but tend to be biased for causal inference because they can overfit nuisance parameters (propensity scores, outcome regressions).
+
+* **Goal**: Estimate causal effects consistently and efficiently, even when the covariate space is large and flexible ML methods are used.
+
+
+## Key Components
+
+1. **Orthogonalization (Neyman Orthogonality)**
+
+   * Construct estimating equations (moment conditions) that are **insensitive to small errors** in nuisance parameter estimation.
+   * Example: residualize both the treatment and outcome with respect to $X$, then regress the residualized outcome on the residualized treatment.
+
+2. **Sample Splitting / Cross-Fitting**
+
+   * Divide the sample into folds.
+   * Estimate nuisance functions (propensity scores, outcome models) on one fold, and plug them into treatment effect estimation on another fold.
+   * Rotate across folds and average the results.
+   * Prevents overfitting bias and ensures valid inference.
+
+3. **Estimation of Treatment Effect**
+
+   * After residualization, regress the residualized outcome on the residualized treatment.
+   * This yields an unbiased and asymptotically normal estimator of the causal effect.
+
+---
+
+### Practical Workflow
+
+1. Split the data into $K$ folds.
+2. For each fold:
+
+   * Estimate nuisance functions ($\hat{m}(X), \hat{p}(X)$) using ML.
+   * Compute residuals:
+
+     * $\tilde{Y} = Y - \hat{m}(X)$ (outcome residual)
+     * $\tilde{D} = D - \hat{p}(X)$ (treatment residual)
+   * Regress $\tilde{Y}$ on $\tilde{D}$.
+3. Average estimates across folds → final DML estimator.
+
+---
+
+### Use Case Example
+
+* **Education & Wages**: Estimating the causal effect of education on wages when there are 500+ potential confounders (family background, demographics, test scores, etc.).
+* ML methods (e.g., random forests, LASSO, boosting) handle the high-dimensional confounding flexibly, while DML ensures valid causal inference.
+
+---
+
+### Advantages
+
+* **Doubly Robust**: Consistent if nuisance estimates are sufficiently good (not perfect).
+* **Asymptotically Normal**: Enables valid confidence intervals and hypothesis testing.
+* **Scalable**: Works with modern ML tools (lasso, random forests, neural nets).
+
+---
+
+### Key Reference
+
+* Chernozhukov, V., Chetverikov, D., Demirer, M., Duflo, E., Hansen, C., Newey, W., & Robins, J. (2018). *Double/Debiased Machine Learning for Treatment and Structural Parameters*.
+
+---
+
+✅ This cleaned-up version should fit neatly into your **methods notebook**, while still being accessible and rigorous.
+
+Would you like me to **add a side-by-side comparison** (Doubly Robust vs. Double ML), so your notebook highlights how DML generalizes DR methods?

@@ -1,0 +1,182 @@
+# Doubly Robust Methods
+
+
+
+**Doubly Robust (DR) estimators** are a class of causal inference methods that combine two modeling strategies—
+
+(1) **Outcome regression models** and
+
+(2) **Treatment assignment (propensity score) models**.
+
+The key property is *double robustness*: the estimator of the causal effect remains consistent if **either** the outcome model **or** the treatment model is correctly specified (not necessarily both).
+
+
+
+## Why They Matter
+
+* **Problem:** Using only outcome regression (risk of omitted confounders) or only propensity scores (risk of poor overlap/imbalance) can lead to bias.
+
+* **Solution:** DR estimators merge both approaches, providing a *safety net*: if one model fails but the other is correct, the ATT/ATE estimate is still consistent.
+
+* **Applications:** Widely used in observational studies, program evaluation, healthcare, education, and labor economics.
+
+
+
+## Core Ingredients
+
+1. **Outcome Model**
+
+   * Predicts the expected outcome given covariates and treatment:
+
+     $$
+     \hat{m}(X,D) = \hat{E}[Y \mid X, D]
+     $$
+   * Example: linear regression, random forest, or other machine learning regressors.
+
+2. **Treatment Model (Propensity Score Model)**
+
+   * Models the probability of treatment given covariates:
+
+     $$
+     \hat{p}(X) = P(D = 1 \mid X)
+     $$
+   * Example: logistic regression, boosted trees.
+
+3. **DR Estimator**
+
+   * Combines the two:
+
+     $$
+     \hat{\theta}_{DR} = \frac{1}{n} \sum_{i=1}^n \Big[ \hat{m}(X_i, D_i) \;+\; \frac{D_i \cdot (Y_i - \hat{m}(X_i,1))}{\hat{p}(X_i)} \;-\; \frac{(1-D_i)\cdot (Y_i - \hat{m}(X_i,0))}{1-\hat{p}(X_i)} \Big]
+     $$
+   
+   * Intuition: outcome model “predicts” $Y$; propensity weighting corrects residual differences.
+
+
+
+
+## More on Outcome Models for Treated and Control
+
+In the **outcome regression step**, the goal is to estimate what the outcome would be **for each unit under both treatment states** ($D=1$ and $D=0$).
+
+This means we need:
+
+* $\hat{m}_1(X) = \hat{E}[Y \mid D=1, X]$ (predicted outcome if treated)
+
+* $\hat{m}_0(X) = \hat{E}[Y \mid D=0, X]$ (predicted outcome if untreated)
+
+There are two ways to get these:
+
+1. **Single pooled regression (with treatment indicator):**
+
+   * Fit one model:
+
+     $$
+     Y \sim D + X + D \times X
+     $$
+   * This allows different intercepts/slopes by treatment status.
+
+2. **Separate regressions by group (common in practice):**
+
+   * Fit one regression for treated ($D=1$) and one for controls ($D=0$).
+   
+   * Then use each model to predict $\hat{m}_1(X)$ and $\hat{m}_0(X)$ for all units.
+
+Both approaches are trying to achieve the same thing: **predict counterfactual outcomes for each unit under both treatment states**.
+
+
+
+### Why Some Articles Emphasize Separate Models
+
+* It makes the intuition cleaner: you estimate the outcome model within each group, then apply it across the sample.
+
+* It avoids strong functional form assumptions (a single pooled regression assumes the same structure across treated and controls, unless you include interactions).
+
+* In machine learning implementations (e.g., random forests, boosting), it’s natural to just train two models — one per treatment status.
+
+
+### Key Point
+
+👉 The distinction isn’t about the *logic* of DR, but about the **implementation**.
+
+* **Econometrics textbooks** (like Wooldridge) often write it in pooled form for simplicity.
+
+* **Applied ML papers** or software implementations often do *separate regressions* for treated vs. controls because it’s flexible.
+
+
+### Takeaway for Your Notebook
+
+You can phrase it like this:
+
+> In practice, the outcome regression can be specified in two ways:
+
+> (1) one pooled model with treatment indicators and interactions, or
+
+> (2) separate models for treated and controls.
+
+> Both approaches aim to estimate the conditional expectation of outcomes under treatment and control, which are then combined with the propensity score model in the doubly robust estimator.
+
+
+
+
+
+
+
+
+
+
+## Advantages
+
+1. **Robustness**: Consistency as long as one model is correctly specified.
+
+2. **Efficiency**: Lower variance than using outcome regression or IPW alone.
+
+3. **Flexibility**: Can use linear models or modern ML for either part.
+
+
+
+## Assumptions
+
+1. **Overlap**: For all covariate values, both treated and untreated units exist.
+
+2. **No unmeasured confounding**: All relevant confounders are observed.
+
+3. **Consistency/SUTVA**: Treatment assignment is well-defined, no interference.
+
+
+## Example Applications
+
+* **Healthcare**: Effect of new drug adoption on patient recovery, adjusting for patient characteristics.
+
+* **Labor Economics**: Effect of training programs on wages when participants self-select.
+
+* **Education**: Effect of tutoring on test scores, controlling for student demographics and school resources.
+
+
+## Summary
+
+Doubly robust estimators are widely considered a **best practice** in causal inference:
+
+* They provide a safeguard against misspecification.
+
+* They unify regression and weighting methods.
+
+* They extend naturally into advanced designs (e.g., **DR DiD, Double Machine Learning**).
+
+They don’t remove the need for strong design and good covariates, but they improve the **credibility and stability** of causal effect estimates.
+
+
+
+## Extension: DR in Difference-in-Differences (DRDID)
+
+* Extends DR logic to **DiD setups**.
+
+* Estimates the **ATT** when parallel trends may hold only after conditioning on covariates.
+
+* Uses both:
+
+  * **Outcome regression in pre/post periods**, and
+
+  * **Propensity scores for treatment assignment**.
+
+* Still consistent if *either* the outcome regression *or* the propensity score model is correct.

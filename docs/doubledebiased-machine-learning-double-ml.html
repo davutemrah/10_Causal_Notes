@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 8 Instrumental Variables (IV) | Notes on Causal Models</title>
+  <title>Chapter 11 Double/Debiased Machine Learning (Double ML) | Notes on Causal Models</title>
   <meta name="description" content="This is a collection of notes from open sources" />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 8 Instrumental Variables (IV) | Notes on Causal Models" />
+  <meta property="og:title" content="Chapter 11 Double/Debiased Machine Learning (Double ML) | Notes on Causal Models" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a collection of notes from open sources" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 8 Instrumental Variables (IV) | Notes on Causal Models" />
+  <meta name="twitter:title" content="Chapter 11 Double/Debiased Machine Learning (Double ML) | Notes on Causal Models" />
   
   <meta name="twitter:description" content="This is a collection of notes from open sources" />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="synthetic-control-method-scm.html"/>
-<link rel="next" href="regression-discontinuity-designs-rdd.html"/>
+<link rel="prev" href="fixed-effects-and-panel-data-methods.html"/>
+<link rel="next" href="ordinary-least-squares-ols.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -612,176 +612,83 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="instrumental-variables-iv" class="section level1 hasAnchor" number="8">
-<h1><span class="header-section-number">Chapter 8</span> Instrumental Variables (IV)<a href="instrumental-variables-iv.html#instrumental-variables-iv" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Instrumental Variables (IV) is a method used in econometrics and statistics to estimate causal relationships when controlled experiments are not feasible and there is an endogeneity problem—typically due to omitted variable bias, measurement error, or simultaneity.</p>
-<div id="key-concepts-4" class="section level2 hasAnchor" number="8.1">
-<h2><span class="header-section-number">8.1</span> Key Concepts<a href="instrumental-variables-iv.html#key-concepts-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ol style="list-style-type: decimal">
-<li><p><strong>Endogeneity</strong>: Occurs when an explanatory variable is correlated with the error term. This correlation violates the OLS assumption that the regressors are exogenous, leading to biased and inconsistent estimates.</p></li>
-<li><p><strong>Instrumental Variable</strong>: A variable (or set of variables) that is correlated with the endogenous explanatory variable but uncorrelated with the error term. It helps to isolate the exogenous variation in the endogenous explanatory variable.</p></li>
-</ol>
-<div id="requirements-for-a-valid-instrument" class="section level3 hasAnchor" number="8.1.1">
-<h3><span class="header-section-number">8.1.1</span> Requirements for a Valid Instrument<a href="instrumental-variables-iv.html#requirements-for-a-valid-instrument" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>A valid instrument must satisfy two key conditions:
-1. <strong>Relevance</strong>: The instrument must be correlated with the endogenous explanatory variable.
-- <em>Mathematically</em>: $ (Z, X) $
-- This ensures that the instrument can explain some of the variations in the endogenous regressor.</p>
-<ol start="2" style="list-style-type: decimal">
-<li><strong>Exogeneity</strong>: The instrument must be uncorrelated with the error term in the structural equation.
+<div id="doubledebiased-machine-learning-double-ml" class="section level1 hasAnchor" number="11">
+<h1><span class="header-section-number">Chapter 11</span> Double/Debiased Machine Learning (Double ML)<a href="doubledebiased-machine-learning-double-ml.html#doubledebiased-machine-learning-double-ml" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>Core Idea</strong>: Use machine learning (ML) for high-dimensional confounding control, while applying econometric techniques (orthogonalization + sample splitting) to obtain valid causal effect estimates.</p>
+<div id="motivation" class="section level2 hasAnchor" number="11.1">
+<h2><span class="header-section-number">11.1</span> Motivation<a href="doubledebiased-machine-learning-double-ml.html#motivation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
-<li><em>Mathematically</em>: $ (Z, u) = 0 $</li>
-<li>This ensures that the instrument does not suffer from the same endogeneity problem as the endogenous regressor.</li>
-</ul></li>
-</ol>
-</div>
-<div id="the-iv-estimation-process" class="section level3 hasAnchor" number="8.1.2">
-<h3><span class="header-section-number">8.1.2</span> The IV Estimation Process<a href="instrumental-variables-iv.html#the-iv-estimation-process" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The IV estimation is typically carried out in two stages, known as Two-Stage Least Squares (2SLS):</p>
-<ol style="list-style-type: decimal">
-<li><strong>First Stage</strong>: Regress the endogenous variable on the instrument(s) to obtain the predicted values of the endogenous variable.
-<ul>
-<li><em>Equation</em>: <span class="math inline">\(X = \pi_0 + \pi_1 Z + v\)</span></li>
-<li>Obtain the fitted values <span class="math inline">\(\hat{X}\)</span> from this regression.</li>
-</ul></li>
-<li><strong>Second Stage</strong>: Regress the dependent variable on the predicted values from the first stage.
-<ul>
-<li><em>Equation</em>: <span class="math inline">\(Y = \beta_0 + \beta_1 \hat{X} + \epsilon\)</span></li>
-<li>The coefficient <span class="math inline">\(\beta_1\)</span> from this regression is the IV estimate of the effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span>.</li>
-</ul></li>
-</ol>
-</div>
-<div id="example-12" class="section level3 hasAnchor" number="8.1.3">
-<h3><span class="header-section-number">8.1.3</span> Example<a href="instrumental-variables-iv.html#example-12" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="context-education-and-earnings" class="section level4 hasAnchor" number="8.1.3.1">
-<h4><span class="header-section-number">8.1.3.1</span> Context: Education and Earnings<a href="instrumental-variables-iv.html#context-education-and-earnings" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<ul>
-<li><p><strong>Endogeneity Problem</strong>: In estimating the effect of education on earnings, the variable “years of education” might be endogenous due to omitted variables like ability or family background.</p></li>
-<li><p><strong>Instrument</strong>: Distance to the nearest college could be used as an instrument for education.</p>
-<ul>
-<li><strong>Relevance</strong>: Distance to college affects the likelihood of obtaining more education.</li>
-<li><strong>Exogeneity</strong>: Distance to college is unlikely to be directly related to individual earnings, apart from its effect on education.</li>
-</ul></li>
+<li><p><strong>Challenge</strong>: In high-dimensional settings (hundreds of covariates <span class="math inline">\(X\)</span>), ML methods excel at prediction but tend to be biased for causal inference because they can overfit nuisance parameters (propensity scores, outcome regressions).</p></li>
+<li><p><strong>Goal</strong>: Estimate causal effects consistently and efficiently, even when the covariate space is large and flexible ML methods are used.</p></li>
 </ul>
 </div>
-<div id="steps-1" class="section level4 hasAnchor" number="8.1.3.2">
-<h4><span class="header-section-number">8.1.3.2</span> Steps:<a href="instrumental-variables-iv.html#steps-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="key-components" class="section level2 hasAnchor" number="11.2">
+<h2><span class="header-section-number">11.2</span> Key Components<a href="doubledebiased-machine-learning-double-ml.html#key-components" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
-<li><strong>First Stage</strong>: Regress “years of education” on “distance to college”.
+<li><p><strong>Orthogonalization (Neyman Orthogonality)</strong></p>
 <ul>
-<li><em>Equation</em>: <span class="math inline">\(\text{Education} = \pi_0 + \pi_1 (\text{Distance to College}) + v\)</span></li>
-<li>Obtain the fitted values <span class="math inline">\(\widehat{\text{Education}}\)</span>.</li>
+<li>Construct estimating equations (moment conditions) that are <strong>insensitive to small errors</strong> in nuisance parameter estimation.</li>
+<li>Example: residualize both the treatment and outcome with respect to <span class="math inline">\(X\)</span>, then regress the residualized outcome on the residualized treatment.</li>
 </ul></li>
-<li><strong>Second Stage</strong>: Regress “earnings” on the fitted values from the first stage.
+<li><p><strong>Sample Splitting / Cross-Fitting</strong></p>
 <ul>
-<li><em>Equation</em>: <span class="math inline">\(\text{Earnings} = \beta_0 + \beta_1 (\widehat{\text{Education}}) + \epsilon\)</span></li>
-<li>The coefficient <span class="math inline">\(\beta_1\)</span> is the IV estimate of the effect of education on earnings.</li>
+<li>Divide the sample into folds.</li>
+<li>Estimate nuisance functions (propensity scores, outcome models) on one fold, and plug them into treatment effect estimation on another fold.</li>
+<li>Rotate across folds and average the results.</li>
+<li>Prevents overfitting bias and ensures valid inference.</li>
+</ul></li>
+<li><p><strong>Estimation of Treatment Effect</strong></p>
+<ul>
+<li>After residualization, regress the residualized outcome on the residualized treatment.</li>
+<li>This yields an unbiased and asymptotically normal estimator of the causal effect.</li>
 </ul></li>
 </ol>
-</div>
-</div>
-<div id="assumptions-and-considerations-1" class="section level3 hasAnchor" number="8.1.4">
-<h3><span class="header-section-number">8.1.4</span> Assumptions and Considerations<a href="instrumental-variables-iv.html#assumptions-and-considerations-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<hr />
+<div id="practical-workflow" class="section level3 hasAnchor" number="11.2.1">
+<h3><span class="header-section-number">11.2.1</span> Practical Workflow<a href="doubledebiased-machine-learning-double-ml.html#practical-workflow" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ol style="list-style-type: decimal">
-<li><strong>Instrument Strength</strong>: Weak instruments can lead to biased estimates even in large samples. The relevance condition must be strong enough.</li>
-</ol>
-<p><em>Test</em>: First stage F-statistic (rule of thumb: F &gt; 10). As F gets larger, then bias goes 0.</p>
-<ol start="2" style="list-style-type: decimal">
-<li><p><strong>Over-Identification Test</strong>: When there are multiple instruments, it’s possible to test for the exogeneity of instruments using over-identification tests like the Sargan or Hansen J test.</p></li>
-<li><p><strong>Single vs. Multiple Instruments</strong>: Using multiple instruments can improve the efficiency of the IV estimator, provided all instruments are valid.</p></li>
-</ol>
-</div>
-<div id="advantages-of-iv" class="section level3 hasAnchor" number="8.1.5">
-<h3><span class="header-section-number">8.1.5</span> Advantages of IV<a href="instrumental-variables-iv.html#advantages-of-iv" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<li><p>Split the data into <span class="math inline">\(K\)</span> folds.</p></li>
+<li><p>For each fold:</p>
 <ul>
-<li>Provides consistent estimates in the presence of endogeneity.</li>
-<li>Can be used when randomized experiments are not feasible.</li>
-</ul>
-</div>
-<div id="disadvantages-of-iv" class="section level3 hasAnchor" number="8.1.6">
-<h3><span class="header-section-number">8.1.6</span> Disadvantages of IV<a href="instrumental-variables-iv.html#disadvantages-of-iv" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<li><p>Estimate nuisance functions (<span class="math inline">\(\hat{m}(X), \hat{p}(X)\)</span>) using ML.</p></li>
+<li><p>Compute residuals:</p>
 <ul>
-<li>Finding valid instruments can be difficult.</li>
-<li>Weak instruments can lead to biased and imprecise estimates.</li>
-<li>Interpretation of the IV estimate can be less straightforward, often reflecting a Local Average Treatment Effect (LATE) rather than the Average Treatment Effect (ATE).</li>
-</ul>
-</div>
-<div id="conclusion-10" class="section level3 hasAnchor" number="8.1.7">
-<h3><span class="header-section-number">8.1.7</span> Conclusion<a href="instrumental-variables-iv.html#conclusion-10" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Instrumental Variables (IV) is a powerful method for addressing endogeneity in observational studies, allowing researchers to estimate causal effects more accurately. Understanding the conditions for valid instruments and the proper application of the 2SLS method is crucial for leveraging this technique effectively. For your interview, be prepared to discuss the theory, assumptions, applications, and potential pitfalls of IV estimation.</p>
-</div>
-</div>
-<div id="difference-between-instrumental-variable-iv-method-and-two-stage-least-squares-2sls-method" class="section level2 hasAnchor" number="8.2">
-<h2><span class="header-section-number">8.2</span> Difference Between Instrumental Variable (IV) Method and Two-Stage Least Squares (2SLS) Method<a href="instrumental-variables-iv.html#difference-between-instrumental-variable-iv-method-and-two-stage-least-squares-2sls-method" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The terms “Instrumental Variable (IV) method” and “Two-Stage Least Squares (2SLS) method” are closely related but not identical. Here’s a detailed explanation of the differences:</p>
-<div id="instrumental-variable-iv-method" class="section level3 hasAnchor" number="8.2.1">
-<h3><span class="header-section-number">8.2.1</span> Instrumental Variable (IV) Method<a href="instrumental-variables-iv.html#instrumental-variable-iv-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><strong>Instrumental Variable (IV) method</strong> is a general approach used to address endogeneity in regression models. It involves using instruments—variables that are correlated with the endogenous explanatory variable but uncorrelated with the error term. The IV method can be implemented in various ways, one of which is the 2SLS method.</p>
-<ul>
-<li><p><strong>Purpose</strong>: To obtain consistent estimates when there is endogeneity due to omitted variable bias, measurement error, or simultaneity.</p></li>
-<li><p><strong>Instruments</strong>: The choice of instruments is crucial. Valid instruments must satisfy two key conditions:</p>
-<ol style="list-style-type: decimal">
-<li><strong>Relevance</strong>: The instrument must be correlated with the endogenous explanatory variable.</li>
-<li><strong>Exogeneity</strong>: The instrument must be uncorrelated with the error term in the regression model.</li>
-</ol></li>
-</ul>
-</div>
-<div id="two-stage-least-squares-2sls-method" class="section level3 hasAnchor" number="8.2.2">
-<h3><span class="header-section-number">8.2.2</span> Two-Stage Least Squares (2SLS) Method<a href="instrumental-variables-iv.html#two-stage-least-squares-2sls-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><strong>Two-Stage Least Squares (2SLS) method</strong> is a specific implementation of the IV method. It involves a two-step estimation process to address endogeneity.</p>
-<ul>
-<li><p><strong>Step 1 (First Stage)</strong>: Regress the endogenous explanatory variable on the instruments to obtain the predicted values.</p>
-<p><span class="math display">\[X = \pi_0 + \pi_1 Z + \nu\]</span></p>
-<p>Here, <span class="math inline">\(X\)</span> is the endogenous variable, <span class="math inline">\(Z\)</span> is the instrument, and <span class="math inline">\(\nu\)</span> is the error term. This regression yields the predicted values <span class="math inline">\(\hat{X}\)</span>.</p></li>
-<li><p><strong>Step 2 (Second Stage)</strong>: Regress the dependent variable on the predicted values of the endogenous variable obtained from the first stage.</p>
-<p><span class="math display">\[Y = \alpha + \beta \hat{X} + \epsilon\]</span></p></li>
-</ul>
-<p>The 2SLS method ensures that the endogenous variable <span class="math inline">\(X\)</span> is replaced by its predicted value <span class="math inline">\(\hat{X}\)</span>, which is purged of the endogenous component, thus providing consistent estimates of <span class="math inline">\(\beta\)</span>.</p>
-</div>
-<div id="summary-of-differences" class="section level3 hasAnchor" number="8.2.3">
-<h3><span class="header-section-number">8.2.3</span> Summary of Differences:<a href="instrumental-variables-iv.html#summary-of-differences" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<ul>
-<li><strong>General Approach vs. Specific Method</strong>: The IV method is a general approach for dealing with endogeneity, while 2SLS is a specific implementation of the IV method.</li>
-<li><strong>Implementation</strong>: 2SLS involves a two-step process to obtain consistent estimates using instruments, whereas the IV method can be implemented in various ways, not just through 2SLS.</li>
-<li><strong>Application</strong>: In practice, 2SLS is the most commonly used method for implementing the IV approach because it is straightforward and provides clear steps for estimation.</li>
-</ul>
-</div>
-</div>
-<div id="homogenous-treatment-effect" class="section level2 hasAnchor" number="8.3">
-<h2><span class="header-section-number">8.3</span> Homogenous Treatment Effect<a href="instrumental-variables-iv.html#homogenous-treatment-effect" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-</div>
-<div id="heterogenous-treatment-effect" class="section level2 hasAnchor" number="8.4">
-<h2><span class="header-section-number">8.4</span> Heterogenous Treatment Effect<a href="instrumental-variables-iv.html#heterogenous-treatment-effect" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Note that the treatment effect differes by individual i.</p>
-<p><span class="math display">\[Y^{1}_i - Y^{0}_i = \delta_i\]</span></p>
-<p>The main questions we have now are:</p>
-<ol style="list-style-type: decimal">
-<li><p>what is IV estimating when we have heterogeneous treatment effects, and</p></li>
-<li><p>under what assumptions will IV identify a causal effect with heterogeneous treatment effects?</p></li>
+<li><span class="math inline">\(\tilde{Y} = Y - \hat{m}(X)\)</span> (outcome residual)</li>
+<li><span class="math inline">\(\tilde{D} = D - \hat{p}(X)\)</span> (treatment residual)</li>
+</ul></li>
+<li><p>Regress <span class="math inline">\(\tilde{Y}\)</span> on <span class="math inline">\(\tilde{D}\)</span>.</p></li>
+</ul></li>
+<li><p>Average estimates across folds → final DML estimator.</p></li>
 </ol>
-<p>we introduce a distinction between the internal validity of a study and its external validity. Internal validity means our strategy identified a causal effect for the population we studied. But external validity means the study’s finding applied to different populations (not in the study).</p>
-<p>There are considerably more assumptions necessary for identification once we introduce heterogeneous treatment effects—specifically five assumptions.</p>
-<ol style="list-style-type: decimal">
-<li>A stable unit treatment value assumption (SUTVA) that states that the potential outcomes for each person are unrelated to the treatment status of other individuals.</li>
-</ol>
-<p>2.The independence assumption. The independence assumption is also sometimes called the “as good as random assignment” assumption. It states that the IV is independent of the potential outcomes and potential treatment assignments.</p>
-<p>we can check pretreatment covariate balance.</p>
-<ol start="3" style="list-style-type: decimal">
-<li><p>There is the exclusion restriction. The exclusion restriction states that any effect of Z on Y must be via the effect of Z on D.</p></li>
-<li><p>First stage.</p></li>
-<li><p>The monotonicity assumption. Monotonicity requires that the instrumental variable (weakly) operate in the same direction on all individual units. In other words, while the instrument may have no effect on some people, all those who are affected are affected in the same direction (i.e., positively or negatively, but not both).</p></li>
-</ol>
-<p>If all 5 assumptions hold truem then valid IV strategy estimates the <strong>local average treatment effect (LATE)</strong> of on D on Y.</p>
-<p>The <strong>LATE</strong> framework partitions the population of units with an instrument into potentially four mutually exclusive groups. Those groups are:</p>
-<p><strong>1. Compliers:</strong> This is the subpopulation whose treatment status is affected by the instrument in the correct direction. That is, <span class="math inline">\(D^{1}_i=1\)</span> and <span class="math inline">\(D^{0}_i=0\)</span>.</p>
-<p><strong>2. Defiers:</strong> This is the subpopulation whose treatment status is affected by the instrument in the wrong direction. That is, <span class="math inline">\(D^{1}_i=0\)</span> and <span class="math inline">\(D^{0}_i=1\)</span>.</p>
-<p><strong>3. Never takers:</strong> This is the subpopulation of units that never take the treatment regardless of the value of the instrument. So, <span class="math inline">\(D^{1}_i=D^{0}_i=0\)</span>. They simply never take the treatment</p>
-<p><strong>4. Always takers:</strong> This is the subpopulation of units that always take the treatment regardless of the value of the instrument. So, <span class="math inline">\(D^{1}_i=D^{0}_i=1\)</span>. They simply always take the instrument.</p>
-<p><strong>CAVEAT</strong></p>
-<p>With all five assumptions satisfied, IV estimates the average treatment effect for compliers, which is the parameter we’ve called the local average treatment effect.</p>
-<p>Without further assumptions, LATE is not informative about effects on never-takers or always-takers because the instrument does not affect their treatment status.</p>
-<p>It matters because in most applications, we would be mostly interested in estimating the average treatment effect on the whole population, but that’s not usually possible with IV.</p>
+<hr />
+</div>
+<div id="use-case-example" class="section level3 hasAnchor" number="11.2.2">
+<h3><span class="header-section-number">11.2.2</span> Use Case Example<a href="doubledebiased-machine-learning-double-ml.html#use-case-example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>Education &amp; Wages</strong>: Estimating the causal effect of education on wages when there are 500+ potential confounders (family background, demographics, test scores, etc.).</li>
+<li>ML methods (e.g., random forests, LASSO, boosting) handle the high-dimensional confounding flexibly, while DML ensures valid causal inference.</li>
+</ul>
+<hr />
+</div>
+<div id="advantages-1" class="section level3 hasAnchor" number="11.2.3">
+<h3><span class="header-section-number">11.2.3</span> Advantages<a href="doubledebiased-machine-learning-double-ml.html#advantages-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>Doubly Robust</strong>: Consistent if nuisance estimates are sufficiently good (not perfect).</li>
+<li><strong>Asymptotically Normal</strong>: Enables valid confidence intervals and hypothesis testing.</li>
+<li><strong>Scalable</strong>: Works with modern ML tools (lasso, random forests, neural nets).</li>
+</ul>
+<hr />
+</div>
+<div id="key-reference" class="section level3 hasAnchor" number="11.2.4">
+<h3><span class="header-section-number">11.2.4</span> Key Reference<a href="doubledebiased-machine-learning-double-ml.html#key-reference" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Chernozhukov, V., Chetverikov, D., Demirer, M., Duflo, E., Hansen, C., Newey, W., &amp; Robins, J. (2018). <em>Double/Debiased Machine Learning for Treatment and Structural Parameters</em>.</li>
+</ul>
+<hr />
+<p>✅ This cleaned-up version should fit neatly into your <strong>methods notebook</strong>, while still being accessible and rigorous.</p>
+<p>Would you like me to <strong>add a side-by-side comparison</strong> (Doubly Robust vs. Double ML), so your notebook highlights how DML generalizes DR methods?</p>
 
+</div>
 </div>
 </div>
             </section>
@@ -789,8 +696,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="synthetic-control-method-scm.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="regression-discontinuity-designs-rdd.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="fixed-effects-and-panel-data-methods.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ordinary-least-squares-ols.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

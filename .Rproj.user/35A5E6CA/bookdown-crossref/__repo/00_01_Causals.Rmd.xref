@@ -1,35 +1,38 @@
-h1:causal-models Causal Models
-h2:concepts Concepts
-h3:goodness-of-fit Goodness of Fit
-h3:robustness-checks-and-validation-methods Robustness checks and validation methods
-h4:robustness-checks Robustness Checks
-h4:validation-methods Validation Methods
-h4:differences-between-robustness-checks-and-validation-methods Differences Between Robustness Checks and Validation Methods
+h1:concepts Concepts
+h2:goodness-of-fit Goodness of Fit
+h3:r-squared-r2 R-squared ()
+h3:adjusted-r-squared Adjusted R-squared
+h3:root-mean-squared-error-rmse-mean-absolute-error-mae Root Mean Squared Error (RMSE) / Mean Absolute Error (MAE)
+h3:aic-bic-information-criteria AIC / BIC (Information Criteria)
+h3:f-statistics-and-joint-significance-tests F-statistics and Joint Significance Tests
+h3:balance-checks-causal-context Balance Checks (Causal Context)
+h3:key-distinction-prediction-vs.-causality Key Distinction: Prediction vs. Causality
+h2:validation-methods Validation Methods
+h3:internal-validity Internal Validity
+h3:external-validity External Validity
+h3:robustness-checks Robustness Checks
 h2:directed-acyclic-graphs-dags Directed Acyclic Graphs (DAGs)
 h3:confounder Confounder
 h3:collider Collider
-h3:what-to-do What to do
-h3:how-to-do How to do
+h3:what-to-do-and-how-to-do-it What To Do and How To Do It
+h3:example-sample-selection-and-collider-bias Example: Sample Selection and collider bias
 h2:bad-controls Bad Controls
-h3:key-points-on-bad-controls-by-joshua-angrist Key Points on  by Joshua Angrist:
-h3:example-from-angrist-and-pischkes-mostly-harmless-econometrics Example from Angrist and Pischke’s :
-h3:practical-advice Practical Advice:
-h3:summary Summary:
+h3:definition Definition
+h3:why-theyre-problematic Why They’re Problematic
+h3:examples Examples
+h3:identifying-good-vs.-bad-controls Identifying Good vs. Bad Controls
+h3:best-practices Best Practices
+h3:practical-advice Practical Advice
 h3:unobserved-variable-affecting-only-the-dependent-variable Unobserved Variable Affecting Only the Dependent Variable
-h2:external-and-internal-validity-in-econometrics External and Internal Validity in Econometrics
-h3:internal-validity Internal Validity
-h4:key-points-on-internal-validity Key Points on Internal Validity:
-h4:examples-in-econometrics Examples in Econometrics:
-h3:external-validity External Validity
-h4:key-points-on-external-validity Key Points on External Validity:
-h4:common-threats-to-external-validity Common Threats to External Validity:
-h4:examples-in-econometrics-1 Examples in Econometrics:
-h3:balancing-internal-and-external-validity Balancing Internal and External Validity
-h4:practical-considerations Practical Considerations:
+h4:no-bias-in-coefficients No Bias in Coefficients
+h4:impact-on-error-variance Impact on Error Variance
+h4:standard-errors-and-precision Standard Errors and Precision
+h4:summary Summary
 h2:endogeneity Endogeneity
-h3:sources-of-endogeneity Sources of Endogeneity:
-h3:consequences-of-endogeneity Consequences of Endogeneity:
-h3:methods-to-address-endogeneity Methods to Address Endogeneity:
+h3:sources-of-endogeneity Sources of Endogeneity
+h3:consequences Consequences
+h3:solutions Solutions
+h3:summary-1 Summary
 h2:reduced-form-model Reduced Form Model
 h3:characteristics-of-reduced-form-models Characteristics of Reduced Form Models:
 h3:uses-of-reduced-form-models Uses of Reduced Form Models:
@@ -40,24 +43,18 @@ h3:why-use-sandwich-standard-errors Why Use Sandwich Standard Errors?
 h4:how-it-works How It Works
 h3:clustering-standard-errors Clustering Standard Errors
 h4:when-should-you-adjust-standard-errors-for-clustering When Should You Adjust Standard Errors for Clustering?
-h2:types-of-biases Types of Biases
-h3:selection-bias 1. Selection Bias
-h3:omitted-variable-bias 2. Omitted Variable Bias
-h3:measurement-bias 3. Measurement Bias
-h3:response-bias 4. Response Bias
-h3:attrition-bias 5. Attrition Bias
-h3:publication-bias 6. Publication Bias
-h3:survivorship-bias 7. Survivorship Bias
-h3:recall-bias 8. Recall Bias
-h3:confirmation-bias 9. Confirmation Bias
-h3:confounding-bias 10. Confounding Bias
-h3:endogeneity-bias 11. Endogeneity Bias
-h3:non-response-bias 12. Non-Response Bias
-h3:observer-bias 13. Observer Bias
-h3:overfitting-bias 14. Overfitting Bias
-h3:addressing-biases Addressing Biases
-h3:self-selection-bias Self-Selection Bias
-h4:examples-of-self-selection-bias Examples of Self-Selection Bias:
-h4:addressing-self-selection-bias Addressing Self-Selection Bias
-h4:conclusion Conclusion
+h2:types-of-biases-in-econometrics-statistics Types of Biases in Econometrics & Statistics
+h3:sample-selection-biases Sample & Selection Biases
+h3:specification-confounding-biases Specification & Confounding Biases
+h3:measurement-response-biases Measurement & Response Biases
+h3:analytical-reporting-biases Analytical & Reporting Biases
+h3:addressing-bias Addressing Bias
+h2:causality Causality
+h3:counterfactual-potential-outcomes-definition Counterfactual (Potential Outcomes) Definition
+h3:causal-graphs-structural-causal-models-dags Causal Graphs (Structural Causal Models / DAGs)
+h3:experimental-interventionist-definition Experimental (Interventionist) Definition
+h3:econometric-definition Econometric Definition
+h3:philosophical-humean-regularity-definition Philosophical (Humean / Regularity) Definition
+h3:granger-causality-time-series Granger Causality (Time Series)
+h3:summary-table Summary Table
 

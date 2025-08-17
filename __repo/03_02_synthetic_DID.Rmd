@@ -1,23 +1,124 @@
 ## Synthetic Difference-in-Differences (SynthDiD) method 
 
 
+
+[Source Article](https://arxiv.org/abs/1812.09970)
+
+(Arkhangelsky, Athey, Hirshberg, Imbens, Wager, 2021)
+
+
+We present a new estimator for causal effects with panel data that builds on insights behind the widely used **difference in differences** and **synthetic control methods.**
+
+Relative to these methods we find, both theoretically and empirically, that this "synthetic difference in differences" estimator has desirable robustness properties, and that it performs well in settings where the conventional estimators are commonly used in practice. 
+
+We study the asymptotic behavior of the estimator when the systematic part of the outcome model includes latent unit factors interacted with latent time factors, and we present conditions for consistency and asymptotic normality.
+
+
+### Introduction
+
 [Reading](https://towardsdatascience.com/synthdid-101-a-beginners-guide-to-synthetic-difference-in-differences-84fed9b730ae)
 
-SynthDiD is a generalized version of Synthetic Control Method (SCM) and DiD that combines the strengths of both methods. It enables causal inference with large panels, even with a short pretreatment period.
 
-On the other hand, synthetic DiD combines the synthetic control method with the difference-in-differences approach [1]. In this method, a synthetic control group is constructed using the same approach as in the synthetic control method. However, the treatment effect is estimated by comparing the change in outcomes between the treated unit and the synthetic control group before and after the treatment is introduced. This approach allows for a more robust estimation of the treatment effect by accounting for pre-existing differences between the treatment and control groups.
+**One-liner:** 
+
+SDID blends **Synthetic Control (SCM)** and **Difference-in-Differences (DiD)** by learning **unit weights** (like SCM) and **time weights** (like DiD/event-study) to estimate an ATT in panel data. 
+
+It reduces bias from level differences (SCM strength) *and* common shocks/time trends (DiD strength), and has a **doubly-robust flavor**: it’s consistent if either the SCM-style unit balancing or the DiD-style time balancing holds.
+
+### What problem it solves
+
+* **Plain DiD** can be biased when treated units differ in **levels/composition** from controls even if trends are parallel.
+
+* **Plain SCM** can be biased when there are **uncontrolled time shocks** or with **short pre-periods** where matching levels alone isn’t enough.
+
+* **SDID** addresses **both** by balancing **across units** *and* **across time**.
+
+### How it works (intuition)
+
+1. **Unit weights (SCM step):** Learn non-negative weights $w$ over control units so a weighted control “synthetic” group **matches the treated group in the pre-period** (levels/trends/predictors).
+
+2. **Time weights (DiD step):** Learn non-negative weights $\lambda$ over time so pre- vs. post-period comparisons **down-weight noisy periods** and align common shocks.
+
+3. **ATT via “synthetic” DiD:** Compute a **difference-in-differences** using these weights:
+
+   $$
+   \hat{\tau}_{\text{SDID}} =
+   \big(\overline{Y}_{T,\text{post}} - \overline{Y}^{\,w}_{C,\text{post}}\big)
+   \;-\;
+   \big(\overline{Y}^{\,\lambda}_{T,\text{pre}} - \overline{Y}^{\,w,\lambda}_{C,\text{pre}}\big)
+   $$
+
+   where bars denote weighted averages over units/time.
+
+### How it differs from related methods
+
+* **SCM:** Builds a synthetic control and compares **post-treatment levels** of treated vs. synthetic.
+  
+  SDID instead compares **changes** (pre→post) of treated vs. synthetic (a DiD on top of SCM).
+
+* **DiD:** Compares treated vs. control **changes** assuming parallel trends.
+  
+  SDID **reweights** controls (unit weights) and time (time weights) to **make** that assumption more plausible.
+
+### When to use
+
+* Panel data with **few to moderate pre-periods** and **many control units**.
+
+* **One or a few treated units**, or a group treated at **the same time** (cohort).
+
+* Concern about **level differences** *and* **time shocks** violating plain DiD/SCM.
+
+### Assumptions (why it’s appealing)
+
+* **No interference/anticipation** (standard SUTVA-style conditions).
+
+* **Doubly-robust flavor:** Consistent if **either**
+
+  * (i) the **DiD/parallel-trends condition** holds after learned weights, **or**
+
+  * (ii) an **interactive fixed-effects/factor model** holds so SCM-style balancing captures confounding.
+
+* Enough pre-period signal to learn weights (does **not** require long pre-periods, but needs some).
+
+### Inference & diagnostics
+
+* **Placebo/permutation tests**: apply SDID to untreated units as if treated.
+
+* **Block bootstrap** or analytic SEs for uncertainty.
+
+* **Pre-trend checks** with event-style plots using learned weights.
+
+* **Sensitivity**: vary donor pool, pre-window, or weight regularization.
+
+### Pros / Cons
+
+**Pros**
+
+* Handles **level** differences (SCM) and **time shocks** (DiD).
+
+* Good **finite-sample performance**; stable with moderate pre-periods.
+
+* Clear visualization (treated vs. synthetic paths; pre/post gaps).
+
+**Cons**
+
+* Works best with **limited treated cohorts** (extensions needed for complex staggered adoption).
+
+* Requires **panel structure** and some pre-period data.
+
+* Sensitive to donor pool choice and weight regularization (check robustness).
 
 
-In summary, while both methods use a synthetic control group, the synthetic control method estimates treatment effects by comparing the post-treatment outcomes of the treated unit to those of the synthetic control group, while synthetic DiD estimates treatment effects by comparing the change in outcomes between the treated unit and the synthetic control group before and after the treatment is introduced.
+### TL;DR (contrast)
+
+* **SCM:** match pre-period levels → compare post **levels**.
+
+* **DiD:** assume parallel trends → compare **changes**.
+
+* **SDID:** **learn weights** to balance units and time → compare **changes of synthetic vs. treated**.
 
 
-It constructs a counterfactual for the treated group by optimally weighting the control group units to minimize the difference between the treated and control groups in the pretreatment period as in SCM.
-
-Then, the treatment effect is estimated by comparing the outcome changes in the treated unit and synthetic control group pre- and post-intervention as in DiD.
-
-
-#### An Example:
-
+### An Example:
 
 Suppose that we are a company that sells plant-based food products, such as soy milk or soy yogurt, and we operate in multiple countries. Some countries implement new legislation that prohibits us from marketing our plant-based products as ‘milk’ or ‘yogurt’ because it is claimed that only animal products can be marketed as ‘milk’ or ‘yogurt’. Thus, due to this new regulation in some countries, we have to market soy milk as soy drink instead of soy milk, etc. We want to know the impact of this legislation on our revenue as this might help guide our lobbying efforts and marketing activities in different countries.
 
@@ -160,28 +261,47 @@ summary(fe)
 
 
 
-
+### Conclusion
 
 Now that we understand more about SynthDiD let’s talk about pros and cons of this method. 
 
 There are some advantages and disadvantages to SynthDiD like every method. Here are some pros and cons to keep in mind when getting started with this method.
 
-Advantages of SynthDiD method:
-The synthetic control method is usually used for a few treated and control units and needs long, balanced data before treatment. SynthDiD, on the other hand, works well even with a short data period before treatment, unlike the synthetic control method [4].
-This method is being preferred especially because it doesn’t have a strict parallel trends assumption (PTA) requirement like DiD.
-SynthDiD guarantees a suitable quantity of control units, considers possible pre-intervention patterns, and may accommodate a degree of endogenous treatment timing [4].
-Disadvantages of SynthDiD method:
-Can be computationally expensive (even with only one treated group/block).
-Requires a balanced panel (i.e., you can only use units observed for all time periods) and that the treatment timing is identical for all treated units.
-Requires enough pre-treatment periods for good estimation, so, if you don’t have enough pre-treatment period might be better to use just the regular DiD.
-Computing and comparing the average treatment effects for subgroups is tricky. One option is to split the sample into subgroups and compute the average treatment effects for each subgroup.
-Implementing SynthDiD where the treatment timing varies might be tricky. In the case of staggered treatment timing, as one solution, one can estimate the average treatment effect for each treatment cohort and then aggregate cohort-specific average treatment effects to an overall average treatment effects.
-Here are also some other points that you might want to know when getting started.
-Things to note:
+#### Advantages of SynthDiD method:
+
+- The synthetic control method is usually used for a few treated and control units and needs long, balanced data before treatment. SynthDiD, on the other hand, works well even with a short data period before treatment, unlike the synthetic control method [4].
+
+
+- This method is being preferred especially because it doesn’t have a strict parallel trends assumption (PTA) requirement like DiD.
+
+- SynthDiD guarantees a suitable quantity of control units, considers possible pre-intervention patterns, and may accommodate a degree of endogenous treatment timing [4].
+
+#### Disadvantages of SynthDiD method:
+
+- Can be computationally expensive (even with only one treated group/block).
+
+- Requires a balanced panel (i.e., you can only use units observed for all time periods) and that the treatment timing is identical for all treated units.
+
+- Requires enough pre-treatment periods for good estimation, so, if you don’t have enough pre-treatment period might be better to use just the regular DiD.
+
+- Computing and comparing the average treatment effects for subgroups is tricky. One option is to split the sample into subgroups and compute the average treatment effects for each subgroup.
+
+- Implementing SynthDiD where the treatment timing varies might be tricky. In the case of staggered treatment timing, as one solution, one can estimate the average treatment effect for each treatment cohort and then aggregate cohort-specific average treatment effects to an overall average treatment effects.
+H
+ere are also some other points that you might want to know when getting started.
+
+**Things to note:**
+
 SynthDiD employs regularized ridge regression (L2) while ensuring that the resulting weights have a sum of one.
+
 In the process of pretreatment matching, SynthDiD tries to determine the average treatment effect across the entire sample. This approach might cause individual time period estimates to be less precise. Nonetheless, the overall average yields an unbiased evaluation.
+
 The standard errors for the treatment effects are estimated with jacknife or if a cohort has only one treated unit with placebo method.
+
 The estimator is considered consistent and asymptotically normal, given that the combination of the number of control units and pretreatment periods is sufficiently large relative to the combination of the number of treated units and posttreatment periods.
+
 In practice, pre-treatment variables play a minor role in Synthetic DiD, as lagged outcomes hold more predictive power, making the treatment of these variables less critical.
-Conclusion
+
+**Conclusion**
+
 In this blog post, I introduce the SynthDiD method and discuss its relationship with traditional DiD and SCM. SynthDiD combines the strengths of both SCM and DiD, allowing for causal inference with large panels even when the pretreatment period is short. I demonstrate the method using the synthdid package in R. Although it has several advantages, such as not requiring a strict parallel trends assumption, it also has drawbacks, like being computationally expensive and requiring a balanced panel. Overall, SynthDiD is a valuable tool for researchers interested in estimating causal effects using observational data, providing an alternative to traditional DiD and SCM methods.

@@ -1,91 +1,164 @@
-# Causal Models
-
-1. Hypothesis Testing
-
-2. Experiments
-
-3. Difference in Differences
-
-4. Synthetic Control
-
-5. Resampling Techniques
+# Concepts
 
 
-
-## Concepts
-
-
-### Goodness of Fit
-
-I would encourage you not to fixate on R-squared in research projects where the aim is to estimate some causal effect, though. It’s a useful summary measure, but it does not tell us about causality. Remember, you aren’t trying to explain variation in $y$ if you are trying to estimate some causal effect. The $R^2$ tells us how much of the variation in $y$ is explained by the explanatory variables. But if we are interested in the causal effect of a single variable, $R^2$ is irrelevant
+## Goodness of Fit
 
 
-### Robustness checks and validation methods
+### R-squared ($R^2$)
 
-Robustness checks and validation methods are essential aspects of evaluating the reliability and credibility of empirical research findings, including those derived from the Synthetic Control Method (SCM). Although they are related and sometimes overlap, they serve distinct purposes in the research process. Here's a detailed explanation of the differences between them and why each is important:
+* Measures the proportion of variation in $y$ explained by the model.
 
-#### Robustness Checks
+* Useful for **prediction tasks**, but not for assessing causality.
 
-**Definition:**
-Robustness checks are procedures used to assess the sensitivity and stability of research findings to various assumptions, model specifications, and data perturbations. The goal is to determine whether the results hold under different conditions and to identify any potential weaknesses in the analysis.
+* A high $R^2$ can come from including irrelevant or even harmful controls.
 
-**Purpose:**
+### Adjusted R-squared
 
-- **Assess Stability:** Ensure that the findings are not unduly influenced by specific choices made in the analysis (e.g., selection of control units, predictor variables).
+* Adjusts for the number of predictors; penalizes models for adding unnecessary variables.
 
-- **Identify Key Drivers:** Determine which aspects of the model or data are most influential in driving the results.
-
-- **Evaluate Generalizability:** Check whether the results are consistent across different sub-samples or alternative model specifications.
+* Better for comparing models with different numbers of regressors, but still not a causal metric.
 
 
 
-#### Validation Methods
+### Root Mean Squared Error (RMSE) / Mean Absolute Error (MAE)
 
-**Definition:**
-Validation methods are procedures used to confirm that the analytical approach and findings are credible and correctly specified. The goal is to ensure that the methodology accurately captures the causal relationship of interest and that the results are not artifacts of methodological flaws.
+* Direct measures of prediction accuracy.
 
-**Purpose:**
+* Lower values indicate closer predictions to the actual $y$.
 
-- **Establish Credibility:** Demonstrate that the research design and methods are sound and that the findings are credible.
+* Especially relevant when the goal is **forecasting** rather than causal inference.
 
-- **Detect Biases:** Identify and correct any biases or errors in the analysis that could distort the results.
+### AIC / BIC (Information Criteria)
 
-- **Provide Evidence for Causal Claims:** Strengthen the argument that the observed effects are truly caused by the intervention rather than other factors.
+* Model selection criteria that balance fit and complexity.
+
+* Useful when comparing non-nested models, but again, not measures of causal validity.
+
+### F-statistics and Joint Significance Tests
+
+* Test whether groups of variables jointly contribute explanatory power.
+
+* Helpful for model fit diagnostics but not sufficient for causal claims.
+
+
+### Balance Checks (Causal Context)
+
+* In causal inference, we care more about whether confounders are balanced across treatment groups than about $R^2$.
+
+* Matching, weighting, or randomization checks are more informative than fit metrics.
+
+
+### Key Distinction: Prediction vs. Causality
+
+| **Context**              | **Metrics that Matter**                                             | **Goal**                           |
+| ------------------------ | ------------------------------------------------------------------- | ---------------------------------- |
+| Prediction / Forecasting | $R^2$, Adj. $R^2$, RMSE, MAE, AIC, BIC                          | Maximize predictive accuracy       |
+| Causal Inference         | Balance checks, robustness checks, IV strength, falsification tests | Identify unbiased treatment effect |
+
+👉 **Takeaway**: Use $R^2$ and related metrics for **prediction**, but in **causal inference**, what matters most is whether you’ve properly handled confounders, closed backdoor paths, and used valid identification strategies.
 
 
 
-#### Differences Between Robustness Checks and Validation Methods
 
-**Scope and Focus:**
 
-- **Robustness Checks:** Focus on testing the sensitivity of the results to various assumptions and choices within the study. They address questions like "Do the results change if we tweak the model or data in specific ways?"
+## Validation Methods
 
-- **Validation Methods:** Focus on verifying the correctness and credibility of the methodology and findings. They address questions like "Is the methodology sound and are the findings believable?"
 
-**When Applied:**
+**Definition**
 
-- **Robustness Checks:** Often applied after the main analysis to ensure the findings are not artifacts of specific decisions or assumptions.
+Validation methods are procedures used to confirm that the analytical approach and findings are credible, correctly specified, and reliable. The goal is to ensure that the methodology captures the true causal relationship and that the results are not artifacts of flawed design or bias.
 
-- **Validation Methods:** Applied throughout the research process to ensure that the approach is valid and the results are credible from the outset.
 
-**Why Both Are Important:**
+### Internal Validity
 
-- **Robustness Checks:**
-  - **Credibility:** Helps build confidence that the results are not fragile or overly dependent on specific conditions.
-  - **Transparency:** Provides a clear understanding of how various factors influence the findings.
-  - **Comprehensive Insight:** Identifies which components of the analysis are most crucial and robust.
+Ensures the causal estimate is **credible within the study design**.
 
-- **Validation Methods:**
+**Purpose:** Rule out alternative explanations for the observed effect.
 
-  - **Reliability:** Ensures that the methodological approach is correct and that the findings are not due to methodological flaws.
-  - **Accuracy:** Confirms that the causal claims are well-founded and not spurious.
-  - **Scientific Rigor:** Strengthens the overall validity of the research by providing multiple lines of evidence supporting the findings.
-  
 
-**Conclusion**
 
-Robustness checks and validation methods are complementary approaches that together enhance the credibility and reliability of research findings. Robustness checks focus on the sensitivity and stability of the results, while validation methods ensure the correctness and credibility of the methodology. Both are crucial for demonstrating that the findings are both reliable and valid, thereby providing a comprehensive evaluation of the research's strength and integrity.
-  
+**Methods:**
+
+* **Placebo / falsification tests** → Apply the method to periods or outcomes where no effect should exist. A true effect should not show up here.
+
+* **Pre-trend checks** → In Difference-in-Differences (DiD), verify that treatment and control groups followed parallel trends before treatment.
+
+* **Balance tests (PSM, matching)** → Confirm that covariates are similar between treated and control groups.
+
+* **Overidentification tests (IV)** → If multiple instruments exist, check that they give consistent estimates.
+
+* **Sensitivity analysis** → Evaluate robustness to unobserved confounders (e.g., Rosenbaum bounds).
+
+* **Resampling methods (bootstrap, cross-validation)** → Ensure stability of results against sampling variation.
+
+
+
+### External Validity
+
+Ensures findings can **generalize beyond the study sample**.
+
+**Purpose:** Assess whether results apply to other populations, settings, or time periods.
+
+
+**Methods:**
+
+* **Benchmark comparisons** → Compare effect sizes with prior literature or related experiments.
+
+* **Replication across subgroups** → Test if results hold in different populations (e.g., small vs. large cities, East vs. West Coast).
+
+* **Heterogeneity analysis** → Explore variation in treatment effects across demographics, regions, or time.
+
+* **Transportability / reweighting methods** → Adjust sample weights so that results better reflect the target population (e.g., balancing weights to correct skewed panels).
+
+
+---
+
+**Why Both Matter**
+
+* **Internal validity** ensures the effect you measured is truly causal.
+
+* **External validity** ensures that causal effect is useful for decision-making across broader contexts.
+
+Together, they strengthen the **credibility, reliability, and practical relevance** of your causal inference.
+
+---
+
+
+
+### Robustness Checks
+
+**Purpose:** Assess the stability of results under alternative assumptions or model choices.
+
+**Examples:**
+
+- Varying model specifications (linear vs. log, fixed effects vs. random effects).
+
+- Dropping outliers or trimming the sample.
+
+- Using alternative control groups.
+
+- Trying different functional forms (log of sales vs. sales level).
+
+- Changing time windows (short-run vs. long-run effect).
+
+**Focus:** Do the results hold up if we “stress-test” the model?
+
+
+
+---
+
+**How They Relate**
+
+Validation asks: Did we design this study right?
+
+Robustness asks: Would the results still hold if we made reasonable changes?
+
+
+
+
+
+
+
   
 
 ## Directed Acyclic Graphs (DAGs)
@@ -107,244 +180,366 @@ Robustness checks and validation methods are complementary approaches that toget
 
 ### Confounder
 
-Direct path is causal: D -> Y; 
+* **Direct causal path:**
+  $D \rightarrow Y$
 
-Backdoor path is not causal: X -> D and  X -> Y
-
-- Backdoor path, it is a process that creates spurious correlations between D and Y that are driven solely by fluctuations in the X random variable.
-
-- Therefore, not controlling for a variable like that in a regression creates omitted variable bias, leaving a backdoor open creates bias. 
-
-- We therefore call X a confounder because it jointly determines D and Y, and so confounds our ability to discern the effect of D on Y in naı̈ve comparisons.
+* **Backdoor (non-causal) path:**
+  $X \rightarrow D$ and $X \rightarrow Y$
 
 
-Think of the backdoor path like this: Sometimes when D takes on different values, Y takes on different values because D causes Y. But sometimes D and Y take on different values because X takes on different values, and that bit of the correlation between D and Y is purely spurious. The existence of two causal pathways is contained within the correlation between D and Y.
+**Key Idea:**
 
-When X is observed and put in the model, then the backdoor path is closed.
+A **backdoor path** creates spurious correlation between $D$ (treatment) and $Y$ (outcome) that is driven only by changes in $X$ (the confounder).
+
+* If we **don’t control for $X$**, the correlation between $D$ and $Y$ mixes two sources:
+
+  1. The **true causal effect** of $D$ on $Y$.
+ 
+  2. The **spurious association** from $X$, which influences both.
+
+* This leads to **omitted variable bias** — we mistake part of $ X$’s effect for $ D$’s effect.
+
+
+**Definition:**
+
+A variable $X$ is a **confounder** if it jointly affects both $D$ and $Y$, making it harder to isolate the true causal effect.
+
+**Fix:**
+
+When $X$ is **observed and included in the model**, the backdoor path is **closed**, leaving only the direct causal relationship between $D$ and $Y$.
+
+
+👉 Think of it this way:
+
+* Sometimes $Y$ changes **because $D$ truly caused it**.
+
+* Other times, $Y$ and $D$ both move **because $X$ moved**.
+
+* By controlling for $X$, we separate the causal part from the spurious part.
+
+
+
+
 
 
 ### Collider
 
-Direct path is causal: D -> Y; 
+* **Direct causal path:**
+  $D \rightarrow Y$
 
-Backdoor path is not causal: D -> X and  Y -> X
-
-- Like above, there are two ways to get to Y from D.
-
-- X is a collider along this backdoor path because D and the causal effects of Y collide at X.
-
-- Colliders are special in part because when they appear along a backdoor path, that backdoor path is **closed** simply because of their presence. 
+* **Backdoor path:**
+  $D \rightarrow X \leftarrow Y$
 
 
-### What to do
 
-- Open backdoor paths introduce omitted variable bias and, the bias is so bad that it flips the sign entirely. 
+**Key Idea:**
 
-- Our goal is to close these backdoor paths. 
+A **collider** is a variable influenced by both the treatment $D$ and the outcome $Y$.
 
-- And if we can close all of the open backdoor paths, then we can isolate the causal effect of D on Y using one of the research designs and identification strategies discussed in this book. 
+* At $X$, the arrows from $D$ and $Y$ **collide**.
 
-### How to do
+* This means the path $D \rightarrow X \leftarrow Y$ is **blocked by default**.
 
-- First, if you have a confounder that has created an open backdoor path, then you can close that path by conditioning on the confounder. Conditioning requires holding the variable fixed using something like subclassification, matching, regression, or another method. It is equivalent to “controlling for” the variable in a regression.
-
-- The second way to close a backdoor path is the appearance of a collider along that backdoor path. Since colliders always close backdoor paths, and conditioning on a collider always opens a backdoor path, choosing to ignore the colliders is part of your overall strategy to estimate the causal effect itself. By not conditioning on a collider, you will have closed that backdoor path and that takes you closer to your larger ambition to isolate some causal effect.
-
-**Backdoor Criterian:** if there is a confounder, then control for it; if there is a collider, then keep it outside your model
+* So unlike confounders, **colliders do not create bias** when left alone.
 
 
-- Avoid controlling for a collider in your model. To identify a collider, carefully analyze the directions and relationships between variables. If a variable acts as a collider (i.e., it is influenced by both the treatment and the outcome), including it in your model can introduce bias. Therefore, do not include colliders in your analysis.
 
 
-**Sample Selection and collider bias**
+**Why It Matters:**
 
-lets assume that ability and beauty is independent, but both required for being an star actor.
+* If you **do nothing**, the backdoor path through a collider is closed — safe.
+* But if you **control for $X$** (include it in a regression, stratify, etc.), you **open the path**.
 
-It can be shown in a simulation that the collider bias has created a negative correlation between talent and beauty in the non-movie-star sample as well. Yet we know that there is in fact no relationship between the two variables. This kind of sample selection creates spurious correlations. 
+  * This creates a spurious correlation between $D$ and $Y$, introducing **collider bias** (a.k.a. selection bias).
 
-A random sample of the full population would be sufficient to show that there is no relationship between the two variables, but splitting the sample into movie stars only, we introduce spurious correlations between the two variables of interest.
+
+
+👉 **Rule of Thumb:**
+
+* **Control confounders** → closes harmful backdoor paths.
+
+* **Do not control colliders** → they’re already blocking the path.
+
+
+
+
+### What To Do and How To Do It
+
+
+**What To Do**
+
+* Open **backdoor paths** introduce **omitted variable bias**. Sometimes the bias can even **flip the sign** of the estimated effect.
+
+* The goal: **close all open backdoor paths** so the relationship between $D$ (treatment) and $Y$ (outcome) reflects the **true causal effect**.
+
+
+
+**How To Do It**
+
+1. **Control for Confounders**
+
+   * A confounder jointly affects both $D$ and $Y$, creating an open backdoor path.
+   * Close this path by **conditioning on the confounder** using tools like:
+
+     * Subclassification
+     * Matching
+     * Regression (include as covariates)
+     * Weighting (e.g., inverse probability weights)
+
+2. **Leave Colliders Alone**
+
+   * A collider is influenced by both $D$ and $Y$.
+   * By default, a backdoor path through a collider is **closed**.
+   * **Conditioning on a collider opens the path**, introducing **collider bias** (a.k.a. selection bias).
+   * Strategy: **do not control for colliders**.
+
+
+**Backdoor Criterion**
+
+* If a variable is a **confounder** → **control for it**.
+
+* If a variable is a **collider** → **exclude it** from your model.
+
+
+
+**Rule of Thumb**
+
+* Always map your variables in a **causal diagram (DAG)** before modeling.
+
+* Ask: *Does this variable affect both $D$ and $Y$?* → confounder, control for it.
+
+* Ask: *Is this variable caused by both $D$ and $Y$?* → collider, exclude it.
+
+
+
+
+
+
+### Example: Sample Selection and collider bias
+
+
+Imagine talent and beauty are **independent traits** in the general population.
+However, to become a **movie star**, you typically need **both talent and beauty**.
+
+
+
+**The Collider Effect**
+
+* Here, *“being a movie star”* is a **collider**, because it is influenced by both **talent** and **beauty**.
+
+* When we **condition on the collider** (i.e., restrict our sample only to movie stars), we inadvertently **open a backdoor path** between talent and beauty.
+
+* As a result, talent and beauty appear **negatively correlated** within the movie-star sample, even though they are **independent in the full population**.
+
+
+**Why This Matters**
+
+* This is an example of **sample selection bias**: restricting the sample on a collider introduces **spurious correlations**.
+
+* A **random sample of the full population** would correctly show **no relationship** between talent and beauty.
+
+* But focusing only on those who “passed through the collider” (movie stars) creates a **false correlation** where none exists.
+
+
+
+✅ **Key Lesson**:
+
+When analyzing causal relationships, avoid conditioning on variables that act as **colliders**. Otherwise, you risk **fabricating associations** that don’t exist in reality.
+
+
+
 
 
 ## Bad Controls
 
-Joshua Angrist, a prominent economist known for his work in econometrics, discusses "bad controls" in the context of causal inference. "Bad controls" are variables that, when included in a regression model, can introduce bias rather than help control for it. Here are the key points on how Angrist addresses "bad controls":
+Joshua Angrist (with Guido Imbens and Jörn-Steffen Pischke) popularized the idea of **“bad controls”** in econometrics. These are control variables that **should not** be included in a regression because they distort rather than clarify the causal effect of interest.
 
-### Key Points on "Bad Controls" by Joshua Angrist:
 
-1. **Definition of Bad Controls**:
-   - Bad controls are variables that are themselves affected by the treatment or are post-treatment variables. Including these in your model can distort the causal relationship between the treatment and the outcome.
-   
-   - They can also be variables that are endogenous, meaning they are correlated with the error term, leading to biased and inconsistent estimates.
+### Definition
 
-2. **Examples of Bad Controls**:
-   - Variables that are outcomes of the treatment: If a variable is influenced by the treatment, including it as a control can create spurious correlations.
-   
-   - Colliders: Variables that are influenced by both the treatment and the outcome. Controlling for colliders can open a backdoor path, leading to biased estimates.
+* **Bad controls** are variables that are:
 
-3. **Why Bad Controls are Problematic**:
-   - Including bad controls can lead to incorrect inferences about the causal effect of the treatment.
-   - They can introduce bias by creating or amplifying spurious relationships.
+  * **Post-treatment** (affected by the treatment).
+  * Or **endogenous** (correlated with unobserved factors in the error term).
+* Including them in a model can create spurious relationships and bias causal estimates.
 
-4. **Identifying Good Controls**:
-   - Good controls are variables that help to isolate the causal effect by accounting for confounding factors.
-   
-   - These are typically pre-treatment variables that influence the outcome but are not influenced by the treatment.
 
-5. **Best Practices**:
-   - Focus on pre-treatment variables that are potential confounders: Variables that affect both the treatment and the outcome but are not affected by the treatment.
-   
-   - Use robustness checks to ensure that the inclusion of controls does not unduly influence the estimates.
 
-### Example from Angrist and Pischke's "Mostly Harmless Econometrics":
+### Why They’re Problematic
 
-In "Mostly Harmless Econometrics," Angrist and Pischke illustrate these concepts with practical examples. For instance, they explain how including a variable like "post-treatment earnings" in a model where the treatment is "education level" can be a bad control. This is because earnings are influenced by education (the treatment), and controlling for it can obscure the true effect of education on other outcomes.
+* **Post-treatment controls** soak up part of the treatment effect (blocking the causal path).
 
-### Practical Advice:
+* **Colliders** open backdoor paths when conditioned on.
 
-- When building your regression model, carefully consider whether each control variable is a confounder, a mediator, or a collider.
+* **Endogenous controls** bias estimates because they capture unobserved shocks.
 
-- Avoid including variables that lie on the causal path between the treatment and the outcome (mediators).
+👉 The result: biased and inconsistent causal estimates.
 
-- Avoid controlling for variables that are outcomes of the treatment or are influenced by both the treatment and the outcome (colliders).
 
-### Summary:
+### Examples
 
-Joshua Angrist emphasizes the importance of identifying and avoiding bad controls in regression models to ensure unbiased causal inference. By focusing on appropriate pre-treatment controls and being wary of endogenous variables and post-treatment variables, researchers can make more accurate and reliable causal claims.
+* **Education → Earnings**: Controlling for *occupation* (which is partly determined by education) is a bad control.
+
+* **Treatment → Post-treatment earnings**: Using post-treatment income in a regression about education biases the effect.
+
+* **Advertising campaign → Sales**: Controlling for *brand awareness* (which is influenced by the campaign) is a bad control.
+
+
+
+### Identifying Good vs. Bad Controls
+
+* **Good controls** = pre-treatment confounders: variables that affect both treatment and outcome but are not affected by the treatment.
+* **Bad controls** = mediators, colliders, or any variable determined by treatment.
+
+
+
+### Best Practices
+
+* When choosing controls, ask:
+
+  1. Does this variable occur **before** the treatment?
+  2. Does it predict both treatment and outcome? (Confounder → include.)
+  3. Could it be affected by treatment? (Mediator → exclude.)
+  4. Is it influenced by both treatment and outcome? (Collider → exclude.)
+
+* Use **robustness checks** to see if results hinge on questionable controls.
+
+
+
+### Practical Advice
+
+From *Mostly Harmless Econometrics*:
+
+* *Avoid controlling for outcomes of the treatment.*
+
+* *Focus on pre-treatment variables that help isolate causal variation.*
+
+* *Always think in terms of the causal diagram (DAG): Is the control blocking a backdoor path or accidentally opening one?*
+
+---
+
+✅ This version highlights:
+
+* A clear definition.
+* Why bad controls hurt causal inference.
+* Classic and business-style examples.
+* A decision rule (DAG-thinking).
+
+
 
   
 ### Unobserved Variable Affecting Only the Dependent Variable
 
-If you have an unobserved variable that affects only the dependent variable and not the independent variables, the primary concern is **increased variability** in the error term, but it does not bias the coefficient estimates of the independent variables. Here's a more detailed explanation:
 
-1. **No Endogeneity Problem**: Since the unobserved variable does not affect the independent variables, it does not create a correlation between the independent variables and the error term. Hence, it does not introduce endogeneity, and the OLS estimates of the coefficients remain unbiased and consistent.
-
-2. **Increased Variance in Error Term**: The presence of an unobserved variable affecting only the dependent variable will increase the variability (variance) of the error term. This leads to less precise (more variable) estimates of the coefficients, but these estimates are still unbiased.
-
-3. **Standard Errors**: Due to the increased variability in the error term, the standard errors of the estimated coefficients will be larger, resulting in wider confidence intervals and potentially less statistical power to detect significant effects.
-
-In summary, while the presence of such an unobserved variable does not introduce bias into the coefficient estimates, it affects the precision of these estimates, leading to larger standard errors.
+Sometimes there are unobserved factors that influence only the **dependent variable (Y)** but not the **independent variables (X)**. This situation is less harmful than when unobservables also affect X, but it still has consequences.
 
 
+#### No Bias in Coefficients
 
-## External and Internal Validity in Econometrics
+* Since the unobserved variable doesn’t influence X, it does not create correlation between X and the error term.
 
-### Internal Validity
+* That means **no endogeneity problem**: OLS estimates of the coefficients on X remain **unbiased and consistent**.
 
-**Internal validity** refers to the extent to which a study accurately establishes a causal relationship between the treatment (independent variable) and the outcome (dependent variable) within the context of the study. In other words, it measures how well the study avoids biases and errors that can lead to incorrect conclusions about causal relationships.
 
-#### Key Points on Internal Validity:
+#### Impact on Error Variance
 
-1. **Causal Inference**: Internal validity ensures that the observed effects on the outcome can be confidently attributed to the treatment and not to other confounding factors.
-
-2. **Elimination of Bias**: It involves controlling for confounding variables, avoiding omitted variable bias, ensuring proper randomization, and addressing issues like measurement error and simultaneity bias.
-
-3. **Common Threats**:
-   - **Confounding Variables**: Variables that are correlated with both the treatment and the outcome.
-   - **Selection Bias**: Non-random assignment of subjects to treatment and control groups.
-   - **Measurement Error**: Inaccurate measurement of variables.
-   - **Attrition**: Loss of participants during the study.
-   - **Reverse Causality**: Difficulty in determining the direction of causality.
-   - **Omitted Variable Bias**: Failing to include a relevant variable that affects both the treatment and the outcome.
-
-#### Examples in Econometrics:
-
-- **Randomized Controlled Trials (RCTs)**: RCTs are considered the gold standard for internal validity because random assignment of treatment ensures that confounding variables are evenly distributed across treatment and control groups.
-
-- **Instrumental Variables (IV)**: Using instruments to address endogeneity helps ensure that the treatment effect is not biased by omitted variables or reverse causality.
-
-### External Validity
-
-**External validity** refers to the extent to which the results of a study can be generalized beyond the specific context of the study to other settings, populations, times, and circumstances. It measures the applicability of the study's findings to real-world scenarios outside the study environment.
-
-#### Key Points on External Validity:
-
-1. **Generalizability**: Ensures that the conclusions drawn from the study sample can be applied to the broader population or different contexts.
-
-2. **Population Validity**: The degree to which the study sample represents the target population.
-
-3. **Ecological Validity**: The extent to which study findings can be generalized to other settings or environments.
-
-4. **Temporal Validity**: Whether the results hold over different time periods.
+* The unobserved factor shows up as “extra noise” in the error term.
+* This increases the **variance of the error term**, making coefficient estimates less precise.
 
 
 
-#### Common Threats to External Validity:
+#### Standard Errors and Precision
 
-- **Non-representative Samples**: If the study sample is not representative of the target population, the findings may not be generalizable.
-
-- **Specific Contexts**: Results from a specific geographic location, industry, or demographic may not apply elsewhere.
-
-- **Temporal Changes**: Changes over time in technology, behavior, or policy can limit the generalizability of findings from past studies.
+* Larger error variance → **larger standard errors** on coefficient estimates.
+* Consequence: **wider confidence intervals** and lower **statistical power** (harder to detect true effects).
+* Practically: even if your estimates are unbiased, you’re less likely to find them “statistically significant.”
 
 
+#### Summary
 
-#### Examples in Econometrics:
+* ✅ Estimates remain **unbiased**.
 
-- **Field Experiments**: Conducting experiments in real-world settings can enhance external validity compared to laboratory experiments.
+* ⚠️ But they are **less precise**.
 
-- **Replication Studies**: Replicating studies in different contexts and with different populations helps assess the robustness and generalizability of findings.
-
-- **Heterogeneous Treatment Effects**: Analyzing how treatment effects vary across different subgroups can provide insights into the external validity of the findings.
+* Interpretation: the problem here is inefficiency, not bias. You’ll need larger samples or stronger variation in X to compensate for the added noise.
 
 
 
-### Balancing Internal and External Validity
+This way, you distinguish **bias vs. precision** clearly — which interviewers love, since many candidates conflate the two.
 
-There is often a trade-off between internal and external validity:
-
-- **High Internal Validity**: Studies with strong internal validity, such as RCTs, often have controlled environments that may limit generalizability.
-
-- **High External Validity**: Observational studies and natural experiments might have higher external validity because they are conducted in real-world settings, but they may suffer from issues related to internal validity due to uncontrolled confounding variables.
-
-#### Practical Considerations:
-
-1. **Study Design**: Carefully design studies to address both internal and external validity. For instance, use randomization to enhance internal validity while selecting a representative sample to improve external validity.
-
-2. **Mixed Methods**: Combining different methodological approaches, such as RCTs for internal validity and observational studies for external validity, can provide a more comprehensive understanding of causal relationships.
-
-3. **Transparency and Replication**: Ensure transparency in research design and analysis, and encourage replication studies to verify findings across different contexts and populations.
-
-By understanding and addressing both internal and external validity, researchers can produce more reliable and applicable econometric analyses that contribute to evidence-based decision-making.
 
 
 
 
 ## Endogeneity
 
-**Endogeneity** refers to a situation in econometrics where an explanatory variable is correlated with the error term in a regression model. This correlation can lead to biased and inconsistent estimates of the coefficients, making it difficult to establish causal relationships.
+**Endogeneity** arises when an explanatory variable is correlated with the error term in a regression. This breaks the key OLS assumption of independence between regressors and the error term, leading to biased and inconsistent estimates.
 
-### Sources of Endogeneity:
 
-1. **Omitted Variable Bias**: When a relevant variable that affects both the dependent and independent variables is left out of the model, its effect is captured by the error term, leading to endogeneity.
 
-2. **Measurement Error**: Errors in measuring the independent variable can cause it to be correlated with the error term.
+### Sources of Endogeneity
 
-3. **Simultaneity (Reverse Causality)**: When the independent variable and the dependent variable mutually influence each other, leading to a two-way causation.
+1. **Omitted Variable Bias**
 
-### Consequences of Endogeneity:
+   * Leaving out a variable that affects both the independent and dependent variables.
+   * Its effect is absorbed into the error term, creating correlation between regressors and the error.
 
-- **Biased Estimates**: The estimated coefficients do not accurately reflect the true relationship between the variables.
+2. **Measurement Error**
 
-- **Inconsistent Estimates**: As the sample size increases, the estimates do not converge to the true population parameters.
+   * If an explanatory variable is measured with error, the “true” regressor is correlated with the measurement error (which sits in the error term).
 
-### Methods to Address Endogeneity:
+3. **Simultaneity / Reverse Causality**
 
-1. **Instrumental Variables (IV)**:
-   - **Instrumental Variables**: Use variables (instruments) that are correlated with the endogenous explanatory variable but uncorrelated with the error term.
+   * When the independent variable and dependent variable influence each other.
+   * Example: advertising spend ↔ sales.
+
+
+
+### Consequences
+
+* **Biased estimates**: Coefficients do not reflect the true causal effect.
+
+* **Inconsistent estimates**: Even with large samples, estimates don’t converge to the true parameter.
+
+* **Threat to causal inference**: We can’t trust the estimated treatment effect.
+
+
+
+### Solutions
+
+1. **Instrumental Variables (IV)**
+
+   * Find instruments correlated with the endogenous regressor but uncorrelated with the error term.
+   * Implement using **Two-Stage Least Squares (2SLS)**:
+
+     * Stage 1: Regress endogenous regressor on instruments.
+     * Stage 2: Use predicted values in the main regression.
+
+2. **Fixed Effects / Panel Data**
+
+   * Difference out time-invariant unobservables.
    
-   - **Two-Stage Least Squares (2SLS)**: First stage involves regressing the endogenous variable on the instruments. The second stage uses the predicted values from the first stage as the independent variable in the main regression.
-
-2. **Fixed Effects Models**:
-   - **Panel Data**: Use fixed effects to control for time-invariant unobserved heterogeneity.
+   * Example: individual FE in panel regressions.
    
-   - **Difference-in-Differences (DiD)**: Control for unobserved confounding by comparing changes over time between treatment and control groups.
+   * **Difference-in-Differences (DiD)** as a special case: compares changes over time across treated vs. control units.
 
-3. **Control Function Approach**:
-   
-  - Include the residuals from the first stage regression of the endogenous variable on instruments in the second stage regression to account for endogeneity.
+3. **Control Function Approach**
 
-4. **Natural Experiments**:
-   - Utilize exogenous variations caused by external events or policies that affect the treatment variable but are unrelated to the error term.
+   * Include the residuals from the first-stage regression as an extra regressor to soak up endogeneity.
+
+4. **Natural Experiments**
+
+   * Use exogenous shocks (policies, disasters, lotteries) that create variation unrelated to the error term.
+
+
+
+### Summary
+
+Endogeneity is essentially about **regressors being “contaminated” by correlation with the error term**.
+
+* If present → OLS fails: biased + inconsistent.
+* If addressed (via IV, FE, DiD, etc.) → we can recover causal effects.
+
 
 
 
@@ -495,171 +690,161 @@ What about if your treatment is assigned at the village level. Then cluster by v
 
 
 
-## Types of Biases
 
-In econometrics and statistical analysis, various types of biases can affect the validity and reliability of estimates and inferences. Here are some common types of bias:
+## Types of Biases in Econometrics & Statistics
 
-### 1. Selection Bias
+Bias occurs when estimates systematically deviate from the truth, threatening validity and reliability. Below are the main types, grouped by theme.
 
-**Definition**: Occurs when the sample is not representative of the population due to non-random selection of observations.
 
-**Examples**:
 
-- **Sample Selection Bias**: When individuals are selected into the sample based on criteria related to the outcome of interest (e.g., studying the impact of education on earnings but only sampling employed individuals).
+### Sample & Selection Biases
 
-- **Survivorship Bias**: When only surviving or existing subjects are included in the analysis, ignoring those that have dropped out or failed (e.g., analyzing the performance of mutual funds without including funds that have closed).
+* **Selection Bias**: Sample is not representative because inclusion depends on outcome or treatment.
+  *Example*: Studying education and earnings using only employed individuals.
+* **Self-Selection Bias**: Individuals choose into groups in non-random ways.
+  *Example*: Motivated people opt into job training, biasing program effects.
+* **Attrition Bias**: Dropouts differ systematically from those who remain.
+  *Example*: Only successful dieters remain in a long-term study.
+* **Survivorship Bias**: Only “survivors” are analyzed, failures ignored.
+  *Example*: Measuring mutual fund returns using only funds still operating.
 
-### 2. Omitted Variable Bias
 
-**Definition**: Arises when a relevant variable that affects both the dependent and independent variables is left out of the model, causing the included variables to capture the effect of the omitted variable.
+### Specification & Confounding Biases
 
-**Examples**:
-- Studying the effect of education on earnings without controlling for ability, where ability affects both education and earnings.
+* **Omitted Variable Bias**: Leaving out a confounder that affects both X and Y.
+  *Example*: Estimating education’s effect on wages without controlling for ability.
+* **Confounding Bias**: When the effect of X on Y is mixed with another variable’s effect.
+  *Example*: Estimating smoking → lung cancer without controlling for age.
+* **Endogeneity Bias**: More general case where X is correlated with error term (due to omitted variables, measurement error, or simultaneity).
 
-### 3. Measurement Bias
 
-**Definition**: Occurs when there are errors in measuring the variables, leading to inaccuracies in the estimated relationships.
+### Measurement & Response Biases
 
-**Examples**:
+* **Measurement Bias**: Variables measured incorrectly.
+  *Systematic*: A scale always adds 2 lbs.
+  *Random*: Data entry mistakes.
+* **Recall Bias**: Inaccurate memory of past events.
+  *Example*: Patients misreport past diet.
+* **Response Bias**: Participants misreport due to social desirability or misunderstanding.
+  *Example*: Underreporting alcohol use in surveys.
+* **Observer Bias**: Researcher expectations influence outcomes.
+  *Example*: Therapist influences responses when testing a therapy.
 
-- **Systematic Measurement Error**: Consistent, predictable errors (e.g., a scale that always adds 2 pounds).
 
-- **Random Measurement Error**: Errors that vary without pattern (e.g., human errors in data entry).
 
-### 4. Response Bias
+### Analytical & Reporting Biases
 
-**Definition**: Happens when respondents give inaccurate or false answers, often due to social desirability, recall issues, or misunderstanding the questions.
+* **Publication Bias**: Positive results more likely to be published.
+  *Example*: Meta-analysis overstates effects because null results stay unpublished.
 
-**Examples**:
-- Survey participants underreporting their alcohol consumption due to social desirability.
+* **Overfitting Bias**: Model fits noise in training data, fails to generalize.
+  *Example*: Complex regression with too many parameters.
 
-### 5. Attrition Bias
+* **Confirmation Bias**: Selectively seeking or interpreting evidence consistent with prior beliefs.
 
-**Definition**: Results from systematic differences between those who drop out of a study and those who remain, leading to a non-representative sample over time.
 
-**Examples**:
-- A long-term study on the effects of a diet where participants who do not see results drop out, leaving only those who benefit.
 
-### 6. Publication Bias
+### Addressing Bias
 
-**Definition**: Arises when studies with significant or positive results are more likely to be published than studies with non-significant or negative results.
+* **Randomization** → Prevents selection & confounding bias.
+* **Control Groups** → Benchmark against counterfactual.
+* **Instrumental Variables (IV)** → Correct for endogeneity.
+* **Panel Methods / DiD** → Handle unobserved heterogeneity.
+* **Propensity Score Matching (PSM)** → Balance observed covariates in non-experimental data.
+* **Heckman Selection Models** → Correct for self-selection.
+* **Blinding & Survey Design** → Reduce response and observer bias.
+* **Robustness Checks & Sensitivity Analyses** → Test stability of results.
 
-**Examples**:
-- Meta-analyses showing inflated effects due to the exclusion of unpublished studies with null results.
 
-### 7. Survivorship Bias
 
-**Definition**: Occurs when only successful subjects or cases are considered, ignoring those that failed or were excluded from the sample.
+## Causality
 
-**Examples**:
 
-- Analyzing the performance of companies that are currently listed on the stock exchange, ignoring those that went bankrupt.
+Let’s summarize the main definitions and perspectives so you can see them side by side:
 
-### 8. Recall Bias
+### Counterfactual (Potential Outcomes) Definition
 
-**Definition**: Happens when participants do not remember past events accurately, leading to inaccurate data.
+* **Core idea**: A cause is something that changes the outcome relative to what would have happened otherwise.
 
-**Examples**:
-- Patients in a medical study failing to accurately recall past health behaviors.
+* **Formalized by**: Rubin Causal Model (Neyman–Rubin framework).
 
-### 9. Confirmation Bias
+* **Definition**: Treatment $T$ causes outcome $Y$ if $Y(1) \neq Y(0)$, where $Y(1)$ is the potential outcome if treated, and $Y(0)$ is the potential outcome if untreated.
+* **Key Challenge**: We never observe both $Y(1)$ and $Y(0)$ for the same individual → leads to the **fundamental problem of causal inference**.
 
-**Definition**: The tendency to search for, interpret, and remember information that confirms pre-existing beliefs, leading to biased outcomes.
 
-**Examples**:
-- Researchers focusing on data that supports their hypothesis while disregarding data that contradicts it.
+### Causal Graphs (Structural Causal Models / DAGs)
 
-### 10. Confounding Bias
+* **Core idea**: Causes are encoded in the structure of a system of equations or directed acyclic graphs (DAGs).
 
-**Definition**: Occurs when the effect of the primary explanatory variable on the outcome is mixed with the effect of another variable (confounder) that is related to both the explanatory variable and the outcome.
+* **Formalized by**: Judea Pearl (Structural Causal Models).
 
-**Examples**:
-- Studying the effect of smoking on lung cancer without controlling for age, where age is a confounder.
+* **Definition**: A variable $X$ is a cause of $Y$ if intervening on $X$ (via the “do” operator, $\text{do}(X=x)$) changes the distribution of $Y$.
 
-### 11. Endogeneity Bias
-**Definition**: Arises when an explanatory variable is correlated with the error term in the model, often due to omitted variables, measurement error, or reverse causality.
+* **Key Tool**: Backdoor criterion, front-door criterion, do-calculus.
 
-**Examples**:
-- Estimating the impact of education on earnings without accounting for the fact that higher ability individuals are more likely to obtain more education and earn higher wages.
 
-### 12. Non-Response Bias
-**Definition**: Occurs when individuals who do not respond to a survey differ in meaningful ways from those who do respond.
 
-**Examples**:
-- A survey on household income where higher-income households are less likely to respond, skewing results towards lower-income households.
+### Experimental (Interventionist) Definition
 
-### 13. Observer Bias
-**Definition**: Happens when researchers' expectations or knowledge influence the outcome of the study or the interpretation of results.
+* **Core idea**: A cause is something that can be manipulated and produces a systematic change in the outcome.
 
-**Examples**:
-- A researcher subtly influencing participants’ responses in a study on therapy effectiveness due to their belief in the therapy's efficacy.
+* **Philosophical basis**: Interventionist theories (e.g., Woodward).
 
-### 14. Overfitting Bias
-**Definition**: In predictive modeling, overfitting occurs when the model is too complex and captures noise rather than the underlying relationship, leading to poor generalization to new data.
+* **Definition**: $X$ causes $Y$ if manipulating $X$ while holding everything else constant changes $Y$.
 
-**Examples**:
-- A regression model with too many parameters that fits the training data very well but performs poorly on validation data.
+* **Key Application**: Randomized controlled trials (RCTs) embody this definition.
 
-### Addressing Biases
 
-To mitigate these biases, researchers can use various strategies, including:
-- **Randomization**: Randomly assigning subjects to treatment and control groups to avoid selection bias and confounding.
-- **Control Groups**: Including control groups to help identify causal effects.
-- **Instrumental Variables**: Using instruments to address endogeneity.
-- **Robustness Checks**: Performing sensitivity analyses to check the stability of results under different assumptions.
-- **Data Cleaning and Validation**: Ensuring accurate measurement and data entry.
-- **Blinding**: Keeping participants and researchers unaware of group assignments to reduce observer and response biases.
+### Econometric Definition
 
-Understanding and addressing these biases is crucial for improving the validity and reliability of econometric analyses.
+* **Core idea**: Causes are identified when changes in a regressor can be isolated as exogenous and not confounded.
 
+* **Formalized by**: Econometrics tradition (Haavelmo, Angrist & Pischke).
 
+* **Definition**: $X$ causes $Y$ if variation in $X$ that is independent of confounders systematically shifts $Y$.
 
+* **Key Tools**: IV, DiD, panel fixed effects, RCTs, natural experiments.
 
 
 
-### Self-Selection Bias
+### Philosophical (Humean / Regularity) Definition
 
-**Self-Selection Bias** occurs when individuals select themselves into a group, causing a non-random sample that may not be representative of the population. This type of bias can severely impact the validity of causal inferences because the differences in outcomes between groups may be driven by the self-selection process rather than the treatment or intervention itself.
+* **Core idea**: A cause is something that is regularly followed by an effect.
 
-#### Examples of Self-Selection Bias:
+* **David Hume’s view**: “We may define a cause to be an object, followed by another, and where all the objects similar to the first are followed by objects similar to the second.”
 
-1. **Online Surveys**:
-   - If participation in an online survey is voluntary, those who choose to respond may have different characteristics or opinions compared to those who do not participate.
+* **Limitations**: Regularity doesn’t distinguish correlation from causation.
 
-2. **Program Participation**:
-   - When studying the impact of a job training program, individuals who opt into the program might be more motivated or have better baseline skills than those who do not, leading to biased estimates of the program's effectiveness.
 
-3. **Product Reviews**:
-   - Customers who leave reviews for a product might have extreme opinions (either very positive or very negative), while those with moderate opinions are less likely to leave a review, skewing the perception of the product’s quality.
+### Granger Causality (Time Series)
 
-4. **Health Studies**:
-   - People who enroll in health studies or clinical trials might be more health-conscious or have a particular interest in their health, which could lead to differences in health outcomes compared to the general population.
+* **Core idea**: In time series, $X$ Granger-causes $Y$ if past values of $X$ improve predictions of $Y$ beyond past values of $Y$ alone.
 
-#### Addressing Self-Selection Bias
+* **Definition**: $X$ Granger-causes $Y$ if $P(Y\_t | Y\_{t-1}, X\_{t-1}) \neq P(Y\_t | Y\_{t-1})$.
 
-1. **Randomized Controlled Trials (RCTs)**:
-   - The gold standard for addressing self-selection bias is to conduct an RCT where participants are randomly assigned to treatment and control groups, ensuring any differences in outcomes are due to the intervention.
+* **Limitation**: Not true causality—predictive, not structural.
 
-2. **Propensity Score Matching (PSM)**:
-   - This method involves matching participants in the treatment group with similar participants in the control group based on a set of observed characteristics, aiming to mimic randomization.
 
-3. **Instrumental Variables (IV)**:
-   - Using instruments that affect participation in the treatment but do not directly affect the outcome can help isolate the causal effect of the treatment by accounting for the self-selection.
 
-4. **Heckman Correction (Selection Models)**:
-   - The Heckman two-step correction involves modeling the selection process and then incorporating this model into the outcome equation to correct for self-selection bias.
+### Summary Table
 
-5. **Difference-in-Differences (DiD)**:
-   - This approach compares changes in outcomes over time between a treatment group and a control group, assuming that any differences in trends can be attributed to the intervention.
+| **Definition**      | **Key Idea**                           | **Main Advocates**          | **Limitations**                     |
+| ------------------- | -------------------------------------- | --------------------------- | ----------------------------------- |
+| Counterfactual      | Compare $Y(1)$ vs. $Y(0)$          | Rubin, Neyman               | Missing data problem                |
+| Causal Graphs (SCM) | Intervention via “do” operator         | Pearl                       | Requires structural assumptions     |
+| Experimental        | Manipulation changes outcomes          | Woodward, RCT tradition     | Not always feasible                 |
+| Econometric         | Exogenous variation identifies effects | Haavelmo, Angrist & Pischke | Depends on valid instruments/design |
+| Philosophical       | Constant conjunction / regularity      | Hume                        | Doesn’t separate correlation        |
+| Granger Causality   | Predictive precedence in time          | Clive Granger               | Predictive, not structural          |
 
-6. **Control Variables**:
-   - Including control variables in the regression model that capture the factors influencing self-selection can help mitigate bias, although it relies on the assumption that all relevant factors are observed and included.
+---
 
+👉 **Bottom line**:
 
-#### Conclusion
-
-Self-selection bias is a common challenge in observational studies where individuals choose their own treatment or participation status. It can lead to biased and inconsistent estimates if not properly addressed. Methods such as propensity score matching, instrumental variables, and randomized controlled trials can help mitigate self-selection bias and provide more reliable causal inferences.
-
+* In **econometrics**, we mostly rely on **counterfactuals** + **exogenous variation (econometric definition)**.
+* In **statistics**, the **Rubin model** dominates.
+* In **computer science/AI**, Pearl’s **SCM/DAGs** dominate.
+* In **time series**, **Granger causality** is used, but cautiously.
 
 
 

@@ -1,3 +1,15 @@
 h2:synthetic-difference-in-differences-synthdid-method Synthetic Difference-in-Differences (SynthDiD) method
-h4:an-example An Example:
+h3:introduction Introduction
+h3:what-problem-it-solves What problem it solves
+h3:how-it-works-intuition How it works (intuition)
+h3:how-it-differs-from-related-methods How it differs from related methods
+h3:when-to-use When to use
+h3:assumptions-why-its-appealing Assumptions (why it’s appealing)
+h3:inference-diagnostics Inference & diagnostics
+h3:pros-cons Pros / Cons
+h3:tldr-contrast TL;DR (contrast)
+h3:an-example An Example:
+h3:conclusion Conclusion
+h4:advantages-of-synthdid-method Advantages of SynthDiD method:
+h4:disadvantages-of-synthdid-method Disadvantages of SynthDiD method:
 

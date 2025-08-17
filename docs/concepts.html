@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 8 Instrumental Variables (IV) | Notes on Causal Models</title>
+  <title>Chapter 1 Concepts | Notes on Causal Models</title>
   <meta name="description" content="This is a collection of notes from open sources" />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 8 Instrumental Variables (IV) | Notes on Causal Models" />
+  <meta property="og:title" content="Chapter 1 Concepts | Notes on Causal Models" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a collection of notes from open sources" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 8 Instrumental Variables (IV) | Notes on Causal Models" />
+  <meta name="twitter:title" content="Chapter 1 Concepts | Notes on Causal Models" />
   
   <meta name="twitter:description" content="This is a collection of notes from open sources" />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="synthetic-control-method-scm.html"/>
-<link rel="next" href="regression-discontinuity-designs-rdd.html"/>
+<link rel="prev" href="index.html"/>
+<link rel="next" href="potential-outcomes.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -612,176 +612,735 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="instrumental-variables-iv" class="section level1 hasAnchor" number="8">
-<h1><span class="header-section-number">Chapter 8</span> Instrumental Variables (IV)<a href="instrumental-variables-iv.html#instrumental-variables-iv" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Instrumental Variables (IV) is a method used in econometrics and statistics to estimate causal relationships when controlled experiments are not feasible and there is an endogeneity problem—typically due to omitted variable bias, measurement error, or simultaneity.</p>
-<div id="key-concepts-4" class="section level2 hasAnchor" number="8.1">
-<h2><span class="header-section-number">8.1</span> Key Concepts<a href="instrumental-variables-iv.html#key-concepts-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ol style="list-style-type: decimal">
-<li><p><strong>Endogeneity</strong>: Occurs when an explanatory variable is correlated with the error term. This correlation violates the OLS assumption that the regressors are exogenous, leading to biased and inconsistent estimates.</p></li>
-<li><p><strong>Instrumental Variable</strong>: A variable (or set of variables) that is correlated with the endogenous explanatory variable but uncorrelated with the error term. It helps to isolate the exogenous variation in the endogenous explanatory variable.</p></li>
-</ol>
-<div id="requirements-for-a-valid-instrument" class="section level3 hasAnchor" number="8.1.1">
-<h3><span class="header-section-number">8.1.1</span> Requirements for a Valid Instrument<a href="instrumental-variables-iv.html#requirements-for-a-valid-instrument" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>A valid instrument must satisfy two key conditions:
-1. <strong>Relevance</strong>: The instrument must be correlated with the endogenous explanatory variable.
-- <em>Mathematically</em>: $ (Z, X) $
-- This ensures that the instrument can explain some of the variations in the endogenous regressor.</p>
-<ol start="2" style="list-style-type: decimal">
-<li><strong>Exogeneity</strong>: The instrument must be uncorrelated with the error term in the structural equation.
+<div id="concepts" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Concepts<a href="concepts.html#concepts" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="goodness-of-fit" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Goodness of Fit<a href="concepts.html#goodness-of-fit" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="r-squared-r2" class="section level3 hasAnchor" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> R-squared (<span class="math inline">\(R^2\)</span>)<a href="concepts.html#r-squared-r2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li><em>Mathematically</em>: $ (Z, u) = 0 $</li>
-<li>This ensures that the instrument does not suffer from the same endogeneity problem as the endogenous regressor.</li>
-</ul></li>
-</ol>
-</div>
-<div id="the-iv-estimation-process" class="section level3 hasAnchor" number="8.1.2">
-<h3><span class="header-section-number">8.1.2</span> The IV Estimation Process<a href="instrumental-variables-iv.html#the-iv-estimation-process" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The IV estimation is typically carried out in two stages, known as Two-Stage Least Squares (2SLS):</p>
-<ol style="list-style-type: decimal">
-<li><strong>First Stage</strong>: Regress the endogenous variable on the instrument(s) to obtain the predicted values of the endogenous variable.
-<ul>
-<li><em>Equation</em>: <span class="math inline">\(X = \pi_0 + \pi_1 Z + v\)</span></li>
-<li>Obtain the fitted values <span class="math inline">\(\hat{X}\)</span> from this regression.</li>
-</ul></li>
-<li><strong>Second Stage</strong>: Regress the dependent variable on the predicted values from the first stage.
-<ul>
-<li><em>Equation</em>: <span class="math inline">\(Y = \beta_0 + \beta_1 \hat{X} + \epsilon\)</span></li>
-<li>The coefficient <span class="math inline">\(\beta_1\)</span> from this regression is the IV estimate of the effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span>.</li>
-</ul></li>
-</ol>
-</div>
-<div id="example-12" class="section level3 hasAnchor" number="8.1.3">
-<h3><span class="header-section-number">8.1.3</span> Example<a href="instrumental-variables-iv.html#example-12" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="context-education-and-earnings" class="section level4 hasAnchor" number="8.1.3.1">
-<h4><span class="header-section-number">8.1.3.1</span> Context: Education and Earnings<a href="instrumental-variables-iv.html#context-education-and-earnings" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<ul>
-<li><p><strong>Endogeneity Problem</strong>: In estimating the effect of education on earnings, the variable “years of education” might be endogenous due to omitted variables like ability or family background.</p></li>
-<li><p><strong>Instrument</strong>: Distance to the nearest college could be used as an instrument for education.</p>
-<ul>
-<li><strong>Relevance</strong>: Distance to college affects the likelihood of obtaining more education.</li>
-<li><strong>Exogeneity</strong>: Distance to college is unlikely to be directly related to individual earnings, apart from its effect on education.</li>
-</ul></li>
+<li><p>Measures the proportion of variation in <span class="math inline">\(y\)</span> explained by the model.</p></li>
+<li><p>Useful for <strong>prediction tasks</strong>, but not for assessing causality.</p></li>
+<li><p>A high <span class="math inline">\(R^2\)</span> can come from including irrelevant or even harmful controls.</p></li>
 </ul>
 </div>
-<div id="steps-1" class="section level4 hasAnchor" number="8.1.3.2">
-<h4><span class="header-section-number">8.1.3.2</span> Steps:<a href="instrumental-variables-iv.html#steps-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<ol style="list-style-type: decimal">
-<li><strong>First Stage</strong>: Regress “years of education” on “distance to college”.
+<div id="adjusted-r-squared" class="section level3 hasAnchor" number="1.1.2">
+<h3><span class="header-section-number">1.1.2</span> Adjusted R-squared<a href="concepts.html#adjusted-r-squared" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li><em>Equation</em>: <span class="math inline">\(\text{Education} = \pi_0 + \pi_1 (\text{Distance to College}) + v\)</span></li>
-<li>Obtain the fitted values <span class="math inline">\(\widehat{\text{Education}}\)</span>.</li>
-</ul></li>
-<li><strong>Second Stage</strong>: Regress “earnings” on the fitted values from the first stage.
-<ul>
-<li><em>Equation</em>: <span class="math inline">\(\text{Earnings} = \beta_0 + \beta_1 (\widehat{\text{Education}}) + \epsilon\)</span></li>
-<li>The coefficient <span class="math inline">\(\beta_1\)</span> is the IV estimate of the effect of education on earnings.</li>
-</ul></li>
-</ol>
-</div>
-</div>
-<div id="assumptions-and-considerations-1" class="section level3 hasAnchor" number="8.1.4">
-<h3><span class="header-section-number">8.1.4</span> Assumptions and Considerations<a href="instrumental-variables-iv.html#assumptions-and-considerations-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<ol style="list-style-type: decimal">
-<li><strong>Instrument Strength</strong>: Weak instruments can lead to biased estimates even in large samples. The relevance condition must be strong enough.</li>
-</ol>
-<p><em>Test</em>: First stage F-statistic (rule of thumb: F &gt; 10). As F gets larger, then bias goes 0.</p>
-<ol start="2" style="list-style-type: decimal">
-<li><p><strong>Over-Identification Test</strong>: When there are multiple instruments, it’s possible to test for the exogeneity of instruments using over-identification tests like the Sargan or Hansen J test.</p></li>
-<li><p><strong>Single vs. Multiple Instruments</strong>: Using multiple instruments can improve the efficiency of the IV estimator, provided all instruments are valid.</p></li>
-</ol>
-</div>
-<div id="advantages-of-iv" class="section level3 hasAnchor" number="8.1.5">
-<h3><span class="header-section-number">8.1.5</span> Advantages of IV<a href="instrumental-variables-iv.html#advantages-of-iv" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<ul>
-<li>Provides consistent estimates in the presence of endogeneity.</li>
-<li>Can be used when randomized experiments are not feasible.</li>
+<li><p>Adjusts for the number of predictors; penalizes models for adding unnecessary variables.</p></li>
+<li><p>Better for comparing models with different numbers of regressors, but still not a causal metric.</p></li>
 </ul>
 </div>
-<div id="disadvantages-of-iv" class="section level3 hasAnchor" number="8.1.6">
-<h3><span class="header-section-number">8.1.6</span> Disadvantages of IV<a href="instrumental-variables-iv.html#disadvantages-of-iv" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="root-mean-squared-error-rmse-mean-absolute-error-mae" class="section level3 hasAnchor" number="1.1.3">
+<h3><span class="header-section-number">1.1.3</span> Root Mean Squared Error (RMSE) / Mean Absolute Error (MAE)<a href="concepts.html#root-mean-squared-error-rmse-mean-absolute-error-mae" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li>Finding valid instruments can be difficult.</li>
-<li>Weak instruments can lead to biased and imprecise estimates.</li>
-<li>Interpretation of the IV estimate can be less straightforward, often reflecting a Local Average Treatment Effect (LATE) rather than the Average Treatment Effect (ATE).</li>
+<li><p>Direct measures of prediction accuracy.</p></li>
+<li><p>Lower values indicate closer predictions to the actual <span class="math inline">\(y\)</span>.</p></li>
+<li><p>Especially relevant when the goal is <strong>forecasting</strong> rather than causal inference.</p></li>
 </ul>
 </div>
-<div id="conclusion-10" class="section level3 hasAnchor" number="8.1.7">
-<h3><span class="header-section-number">8.1.7</span> Conclusion<a href="instrumental-variables-iv.html#conclusion-10" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Instrumental Variables (IV) is a powerful method for addressing endogeneity in observational studies, allowing researchers to estimate causal effects more accurately. Understanding the conditions for valid instruments and the proper application of the 2SLS method is crucial for leveraging this technique effectively. For your interview, be prepared to discuss the theory, assumptions, applications, and potential pitfalls of IV estimation.</p>
-</div>
-</div>
-<div id="difference-between-instrumental-variable-iv-method-and-two-stage-least-squares-2sls-method" class="section level2 hasAnchor" number="8.2">
-<h2><span class="header-section-number">8.2</span> Difference Between Instrumental Variable (IV) Method and Two-Stage Least Squares (2SLS) Method<a href="instrumental-variables-iv.html#difference-between-instrumental-variable-iv-method-and-two-stage-least-squares-2sls-method" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The terms “Instrumental Variable (IV) method” and “Two-Stage Least Squares (2SLS) method” are closely related but not identical. Here’s a detailed explanation of the differences:</p>
-<div id="instrumental-variable-iv-method" class="section level3 hasAnchor" number="8.2.1">
-<h3><span class="header-section-number">8.2.1</span> Instrumental Variable (IV) Method<a href="instrumental-variables-iv.html#instrumental-variable-iv-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><strong>Instrumental Variable (IV) method</strong> is a general approach used to address endogeneity in regression models. It involves using instruments—variables that are correlated with the endogenous explanatory variable but uncorrelated with the error term. The IV method can be implemented in various ways, one of which is the 2SLS method.</p>
+<div id="aic-bic-information-criteria" class="section level3 hasAnchor" number="1.1.4">
+<h3><span class="header-section-number">1.1.4</span> AIC / BIC (Information Criteria)<a href="concepts.html#aic-bic-information-criteria" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li><p><strong>Purpose</strong>: To obtain consistent estimates when there is endogeneity due to omitted variable bias, measurement error, or simultaneity.</p></li>
-<li><p><strong>Instruments</strong>: The choice of instruments is crucial. Valid instruments must satisfy two key conditions:</p>
+<li><p>Model selection criteria that balance fit and complexity.</p></li>
+<li><p>Useful when comparing non-nested models, but again, not measures of causal validity.</p></li>
+</ul>
+</div>
+<div id="f-statistics-and-joint-significance-tests" class="section level3 hasAnchor" number="1.1.5">
+<h3><span class="header-section-number">1.1.5</span> F-statistics and Joint Significance Tests<a href="concepts.html#f-statistics-and-joint-significance-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>Test whether groups of variables jointly contribute explanatory power.</p></li>
+<li><p>Helpful for model fit diagnostics but not sufficient for causal claims.</p></li>
+</ul>
+</div>
+<div id="balance-checks-causal-context" class="section level3 hasAnchor" number="1.1.6">
+<h3><span class="header-section-number">1.1.6</span> Balance Checks (Causal Context)<a href="concepts.html#balance-checks-causal-context" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>In causal inference, we care more about whether confounders are balanced across treatment groups than about <span class="math inline">\(R^2\)</span>.</p></li>
+<li><p>Matching, weighting, or randomization checks are more informative than fit metrics.</p></li>
+</ul>
+</div>
+<div id="key-distinction-prediction-vs.-causality" class="section level3 hasAnchor" number="1.1.7">
+<h3><span class="header-section-number">1.1.7</span> Key Distinction: Prediction vs. Causality<a href="concepts.html#key-distinction-prediction-vs.-causality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="19%" />
+<col width="53%" />
+<col width="27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Context</strong></th>
+<th><strong>Metrics that Matter</strong></th>
+<th><strong>Goal</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Prediction / Forecasting</td>
+<td><span class="math inline">\(R^2\)</span>, Adj. <span class="math inline">\(R^2\)</span>, RMSE, MAE, AIC, BIC</td>
+<td>Maximize predictive accuracy</td>
+</tr>
+<tr class="even">
+<td>Causal Inference</td>
+<td>Balance checks, robustness checks, IV strength, falsification tests</td>
+<td>Identify unbiased treatment effect</td>
+</tr>
+</tbody>
+</table>
+<p>👉 <strong>Takeaway</strong>: Use <span class="math inline">\(R^2\)</span> and related metrics for <strong>prediction</strong>, but in <strong>causal inference</strong>, what matters most is whether you’ve properly handled confounders, closed backdoor paths, and used valid identification strategies.</p>
+</div>
+</div>
+<div id="validation-methods" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Validation Methods<a href="concepts.html#validation-methods" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Definition</strong></p>
+<p>Validation methods are procedures used to confirm that the analytical approach and findings are credible, correctly specified, and reliable. The goal is to ensure that the methodology captures the true causal relationship and that the results are not artifacts of flawed design or bias.</p>
+<div id="internal-validity" class="section level3 hasAnchor" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> Internal Validity<a href="concepts.html#internal-validity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Ensures the causal estimate is <strong>credible within the study design</strong>.</p>
+<p><strong>Purpose:</strong> Rule out alternative explanations for the observed effect.</p>
+<p><strong>Methods:</strong></p>
+<ul>
+<li><p><strong>Placebo / falsification tests</strong> → Apply the method to periods or outcomes where no effect should exist. A true effect should not show up here.</p></li>
+<li><p><strong>Pre-trend checks</strong> → In Difference-in-Differences (DiD), verify that treatment and control groups followed parallel trends before treatment.</p></li>
+<li><p><strong>Balance tests (PSM, matching)</strong> → Confirm that covariates are similar between treated and control groups.</p></li>
+<li><p><strong>Overidentification tests (IV)</strong> → If multiple instruments exist, check that they give consistent estimates.</p></li>
+<li><p><strong>Sensitivity analysis</strong> → Evaluate robustness to unobserved confounders (e.g., Rosenbaum bounds).</p></li>
+<li><p><strong>Resampling methods (bootstrap, cross-validation)</strong> → Ensure stability of results against sampling variation.</p></li>
+</ul>
+</div>
+<div id="external-validity" class="section level3 hasAnchor" number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> External Validity<a href="concepts.html#external-validity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Ensures findings can <strong>generalize beyond the study sample</strong>.</p>
+<p><strong>Purpose:</strong> Assess whether results apply to other populations, settings, or time periods.</p>
+<p><strong>Methods:</strong></p>
+<ul>
+<li><p><strong>Benchmark comparisons</strong> → Compare effect sizes with prior literature or related experiments.</p></li>
+<li><p><strong>Replication across subgroups</strong> → Test if results hold in different populations (e.g., small vs. large cities, East vs. West Coast).</p></li>
+<li><p><strong>Heterogeneity analysis</strong> → Explore variation in treatment effects across demographics, regions, or time.</p></li>
+<li><p><strong>Transportability / reweighting methods</strong> → Adjust sample weights so that results better reflect the target population (e.g., balancing weights to correct skewed panels).</p></li>
+</ul>
+<hr />
+<p><strong>Why Both Matter</strong></p>
+<ul>
+<li><p><strong>Internal validity</strong> ensures the effect you measured is truly causal.</p></li>
+<li><p><strong>External validity</strong> ensures that causal effect is useful for decision-making across broader contexts.</p></li>
+</ul>
+<p>Together, they strengthen the <strong>credibility, reliability, and practical relevance</strong> of your causal inference.</p>
+<hr />
+</div>
+<div id="robustness-checks" class="section level3 hasAnchor" number="1.2.3">
+<h3><span class="header-section-number">1.2.3</span> Robustness Checks<a href="concepts.html#robustness-checks" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Purpose:</strong> Assess the stability of results under alternative assumptions or model choices.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><p>Varying model specifications (linear vs. log, fixed effects vs. random effects).</p></li>
+<li><p>Dropping outliers or trimming the sample.</p></li>
+<li><p>Using alternative control groups.</p></li>
+<li><p>Trying different functional forms (log of sales vs. sales level).</p></li>
+<li><p>Changing time windows (short-run vs. long-run effect).</p></li>
+</ul>
+<p><strong>Focus:</strong> Do the results hold up if we “stress-test” the model?</p>
+<hr />
+<p><strong>How They Relate</strong></p>
+<p>Validation asks: Did we design this study right?</p>
+<p>Robustness asks: Would the results still hold if we made reasonable changes?</p>
+</div>
+</div>
+<div id="directed-acyclic-graphs-dags" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Directed Acyclic Graphs (DAGs)<a href="concepts.html#directed-acyclic-graphs-dags" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p>causality runs in one direction, it runs forward in time.</p></li>
+<li><p>There are no cycles in a DAG. To show reverse causality, one would need to create multiple nodes, most likely with two versions of the same node separated by a time index.</p></li>
+<li><p>To handle either simultaneity or reverse causality, it is recommended that you take a completely different approach to the problem than the one presented in this chapter.</p></li>
+<li><p>DAGs explain causality in terms of counterfactuals. That is, a causal effect is defined as a comparison between two states of the world—one state that actually happened when some intervention took on some value and another state that didn’t happen (the “counterfactual”) under some other intervention.</p></li>
+<li><p>Arrows represent a causal effect between two random variables moving in the intuitive direction of the arrow. The direction of the arrow captures the direction of causality.</p></li>
+<li><p>Causal effects can happen in two ways. They can either be direct (e.g., D -&gt; Y), or they can be mediated by a third variable (e.g., D -&gt; X -&gt; Y). When they are mediated by a third variable, we are capturing a sequence of events originating with , which may or may not be important to you depending on the question you’re asking.</p></li>
+<li><p>A complete DAG will have all direct causal effects among the variables in the graph as well as all common causes of any pair of variables in the graph.</p></li>
+</ul>
+<div id="confounder" class="section level3 hasAnchor" number="1.3.1">
+<h3><span class="header-section-number">1.3.1</span> Confounder<a href="concepts.html#confounder" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Direct causal path:</strong>
+<span class="math inline">\(D \rightarrow Y\)</span></p></li>
+<li><p><strong>Backdoor (non-causal) path:</strong>
+<span class="math inline">\(X \rightarrow D\)</span> and <span class="math inline">\(X \rightarrow Y\)</span></p></li>
+</ul>
+<p><strong>Key Idea:</strong></p>
+<p>A <strong>backdoor path</strong> creates spurious correlation between <span class="math inline">\(D\)</span> (treatment) and <span class="math inline">\(Y\)</span> (outcome) that is driven only by changes in <span class="math inline">\(X\)</span> (the confounder).</p>
+<ul>
+<li><p>If we <strong>don’t control for <span class="math inline">\(X\)</span></strong>, the correlation between <span class="math inline">\(D\)</span> and <span class="math inline">\(Y\)</span> mixes two sources:</p>
 <ol style="list-style-type: decimal">
-<li><strong>Relevance</strong>: The instrument must be correlated with the endogenous explanatory variable.</li>
-<li><strong>Exogeneity</strong>: The instrument must be uncorrelated with the error term in the regression model.</li>
+<li><p>The <strong>true causal effect</strong> of <span class="math inline">\(D\)</span> on <span class="math inline">\(Y\)</span>.</p></li>
+<li><p>The <strong>spurious association</strong> from <span class="math inline">\(X\)</span>, which influences both.</p></li>
 </ol></li>
+<li><p>This leads to <strong>omitted variable bias</strong> — we mistake part of $ X$’s effect for $ D$’s effect.</p></li>
 </ul>
-</div>
-<div id="two-stage-least-squares-2sls-method" class="section level3 hasAnchor" number="8.2.2">
-<h3><span class="header-section-number">8.2.2</span> Two-Stage Least Squares (2SLS) Method<a href="instrumental-variables-iv.html#two-stage-least-squares-2sls-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><strong>Two-Stage Least Squares (2SLS) method</strong> is a specific implementation of the IV method. It involves a two-step estimation process to address endogeneity.</p>
+<p><strong>Definition:</strong></p>
+<p>A variable <span class="math inline">\(X\)</span> is a <strong>confounder</strong> if it jointly affects both <span class="math inline">\(D\)</span> and <span class="math inline">\(Y\)</span>, making it harder to isolate the true causal effect.</p>
+<p><strong>Fix:</strong></p>
+<p>When <span class="math inline">\(X\)</span> is <strong>observed and included in the model</strong>, the backdoor path is <strong>closed</strong>, leaving only the direct causal relationship between <span class="math inline">\(D\)</span> and <span class="math inline">\(Y\)</span>.</p>
+<p>👉 Think of it this way:</p>
 <ul>
-<li><p><strong>Step 1 (First Stage)</strong>: Regress the endogenous explanatory variable on the instruments to obtain the predicted values.</p>
-<p><span class="math display">\[X = \pi_0 + \pi_1 Z + \nu\]</span></p>
-<p>Here, <span class="math inline">\(X\)</span> is the endogenous variable, <span class="math inline">\(Z\)</span> is the instrument, and <span class="math inline">\(\nu\)</span> is the error term. This regression yields the predicted values <span class="math inline">\(\hat{X}\)</span>.</p></li>
-<li><p><strong>Step 2 (Second Stage)</strong>: Regress the dependent variable on the predicted values of the endogenous variable obtained from the first stage.</p>
-<p><span class="math display">\[Y = \alpha + \beta \hat{X} + \epsilon\]</span></p></li>
+<li><p>Sometimes <span class="math inline">\(Y\)</span> changes <strong>because <span class="math inline">\(D\)</span> truly caused it</strong>.</p></li>
+<li><p>Other times, <span class="math inline">\(Y\)</span> and <span class="math inline">\(D\)</span> both move <strong>because <span class="math inline">\(X\)</span> moved</strong>.</p></li>
+<li><p>By controlling for <span class="math inline">\(X\)</span>, we separate the causal part from the spurious part.</p></li>
 </ul>
-<p>The 2SLS method ensures that the endogenous variable <span class="math inline">\(X\)</span> is replaced by its predicted value <span class="math inline">\(\hat{X}\)</span>, which is purged of the endogenous component, thus providing consistent estimates of <span class="math inline">\(\beta\)</span>.</p>
 </div>
-<div id="summary-of-differences" class="section level3 hasAnchor" number="8.2.3">
-<h3><span class="header-section-number">8.2.3</span> Summary of Differences:<a href="instrumental-variables-iv.html#summary-of-differences" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="collider" class="section level3 hasAnchor" number="1.3.2">
+<h3><span class="header-section-number">1.3.2</span> Collider<a href="concepts.html#collider" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li><strong>General Approach vs. Specific Method</strong>: The IV method is a general approach for dealing with endogeneity, while 2SLS is a specific implementation of the IV method.</li>
-<li><strong>Implementation</strong>: 2SLS involves a two-step process to obtain consistent estimates using instruments, whereas the IV method can be implemented in various ways, not just through 2SLS.</li>
-<li><strong>Application</strong>: In practice, 2SLS is the most commonly used method for implementing the IV approach because it is straightforward and provides clear steps for estimation.</li>
+<li><p><strong>Direct causal path:</strong>
+<span class="math inline">\(D \rightarrow Y\)</span></p></li>
+<li><p><strong>Backdoor path:</strong>
+<span class="math inline">\(D \rightarrow X \leftarrow Y\)</span></p></li>
+</ul>
+<p><strong>Key Idea:</strong></p>
+<p>A <strong>collider</strong> is a variable influenced by both the treatment <span class="math inline">\(D\)</span> and the outcome <span class="math inline">\(Y\)</span>.</p>
+<ul>
+<li><p>At <span class="math inline">\(X\)</span>, the arrows from <span class="math inline">\(D\)</span> and <span class="math inline">\(Y\)</span> <strong>collide</strong>.</p></li>
+<li><p>This means the path <span class="math inline">\(D \rightarrow X \leftarrow Y\)</span> is <strong>blocked by default</strong>.</p></li>
+<li><p>So unlike confounders, <strong>colliders do not create bias</strong> when left alone.</p></li>
+</ul>
+<p><strong>Why It Matters:</strong></p>
+<ul>
+<li><p>If you <strong>do nothing</strong>, the backdoor path through a collider is closed — safe.</p></li>
+<li><p>But if you <strong>control for <span class="math inline">\(X\)</span></strong> (include it in a regression, stratify, etc.), you <strong>open the path</strong>.</p>
+<ul>
+<li>This creates a spurious correlation between <span class="math inline">\(D\)</span> and <span class="math inline">\(Y\)</span>, introducing <strong>collider bias</strong> (a.k.a. selection bias).</li>
+</ul></li>
+</ul>
+<p>👉 <strong>Rule of Thumb:</strong></p>
+<ul>
+<li><p><strong>Control confounders</strong> → closes harmful backdoor paths.</p></li>
+<li><p><strong>Do not control colliders</strong> → they’re already blocking the path.</p></li>
+</ul>
+</div>
+<div id="what-to-do-and-how-to-do-it" class="section level3 hasAnchor" number="1.3.3">
+<h3><span class="header-section-number">1.3.3</span> What To Do and How To Do It<a href="concepts.html#what-to-do-and-how-to-do-it" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>What To Do</strong></p>
+<ul>
+<li><p>Open <strong>backdoor paths</strong> introduce <strong>omitted variable bias</strong>. Sometimes the bias can even <strong>flip the sign</strong> of the estimated effect.</p></li>
+<li><p>The goal: <strong>close all open backdoor paths</strong> so the relationship between <span class="math inline">\(D\)</span> (treatment) and <span class="math inline">\(Y\)</span> (outcome) reflects the <strong>true causal effect</strong>.</p></li>
+</ul>
+<p><strong>How To Do It</strong></p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Control for Confounders</strong></p>
+<ul>
+<li><p>A confounder jointly affects both <span class="math inline">\(D\)</span> and <span class="math inline">\(Y\)</span>, creating an open backdoor path.</p></li>
+<li><p>Close this path by <strong>conditioning on the confounder</strong> using tools like:</p>
+<ul>
+<li>Subclassification</li>
+<li>Matching</li>
+<li>Regression (include as covariates)</li>
+<li>Weighting (e.g., inverse probability weights)</li>
+</ul></li>
+</ul></li>
+<li><p><strong>Leave Colliders Alone</strong></p>
+<ul>
+<li>A collider is influenced by both <span class="math inline">\(D\)</span> and <span class="math inline">\(Y\)</span>.</li>
+<li>By default, a backdoor path through a collider is <strong>closed</strong>.</li>
+<li><strong>Conditioning on a collider opens the path</strong>, introducing <strong>collider bias</strong> (a.k.a. selection bias).</li>
+<li>Strategy: <strong>do not control for colliders</strong>.</li>
+</ul></li>
+</ol>
+<p><strong>Backdoor Criterion</strong></p>
+<ul>
+<li><p>If a variable is a <strong>confounder</strong> → <strong>control for it</strong>.</p></li>
+<li><p>If a variable is a <strong>collider</strong> → <strong>exclude it</strong> from your model.</p></li>
+</ul>
+<p><strong>Rule of Thumb</strong></p>
+<ul>
+<li><p>Always map your variables in a <strong>causal diagram (DAG)</strong> before modeling.</p></li>
+<li><p>Ask: <em>Does this variable affect both <span class="math inline">\(D\)</span> and <span class="math inline">\(Y\)</span>?</em> → confounder, control for it.</p></li>
+<li><p>Ask: <em>Is this variable caused by both <span class="math inline">\(D\)</span> and <span class="math inline">\(Y\)</span>?</em> → collider, exclude it.</p></li>
+</ul>
+</div>
+<div id="example-sample-selection-and-collider-bias" class="section level3 hasAnchor" number="1.3.4">
+<h3><span class="header-section-number">1.3.4</span> Example: Sample Selection and collider bias<a href="concepts.html#example-sample-selection-and-collider-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Imagine talent and beauty are <strong>independent traits</strong> in the general population.
+However, to become a <strong>movie star</strong>, you typically need <strong>both talent and beauty</strong>.</p>
+<p><strong>The Collider Effect</strong></p>
+<ul>
+<li><p>Here, <em>“being a movie star”</em> is a <strong>collider</strong>, because it is influenced by both <strong>talent</strong> and <strong>beauty</strong>.</p></li>
+<li><p>When we <strong>condition on the collider</strong> (i.e., restrict our sample only to movie stars), we inadvertently <strong>open a backdoor path</strong> between talent and beauty.</p></li>
+<li><p>As a result, talent and beauty appear <strong>negatively correlated</strong> within the movie-star sample, even though they are <strong>independent in the full population</strong>.</p></li>
+</ul>
+<p><strong>Why This Matters</strong></p>
+<ul>
+<li><p>This is an example of <strong>sample selection bias</strong>: restricting the sample on a collider introduces <strong>spurious correlations</strong>.</p></li>
+<li><p>A <strong>random sample of the full population</strong> would correctly show <strong>no relationship</strong> between talent and beauty.</p></li>
+<li><p>But focusing only on those who “passed through the collider” (movie stars) creates a <strong>false correlation</strong> where none exists.</p></li>
+</ul>
+<p>✅ <strong>Key Lesson</strong>:</p>
+<p>When analyzing causal relationships, avoid conditioning on variables that act as <strong>colliders</strong>. Otherwise, you risk <strong>fabricating associations</strong> that don’t exist in reality.</p>
+</div>
+</div>
+<div id="bad-controls" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Bad Controls<a href="concepts.html#bad-controls" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Joshua Angrist (with Guido Imbens and Jörn-Steffen Pischke) popularized the idea of <strong>“bad controls”</strong> in econometrics. These are control variables that <strong>should not</strong> be included in a regression because they distort rather than clarify the causal effect of interest.</p>
+<div id="definition" class="section level3 hasAnchor" number="1.4.1">
+<h3><span class="header-section-number">1.4.1</span> Definition<a href="concepts.html#definition" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Bad controls</strong> are variables that are:</p>
+<ul>
+<li><strong>Post-treatment</strong> (affected by the treatment).</li>
+<li>Or <strong>endogenous</strong> (correlated with unobserved factors in the error term).</li>
+</ul></li>
+<li><p>Including them in a model can create spurious relationships and bias causal estimates.</p></li>
+</ul>
+</div>
+<div id="why-theyre-problematic" class="section level3 hasAnchor" number="1.4.2">
+<h3><span class="header-section-number">1.4.2</span> Why They’re Problematic<a href="concepts.html#why-theyre-problematic" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Post-treatment controls</strong> soak up part of the treatment effect (blocking the causal path).</p></li>
+<li><p><strong>Colliders</strong> open backdoor paths when conditioned on.</p></li>
+<li><p><strong>Endogenous controls</strong> bias estimates because they capture unobserved shocks.</p></li>
+</ul>
+<p>👉 The result: biased and inconsistent causal estimates.</p>
+</div>
+<div id="examples" class="section level3 hasAnchor" number="1.4.3">
+<h3><span class="header-section-number">1.4.3</span> Examples<a href="concepts.html#examples" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Education → Earnings</strong>: Controlling for <em>occupation</em> (which is partly determined by education) is a bad control.</p></li>
+<li><p><strong>Treatment → Post-treatment earnings</strong>: Using post-treatment income in a regression about education biases the effect.</p></li>
+<li><p><strong>Advertising campaign → Sales</strong>: Controlling for <em>brand awareness</em> (which is influenced by the campaign) is a bad control.</p></li>
+</ul>
+</div>
+<div id="identifying-good-vs.-bad-controls" class="section level3 hasAnchor" number="1.4.4">
+<h3><span class="header-section-number">1.4.4</span> Identifying Good vs. Bad Controls<a href="concepts.html#identifying-good-vs.-bad-controls" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>Good controls</strong> = pre-treatment confounders: variables that affect both treatment and outcome but are not affected by the treatment.</li>
+<li><strong>Bad controls</strong> = mediators, colliders, or any variable determined by treatment.</li>
+</ul>
+</div>
+<div id="best-practices" class="section level3 hasAnchor" number="1.4.5">
+<h3><span class="header-section-number">1.4.5</span> Best Practices<a href="concepts.html#best-practices" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>When choosing controls, ask:</p>
+<ol style="list-style-type: decimal">
+<li>Does this variable occur <strong>before</strong> the treatment?</li>
+<li>Does it predict both treatment and outcome? (Confounder → include.)</li>
+<li>Could it be affected by treatment? (Mediator → exclude.)</li>
+<li>Is it influenced by both treatment and outcome? (Collider → exclude.)</li>
+</ol></li>
+<li><p>Use <strong>robustness checks</strong> to see if results hinge on questionable controls.</p></li>
+</ul>
+</div>
+<div id="practical-advice" class="section level3 hasAnchor" number="1.4.6">
+<h3><span class="header-section-number">1.4.6</span> Practical Advice<a href="concepts.html#practical-advice" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>From <em>Mostly Harmless Econometrics</em>:</p>
+<ul>
+<li><p><em>Avoid controlling for outcomes of the treatment.</em></p></li>
+<li><p><em>Focus on pre-treatment variables that help isolate causal variation.</em></p></li>
+<li><p><em>Always think in terms of the causal diagram (DAG): Is the control blocking a backdoor path or accidentally opening one?</em></p></li>
+</ul>
+<hr />
+<p>✅ This version highlights:</p>
+<ul>
+<li>A clear definition.</li>
+<li>Why bad controls hurt causal inference.</li>
+<li>Classic and business-style examples.</li>
+<li>A decision rule (DAG-thinking).</li>
+</ul>
+</div>
+<div id="unobserved-variable-affecting-only-the-dependent-variable" class="section level3 hasAnchor" number="1.4.7">
+<h3><span class="header-section-number">1.4.7</span> Unobserved Variable Affecting Only the Dependent Variable<a href="concepts.html#unobserved-variable-affecting-only-the-dependent-variable" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Sometimes there are unobserved factors that influence only the <strong>dependent variable (Y)</strong> but not the <strong>independent variables (X)</strong>. This situation is less harmful than when unobservables also affect X, but it still has consequences.</p>
+<div id="no-bias-in-coefficients" class="section level4 hasAnchor" number="1.4.7.1">
+<h4><span class="header-section-number">1.4.7.1</span> No Bias in Coefficients<a href="concepts.html#no-bias-in-coefficients" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><p>Since the unobserved variable doesn’t influence X, it does not create correlation between X and the error term.</p></li>
+<li><p>That means <strong>no endogeneity problem</strong>: OLS estimates of the coefficients on X remain <strong>unbiased and consistent</strong>.</p></li>
+</ul>
+</div>
+<div id="impact-on-error-variance" class="section level4 hasAnchor" number="1.4.7.2">
+<h4><span class="header-section-number">1.4.7.2</span> Impact on Error Variance<a href="concepts.html#impact-on-error-variance" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li>The unobserved factor shows up as “extra noise” in the error term.</li>
+<li>This increases the <strong>variance of the error term</strong>, making coefficient estimates less precise.</li>
+</ul>
+</div>
+<div id="standard-errors-and-precision" class="section level4 hasAnchor" number="1.4.7.3">
+<h4><span class="header-section-number">1.4.7.3</span> Standard Errors and Precision<a href="concepts.html#standard-errors-and-precision" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li>Larger error variance → <strong>larger standard errors</strong> on coefficient estimates.</li>
+<li>Consequence: <strong>wider confidence intervals</strong> and lower <strong>statistical power</strong> (harder to detect true effects).</li>
+<li>Practically: even if your estimates are unbiased, you’re less likely to find them “statistically significant.”</li>
+</ul>
+</div>
+<div id="summary" class="section level4 hasAnchor" number="1.4.7.4">
+<h4><span class="header-section-number">1.4.7.4</span> Summary<a href="concepts.html#summary" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><p>✅ Estimates remain <strong>unbiased</strong>.</p></li>
+<li><p>⚠️ But they are <strong>less precise</strong>.</p></li>
+<li><p>Interpretation: the problem here is inefficiency, not bias. You’ll need larger samples or stronger variation in X to compensate for the added noise.</p></li>
+</ul>
+<p>This way, you distinguish <strong>bias vs. precision</strong> clearly — which interviewers love, since many candidates conflate the two.</p>
+</div>
+</div>
+</div>
+<div id="endogeneity" class="section level2 hasAnchor" number="1.5">
+<h2><span class="header-section-number">1.5</span> Endogeneity<a href="concepts.html#endogeneity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Endogeneity</strong> arises when an explanatory variable is correlated with the error term in a regression. This breaks the key OLS assumption of independence between regressors and the error term, leading to biased and inconsistent estimates.</p>
+<div id="sources-of-endogeneity" class="section level3 hasAnchor" number="1.5.1">
+<h3><span class="header-section-number">1.5.1</span> Sources of Endogeneity<a href="concepts.html#sources-of-endogeneity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><p><strong>Omitted Variable Bias</strong></p>
+<ul>
+<li>Leaving out a variable that affects both the independent and dependent variables.</li>
+<li>Its effect is absorbed into the error term, creating correlation between regressors and the error.</li>
+</ul></li>
+<li><p><strong>Measurement Error</strong></p>
+<ul>
+<li>If an explanatory variable is measured with error, the “true” regressor is correlated with the measurement error (which sits in the error term).</li>
+</ul></li>
+<li><p><strong>Simultaneity / Reverse Causality</strong></p>
+<ul>
+<li>When the independent variable and dependent variable influence each other.</li>
+<li>Example: advertising spend ↔︎ sales.</li>
+</ul></li>
+</ol>
+</div>
+<div id="consequences" class="section level3 hasAnchor" number="1.5.2">
+<h3><span class="header-section-number">1.5.2</span> Consequences<a href="concepts.html#consequences" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Biased estimates</strong>: Coefficients do not reflect the true causal effect.</p></li>
+<li><p><strong>Inconsistent estimates</strong>: Even with large samples, estimates don’t converge to the true parameter.</p></li>
+<li><p><strong>Threat to causal inference</strong>: We can’t trust the estimated treatment effect.</p></li>
+</ul>
+</div>
+<div id="solutions" class="section level3 hasAnchor" number="1.5.3">
+<h3><span class="header-section-number">1.5.3</span> Solutions<a href="concepts.html#solutions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><p><strong>Instrumental Variables (IV)</strong></p>
+<ul>
+<li><p>Find instruments correlated with the endogenous regressor but uncorrelated with the error term.</p></li>
+<li><p>Implement using <strong>Two-Stage Least Squares (2SLS)</strong>:</p>
+<ul>
+<li>Stage 1: Regress endogenous regressor on instruments.</li>
+<li>Stage 2: Use predicted values in the main regression.</li>
+</ul></li>
+</ul></li>
+<li><p><strong>Fixed Effects / Panel Data</strong></p>
+<ul>
+<li><p>Difference out time-invariant unobservables.</p></li>
+<li><p>Example: individual FE in panel regressions.</p></li>
+<li><p><strong>Difference-in-Differences (DiD)</strong> as a special case: compares changes over time across treated vs. control units.</p></li>
+</ul></li>
+<li><p><strong>Control Function Approach</strong></p>
+<ul>
+<li>Include the residuals from the first-stage regression as an extra regressor to soak up endogeneity.</li>
+</ul></li>
+<li><p><strong>Natural Experiments</strong></p>
+<ul>
+<li>Use exogenous shocks (policies, disasters, lotteries) that create variation unrelated to the error term.</li>
+</ul></li>
+</ol>
+</div>
+<div id="summary-1" class="section level3 hasAnchor" number="1.5.4">
+<h3><span class="header-section-number">1.5.4</span> Summary<a href="concepts.html#summary-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Endogeneity is essentially about <strong>regressors being “contaminated” by correlation with the error term</strong>.</p>
+<ul>
+<li>If present → OLS fails: biased + inconsistent.</li>
+<li>If addressed (via IV, FE, DiD, etc.) → we can recover causal effects.</li>
 </ul>
 </div>
 </div>
-<div id="homogenous-treatment-effect" class="section level2 hasAnchor" number="8.3">
-<h2><span class="header-section-number">8.3</span> Homogenous Treatment Effect<a href="instrumental-variables-iv.html#homogenous-treatment-effect" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="reduced-form-model" class="section level2 hasAnchor" number="1.6">
+<h2><span class="header-section-number">1.6</span> Reduced Form Model<a href="concepts.html#reduced-form-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Reduced Form Models</strong> refer to econometric models where the endogenous variables are expressed solely in terms of exogenous variables and error terms. These models simplify the relationship between variables by avoiding the need to specify the underlying structural model, focusing instead on the observed correlations.</p>
+<div id="characteristics-of-reduced-form-models" class="section level3 hasAnchor" number="1.6.1">
+<h3><span class="header-section-number">1.6.1</span> Characteristics of Reduced Form Models:<a href="concepts.html#characteristics-of-reduced-form-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><p><strong>Simplified Representation</strong>: Reduced form models express endogenous variables directly as functions of exogenous variables and error terms.</p></li>
+<li><p><strong>Focus on Exogeneity</strong>: They rely on exogenous variation to identify causal effects, avoiding direct specification of the structural relationships between variables.</p></li>
+</ol>
 </div>
-<div id="heterogenous-treatment-effect" class="section level2 hasAnchor" number="8.4">
-<h2><span class="header-section-number">8.4</span> Heterogenous Treatment Effect<a href="instrumental-variables-iv.html#heterogenous-treatment-effect" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Note that the treatment effect differes by individual i.</p>
-<p><span class="math display">\[Y^{1}_i - Y^{0}_i = \delta_i\]</span></p>
-<p>The main questions we have now are:</p>
+<div id="uses-of-reduced-form-models" class="section level3 hasAnchor" number="1.6.2">
+<h3><span class="header-section-number">1.6.2</span> Uses of Reduced Form Models:<a href="concepts.html#uses-of-reduced-form-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ol style="list-style-type: decimal">
-<li><p>what is IV estimating when we have heterogeneous treatment effects, and</p></li>
-<li><p>under what assumptions will IV identify a causal effect with heterogeneous treatment effects?</p></li>
+<li><p><strong>Policy Evaluation</strong>: Reduced form models are often used in policy evaluation to estimate the causal impact of policies by leveraging exogenous variation.</p></li>
+<li><p><strong>Instrumental Variables</strong>: In IV estimation, the first stage regression (predicting the endogenous variable with instruments) is a reduced form model.</p></li>
+<li><p><strong>Natural Experiments</strong>: Reduced form models are frequently used in natural experiments where exogenous shocks provide a source of variation.</p></li>
 </ol>
-<p>we introduce a distinction between the internal validity of a study and its external validity. Internal validity means our strategy identified a causal effect for the population we studied. But external validity means the study’s finding applied to different populations (not in the study).</p>
-<p>There are considerably more assumptions necessary for identification once we introduce heterogeneous treatment effects—specifically five assumptions.</p>
+</div>
+<div id="example-of-a-reduced-form-model" class="section level3 hasAnchor" number="1.6.3">
+<h3><span class="header-section-number">1.6.3</span> Example of a Reduced Form Model:<a href="concepts.html#example-of-a-reduced-form-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Suppose we want to estimate the impact of education (<span class="math inline">\(E\)</span>) on earnings (<span class="math inline">\(Y\)</span>):</p>
 <ol style="list-style-type: decimal">
-<li>A stable unit treatment value assumption (SUTVA) that states that the potential outcomes for each person are unrelated to the treatment status of other individuals.</li>
+<li><p><strong>Structural Model</strong>:
+<span class="math display">\[
+Y = \alpha + \beta E + \epsilon
+\]</span></p></li>
+<li><p><strong>Endogeneity Problem</strong>:</p>
+<ul>
+<li>Education (<span class="math inline">\(E\)</span>) might be endogenous due to omitted variables like ability or family background.</li>
+</ul></li>
+<li><p><strong>Reduced Form Model</strong>:</p>
+<ul>
+<li>Use an instrument <span class="math inline">\(Z\)</span> (e.g., proximity to a college) that affects education but is exogenous with respect to earnings:</li>
+</ul>
+<p><span class="math inline">\(E = \pi_0 + \pi_1 Z + \nu\)</span></p>
+<ul>
+<li>The reduced form equation for earnings in terms of the instrument:</li>
+</ul>
+<p><span class="math inline">\(Y = \gamma_0 + \gamma_1 Z + \eta\)</span></p></li>
 </ol>
-<p>2.The independence assumption. The independence assumption is also sometimes called the “as good as random assignment” assumption. It states that the IV is independent of the potential outcomes and potential treatment assignments.</p>
-<p>we can check pretreatment covariate balance.</p>
-<ol start="3" style="list-style-type: decimal">
-<li><p>There is the exclusion restriction. The exclusion restriction states that any effect of Z on Y must be via the effect of Z on D.</p></li>
-<li><p>First stage.</p></li>
-<li><p>The monotonicity assumption. Monotonicity requires that the instrumental variable (weakly) operate in the same direction on all individual units. In other words, while the instrument may have no effect on some people, all those who are affected are affected in the same direction (i.e., positively or negatively, but not both).</p></li>
+<p>Here, <span class="math inline">\(\gamma_1\)</span> provides an estimate of the causal effect of $ Z $ on $ Y $, which, under certain conditions, can be used to infer the effect of <span class="math inline">\(E\)</span> on <span class="math inline">\(Y\)</span> through <span class="math inline">\(Z\)</span>.</p>
+<p>In summary, understanding and addressing endogeneity is crucial for accurate causal inference in econometrics. Reduced form models provide a simplified framework to estimate relationships using exogenous variation, often serving as a preliminary step before more complex structural modeling.</p>
+</div>
+</div>
+<div id="standard-errors" class="section level2 hasAnchor" number="1.7">
+<h2><span class="header-section-number">1.7</span> Standard Errors<a href="concepts.html#standard-errors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Homoskedasticity Assumption</strong>:</p>
+<p>In linear regression, we assume that the variance of the error term is constant across all levels of the independent variables, i.e., <span class="math inline">\(Var(\epsilon | X) = \sigma^2\)</span>.</p>
+<p><strong>Violation</strong>: If there is heteroscedasticity (non-constant variance of errors), the OLS estimates remain unbiased, but they are no longer efficient, and the standard errors are biased, leading to unreliable hypothesis tests. Heteroscedasticity-Robust standard errors or Generalized Least Squares (GLS) can be used to address heteroscedasticity.</p>
+<ul>
+<li><p>Eiker-Huber-White: Heteroscedasticity-Robust standard errors</p></li>
+<li><p>Cluster-robust standard errors (geographic units)</p></li>
+<li><p>Without homoskedasticity assumption, OLS estimator will still be unbiased but not efficient. Robust standard error usage will not change the OLS estimator but will change the standard errors.</p></li>
+<li><p>Without constant variance, mean squared errors are not minimum anymore. Estimated standard errors are biased.</p></li>
+<li><p>In real life, errors will mostly be heteroskedastic</p></li>
+<li><p>Solution for heteroskedasticity is mostly known as ‘robust’ standard errors.</p></li>
+</ul>
+<div id="heteroskedasticity-consistent-standard-errors" class="section level3 hasAnchor" number="1.7.1">
+<h3><span class="header-section-number">1.7.1</span> heteroskedasticity-consistent standard errors<a href="concepts.html#heteroskedasticity-consistent-standard-errors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Also known as robust standard errors or The sandwich standard error estimator, is a technique used to obtain valid standard errors in the presence of heteroskedasticity. These standard errors are “robust” because they do not assume that the error terms have constant variance (homoscedasticity), making them useful for hypothesis testing and confidence intervals when the usual OLS assumptions are violated.</p>
+</div>
+<div id="why-use-sandwich-standard-errors" class="section level3 hasAnchor" number="1.7.2">
+<h3><span class="header-section-number">1.7.2</span> Why Use Sandwich Standard Errors?<a href="concepts.html#why-use-sandwich-standard-errors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In OLS regression, if the assumption of homoscedasticity is violated (i.e., the error variance is not constant), the usual standard errors of the estimated coefficients are biased. This bias can lead to incorrect inferences, such as invalid hypothesis tests and confidence intervals. Sandwich standard errors correct for this bias, providing more reliable inference.</p>
+<div id="how-it-works" class="section level4 hasAnchor" number="1.7.2.1">
+<h4><span class="header-section-number">1.7.2.1</span> How It Works<a href="concepts.html#how-it-works" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The sandwich estimator adjusts the standard errors of the OLS estimates to account for heteroscedasticity. The name “sandwich” comes from the structure of the formula, where the “bread” parts are the matrices that involve the model’s design matrix, and the “meat” part is a matrix involving the residuals.</p>
+</div>
+</div>
+<div id="clustering-standard-errors" class="section level3 hasAnchor" number="1.7.3">
+<h3><span class="header-section-number">1.7.3</span> Clustering Standard Errors<a href="concepts.html#clustering-standard-errors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>In the real world, though, you can never assume that errors are independent draws from the same distribution. You need to know how your variables were constructed in the first place in order to choose the correct error structure for calculating your standard errors. If you have aggregate variables, like class size, then you’ll need to cluster at that level. If some treatment occurred at the state level, then you’ll need to cluster at that level.</p></li>
+<li><p>When the units of analysis are clustered into groups and the researcher suspects that the errors are correlated within (but not across) groups, it may be appropriate to employ variance estimators that are robust to the clustered nature of the data.</p></li>
+<li><p>When we cluster standard errors at the state level, we allow for arbitrary serial correlation within state.</p></li>
+<li><p>multi way clustering</p></li>
+</ul>
+<div id="when-should-you-adjust-standard-errors-for-clustering" class="section level4 hasAnchor" number="1.7.3.1">
+<h4><span class="header-section-number">1.7.3.1</span> When Should You Adjust Standard Errors for Clustering?<a href="concepts.html#when-should-you-adjust-standard-errors-for-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li>Abadie et al 2022</li>
+</ul>
+<p>Formally, clustered standard errors adjust for the correlations induced by sampling the outcome variable from a data-generating process with unobserved cluster- level components.</p>
+<p><a href="https://blogs.worldbank.org/en/impactevaluations/when-should-you-cluster-standard-errors-new-wisdom-econometrics-oracle">Source</a></p>
+<p>The authors argue that there are two reasons for clustering standard errors:</p>
+<p>1- a sampling design reason, which arises because you have sampled data from a population using clustered sampling, and want to say something about the broader population;</p>
+<p>2- and an experimental design reason, where the assignment mechanism for some causal treatment of interest is clustered. Let me go through each in turn, by way of examples, and end with some of their takeaways.</p>
+<p><strong>A Sampling Design reason</strong></p>
+<p>Consider running a simple Mincer earnings regression of the form:
+Log(wages) = a + b<em>years of schooling + c</em>experience + d*experience^2 + e</p>
+<p>You present this model, and are deciding whether to cluster the standard errors. Referee 1 tells you “the wage residual is likely to be correlated within local labor markets, so you should cluster your standard errors by state or village.”. But referee 2 argues “The wage residual is likely to be correlated for people working in the same industry, so you should cluster your standard errors by industry”, and referee 3 argues that “the wage residual is likely to be correlated by age cohort, so you should cluster your standard errors by cohort”. What should you do?</p>
+<p>Under the sampling perspective, what matters for clustering is how the sample was selected and whether there are clusters in the population of interest that are not represented in the sample. So, we can imagine different scenarios here:</p>
+<ol style="list-style-type: decimal">
+<li><p>You want to say something about the association between schooling and wages in a particular population, and are using a random sample of workers from this population. Then there is no need to adjust the standard errors for clustering at all, even if clustering would change the standard errors.</p></li>
+<li><p>The sample was selected by randomly sampling 100 towns and villages from within the country, and then randomly sampling people in each; and your goal is to say something about the return to education in the overall population. Here you should cluster standard errors by village, since there are villages in the population of interest beyond those seen in the sample.</p></li>
+<li><p>This same logic makes it clear why you generally wouldn’t cluster by age cohort (it seems unlikely that we would randomly sample some age cohorts and not others, and then try and say something about all ages);</p></li>
+<li><p>and that we would only want to cluster by industry if the sample was drawn by randomly selecting a sample of industries, and then sampling individuals from within each.</p></li>
 </ol>
-<p>If all 5 assumptions hold truem then valid IV strategy estimates the <strong>local average treatment effect (LATE)</strong> of on D on Y.</p>
-<p>The <strong>LATE</strong> framework partitions the population of units with an instrument into potentially four mutually exclusive groups. Those groups are:</p>
-<p><strong>1. Compliers:</strong> This is the subpopulation whose treatment status is affected by the instrument in the correct direction. That is, <span class="math inline">\(D^{1}_i=1\)</span> and <span class="math inline">\(D^{0}_i=0\)</span>.</p>
-<p><strong>2. Defiers:</strong> This is the subpopulation whose treatment status is affected by the instrument in the wrong direction. That is, <span class="math inline">\(D^{1}_i=0\)</span> and <span class="math inline">\(D^{0}_i=1\)</span>.</p>
-<p><strong>3. Never takers:</strong> This is the subpopulation of units that never take the treatment regardless of the value of the instrument. So, <span class="math inline">\(D^{1}_i=D^{0}_i=0\)</span>. They simply never take the treatment</p>
-<p><strong>4. Always takers:</strong> This is the subpopulation of units that always take the treatment regardless of the value of the instrument. So, <span class="math inline">\(D^{1}_i=D^{0}_i=1\)</span>. They simply always take the instrument.</p>
-<p><strong>CAVEAT</strong></p>
-<p>With all five assumptions satisfied, IV estimates the average treatment effect for compliers, which is the parameter we’ve called the local average treatment effect.</p>
-<p>Without further assumptions, LATE is not informative about effects on never-takers or always-takers because the instrument does not affect their treatment status.</p>
-<p>It matters because in most applications, we would be mostly interested in estimating the average treatment effect on the whole population, but that’s not usually possible with IV.</p>
+<p>Even in the second case, Abadie et al. note that both the usual robust (Eicker-Huber-White or EHW) standard errors, and the clustered standard errors (which they call Liang-Zeger or LZ standard errors) can both be correct, it is just that they are correct for different estimands. That is, if you are content on just saying something about the particular sample of individuals you have, without trying to generalize to the population, the EHW standard errors are all you need; but if you want to say something about the broader population, the LZ standard errors are necessary.</p>
+<p><strong>The Experimental Design Reason for Clustering</strong></p>
+<p>The second reason for clustering is the one we are probably more familiar with, which is when clusters of units, rather than individual units, are assigned to a treatment. Let’s take the same equation as above, but assume that we have a binary treatment that assigns more schooling to people. So now we have:
+Log(wages) = a +b*Treatment + e</p>
+<p>Then if the treatment is assigned at the individual level, there is no need to cluster (*).</p>
+<p>There has been much confusion about this, as Chris Blattman explored in two earlier posts about this issue (the fabulously titled clusterjerk and clusterjerk the sequel), and I still occasionally get referees suggesting I try clustering by industry or something similar in an individually-randomized experiment. This Abadie et al. paper is now finally a good reference to explain why this is not necessary.</p>
+<p>(*) unless you are using multiple time periods, and then you will want to cluster by individual, since the unit of randomization is individual, and not individual-time period.</p>
+<p>What about if your treatment is assigned at the village level. Then cluster by village. This is also why you want to cluster difference-in-differences at the state-level when you have a source of variation that comes from differences across states, and why a “treatment” like being on one side of a border vs the other is problematic (because you have only 2 clusters).</p>
+</div>
+</div>
+</div>
+<div id="types-of-biases-in-econometrics-statistics" class="section level2 hasAnchor" number="1.8">
+<h2><span class="header-section-number">1.8</span> Types of Biases in Econometrics &amp; Statistics<a href="concepts.html#types-of-biases-in-econometrics-statistics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Bias occurs when estimates systematically deviate from the truth, threatening validity and reliability. Below are the main types, grouped by theme.</p>
+<div id="sample-selection-biases" class="section level3 hasAnchor" number="1.8.1">
+<h3><span class="header-section-number">1.8.1</span> Sample &amp; Selection Biases<a href="concepts.html#sample-selection-biases" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>Selection Bias</strong>: Sample is not representative because inclusion depends on outcome or treatment.
+<em>Example</em>: Studying education and earnings using only employed individuals.</li>
+<li><strong>Self-Selection Bias</strong>: Individuals choose into groups in non-random ways.
+<em>Example</em>: Motivated people opt into job training, biasing program effects.</li>
+<li><strong>Attrition Bias</strong>: Dropouts differ systematically from those who remain.
+<em>Example</em>: Only successful dieters remain in a long-term study.</li>
+<li><strong>Survivorship Bias</strong>: Only “survivors” are analyzed, failures ignored.
+<em>Example</em>: Measuring mutual fund returns using only funds still operating.</li>
+</ul>
+</div>
+<div id="specification-confounding-biases" class="section level3 hasAnchor" number="1.8.2">
+<h3><span class="header-section-number">1.8.2</span> Specification &amp; Confounding Biases<a href="concepts.html#specification-confounding-biases" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>Omitted Variable Bias</strong>: Leaving out a confounder that affects both X and Y.
+<em>Example</em>: Estimating education’s effect on wages without controlling for ability.</li>
+<li><strong>Confounding Bias</strong>: When the effect of X on Y is mixed with another variable’s effect.
+<em>Example</em>: Estimating smoking → lung cancer without controlling for age.</li>
+<li><strong>Endogeneity Bias</strong>: More general case where X is correlated with error term (due to omitted variables, measurement error, or simultaneity).</li>
+</ul>
+</div>
+<div id="measurement-response-biases" class="section level3 hasAnchor" number="1.8.3">
+<h3><span class="header-section-number">1.8.3</span> Measurement &amp; Response Biases<a href="concepts.html#measurement-response-biases" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>Measurement Bias</strong>: Variables measured incorrectly.
+<em>Systematic</em>: A scale always adds 2 lbs.
+<em>Random</em>: Data entry mistakes.</li>
+<li><strong>Recall Bias</strong>: Inaccurate memory of past events.
+<em>Example</em>: Patients misreport past diet.</li>
+<li><strong>Response Bias</strong>: Participants misreport due to social desirability or misunderstanding.
+<em>Example</em>: Underreporting alcohol use in surveys.</li>
+<li><strong>Observer Bias</strong>: Researcher expectations influence outcomes.
+<em>Example</em>: Therapist influences responses when testing a therapy.</li>
+</ul>
+</div>
+<div id="analytical-reporting-biases" class="section level3 hasAnchor" number="1.8.4">
+<h3><span class="header-section-number">1.8.4</span> Analytical &amp; Reporting Biases<a href="concepts.html#analytical-reporting-biases" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Publication Bias</strong>: Positive results more likely to be published.
+<em>Example</em>: Meta-analysis overstates effects because null results stay unpublished.</p></li>
+<li><p><strong>Overfitting Bias</strong>: Model fits noise in training data, fails to generalize.
+<em>Example</em>: Complex regression with too many parameters.</p></li>
+<li><p><strong>Confirmation Bias</strong>: Selectively seeking or interpreting evidence consistent with prior beliefs.</p></li>
+</ul>
+</div>
+<div id="addressing-bias" class="section level3 hasAnchor" number="1.8.5">
+<h3><span class="header-section-number">1.8.5</span> Addressing Bias<a href="concepts.html#addressing-bias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>Randomization</strong> → Prevents selection &amp; confounding bias.</li>
+<li><strong>Control Groups</strong> → Benchmark against counterfactual.</li>
+<li><strong>Instrumental Variables (IV)</strong> → Correct for endogeneity.</li>
+<li><strong>Panel Methods / DiD</strong> → Handle unobserved heterogeneity.</li>
+<li><strong>Propensity Score Matching (PSM)</strong> → Balance observed covariates in non-experimental data.</li>
+<li><strong>Heckman Selection Models</strong> → Correct for self-selection.</li>
+<li><strong>Blinding &amp; Survey Design</strong> → Reduce response and observer bias.</li>
+<li><strong>Robustness Checks &amp; Sensitivity Analyses</strong> → Test stability of results.</li>
+</ul>
+</div>
+</div>
+<div id="causality" class="section level2 hasAnchor" number="1.9">
+<h2><span class="header-section-number">1.9</span> Causality<a href="concepts.html#causality" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Let’s summarize the main definitions and perspectives so you can see them side by side:</p>
+<div id="counterfactual-potential-outcomes-definition" class="section level3 hasAnchor" number="1.9.1">
+<h3><span class="header-section-number">1.9.1</span> Counterfactual (Potential Outcomes) Definition<a href="concepts.html#counterfactual-potential-outcomes-definition" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Core idea</strong>: A cause is something that changes the outcome relative to what would have happened otherwise.</p></li>
+<li><p><strong>Formalized by</strong>: Rubin Causal Model (Neyman–Rubin framework).</p></li>
+<li><p><strong>Definition</strong>: Treatment <span class="math inline">\(T\)</span> causes outcome <span class="math inline">\(Y\)</span> if <span class="math inline">\(Y(1) \neq Y(0)\)</span>, where <span class="math inline">\(Y(1)\)</span> is the potential outcome if treated, and <span class="math inline">\(Y(0)\)</span> is the potential outcome if untreated.</p></li>
+<li><p><strong>Key Challenge</strong>: We never observe both <span class="math inline">\(Y(1)\)</span> and <span class="math inline">\(Y(0)\)</span> for the same individual → leads to the <strong>fundamental problem of causal inference</strong>.</p></li>
+</ul>
+</div>
+<div id="causal-graphs-structural-causal-models-dags" class="section level3 hasAnchor" number="1.9.2">
+<h3><span class="header-section-number">1.9.2</span> Causal Graphs (Structural Causal Models / DAGs)<a href="concepts.html#causal-graphs-structural-causal-models-dags" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Core idea</strong>: Causes are encoded in the structure of a system of equations or directed acyclic graphs (DAGs).</p></li>
+<li><p><strong>Formalized by</strong>: Judea Pearl (Structural Causal Models).</p></li>
+<li><p><strong>Definition</strong>: A variable <span class="math inline">\(X\)</span> is a cause of <span class="math inline">\(Y\)</span> if intervening on <span class="math inline">\(X\)</span> (via the “do” operator, <span class="math inline">\(\text{do}(X=x)\)</span>) changes the distribution of <span class="math inline">\(Y\)</span>.</p></li>
+<li><p><strong>Key Tool</strong>: Backdoor criterion, front-door criterion, do-calculus.</p></li>
+</ul>
+</div>
+<div id="experimental-interventionist-definition" class="section level3 hasAnchor" number="1.9.3">
+<h3><span class="header-section-number">1.9.3</span> Experimental (Interventionist) Definition<a href="concepts.html#experimental-interventionist-definition" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Core idea</strong>: A cause is something that can be manipulated and produces a systematic change in the outcome.</p></li>
+<li><p><strong>Philosophical basis</strong>: Interventionist theories (e.g., Woodward).</p></li>
+<li><p><strong>Definition</strong>: <span class="math inline">\(X\)</span> causes <span class="math inline">\(Y\)</span> if manipulating <span class="math inline">\(X\)</span> while holding everything else constant changes <span class="math inline">\(Y\)</span>.</p></li>
+<li><p><strong>Key Application</strong>: Randomized controlled trials (RCTs) embody this definition.</p></li>
+</ul>
+</div>
+<div id="econometric-definition" class="section level3 hasAnchor" number="1.9.4">
+<h3><span class="header-section-number">1.9.4</span> Econometric Definition<a href="concepts.html#econometric-definition" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Core idea</strong>: Causes are identified when changes in a regressor can be isolated as exogenous and not confounded.</p></li>
+<li><p><strong>Formalized by</strong>: Econometrics tradition (Haavelmo, Angrist &amp; Pischke).</p></li>
+<li><p><strong>Definition</strong>: <span class="math inline">\(X\)</span> causes <span class="math inline">\(Y\)</span> if variation in <span class="math inline">\(X\)</span> that is independent of confounders systematically shifts <span class="math inline">\(Y\)</span>.</p></li>
+<li><p><strong>Key Tools</strong>: IV, DiD, panel fixed effects, RCTs, natural experiments.</p></li>
+</ul>
+</div>
+<div id="philosophical-humean-regularity-definition" class="section level3 hasAnchor" number="1.9.5">
+<h3><span class="header-section-number">1.9.5</span> Philosophical (Humean / Regularity) Definition<a href="concepts.html#philosophical-humean-regularity-definition" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Core idea</strong>: A cause is something that is regularly followed by an effect.</p></li>
+<li><p><strong>David Hume’s view</strong>: “We may define a cause to be an object, followed by another, and where all the objects similar to the first are followed by objects similar to the second.”</p></li>
+<li><p><strong>Limitations</strong>: Regularity doesn’t distinguish correlation from causation.</p></li>
+</ul>
+</div>
+<div id="granger-causality-time-series" class="section level3 hasAnchor" number="1.9.6">
+<h3><span class="header-section-number">1.9.6</span> Granger Causality (Time Series)<a href="concepts.html#granger-causality-time-series" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><strong>Core idea</strong>: In time series, <span class="math inline">\(X\)</span> Granger-causes <span class="math inline">\(Y\)</span> if past values of <span class="math inline">\(X\)</span> improve predictions of <span class="math inline">\(Y\)</span> beyond past values of <span class="math inline">\(Y\)</span> alone.</p></li>
+<li><p><strong>Definition</strong>: <span class="math inline">\(X\)</span> Granger-causes <span class="math inline">\(Y\)</span> if <span class="math inline">\(P(Y\_t | Y\_{t-1}, X\_{t-1}) \neq P(Y\_t | Y\_{t-1})\)</span>.</p></li>
+<li><p><strong>Limitation</strong>: Not true causality—predictive, not structural.</p></li>
+</ul>
+</div>
+<div id="summary-table" class="section level3 hasAnchor" number="1.9.7">
+<h3><span class="header-section-number">1.9.7</span> Summary Table<a href="concepts.html#summary-table" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="15%" />
+<col width="31%" />
+<col width="22%" />
+<col width="29%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Definition</strong></th>
+<th><strong>Key Idea</strong></th>
+<th><strong>Main Advocates</strong></th>
+<th><strong>Limitations</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Counterfactual</td>
+<td>Compare <span class="math inline">\(Y(1)\)</span> vs. <span class="math inline">\(Y(0)\)</span></td>
+<td>Rubin, Neyman</td>
+<td>Missing data problem</td>
+</tr>
+<tr class="even">
+<td>Causal Graphs (SCM)</td>
+<td>Intervention via “do” operator</td>
+<td>Pearl</td>
+<td>Requires structural assumptions</td>
+</tr>
+<tr class="odd">
+<td>Experimental</td>
+<td>Manipulation changes outcomes</td>
+<td>Woodward, RCT tradition</td>
+<td>Not always feasible</td>
+</tr>
+<tr class="even">
+<td>Econometric</td>
+<td>Exogenous variation identifies effects</td>
+<td>Haavelmo, Angrist &amp; Pischke</td>
+<td>Depends on valid instruments/design</td>
+</tr>
+<tr class="odd">
+<td>Philosophical</td>
+<td>Constant conjunction / regularity</td>
+<td>Hume</td>
+<td>Doesn’t separate correlation</td>
+</tr>
+<tr class="even">
+<td>Granger Causality</td>
+<td>Predictive precedence in time</td>
+<td>Clive Granger</td>
+<td>Predictive, not structural</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>👉 <strong>Bottom line</strong>:</p>
+<ul>
+<li>In <strong>econometrics</strong>, we mostly rely on <strong>counterfactuals</strong> + <strong>exogenous variation (econometric definition)</strong>.</li>
+<li>In <strong>statistics</strong>, the <strong>Rubin model</strong> dominates.</li>
+<li>In <strong>computer science/AI</strong>, Pearl’s <strong>SCM/DAGs</strong> dominate.</li>
+<li>In <strong>time series</strong>, <strong>Granger causality</strong> is used, but cautiously.</li>
+</ul>
 
+</div>
 </div>
 </div>
             </section>
@@ -789,8 +1348,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="synthetic-control-method-scm.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="regression-discontinuity-designs-rdd.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="potential-outcomes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 11 Ordinary Least Squares (OLS) | Notes on Causal Models</title>
+  <title>Chapter 12 Ordinary Least Squares (OLS) | Notes on Causal Models</title>
   <meta name="description" content="This is a collection of notes from open sources" />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 11 Ordinary Least Squares (OLS) | Notes on Causal Models" />
+  <meta property="og:title" content="Chapter 12 Ordinary Least Squares (OLS) | Notes on Causal Models" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a collection of notes from open sources" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 11 Ordinary Least Squares (OLS) | Notes on Causal Models" />
+  <meta name="twitter:title" content="Chapter 12 Ordinary Least Squares (OLS) | Notes on Causal Models" />
   
   <meta name="twitter:description" content="This is a collection of notes from open sources" />
   
@@ -23,15 +23,15 @@
 <meta name="author" content="DEA" />
 
 
-<meta name="date" content="2024-08-30" />
+<meta name="date" content="2025-08-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="fixed-effects-and-panel-data-methods.html"/>
-<link rel="next" href="resampling-methods.html"/>
+<link rel="prev" href="doubledebiased-machine-learning-double-ml.html"/>
+<link rel="next" href="doubly-robust-methods.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -141,70 +141,77 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Acknowledgement</a></li>
-<li class="chapter" data-level="1" data-path="causal-models.html"><a href="causal-models.html"><i class="fa fa-check"></i><b>1</b> Causal Models</a>
+<li class="chapter" data-level="1" data-path="concepts.html"><a href="concepts.html"><i class="fa fa-check"></i><b>1</b> Concepts</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="causal-models.html"><a href="causal-models.html#concepts"><i class="fa fa-check"></i><b>1.1</b> Concepts</a>
+<li class="chapter" data-level="1.1" data-path="concepts.html"><a href="concepts.html#goodness-of-fit"><i class="fa fa-check"></i><b>1.1</b> Goodness of Fit</a>
 <ul>
-<li class="chapter" data-level="1.1.1" data-path="causal-models.html"><a href="causal-models.html#goodness-of-fit"><i class="fa fa-check"></i><b>1.1.1</b> Goodness of Fit</a></li>
-<li class="chapter" data-level="1.1.2" data-path="causal-models.html"><a href="causal-models.html#robustness-checks-and-validation-methods"><i class="fa fa-check"></i><b>1.1.2</b> Robustness checks and validation methods</a></li>
+<li class="chapter" data-level="1.1.1" data-path="concepts.html"><a href="concepts.html#r-squared-r2"><i class="fa fa-check"></i><b>1.1.1</b> R-squared (<span class="math inline">\(R^2\)</span>)</a></li>
+<li class="chapter" data-level="1.1.2" data-path="concepts.html"><a href="concepts.html#adjusted-r-squared"><i class="fa fa-check"></i><b>1.1.2</b> Adjusted R-squared</a></li>
+<li class="chapter" data-level="1.1.3" data-path="concepts.html"><a href="concepts.html#root-mean-squared-error-rmse-mean-absolute-error-mae"><i class="fa fa-check"></i><b>1.1.3</b> Root Mean Squared Error (RMSE) / Mean Absolute Error (MAE)</a></li>
+<li class="chapter" data-level="1.1.4" data-path="concepts.html"><a href="concepts.html#aic-bic-information-criteria"><i class="fa fa-check"></i><b>1.1.4</b> AIC / BIC (Information Criteria)</a></li>
+<li class="chapter" data-level="1.1.5" data-path="concepts.html"><a href="concepts.html#f-statistics-and-joint-significance-tests"><i class="fa fa-check"></i><b>1.1.5</b> F-statistics and Joint Significance Tests</a></li>
+<li class="chapter" data-level="1.1.6" data-path="concepts.html"><a href="concepts.html#balance-checks-causal-context"><i class="fa fa-check"></i><b>1.1.6</b> Balance Checks (Causal Context)</a></li>
+<li class="chapter" data-level="1.1.7" data-path="concepts.html"><a href="concepts.html#key-distinction-prediction-vs.-causality"><i class="fa fa-check"></i><b>1.1.7</b> Key Distinction: Prediction vs. Causality</a></li>
 </ul></li>
-<li class="chapter" data-level="1.2" data-path="causal-models.html"><a href="causal-models.html#directed-acyclic-graphs-dags"><i class="fa fa-check"></i><b>1.2</b> Directed Acyclic Graphs (DAGs)</a>
+<li class="chapter" data-level="1.2" data-path="concepts.html"><a href="concepts.html#validation-methods"><i class="fa fa-check"></i><b>1.2</b> Validation Methods</a>
 <ul>
-<li class="chapter" data-level="1.2.1" data-path="causal-models.html"><a href="causal-models.html#confounder"><i class="fa fa-check"></i><b>1.2.1</b> Confounder</a></li>
-<li class="chapter" data-level="1.2.2" data-path="causal-models.html"><a href="causal-models.html#collider"><i class="fa fa-check"></i><b>1.2.2</b> Collider</a></li>
-<li class="chapter" data-level="1.2.3" data-path="causal-models.html"><a href="causal-models.html#what-to-do"><i class="fa fa-check"></i><b>1.2.3</b> What to do</a></li>
-<li class="chapter" data-level="1.2.4" data-path="causal-models.html"><a href="causal-models.html#how-to-do"><i class="fa fa-check"></i><b>1.2.4</b> How to do</a></li>
+<li class="chapter" data-level="1.2.1" data-path="concepts.html"><a href="concepts.html#internal-validity"><i class="fa fa-check"></i><b>1.2.1</b> Internal Validity</a></li>
+<li class="chapter" data-level="1.2.2" data-path="concepts.html"><a href="concepts.html#external-validity"><i class="fa fa-check"></i><b>1.2.2</b> External Validity</a></li>
+<li class="chapter" data-level="1.2.3" data-path="concepts.html"><a href="concepts.html#robustness-checks"><i class="fa fa-check"></i><b>1.2.3</b> Robustness Checks</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="causal-models.html"><a href="causal-models.html#bad-controls"><i class="fa fa-check"></i><b>1.3</b> Bad Controls</a>
+<li class="chapter" data-level="1.3" data-path="concepts.html"><a href="concepts.html#directed-acyclic-graphs-dags"><i class="fa fa-check"></i><b>1.3</b> Directed Acyclic Graphs (DAGs)</a>
 <ul>
-<li class="chapter" data-level="1.3.1" data-path="causal-models.html"><a href="causal-models.html#key-points-on-bad-controls-by-joshua-angrist"><i class="fa fa-check"></i><b>1.3.1</b> Key Points on “Bad Controls” by Joshua Angrist:</a></li>
-<li class="chapter" data-level="1.3.2" data-path="causal-models.html"><a href="causal-models.html#example-from-angrist-and-pischkes-mostly-harmless-econometrics"><i class="fa fa-check"></i><b>1.3.2</b> Example from Angrist and Pischke’s “Mostly Harmless Econometrics”:</a></li>
-<li class="chapter" data-level="1.3.3" data-path="causal-models.html"><a href="causal-models.html#practical-advice"><i class="fa fa-check"></i><b>1.3.3</b> Practical Advice:</a></li>
-<li class="chapter" data-level="1.3.4" data-path="causal-models.html"><a href="causal-models.html#summary"><i class="fa fa-check"></i><b>1.3.4</b> Summary:</a></li>
-<li class="chapter" data-level="1.3.5" data-path="causal-models.html"><a href="causal-models.html#unobserved-variable-affecting-only-the-dependent-variable"><i class="fa fa-check"></i><b>1.3.5</b> Unobserved Variable Affecting Only the Dependent Variable</a></li>
+<li class="chapter" data-level="1.3.1" data-path="concepts.html"><a href="concepts.html#confounder"><i class="fa fa-check"></i><b>1.3.1</b> Confounder</a></li>
+<li class="chapter" data-level="1.3.2" data-path="concepts.html"><a href="concepts.html#collider"><i class="fa fa-check"></i><b>1.3.2</b> Collider</a></li>
+<li class="chapter" data-level="1.3.3" data-path="concepts.html"><a href="concepts.html#what-to-do-and-how-to-do-it"><i class="fa fa-check"></i><b>1.3.3</b> What To Do and How To Do It</a></li>
+<li class="chapter" data-level="1.3.4" data-path="concepts.html"><a href="concepts.html#example-sample-selection-and-collider-bias"><i class="fa fa-check"></i><b>1.3.4</b> Example: Sample Selection and collider bias</a></li>
 </ul></li>
-<li class="chapter" data-level="1.4" data-path="causal-models.html"><a href="causal-models.html#external-and-internal-validity-in-econometrics"><i class="fa fa-check"></i><b>1.4</b> External and Internal Validity in Econometrics</a>
+<li class="chapter" data-level="1.4" data-path="concepts.html"><a href="concepts.html#bad-controls"><i class="fa fa-check"></i><b>1.4</b> Bad Controls</a>
 <ul>
-<li class="chapter" data-level="1.4.1" data-path="causal-models.html"><a href="causal-models.html#internal-validity"><i class="fa fa-check"></i><b>1.4.1</b> Internal Validity</a></li>
-<li class="chapter" data-level="1.4.2" data-path="causal-models.html"><a href="causal-models.html#external-validity"><i class="fa fa-check"></i><b>1.4.2</b> External Validity</a></li>
-<li class="chapter" data-level="1.4.3" data-path="causal-models.html"><a href="causal-models.html#balancing-internal-and-external-validity"><i class="fa fa-check"></i><b>1.4.3</b> Balancing Internal and External Validity</a></li>
+<li class="chapter" data-level="1.4.1" data-path="concepts.html"><a href="concepts.html#definition"><i class="fa fa-check"></i><b>1.4.1</b> Definition</a></li>
+<li class="chapter" data-level="1.4.2" data-path="concepts.html"><a href="concepts.html#why-theyre-problematic"><i class="fa fa-check"></i><b>1.4.2</b> Why They’re Problematic</a></li>
+<li class="chapter" data-level="1.4.3" data-path="concepts.html"><a href="concepts.html#examples"><i class="fa fa-check"></i><b>1.4.3</b> Examples</a></li>
+<li class="chapter" data-level="1.4.4" data-path="concepts.html"><a href="concepts.html#identifying-good-vs.-bad-controls"><i class="fa fa-check"></i><b>1.4.4</b> Identifying Good vs. Bad Controls</a></li>
+<li class="chapter" data-level="1.4.5" data-path="concepts.html"><a href="concepts.html#best-practices"><i class="fa fa-check"></i><b>1.4.5</b> Best Practices</a></li>
+<li class="chapter" data-level="1.4.6" data-path="concepts.html"><a href="concepts.html#practical-advice"><i class="fa fa-check"></i><b>1.4.6</b> Practical Advice</a></li>
+<li class="chapter" data-level="1.4.7" data-path="concepts.html"><a href="concepts.html#unobserved-variable-affecting-only-the-dependent-variable"><i class="fa fa-check"></i><b>1.4.7</b> Unobserved Variable Affecting Only the Dependent Variable</a></li>
 </ul></li>
-<li class="chapter" data-level="1.5" data-path="causal-models.html"><a href="causal-models.html#endogeneity"><i class="fa fa-check"></i><b>1.5</b> Endogeneity</a>
+<li class="chapter" data-level="1.5" data-path="concepts.html"><a href="concepts.html#endogeneity"><i class="fa fa-check"></i><b>1.5</b> Endogeneity</a>
 <ul>
-<li class="chapter" data-level="1.5.1" data-path="causal-models.html"><a href="causal-models.html#sources-of-endogeneity"><i class="fa fa-check"></i><b>1.5.1</b> Sources of Endogeneity:</a></li>
-<li class="chapter" data-level="1.5.2" data-path="causal-models.html"><a href="causal-models.html#consequences-of-endogeneity"><i class="fa fa-check"></i><b>1.5.2</b> Consequences of Endogeneity:</a></li>
-<li class="chapter" data-level="1.5.3" data-path="causal-models.html"><a href="causal-models.html#methods-to-address-endogeneity"><i class="fa fa-check"></i><b>1.5.3</b> Methods to Address Endogeneity:</a></li>
+<li class="chapter" data-level="1.5.1" data-path="concepts.html"><a href="concepts.html#sources-of-endogeneity"><i class="fa fa-check"></i><b>1.5.1</b> Sources of Endogeneity</a></li>
+<li class="chapter" data-level="1.5.2" data-path="concepts.html"><a href="concepts.html#consequences"><i class="fa fa-check"></i><b>1.5.2</b> Consequences</a></li>
+<li class="chapter" data-level="1.5.3" data-path="concepts.html"><a href="concepts.html#solutions"><i class="fa fa-check"></i><b>1.5.3</b> Solutions</a></li>
+<li class="chapter" data-level="1.5.4" data-path="concepts.html"><a href="concepts.html#summary-1"><i class="fa fa-check"></i><b>1.5.4</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="1.6" data-path="causal-models.html"><a href="causal-models.html#reduced-form-model"><i class="fa fa-check"></i><b>1.6</b> Reduced Form Model</a>
+<li class="chapter" data-level="1.6" data-path="concepts.html"><a href="concepts.html#reduced-form-model"><i class="fa fa-check"></i><b>1.6</b> Reduced Form Model</a>
 <ul>
-<li class="chapter" data-level="1.6.1" data-path="causal-models.html"><a href="causal-models.html#characteristics-of-reduced-form-models"><i class="fa fa-check"></i><b>1.6.1</b> Characteristics of Reduced Form Models:</a></li>
-<li class="chapter" data-level="1.6.2" data-path="causal-models.html"><a href="causal-models.html#uses-of-reduced-form-models"><i class="fa fa-check"></i><b>1.6.2</b> Uses of Reduced Form Models:</a></li>
-<li class="chapter" data-level="1.6.3" data-path="causal-models.html"><a href="causal-models.html#example-of-a-reduced-form-model"><i class="fa fa-check"></i><b>1.6.3</b> Example of a Reduced Form Model:</a></li>
+<li class="chapter" data-level="1.6.1" data-path="concepts.html"><a href="concepts.html#characteristics-of-reduced-form-models"><i class="fa fa-check"></i><b>1.6.1</b> Characteristics of Reduced Form Models:</a></li>
+<li class="chapter" data-level="1.6.2" data-path="concepts.html"><a href="concepts.html#uses-of-reduced-form-models"><i class="fa fa-check"></i><b>1.6.2</b> Uses of Reduced Form Models:</a></li>
+<li class="chapter" data-level="1.6.3" data-path="concepts.html"><a href="concepts.html#example-of-a-reduced-form-model"><i class="fa fa-check"></i><b>1.6.3</b> Example of a Reduced Form Model:</a></li>
 </ul></li>
-<li class="chapter" data-level="1.7" data-path="causal-models.html"><a href="causal-models.html#standard-errors"><i class="fa fa-check"></i><b>1.7</b> Standard Errors</a>
+<li class="chapter" data-level="1.7" data-path="concepts.html"><a href="concepts.html#standard-errors"><i class="fa fa-check"></i><b>1.7</b> Standard Errors</a>
 <ul>
-<li class="chapter" data-level="1.7.1" data-path="causal-models.html"><a href="causal-models.html#heteroskedasticity-consistent-standard-errors"><i class="fa fa-check"></i><b>1.7.1</b> heteroskedasticity-consistent standard errors</a></li>
-<li class="chapter" data-level="1.7.2" data-path="causal-models.html"><a href="causal-models.html#why-use-sandwich-standard-errors"><i class="fa fa-check"></i><b>1.7.2</b> Why Use Sandwich Standard Errors?</a></li>
-<li class="chapter" data-level="1.7.3" data-path="causal-models.html"><a href="causal-models.html#clustering-standard-errors"><i class="fa fa-check"></i><b>1.7.3</b> Clustering Standard Errors</a></li>
+<li class="chapter" data-level="1.7.1" data-path="concepts.html"><a href="concepts.html#heteroskedasticity-consistent-standard-errors"><i class="fa fa-check"></i><b>1.7.1</b> heteroskedasticity-consistent standard errors</a></li>
+<li class="chapter" data-level="1.7.2" data-path="concepts.html"><a href="concepts.html#why-use-sandwich-standard-errors"><i class="fa fa-check"></i><b>1.7.2</b> Why Use Sandwich Standard Errors?</a></li>
+<li class="chapter" data-level="1.7.3" data-path="concepts.html"><a href="concepts.html#clustering-standard-errors"><i class="fa fa-check"></i><b>1.7.3</b> Clustering Standard Errors</a></li>
 </ul></li>
-<li class="chapter" data-level="1.8" data-path="causal-models.html"><a href="causal-models.html#types-of-biases"><i class="fa fa-check"></i><b>1.8</b> Types of Biases</a>
+<li class="chapter" data-level="1.8" data-path="concepts.html"><a href="concepts.html#types-of-biases-in-econometrics-statistics"><i class="fa fa-check"></i><b>1.8</b> Types of Biases in Econometrics &amp; Statistics</a>
 <ul>
-<li class="chapter" data-level="1.8.1" data-path="causal-models.html"><a href="causal-models.html#selection-bias"><i class="fa fa-check"></i><b>1.8.1</b> 1. Selection Bias</a></li>
-<li class="chapter" data-level="1.8.2" data-path="causal-models.html"><a href="causal-models.html#omitted-variable-bias"><i class="fa fa-check"></i><b>1.8.2</b> 2. Omitted Variable Bias</a></li>
-<li class="chapter" data-level="1.8.3" data-path="causal-models.html"><a href="causal-models.html#measurement-bias"><i class="fa fa-check"></i><b>1.8.3</b> 3. Measurement Bias</a></li>
-<li class="chapter" data-level="1.8.4" data-path="causal-models.html"><a href="causal-models.html#response-bias"><i class="fa fa-check"></i><b>1.8.4</b> 4. Response Bias</a></li>
-<li class="chapter" data-level="1.8.5" data-path="causal-models.html"><a href="causal-models.html#attrition-bias"><i class="fa fa-check"></i><b>1.8.5</b> 5. Attrition Bias</a></li>
-<li class="chapter" data-level="1.8.6" data-path="causal-models.html"><a href="causal-models.html#publication-bias"><i class="fa fa-check"></i><b>1.8.6</b> 6. Publication Bias</a></li>
-<li class="chapter" data-level="1.8.7" data-path="causal-models.html"><a href="causal-models.html#survivorship-bias"><i class="fa fa-check"></i><b>1.8.7</b> 7. Survivorship Bias</a></li>
-<li class="chapter" data-level="1.8.8" data-path="causal-models.html"><a href="causal-models.html#recall-bias"><i class="fa fa-check"></i><b>1.8.8</b> 8. Recall Bias</a></li>
-<li class="chapter" data-level="1.8.9" data-path="causal-models.html"><a href="causal-models.html#confirmation-bias"><i class="fa fa-check"></i><b>1.8.9</b> 9. Confirmation Bias</a></li>
-<li class="chapter" data-level="1.8.10" data-path="causal-models.html"><a href="causal-models.html#confounding-bias"><i class="fa fa-check"></i><b>1.8.10</b> 10. Confounding Bias</a></li>
-<li class="chapter" data-level="1.8.11" data-path="causal-models.html"><a href="causal-models.html#endogeneity-bias"><i class="fa fa-check"></i><b>1.8.11</b> 11. Endogeneity Bias</a></li>
-<li class="chapter" data-level="1.8.12" data-path="causal-models.html"><a href="causal-models.html#non-response-bias"><i class="fa fa-check"></i><b>1.8.12</b> 12. Non-Response Bias</a></li>
-<li class="chapter" data-level="1.8.13" data-path="causal-models.html"><a href="causal-models.html#observer-bias"><i class="fa fa-check"></i><b>1.8.13</b> 13. Observer Bias</a></li>
-<li class="chapter" data-level="1.8.14" data-path="causal-models.html"><a href="causal-models.html#overfitting-bias"><i class="fa fa-check"></i><b>1.8.14</b> 14. Overfitting Bias</a></li>
-<li class="chapter" data-level="1.8.15" data-path="causal-models.html"><a href="causal-models.html#addressing-biases"><i class="fa fa-check"></i><b>1.8.15</b> Addressing Biases</a></li>
-<li class="chapter" data-level="1.8.16" data-path="causal-models.html"><a href="causal-models.html#self-selection-bias"><i class="fa fa-check"></i><b>1.8.16</b> Self-Selection Bias</a></li>
+<li class="chapter" data-level="1.8.1" data-path="concepts.html"><a href="concepts.html#sample-selection-biases"><i class="fa fa-check"></i><b>1.8.1</b> Sample &amp; Selection Biases</a></li>
+<li class="chapter" data-level="1.8.2" data-path="concepts.html"><a href="concepts.html#specification-confounding-biases"><i class="fa fa-check"></i><b>1.8.2</b> Specification &amp; Confounding Biases</a></li>
+<li class="chapter" data-level="1.8.3" data-path="concepts.html"><a href="concepts.html#measurement-response-biases"><i class="fa fa-check"></i><b>1.8.3</b> Measurement &amp; Response Biases</a></li>
+<li class="chapter" data-level="1.8.4" data-path="concepts.html"><a href="concepts.html#analytical-reporting-biases"><i class="fa fa-check"></i><b>1.8.4</b> Analytical &amp; Reporting Biases</a></li>
+<li class="chapter" data-level="1.8.5" data-path="concepts.html"><a href="concepts.html#addressing-bias"><i class="fa fa-check"></i><b>1.8.5</b> Addressing Bias</a></li>
+</ul></li>
+<li class="chapter" data-level="1.9" data-path="concepts.html"><a href="concepts.html#causality"><i class="fa fa-check"></i><b>1.9</b> Causality</a>
+<ul>
+<li class="chapter" data-level="1.9.1" data-path="concepts.html"><a href="concepts.html#counterfactual-potential-outcomes-definition"><i class="fa fa-check"></i><b>1.9.1</b> Counterfactual (Potential Outcomes) Definition</a></li>
+<li class="chapter" data-level="1.9.2" data-path="concepts.html"><a href="concepts.html#causal-graphs-structural-causal-models-dags"><i class="fa fa-check"></i><b>1.9.2</b> Causal Graphs (Structural Causal Models / DAGs)</a></li>
+<li class="chapter" data-level="1.9.3" data-path="concepts.html"><a href="concepts.html#experimental-interventionist-definition"><i class="fa fa-check"></i><b>1.9.3</b> Experimental (Interventionist) Definition</a></li>
+<li class="chapter" data-level="1.9.4" data-path="concepts.html"><a href="concepts.html#econometric-definition"><i class="fa fa-check"></i><b>1.9.4</b> Econometric Definition</a></li>
+<li class="chapter" data-level="1.9.5" data-path="concepts.html"><a href="concepts.html#philosophical-humean-regularity-definition"><i class="fa fa-check"></i><b>1.9.5</b> Philosophical (Humean / Regularity) Definition</a></li>
+<li class="chapter" data-level="1.9.6" data-path="concepts.html"><a href="concepts.html#granger-causality-time-series"><i class="fa fa-check"></i><b>1.9.6</b> Granger Causality (Time Series)</a></li>
+<li class="chapter" data-level="1.9.7" data-path="concepts.html"><a href="concepts.html#summary-table"><i class="fa fa-check"></i><b>1.9.7</b> Summary Table</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="potential-outcomes.html"><a href="potential-outcomes.html"><i class="fa fa-check"></i><b>2</b> Potential Outcomes</a>
@@ -225,7 +232,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.4" data-path="potential-outcomes.html"><a href="potential-outcomes.html#example"><i class="fa fa-check"></i><b>2.4</b> Example</a>
 <ul>
 <li class="chapter" data-level="2.4.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#simple-difference-method"><i class="fa fa-check"></i><b>2.4.1</b> Simple Difference Method</a></li>
-<li class="chapter" data-level="2.4.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#conclusion-1"><i class="fa fa-check"></i><b>2.4.2</b> Conclusion</a></li>
+<li class="chapter" data-level="2.4.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#conclusion"><i class="fa fa-check"></i><b>2.4.2</b> Conclusion</a></li>
 </ul></li>
 <li class="chapter" data-level="2.5" data-path="potential-outcomes.html"><a href="potential-outcomes.html#on-how-parameters-are-calculated"><i class="fa fa-check"></i><b>2.5</b> On how parameters are calculated</a>
 <ul>
@@ -246,7 +253,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.2.1" data-path="matching.html"><a href="matching.html#explanation"><i class="fa fa-check"></i><b>3.2.1</b> Explanation</a></li>
 <li class="chapter" data-level="3.2.2" data-path="matching.html"><a href="matching.html#example-3"><i class="fa fa-check"></i><b>3.2.2</b> Example</a></li>
-<li class="chapter" data-level="3.2.3" data-path="matching.html"><a href="matching.html#conclusion-2"><i class="fa fa-check"></i><b>3.2.3</b> Conclusion</a></li>
+<li class="chapter" data-level="3.2.3" data-path="matching.html"><a href="matching.html#conclusion-1"><i class="fa fa-check"></i><b>3.2.3</b> Conclusion</a></li>
 </ul></li>
 <li class="chapter" data-level="3.3" data-path="matching.html"><a href="matching.html#approximate-matching-methods"><i class="fa fa-check"></i><b>3.3</b> Approximate Matching Methods</a>
 <ul>
@@ -300,16 +307,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.3.4" data-path="ab-testing.html"><a href="ab-testing.html#significance"><i class="fa fa-check"></i><b>5.3.4</b> Significance</a></li>
 <li class="chapter" data-level="5.3.5" data-path="ab-testing.html"><a href="ab-testing.html#group-size"><i class="fa fa-check"></i><b>5.3.5</b> Group Size</a></li>
 <li class="chapter" data-level="5.3.6" data-path="ab-testing.html"><a href="ab-testing.html#relationship-between-effect-size-significance-and-group-size"><i class="fa fa-check"></i><b>5.3.6</b> Relationship Between Effect Size, Significance, and Group Size</a></li>
-<li class="chapter" data-level="5.3.7" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-3"><i class="fa fa-check"></i><b>5.3.7</b> Conclusion</a></li>
+<li class="chapter" data-level="5.3.7" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-2"><i class="fa fa-check"></i><b>5.3.7</b> Conclusion</a></li>
 </ul></li>
 <li class="chapter" data-level="5.4" data-path="ab-testing.html"><a href="ab-testing.html#size-of-the-control-group"><i class="fa fa-check"></i><b>5.4</b> Size of the Control Group</a>
 <ul>
 <li class="chapter" data-level="5.4.1" data-path="ab-testing.html"><a href="ab-testing.html#sample-size-calculation-formula"><i class="fa fa-check"></i><b>5.4.1</b> Sample Size Calculation Formula</a></li>
-<li class="chapter" data-level="5.4.2" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-4"><i class="fa fa-check"></i><b>5.4.2</b> Conclusion</a></li>
+<li class="chapter" data-level="5.4.2" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-3"><i class="fa fa-check"></i><b>5.4.2</b> Conclusion</a></li>
 <li class="chapter" data-level="5.4.3" data-path="ab-testing.html"><a href="ab-testing.html#statistical-assumptions-for-randomized-controlled-trials-rcts"><i class="fa fa-check"></i><b>5.4.3</b> Statistical Assumptions for Randomized Controlled Trials (RCTs)</a></li>
 <li class="chapter" data-level="5.4.4" data-path="ab-testing.html"><a href="ab-testing.html#robustness-checks-1"><i class="fa fa-check"></i><b>5.4.4</b> Robustness Checks</a></li>
 <li class="chapter" data-level="5.4.5" data-path="ab-testing.html"><a href="ab-testing.html#validation-methods-1"><i class="fa fa-check"></i><b>5.4.5</b> Validation Methods</a></li>
-<li class="chapter" data-level="5.4.6" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-5"><i class="fa fa-check"></i><b>5.4.6</b> Conclusion</a></li>
+<li class="chapter" data-level="5.4.6" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-4"><i class="fa fa-check"></i><b>5.4.6</b> Conclusion</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html"><i class="fa fa-check"></i><b>6</b> Difference-in-Differences (DiD) Methods</a>
@@ -337,26 +344,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.9.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#example-business"><i class="fa fa-check"></i><b>6.9.1</b> Example: Business</a></li>
 </ul></li>
 <li class="chapter" data-level="6.10" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#extra-considerations"><i class="fa fa-check"></i><b>6.10</b> Extra Considerations</a></li>
-<li class="chapter" data-level="6.11" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#synthetic-difference-in-differences-synthdid-method"><i class="fa fa-check"></i><b>6.11</b> Synthetic Difference-in-Differences (SynthDiD) method</a></li>
-<li class="chapter" data-level="6.12" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#doubly-robust-models-in-econometrics"><i class="fa fa-check"></i><b>6.12</b> Doubly Robust Models in Econometrics</a>
+<li class="chapter" data-level="6.11" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#synthetic-difference-in-differences-synthdid-method"><i class="fa fa-check"></i><b>6.11</b> Synthetic Difference-in-Differences (SynthDiD) method</a>
 <ul>
-<li class="chapter" data-level="6.12.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-concepts-3"><i class="fa fa-check"></i><b>6.12.1</b> Key Concepts</a></li>
-<li class="chapter" data-level="6.12.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#steps-in-doubly-robust-estimation"><i class="fa fa-check"></i><b>6.12.2</b> Steps in Doubly Robust Estimation</a></li>
-<li class="chapter" data-level="6.12.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#advantages-1"><i class="fa fa-check"></i><b>6.12.3</b> Advantages</a></li>
-<li class="chapter" data-level="6.12.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#examples-and-applications"><i class="fa fa-check"></i><b>6.12.4</b> Examples and Applications</a></li>
-<li class="chapter" data-level="6.12.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#assumptions-and-considerations-1"><i class="fa fa-check"></i><b>6.12.5</b> Assumptions and Considerations</a></li>
-<li class="chapter" data-level="6.12.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-6"><i class="fa fa-check"></i><b>6.12.6</b> Conclusion</a></li>
+<li class="chapter" data-level="6.11.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#introduction"><i class="fa fa-check"></i><b>6.11.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.11.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#what-problem-it-solves"><i class="fa fa-check"></i><b>6.11.2</b> What problem it solves</a></li>
+<li class="chapter" data-level="6.11.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#how-it-works-intuition"><i class="fa fa-check"></i><b>6.11.3</b> How it works (intuition)</a></li>
+<li class="chapter" data-level="6.11.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#how-it-differs-from-related-methods"><i class="fa fa-check"></i><b>6.11.4</b> How it differs from related methods</a></li>
+<li class="chapter" data-level="6.11.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#when-to-use"><i class="fa fa-check"></i><b>6.11.5</b> When to use</a></li>
+<li class="chapter" data-level="6.11.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#assumptions-why-its-appealing"><i class="fa fa-check"></i><b>6.11.6</b> Assumptions (why it’s appealing)</a></li>
+<li class="chapter" data-level="6.11.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#inference-diagnostics"><i class="fa fa-check"></i><b>6.11.7</b> Inference &amp; diagnostics</a></li>
+<li class="chapter" data-level="6.11.8" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#pros-cons"><i class="fa fa-check"></i><b>6.11.8</b> Pros / Cons</a></li>
+<li class="chapter" data-level="6.11.9" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#tldr-contrast"><i class="fa fa-check"></i><b>6.11.9</b> TL;DR (contrast)</a></li>
+<li class="chapter" data-level="6.11.10" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#an-example"><i class="fa fa-check"></i><b>6.11.10</b> An Example:</a></li>
+<li class="chapter" data-level="6.11.11" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-5"><i class="fa fa-check"></i><b>6.11.11</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.12" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#doubly-robust-difference-in-differences"><i class="fa fa-check"></i><b>6.12</b> Doubly Robust Difference in Differences</a>
+<ul>
+<li class="chapter" data-level="6.12.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#details"><i class="fa fa-check"></i><b>6.12.1</b> Details</a></li>
 </ul></li>
 <li class="chapter" data-level="6.13" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#twoway-fixed-effects-with-differential-timing"><i class="fa fa-check"></i><b>6.13</b> Twoway Fixed Effects with Differential Timing</a></li>
 <li class="chapter" data-level="6.14" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#bacon-decomposition"><i class="fa fa-check"></i><b>6.14</b> Bacon Decomposition</a>
 <ul>
 <li class="chapter" data-level="6.14.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#overview"><i class="fa fa-check"></i><b>6.14.1</b> Overview</a></li>
-<li class="chapter" data-level="6.14.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-concepts-4"><i class="fa fa-check"></i><b>6.14.2</b> Key Concepts</a></li>
+<li class="chapter" data-level="6.14.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-concepts-3"><i class="fa fa-check"></i><b>6.14.2</b> Key Concepts</a></li>
 <li class="chapter" data-level="6.14.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#components-of-bacon-decomposition"><i class="fa fa-check"></i><b>6.14.3</b> Components of Bacon Decomposition</a></li>
 <li class="chapter" data-level="6.14.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#formula-for-decomposition"><i class="fa fa-check"></i><b>6.14.4</b> Formula for Decomposition</a></li>
 <li class="chapter" data-level="6.14.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#implications-and-interpretation"><i class="fa fa-check"></i><b>6.14.5</b> Implications and Interpretation</a></li>
 <li class="chapter" data-level="6.14.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#example-8"><i class="fa fa-check"></i><b>6.14.6</b> Example</a></li>
-<li class="chapter" data-level="6.14.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-7"><i class="fa fa-check"></i><b>6.14.7</b> Conclusion</a></li>
+<li class="chapter" data-level="6.14.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-6"><i class="fa fa-check"></i><b>6.14.7</b> Conclusion</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html"><i class="fa fa-check"></i><b>7</b> Synthetic Control Method (SCM)</a>
@@ -367,14 +382,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.1.2" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#placebo-tests"><i class="fa fa-check"></i><b>7.1.2</b> Placebo tests</a></li>
 <li class="chapter" data-level="7.1.3" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>7.1.3</b> Leave-One-Out Cross-Validation</a></li>
 <li class="chapter" data-level="7.1.4" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#detailed-example"><i class="fa fa-check"></i><b>7.1.4</b> Detailed Example</a></li>
-<li class="chapter" data-level="7.1.5" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-9"><i class="fa fa-check"></i><b>7.1.5</b> Conclusion</a></li>
+<li class="chapter" data-level="7.1.5" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-8"><i class="fa fa-check"></i><b>7.1.5</b> Conclusion</a></li>
 <li class="chapter" data-level="7.1.6" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data"><i class="fa fa-check"></i><b>7.1.6</b> Data</a></li>
 <li class="chapter" data-level="7.1.7" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data-setting"><i class="fa fa-check"></i><b>7.1.7</b> Data Setting</a></li>
 <li class="chapter" data-level="7.1.8" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#requirements-for-synthetic-control-method"><i class="fa fa-check"></i><b>7.1.8</b> Requirements for Synthetic Control Method</a></li>
 <li class="chapter" data-level="7.1.9" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data-requirements-summary"><i class="fa fa-check"></i><b>7.1.9</b> Data Requirements Summary</a></li>
-<li class="chapter" data-level="7.1.10" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#practical-considerations-1"><i class="fa fa-check"></i><b>7.1.10</b> Practical Considerations</a></li>
+<li class="chapter" data-level="7.1.10" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#practical-considerations"><i class="fa fa-check"></i><b>7.1.10</b> Practical Considerations</a></li>
 <li class="chapter" data-level="7.1.11" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#example-11"><i class="fa fa-check"></i><b>7.1.11</b> Example</a></li>
-<li class="chapter" data-level="7.1.12" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-10"><i class="fa fa-check"></i><b>7.1.12</b> Conclusion</a></li>
+<li class="chapter" data-level="7.1.12" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-9"><i class="fa fa-check"></i><b>7.1.12</b> Conclusion</a></li>
 <li class="chapter" data-level="7.1.13" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#synthetic-did"><i class="fa fa-check"></i><b>7.1.13</b> Synthetic DID</a></li>
 <li class="chapter" data-level="7.1.14" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#robustness-checks-3"><i class="fa fa-check"></i><b>7.1.14</b> Robustness Checks</a></li>
 <li class="chapter" data-level="7.1.15" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#validation-methods-3"><i class="fa fa-check"></i><b>7.1.15</b> Validation Methods</a></li>
@@ -382,15 +397,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html"><i class="fa fa-check"></i><b>8</b> Instrumental Variables (IV)</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#key-concepts-5"><i class="fa fa-check"></i><b>8.1</b> Key Concepts</a>
+<li class="chapter" data-level="8.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#key-concepts-4"><i class="fa fa-check"></i><b>8.1</b> Key Concepts</a>
 <ul>
 <li class="chapter" data-level="8.1.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#requirements-for-a-valid-instrument"><i class="fa fa-check"></i><b>8.1.1</b> Requirements for a Valid Instrument</a></li>
 <li class="chapter" data-level="8.1.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#the-iv-estimation-process"><i class="fa fa-check"></i><b>8.1.2</b> The IV Estimation Process</a></li>
 <li class="chapter" data-level="8.1.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#example-12"><i class="fa fa-check"></i><b>8.1.3</b> Example</a></li>
-<li class="chapter" data-level="8.1.4" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#assumptions-and-considerations-2"><i class="fa fa-check"></i><b>8.1.4</b> Assumptions and Considerations</a></li>
+<li class="chapter" data-level="8.1.4" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#assumptions-and-considerations-1"><i class="fa fa-check"></i><b>8.1.4</b> Assumptions and Considerations</a></li>
 <li class="chapter" data-level="8.1.5" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#advantages-of-iv"><i class="fa fa-check"></i><b>8.1.5</b> Advantages of IV</a></li>
 <li class="chapter" data-level="8.1.6" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#disadvantages-of-iv"><i class="fa fa-check"></i><b>8.1.6</b> Disadvantages of IV</a></li>
-<li class="chapter" data-level="8.1.7" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#conclusion-11"><i class="fa fa-check"></i><b>8.1.7</b> Conclusion</a></li>
+<li class="chapter" data-level="8.1.7" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#conclusion-10"><i class="fa fa-check"></i><b>8.1.7</b> Conclusion</a></li>
 </ul></li>
 <li class="chapter" data-level="8.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#difference-between-instrumental-variable-iv-method-and-two-stage-least-squares-2sls-method"><i class="fa fa-check"></i><b>8.2</b> Difference Between Instrumental Variable (IV) Method and Two-Stage Least Squares (2SLS) Method</a>
 <ul>
@@ -405,21 +420,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="9.0.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#validation-and-falsification"><i class="fa fa-check"></i><b>9.0.1</b> Validation and Falsification</a></li>
 <li class="chapter" data-level="9.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#regression-discontinuity-designs-rdd-1"><i class="fa fa-check"></i><b>9.1</b> Regression Discontinuity Designs (RDD)</a></li>
-<li class="chapter" data-level="9.2" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-6"><i class="fa fa-check"></i><b>9.2</b> Key Concepts</a>
+<li class="chapter" data-level="9.2" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-5"><i class="fa fa-check"></i><b>9.2</b> Key Concepts</a>
 <ul>
 <li class="chapter" data-level="9.2.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#types-of-rdd"><i class="fa fa-check"></i><b>9.2.1</b> Types of RDD</a></li>
 </ul></li>
 <li class="chapter" data-level="9.3" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#sharp-rdd"><i class="fa fa-check"></i><b>9.3</b> Sharp RDD</a>
 <ul>
-<li class="chapter" data-level="9.3.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-7"><i class="fa fa-check"></i><b>9.3.1</b> Key Concepts</a></li>
+<li class="chapter" data-level="9.3.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-6"><i class="fa fa-check"></i><b>9.3.1</b> Key Concepts</a></li>
 <li class="chapter" data-level="9.3.2" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#assumptions-for-rdd"><i class="fa fa-check"></i><b>9.3.2</b> Assumptions for RDD</a></li>
 <li class="chapter" data-level="9.3.3" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#estimation-in-sharp-rdd"><i class="fa fa-check"></i><b>9.3.3</b> Estimation in Sharp RDD</a></li>
 <li class="chapter" data-level="9.3.4" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#fuzzy-rdd"><i class="fa fa-check"></i><b>9.3.4</b> Fuzzy RDD</a></li>
 <li class="chapter" data-level="9.3.5" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications"><i class="fa fa-check"></i><b>9.3.5</b> Parametric vs. Non-Parametric Applications</a></li>
 <li class="chapter" data-level="9.3.6" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#example-13"><i class="fa fa-check"></i><b>9.3.6</b> Example</a></li>
-<li class="chapter" data-level="9.3.7" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#summary-2"><i class="fa fa-check"></i><b>9.3.7</b> Summary</a></li>
+<li class="chapter" data-level="9.3.7" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#summary-3"><i class="fa fa-check"></i><b>9.3.7</b> Summary</a></li>
 <li class="chapter" data-level="9.3.8" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#challenges-to-identification"><i class="fa fa-check"></i><b>9.3.8</b> Challenges to Identification</a></li>
-<li class="chapter" data-level="9.3.9" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#examples"><i class="fa fa-check"></i><b>9.3.9</b> Examples</a></li>
+<li class="chapter" data-level="9.3.9" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#examples-1"><i class="fa fa-check"></i><b>9.3.9</b> Examples</a></li>
 <li class="chapter" data-level="9.3.10" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#types-of-rdd-1"><i class="fa fa-check"></i><b>9.3.10</b> Types of RDD</a></li>
 <li class="chapter" data-level="9.3.11" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications-1"><i class="fa fa-check"></i><b>9.3.11</b> Parametric vs. Non-Parametric Applications</a></li>
 </ul></li>
@@ -433,85 +448,149 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.2.1" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#fixed-effects-model"><i class="fa fa-check"></i><b>10.2.1</b> Fixed Effects Model</a></li>
 <li class="chapter" data-level="10.2.2" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#random-effects-model"><i class="fa fa-check"></i><b>10.2.2</b> Random Effects Model</a></li>
 <li class="chapter" data-level="10.2.3" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#example-economic-growth-and-education"><i class="fa fa-check"></i><b>10.2.3</b> Example: Economic Growth and Education</a></li>
-<li class="chapter" data-level="10.2.4" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#conclusion-12"><i class="fa fa-check"></i><b>10.2.4</b> Conclusion</a></li>
+<li class="chapter" data-level="10.2.4" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#conclusion-11"><i class="fa fa-check"></i><b>10.2.4</b> Conclusion</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html"><i class="fa fa-check"></i><b>11</b> Ordinary Least Squares (OLS)</a>
+<li class="chapter" data-level="11" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html"><i class="fa fa-check"></i><b>11</b> Double/Debiased Machine Learning (Double ML)</a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#ordinary-least-squares-ols-1"><i class="fa fa-check"></i><b>11.1</b> Ordinary Least Squares (OLS)</a>
+<li class="chapter" data-level="11.1" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#motivation"><i class="fa fa-check"></i><b>11.1</b> Motivation</a></li>
+<li class="chapter" data-level="11.2" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#key-components"><i class="fa fa-check"></i><b>11.2</b> Key Components</a>
 <ul>
-<li class="chapter" data-level="11.1.1" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#linearity"><i class="fa fa-check"></i><b>11.1.1</b> <strong>Linearity</strong></a></li>
-<li class="chapter" data-level="11.1.2" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#exogeneity"><i class="fa fa-check"></i><b>11.1.2</b> <strong>Exogeneity</strong></a></li>
-<li class="chapter" data-level="11.1.3" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#homoscedasticity"><i class="fa fa-check"></i><b>11.1.3</b> <strong>Homoscedasticity</strong></a></li>
-<li class="chapter" data-level="11.1.4" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#no-autocorrelation"><i class="fa fa-check"></i><b>11.1.4</b> <strong>No Autocorrelation</strong></a></li>
-<li class="chapter" data-level="11.1.5" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#no-perfect-multicollinearity"><i class="fa fa-check"></i><b>11.1.5</b> <strong>No Perfect Multicollinearity</strong></a></li>
-<li class="chapter" data-level="11.1.6" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#normality-of-errors-for-inference"><i class="fa fa-check"></i><b>11.1.6</b> <strong>Normality of Errors (for inference)</strong></a></li>
-<li class="chapter" data-level="11.1.7" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#practical-considerations-and-tests"><i class="fa fa-check"></i><b>11.1.7</b> Practical Considerations and Tests</a></li>
+<li class="chapter" data-level="11.2.1" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#practical-workflow"><i class="fa fa-check"></i><b>11.2.1</b> Practical Workflow</a></li>
+<li class="chapter" data-level="11.2.2" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#use-case-example"><i class="fa fa-check"></i><b>11.2.2</b> Use Case Example</a></li>
+<li class="chapter" data-level="11.2.3" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#advantages-1"><i class="fa fa-check"></i><b>11.2.3</b> Advantages</a></li>
+<li class="chapter" data-level="11.2.4" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#key-reference"><i class="fa fa-check"></i><b>11.2.4</b> Key Reference</a></li>
 </ul></li>
-<li class="chapter" data-level="11.2" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#simple-linear-regression"><i class="fa fa-check"></i><b>11.2</b> Simple Linear Regression</a>
+</ul></li>
+<li class="chapter" data-level="12" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html"><i class="fa fa-check"></i><b>12</b> Ordinary Least Squares (OLS)</a>
 <ul>
-<li class="chapter" data-level="11.2.1" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#summary-3"><i class="fa fa-check"></i><b>11.2.1</b> Summary</a></li>
-<li class="chapter" data-level="11.2.2" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#interpreting-model-coefficients-in-ols-models"><i class="fa fa-check"></i><b>11.2.2</b> Interpreting Model Coefficients in OLS Models</a></li>
-<li class="chapter" data-level="11.2.3" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#linear-models-linear-linear"><i class="fa fa-check"></i><b>11.2.3</b> 1. Linear Models (Linear-Linear)</a></li>
-<li class="chapter" data-level="11.2.4" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#log-linear-models"><i class="fa fa-check"></i><b>11.2.4</b> 2. Log-Linear Models</a></li>
-<li class="chapter" data-level="11.2.5" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#linear-log-models"><i class="fa fa-check"></i><b>11.2.5</b> 3. Linear-Log Models</a></li>
-<li class="chapter" data-level="11.2.6" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#log-log-models"><i class="fa fa-check"></i><b>11.2.6</b> 4. Log-Log Models</a></li>
-<li class="chapter" data-level="11.2.7" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#examples-of-dummy-and-continuous-variables"><i class="fa fa-check"></i><b>11.2.7</b> Examples of Dummy and Continuous Variables</a></li>
-<li class="chapter" data-level="11.2.8" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#assumptions-and-considerations-3"><i class="fa fa-check"></i><b>11.2.8</b> Assumptions and Considerations</a></li>
-</ul></li>
-<li class="chapter" data-level="11.3" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#multivariate-regression"><i class="fa fa-check"></i><b>11.3</b> Multivariate Regression</a></li>
-<li class="chapter" data-level="11.4" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#generalized-linear-model"><i class="fa fa-check"></i><b>11.4</b> Generalized Linear Model</a></li>
-<li class="chapter" data-level="11.5" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#generalised-least-square"><i class="fa fa-check"></i><b>11.5</b> Generalised Least Square</a></li>
-<li class="chapter" data-level="11.6" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#weighted-least-squares-wls"><i class="fa fa-check"></i><b>11.6</b> Weighted Least Squares (WLS)</a></li>
-</ul></li>
-<li class="chapter" data-level="12" data-path="resampling-methods.html"><a href="resampling-methods.html"><i class="fa fa-check"></i><b>12</b> Resampling methods</a>
+<li class="chapter" data-level="12.1" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#ordinary-least-squares-ols-1"><i class="fa fa-check"></i><b>12.1</b> Ordinary Least Squares (OLS)</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="resampling-methods.html"><a href="resampling-methods.html#randomization-based-methods"><i class="fa fa-check"></i><b>12.1</b> Randomization-Based Methods</a>
+<li class="chapter" data-level="12.1.1" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#linearity"><i class="fa fa-check"></i><b>12.1.1</b> <strong>Linearity</strong></a></li>
+<li class="chapter" data-level="12.1.2" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#exogeneity"><i class="fa fa-check"></i><b>12.1.2</b> <strong>Exogeneity</strong></a></li>
+<li class="chapter" data-level="12.1.3" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#homoscedasticity"><i class="fa fa-check"></i><b>12.1.3</b> <strong>Homoscedasticity</strong></a></li>
+<li class="chapter" data-level="12.1.4" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#no-autocorrelation"><i class="fa fa-check"></i><b>12.1.4</b> <strong>No Autocorrelation</strong></a></li>
+<li class="chapter" data-level="12.1.5" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#no-perfect-multicollinearity"><i class="fa fa-check"></i><b>12.1.5</b> <strong>No Perfect Multicollinearity</strong></a></li>
+<li class="chapter" data-level="12.1.6" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#normality-of-errors-for-inference"><i class="fa fa-check"></i><b>12.1.6</b> <strong>Normality of Errors (for inference)</strong></a></li>
+<li class="chapter" data-level="12.1.7" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#practical-considerations-and-tests"><i class="fa fa-check"></i><b>12.1.7</b> Practical Considerations and Tests</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#simple-linear-regression"><i class="fa fa-check"></i><b>12.2</b> Simple Linear Regression</a>
 <ul>
-<li class="chapter" data-level="12.1.1" data-path="resampling-methods.html"><a href="resampling-methods.html#traditional-methods-vs.-randomization-based-methods"><i class="fa fa-check"></i><b>12.1.1</b> Traditional Methods vs. Randomization-Based Methods</a></li>
-<li class="chapter" data-level="12.1.2" data-path="resampling-methods.html"><a href="resampling-methods.html#why-use-randomization-based-methods"><i class="fa fa-check"></i><b>12.1.2</b> Why Use Randomization-Based Methods?</a></li>
-<li class="chapter" data-level="12.1.3" data-path="resampling-methods.html"><a href="resampling-methods.html#how-randomization-based-methods-work"><i class="fa fa-check"></i><b>12.1.3</b> How Randomization-Based Methods Work</a></li>
-<li class="chapter" data-level="12.1.4" data-path="resampling-methods.html"><a href="resampling-methods.html#example-14"><i class="fa fa-check"></i><b>12.1.4</b> Example</a></li>
-<li class="chapter" data-level="12.1.5" data-path="resampling-methods.html"><a href="resampling-methods.html#contribution-of-athey-and-imbens"><i class="fa fa-check"></i><b>12.1.5</b> Contribution of Athey and Imbens</a></li>
+<li class="chapter" data-level="12.2.1" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#summary-4"><i class="fa fa-check"></i><b>12.2.1</b> Summary</a></li>
+<li class="chapter" data-level="12.2.2" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#interpreting-model-coefficients-in-ols-models"><i class="fa fa-check"></i><b>12.2.2</b> Interpreting Model Coefficients in OLS Models</a></li>
+<li class="chapter" data-level="12.2.3" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#linear-models-linear-linear"><i class="fa fa-check"></i><b>12.2.3</b> 1. Linear Models (Linear-Linear)</a></li>
+<li class="chapter" data-level="12.2.4" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#log-linear-models"><i class="fa fa-check"></i><b>12.2.4</b> 2. Log-Linear Models</a></li>
+<li class="chapter" data-level="12.2.5" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#linear-log-models"><i class="fa fa-check"></i><b>12.2.5</b> 3. Linear-Log Models</a></li>
+<li class="chapter" data-level="12.2.6" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#log-log-models"><i class="fa fa-check"></i><b>12.2.6</b> 4. Log-Log Models</a></li>
+<li class="chapter" data-level="12.2.7" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#examples-of-dummy-and-continuous-variables"><i class="fa fa-check"></i><b>12.2.7</b> Examples of Dummy and Continuous Variables</a></li>
+<li class="chapter" data-level="12.2.8" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#assumptions-and-considerations-2"><i class="fa fa-check"></i><b>12.2.8</b> Assumptions and Considerations</a></li>
 </ul></li>
-<li class="chapter" data-level="12.2" data-path="resampling-methods.html"><a href="resampling-methods.html#bootstrapping-1"><i class="fa fa-check"></i><b>12.2</b> Bootstrapping</a></li>
+<li class="chapter" data-level="12.3" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#multivariate-regression"><i class="fa fa-check"></i><b>12.3</b> Multivariate Regression</a></li>
+<li class="chapter" data-level="12.4" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#generalized-linear-model"><i class="fa fa-check"></i><b>12.4</b> Generalized Linear Model</a></li>
+<li class="chapter" data-level="12.5" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#generalised-least-square"><i class="fa fa-check"></i><b>12.5</b> Generalised Least Square</a></li>
+<li class="chapter" data-level="12.6" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#weighted-least-squares-wls"><i class="fa fa-check"></i><b>12.6</b> Weighted Least Squares (WLS)</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html"><i class="fa fa-check"></i><b>13</b> Hypotheis Testing</a>
+<li class="chapter" data-level="13" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html"><i class="fa fa-check"></i><b>13</b> Doubly Robust Methods</a>
 <ul>
-<li class="chapter" data-level="13.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#concepts-3"><i class="fa fa-check"></i><b>13.1</b> Concepts</a>
+<li class="chapter" data-level="13.1" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#why-they-matter"><i class="fa fa-check"></i><b>13.1</b> Why They Matter</a></li>
+<li class="chapter" data-level="13.2" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#core-ingredients"><i class="fa fa-check"></i><b>13.2</b> Core Ingredients</a></li>
+<li class="chapter" data-level="13.3" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#more-on-outcome-models-for-treated-and-control"><i class="fa fa-check"></i><b>13.3</b> More on Outcome Models for Treated and Control</a>
 <ul>
-<li class="chapter" data-level="13.1.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#significance-level-α"><i class="fa fa-check"></i><b>13.1.1</b> Significance Level (α)</a></li>
-<li class="chapter" data-level="13.1.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#p-value"><i class="fa fa-check"></i><b>13.1.2</b> P-Value</a></li>
-<li class="chapter" data-level="13.1.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-i-error"><i class="fa fa-check"></i><b>13.1.3</b> Type I Error</a></li>
-<li class="chapter" data-level="13.1.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-ii-error"><i class="fa fa-check"></i><b>13.1.4</b> Type II Error</a></li>
-<li class="chapter" data-level="13.1.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#relationship-between-type-i-and-type-ii-errors"><i class="fa fa-check"></i><b>13.1.5</b> Relationship Between Type I and Type II Errors</a></li>
-<li class="chapter" data-level="13.1.6" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#importance-in-research-and-decision-making"><i class="fa fa-check"></i><b>13.1.6</b> Importance in Research and Decision Making</a></li>
-<li class="chapter" data-level="13.1.7" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#statistical-power"><i class="fa fa-check"></i><b>13.1.7</b> Statistical power</a></li>
+<li class="chapter" data-level="13.3.1" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#why-some-articles-emphasize-separate-models"><i class="fa fa-check"></i><b>13.3.1</b> Why Some Articles Emphasize Separate Models</a></li>
+<li class="chapter" data-level="13.3.2" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#key-point"><i class="fa fa-check"></i><b>13.3.2</b> Key Point</a></li>
+<li class="chapter" data-level="13.3.3" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#takeaway-for-your-notebook"><i class="fa fa-check"></i><b>13.3.3</b> Takeaway for Your Notebook</a></li>
 </ul></li>
-<li class="chapter" data-level="13.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#null-hypothesis"><i class="fa fa-check"></i><b>13.2</b> Null Hypothesis</a>
+<li class="chapter" data-level="13.4" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#advantages-2"><i class="fa fa-check"></i><b>13.4</b> Advantages</a></li>
+<li class="chapter" data-level="13.5" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#assumptions-2"><i class="fa fa-check"></i><b>13.5</b> Assumptions</a></li>
+<li class="chapter" data-level="13.6" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#example-applications"><i class="fa fa-check"></i><b>13.6</b> Example Applications</a></li>
+<li class="chapter" data-level="13.7" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#summary-5"><i class="fa fa-check"></i><b>13.7</b> Summary</a></li>
+<li class="chapter" data-level="13.8" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#extension-dr-in-difference-in-differences-drdid"><i class="fa fa-check"></i><b>13.8</b> Extension: DR in Difference-in-Differences (DRDID)</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="resampling-methods.html"><a href="resampling-methods.html"><i class="fa fa-check"></i><b>14</b> Resampling methods</a>
 <ul>
-<li class="chapter" data-level="13.2.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fishers-sharp-null-hypothesis"><i class="fa fa-check"></i><b>13.2.1</b> Fisher’s Sharp Null Hypothesis</a></li>
-<li class="chapter" data-level="13.2.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#neymans-null-hypothesis"><i class="fa fa-check"></i><b>13.2.2</b> Neyman’s Null Hypothesis</a></li>
-<li class="chapter" data-level="13.2.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#key-differences"><i class="fa fa-check"></i><b>13.2.3</b> Key Differences</a></li>
-<li class="chapter" data-level="13.2.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-to-illustrate-the-difference"><i class="fa fa-check"></i><b>13.2.4</b> Example to Illustrate the Difference</a></li>
-<li class="chapter" data-level="13.2.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-13"><i class="fa fa-check"></i><b>13.2.5</b> Conclusion</a></li>
-</ul></li>
-<li class="chapter" data-level="13.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#permutation-tests"><i class="fa fa-check"></i><b>13.3</b> Permutation Tests</a>
+<li class="chapter" data-level="14.1" data-path="resampling-methods.html"><a href="resampling-methods.html#randomization-based-methods"><i class="fa fa-check"></i><b>14.1</b> Randomization-Based Methods</a>
 <ul>
-<li class="chapter" data-level="13.3.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-and-why-to-use-permutation-tests"><i class="fa fa-check"></i><b>13.3.1</b> When and Why to Use Permutation Tests</a></li>
-<li class="chapter" data-level="13.3.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-to-perform-a-permutation-test"><i class="fa fa-check"></i><b>13.3.2</b> How to Perform a Permutation Test</a></li>
-<li class="chapter" data-level="13.3.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-calculation"><i class="fa fa-check"></i><b>13.3.3</b> Example Calculation</a></li>
-<li class="chapter" data-level="13.3.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-14"><i class="fa fa-check"></i><b>13.3.4</b> Conclusion</a></li>
+<li class="chapter" data-level="14.1.1" data-path="resampling-methods.html"><a href="resampling-methods.html#traditional-methods-vs.-randomization-based-methods"><i class="fa fa-check"></i><b>14.1.1</b> Traditional Methods vs. Randomization-Based Methods</a></li>
+<li class="chapter" data-level="14.1.2" data-path="resampling-methods.html"><a href="resampling-methods.html#why-use-randomization-based-methods"><i class="fa fa-check"></i><b>14.1.2</b> Why Use Randomization-Based Methods?</a></li>
+<li class="chapter" data-level="14.1.3" data-path="resampling-methods.html"><a href="resampling-methods.html#how-randomization-based-methods-work"><i class="fa fa-check"></i><b>14.1.3</b> How Randomization-Based Methods Work</a></li>
+<li class="chapter" data-level="14.1.4" data-path="resampling-methods.html"><a href="resampling-methods.html#example-14"><i class="fa fa-check"></i><b>14.1.4</b> Example</a></li>
+<li class="chapter" data-level="14.1.5" data-path="resampling-methods.html"><a href="resampling-methods.html#contribution-of-athey-and-imbens"><i class="fa fa-check"></i><b>14.1.5</b> Contribution of Athey and Imbens</a></li>
 </ul></li>
-<li class="chapter" data-level="13.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fischers-exact-test"><i class="fa fa-check"></i><b>13.4</b> Fischer’s Exact Test</a>
+<li class="chapter" data-level="14.2" data-path="resampling-methods.html"><a href="resampling-methods.html#bootstrapping-1"><i class="fa fa-check"></i><b>14.2</b> Bootstrapping</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html"><i class="fa fa-check"></i><b>15</b> Hypotheis Testing</a>
 <ul>
-<li class="chapter" data-level="13.4.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-to-use-fishers-exact-test"><i class="fa fa-check"></i><b>13.4.1</b> When to Use Fisher’s Exact Test</a></li>
-<li class="chapter" data-level="13.4.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-fishers-exact-test-works"><i class="fa fa-check"></i><b>13.4.2</b> How Fisher’s Exact Test Works</a></li>
-<li class="chapter" data-level="13.4.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#step-by-step-example-1"><i class="fa fa-check"></i><b>13.4.3</b> Step-by-Step Example</a></li>
-<li class="chapter" data-level="13.4.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-15"><i class="fa fa-check"></i><b>13.4.4</b> Conclusion</a></li>
+<li class="chapter" data-level="15.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#concepts-3"><i class="fa fa-check"></i><b>15.1</b> Concepts</a>
+<ul>
+<li class="chapter" data-level="15.1.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#significance-level-α"><i class="fa fa-check"></i><b>15.1.1</b> Significance Level (α)</a></li>
+<li class="chapter" data-level="15.1.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#p-value"><i class="fa fa-check"></i><b>15.1.2</b> P-Value</a></li>
+<li class="chapter" data-level="15.1.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-i-error"><i class="fa fa-check"></i><b>15.1.3</b> Type I Error</a></li>
+<li class="chapter" data-level="15.1.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-ii-error"><i class="fa fa-check"></i><b>15.1.4</b> Type II Error</a></li>
+<li class="chapter" data-level="15.1.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#relationship-between-type-i-and-type-ii-errors"><i class="fa fa-check"></i><b>15.1.5</b> Relationship Between Type I and Type II Errors</a></li>
+<li class="chapter" data-level="15.1.6" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#importance-in-research-and-decision-making"><i class="fa fa-check"></i><b>15.1.6</b> Importance in Research and Decision Making</a></li>
+<li class="chapter" data-level="15.1.7" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#statistical-power"><i class="fa fa-check"></i><b>15.1.7</b> Statistical power</a></li>
+</ul></li>
+<li class="chapter" data-level="15.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#null-hypothesis"><i class="fa fa-check"></i><b>15.2</b> Null Hypothesis</a>
+<ul>
+<li class="chapter" data-level="15.2.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fishers-sharp-null-hypothesis"><i class="fa fa-check"></i><b>15.2.1</b> Fisher’s Sharp Null Hypothesis</a></li>
+<li class="chapter" data-level="15.2.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#neymans-null-hypothesis"><i class="fa fa-check"></i><b>15.2.2</b> Neyman’s Null Hypothesis</a></li>
+<li class="chapter" data-level="15.2.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#key-differences"><i class="fa fa-check"></i><b>15.2.3</b> Key Differences</a></li>
+<li class="chapter" data-level="15.2.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-to-illustrate-the-difference"><i class="fa fa-check"></i><b>15.2.4</b> Example to Illustrate the Difference</a></li>
+<li class="chapter" data-level="15.2.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-12"><i class="fa fa-check"></i><b>15.2.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="15.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#permutation-tests"><i class="fa fa-check"></i><b>15.3</b> Permutation Tests</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-and-why-to-use-permutation-tests"><i class="fa fa-check"></i><b>15.3.1</b> When and Why to Use Permutation Tests</a></li>
+<li class="chapter" data-level="15.3.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-to-perform-a-permutation-test"><i class="fa fa-check"></i><b>15.3.2</b> How to Perform a Permutation Test</a></li>
+<li class="chapter" data-level="15.3.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-calculation"><i class="fa fa-check"></i><b>15.3.3</b> Example Calculation</a></li>
+<li class="chapter" data-level="15.3.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-13"><i class="fa fa-check"></i><b>15.3.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="15.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fischers-exact-test"><i class="fa fa-check"></i><b>15.4</b> Fischer’s Exact Test</a>
+<ul>
+<li class="chapter" data-level="15.4.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-to-use-fishers-exact-test"><i class="fa fa-check"></i><b>15.4.1</b> When to Use Fisher’s Exact Test</a></li>
+<li class="chapter" data-level="15.4.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-fishers-exact-test-works"><i class="fa fa-check"></i><b>15.4.2</b> How Fisher’s Exact Test Works</a></li>
+<li class="chapter" data-level="15.4.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#step-by-step-example-1"><i class="fa fa-check"></i><b>15.4.3</b> Step-by-Step Example</a></li>
+<li class="chapter" data-level="15.4.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-14"><i class="fa fa-check"></i><b>15.4.4</b> Conclusion</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="maximum-likelihood-estimation.html"><a href="maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>14</b> Maximum Likelihood Estimation</a></li>
+<li class="chapter" data-level="16" data-path="maximum-likelihood-estimation.html"><a href="maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>16</b> Maximum Likelihood Estimation</a></li>
+<li class="chapter" data-level="17" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html"><i class="fa fa-check"></i><b>17</b> Amazon Economist - Case Study - 2024</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#concept-2"><i class="fa fa-check"></i><b>17.1</b> Concept</a></li>
+<li class="chapter" data-level="17.2" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#the-scenario"><i class="fa fa-check"></i><b>17.2</b> 📦 The Scenario</a></li>
+<li class="chapter" data-level="17.3" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#step-1-clarify-the-business-question-and-data"><i class="fa fa-check"></i><b>17.3</b> Step 1: Clarify the Business Question and Data</a></li>
+<li class="chapter" data-level="17.4" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#step-2-possible-evaluation-designs-tech-breadth"><i class="fa fa-check"></i><b>17.4</b> Step 2: Possible Evaluation Designs (Tech Breadth)</a>
+<ul>
+<li class="chapter" data-level="17.4.1" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#randomized-controlled-trial-rct"><i class="fa fa-check"></i><b>17.4.1</b> <strong>Randomized Controlled Trial (RCT)</strong></a></li>
+<li class="chapter" data-level="17.4.2" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#difference-in-differences-did"><i class="fa fa-check"></i><b>17.4.2</b> <strong>Difference-in-Differences (DiD)</strong></a></li>
+<li class="chapter" data-level="17.4.3" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#event-study-staggered-adoption"><i class="fa fa-check"></i><b>17.4.3</b> <strong>Event Study / Staggered Adoption</strong></a></li>
+<li class="chapter" data-level="17.4.4" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#synthetic-control"><i class="fa fa-check"></i><b>17.4.4</b> <strong>Synthetic Control</strong></a></li>
+<li class="chapter" data-level="17.4.5" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#propensity-score-matching-reweighting"><i class="fa fa-check"></i><b>17.4.5</b> <strong>Propensity Score Matching / Reweighting</strong></a></li>
+<li class="chapter" data-level="17.4.6" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#instrumental-variables-iv-if-spillovers-or-selection-bias-is-a-concern."><i class="fa fa-check"></i><b>17.4.6</b> <strong>Instrumental Variables (IV)</strong> (if spillovers or selection bias is a concern).</a></li>
+</ul></li>
+<li class="chapter" data-level="17.5" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#step-3-tech-depth-example-with-difference-in-differences"><i class="fa fa-check"></i><b>17.5</b> Step 3: Tech Depth — Example with <strong>Difference-in-Differences</strong></a></li>
+<li class="chapter" data-level="17.6" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#step-3-with-rcts"><i class="fa fa-check"></i><b>17.6</b> Step 3 with RCTs</a>
+<ul>
+<li class="chapter" data-level="17.6.1" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#design-choices"><i class="fa fa-check"></i><b>17.6.1</b> 🔹 Design Choices</a></li>
+<li class="chapter" data-level="17.6.2" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#assumptions-3"><i class="fa fa-check"></i><b>17.6.2</b> 🔹 Assumptions</a></li>
+<li class="chapter" data-level="17.6.3" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#measurement-plan"><i class="fa fa-check"></i><b>17.6.3</b> 🔹 Measurement Plan</a></li>
+<li class="chapter" data-level="17.6.4" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#estimation"><i class="fa fa-check"></i><b>17.6.4</b> 🔹 Estimation</a></li>
+<li class="chapter" data-level="17.6.5" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#power-and-sample-size"><i class="fa fa-check"></i><b>17.6.5</b> 🔹 Power and Sample Size</a></li>
+<li class="chapter" data-level="17.6.6" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#threats-and-mitigations"><i class="fa fa-check"></i><b>17.6.6</b> 🔹 Threats and Mitigations</a></li>
+</ul></li>
+<li class="chapter" data-level="17.7" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#step-4-communicate-results"><i class="fa fa-check"></i><b>17.7</b> Step 4: Communicate Results</a></li>
+<li class="chapter" data-level="17.8" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#more-on-instrumental-variables"><i class="fa fa-check"></i><b>17.8</b> More on Instrumental Variables</a></li>
+<li class="chapter" data-level="17.9" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#more-questions"><i class="fa fa-check"></i><b>17.9</b> More Questions</a>
+<ul>
+<li class="chapter" data-level="17.9.1" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#in-ab-test-how-do-you-communicate-significance-level-change-1-5-to-non-technicals"><i class="fa fa-check"></i><b>17.9.1</b> In ab test, how do you communicate significance level change, 1%, 5% to non-technicals?</a></li>
+<li class="chapter" data-level="17.9.2" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#in-synthetic-control-how-do-you-calculate-weigths"><i class="fa fa-check"></i><b>17.9.2</b> In synthetic control how do you calculate weigths?</a></li>
+<li class="chapter" data-level="17.9.3" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#how-do-you-make-sure-your-analysis-is-good"><i class="fa fa-check"></i><b>17.9.3</b> How do you make sure your analysis is good?</a></li>
+<li class="chapter" data-level="17.9.4" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#what-if-leadership-says-implement-his-program-in-big-cities"><i class="fa fa-check"></i><b>17.9.4</b> What if leadership says implement his program in big cities?</a></li>
+<li class="chapter" data-level="17.9.5" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#what-if-leadership-want-to-do-it-within-east-and-west-coast"><i class="fa fa-check"></i><b>17.9.5</b> What if leadership want to do it within east and west coast?</a></li>
+<li class="chapter" data-level="17.9.6" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#how-i-determine-sample-size-significance-and-mde"><i class="fa fa-check"></i><b>17.9.6</b> How I determine sample size, significance, and MDE</a></li>
+<li class="chapter" data-level="17.9.7" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#how-do-you-communicate-10-15-significance-to-non-technicals"><i class="fa fa-check"></i><b>17.9.7</b> How do you communicate 10-15% significance to non-technicals</a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://davutemrah.github.io" target="blank">Back to Home Page</li>
 <li><a href="https://davutemrah.github.io/notebooks/" target="blank">Back to Collections</li>
@@ -533,45 +612,45 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="ordinary-least-squares-ols" class="section level1 hasAnchor" number="11">
-<h1><span class="header-section-number">Chapter 11</span> Ordinary Least Squares (OLS)<a href="ordinary-least-squares-ols.html#ordinary-least-squares-ols" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="ordinary-least-squares-ols-1" class="section level2 hasAnchor" number="11.1">
-<h2><span class="header-section-number">11.1</span> Ordinary Least Squares (OLS)<a href="ordinary-least-squares-ols.html#ordinary-least-squares-ols-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="ordinary-least-squares-ols" class="section level1 hasAnchor" number="12">
+<h1><span class="header-section-number">Chapter 12</span> Ordinary Least Squares (OLS)<a href="ordinary-least-squares-ols.html#ordinary-least-squares-ols" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="ordinary-least-squares-ols-1" class="section level2 hasAnchor" number="12.1">
+<h2><span class="header-section-number">12.1</span> Ordinary Least Squares (OLS)<a href="ordinary-least-squares-ols.html#ordinary-least-squares-ols-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Ordinary Least Squares (OLS) is a fundamental technique in regression analysis used to estimate the parameters of a linear model.</p>
 <p>For OLS estimators to be the <strong>Best Linear Unbiased Estimators (BLUE)</strong>, certain assumptions must hold. Violations of these assumptions can lead to biased, inconsistent, or inefficient estimates. Here are the key assumptions and the potential consequences of their violations:</p>
-<div id="linearity" class="section level3 hasAnchor" number="11.1.1">
-<h3><span class="header-section-number">11.1.1</span> <strong>Linearity</strong><a href="ordinary-least-squares-ols.html#linearity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="linearity" class="section level3 hasAnchor" number="12.1.1">
+<h3><span class="header-section-number">12.1.1</span> <strong>Linearity</strong><a href="ordinary-least-squares-ols.html#linearity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Assumption</strong>: The relationship between the independent variables (X) and the dependent variable (Y) is linear.</p>
 <p><strong>Violation</strong>: If the true relationship is not linear, the OLS estimates may be biased and inefficient. This can be addressed by transforming variables, adding polynomial terms, or using other non-linear models.</p>
 <p><strong>Note:</strong> Angrist and Pischke (2009) argue that linear regression may be useful even if the underlying CEF itself is not linear, because regression is a good approximation of the CEF. So keep an open mind as I break this down a little bit more.</p>
 </div>
-<div id="exogeneity" class="section level3 hasAnchor" number="11.1.2">
-<h3><span class="header-section-number">11.1.2</span> <strong>Exogeneity</strong><a href="ordinary-least-squares-ols.html#exogeneity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="exogeneity" class="section level3 hasAnchor" number="12.1.2">
+<h3><span class="header-section-number">12.1.2</span> <strong>Exogeneity</strong><a href="ordinary-least-squares-ols.html#exogeneity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Assumption</strong>: The independent variables are not correlated with the error term. Formally, <span class="math inline">\(E(\epsilon | X) = 0\)</span>.</p>
 <p><strong>Violation</strong>: If this assumption is violated (endogeneity), the OLS estimates are biased and inconsistent. This can occur due to omitted variable bias, measurement error, or simultaneity. Instrumental Variables (IV) or other techniques may be used to address endogeneity.</p>
 </div>
-<div id="homoscedasticity" class="section level3 hasAnchor" number="11.1.3">
-<h3><span class="header-section-number">11.1.3</span> <strong>Homoscedasticity</strong><a href="ordinary-least-squares-ols.html#homoscedasticity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="homoscedasticity" class="section level3 hasAnchor" number="12.1.3">
+<h3><span class="header-section-number">12.1.3</span> <strong>Homoscedasticity</strong><a href="ordinary-least-squares-ols.html#homoscedasticity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Assumption</strong>: The variance of the error term is constant across all levels of the independent variables, i.e., <span class="math inline">\(Var(\epsilon | X) = \sigma^2\)</span>.</p>
 <p><strong>Violation</strong>: If there is heteroscedasticity (non-constant variance of errors), the OLS estimates remain unbiased, but they are no longer efficient, and the standard errors are biased, leading to unreliable hypothesis tests. Heteroscedasticity-Robust standard errors or Generalized Least Squares (GLS) can be used to address heteroscedasticity.</p>
 </div>
-<div id="no-autocorrelation" class="section level3 hasAnchor" number="11.1.4">
-<h3><span class="header-section-number">11.1.4</span> <strong>No Autocorrelation</strong><a href="ordinary-least-squares-ols.html#no-autocorrelation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="no-autocorrelation" class="section level3 hasAnchor" number="12.1.4">
+<h3><span class="header-section-number">12.1.4</span> <strong>No Autocorrelation</strong><a href="ordinary-least-squares-ols.html#no-autocorrelation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Assumption</strong>: The error terms are not correlated with each other, i.e., <span class="math inline">\(E(\epsilon_i \epsilon_j) = 0\)</span> for <span class="math inline">\(i \neq j\)</span>.</p>
 <p><strong>Violation</strong>: If there is autocorrelation (correlated errors), the OLS estimates remain unbiased, but they are inefficient, and standard errors are biased, leading to incorrect inferences. This is common in time series data. Techniques such as Newey-West standard errors or autoregressive models can be used to correct for autocorrelation.</p>
 </div>
-<div id="no-perfect-multicollinearity" class="section level3 hasAnchor" number="11.1.5">
-<h3><span class="header-section-number">11.1.5</span> <strong>No Perfect Multicollinearity</strong><a href="ordinary-least-squares-ols.html#no-perfect-multicollinearity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="no-perfect-multicollinearity" class="section level3 hasAnchor" number="12.1.5">
+<h3><span class="header-section-number">12.1.5</span> <strong>No Perfect Multicollinearity</strong><a href="ordinary-least-squares-ols.html#no-perfect-multicollinearity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Assumption</strong>: There is no perfect linear relationship among the independent variables.</p>
 <p><strong>Violation</strong>: Perfect multicollinearity makes it impossible to estimate the coefficients uniquely. High but imperfect multicollinearity can inflate the variances of the coefficient estimates, making them unstable and sensitive to changes in the model. This can be addressed by removing or combining collinear variables, or using techniques such as Ridge Regression.</p>
 </div>
-<div id="normality-of-errors-for-inference" class="section level3 hasAnchor" number="11.1.6">
-<h3><span class="header-section-number">11.1.6</span> <strong>Normality of Errors (for inference)</strong><a href="ordinary-least-squares-ols.html#normality-of-errors-for-inference" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="normality-of-errors-for-inference" class="section level3 hasAnchor" number="12.1.6">
+<h3><span class="header-section-number">12.1.6</span> <strong>Normality of Errors (for inference)</strong><a href="ordinary-least-squares-ols.html#normality-of-errors-for-inference" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Assumption</strong>: The error terms are normally distributed, particularly important for small sample sizes to conduct valid hypothesis tests.</p>
 <p><strong>Violation</strong>: If the errors are not normally distributed, the OLS estimates are still unbiased and consistent, but the hypothesis tests may be invalid. For large samples, the Central Limit Theorem mitigates this issue, but for small samples, transformations or non-parametric methods might be necessary.</p>
 </div>
-<div id="practical-considerations-and-tests" class="section level3 hasAnchor" number="11.1.7">
-<h3><span class="header-section-number">11.1.7</span> Practical Considerations and Tests<a href="ordinary-least-squares-ols.html#practical-considerations-and-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="practical-considerations-and-tests" class="section level3 hasAnchor" number="12.1.7">
+<h3><span class="header-section-number">12.1.7</span> Practical Considerations and Tests<a href="ordinary-least-squares-ols.html#practical-considerations-and-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><strong>Detecting Violations</strong>:
 <ul>
@@ -586,8 +665,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Understanding these assumptions and how to address their violations is crucial for robust regression analysis and accurate inference using OLS.</p>
 </div>
 </div>
-<div id="simple-linear-regression" class="section level2 hasAnchor" number="11.2">
-<h2><span class="header-section-number">11.2</span> Simple Linear Regression<a href="ordinary-least-squares-ols.html#simple-linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="simple-linear-regression" class="section level2 hasAnchor" number="12.2">
+<h2><span class="header-section-number">12.2</span> Simple Linear Regression<a href="ordinary-least-squares-ols.html#simple-linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Let’s derive the Ordinary Least Squares (OLS) estimators for the simple linear regression model:</p>
 <p><span class="math display">\[ Y = \alpha + \beta X + \epsilon \]</span></p>
 <p>Here, <span class="math inline">\(Y\)</span> is the dependent variable, <span class="math inline">\(X\)</span> is the independent variable, <span class="math inline">\(\alpha\)</span> (alpha) is the intercept, <span class="math inline">\(\beta\)</span> (beta) is the slope, and <span class="math inline">\(\epsilon\)</span> (epsilon) is the error term.</p>
@@ -630,8 +709,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="math display">\[ \hat{\beta} = \frac{\sum_{i=1}^n X_i Y_i - n \bar{X} \bar{Y}}{\sum_{i=1}^n X_i^2 - n \bar{X}^2} \]</span></p>
 <p>Alternatively, this can be written in terms of deviations from the mean:</p>
 <p><span class="math display">\[ \hat{\beta} = \frac{\sum_{i=1}^n (X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^n (X_i - \bar{X})^2} \]</span></p>
-<div id="summary-3" class="section level3 hasAnchor" number="11.2.1">
-<h3><span class="header-section-number">11.2.1</span> Summary<a href="ordinary-least-squares-ols.html#summary-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="summary-4" class="section level3 hasAnchor" number="12.2.1">
+<h3><span class="header-section-number">12.2.1</span> Summary<a href="ordinary-least-squares-ols.html#summary-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>The OLS estimator for the slope (<span class="math inline">\(\beta\)</span>) is:</li>
 </ul>
@@ -642,12 +721,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="math display">\[ \hat{\alpha} = \bar{Y} - \hat{\beta} \bar{X} \]</span></p>
 <p>These derivations show how the OLS estimators for <span class="math inline">\(\beta\)</span> and <span class="math inline">\(\alpha\)</span> are obtained by minimizing the sum of squared residuals in a simple linear regression model.</p>
 </div>
-<div id="interpreting-model-coefficients-in-ols-models" class="section level3 hasAnchor" number="11.2.2">
-<h3><span class="header-section-number">11.2.2</span> Interpreting Model Coefficients in OLS Models<a href="ordinary-least-squares-ols.html#interpreting-model-coefficients-in-ols-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="interpreting-model-coefficients-in-ols-models" class="section level3 hasAnchor" number="12.2.2">
+<h3><span class="header-section-number">12.2.2</span> Interpreting Model Coefficients in OLS Models<a href="ordinary-least-squares-ols.html#interpreting-model-coefficients-in-ols-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In Ordinary Least Squares (OLS) regression, the interpretation of coefficients depends on the functional form of the model and the nature of the variables involved. Here are some common types of models and how to interpret their coefficients.</p>
 </div>
-<div id="linear-models-linear-linear" class="section level3 hasAnchor" number="11.2.3">
-<h3><span class="header-section-number">11.2.3</span> 1. Linear Models (Linear-Linear)<a href="ordinary-least-squares-ols.html#linear-models-linear-linear" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="linear-models-linear-linear" class="section level3 hasAnchor" number="12.2.3">
+<h3><span class="header-section-number">12.2.3</span> 1. Linear Models (Linear-Linear)<a href="ordinary-least-squares-ols.html#linear-models-linear-linear" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Model Form</strong>: <span class="math inline">\(Y = \beta_0 + \beta_1 X + \epsilon\)</span></p>
 <ul>
 <li><strong>Coefficients Interpretation</strong>:
@@ -663,8 +742,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul>
 </div>
-<div id="log-linear-models" class="section level3 hasAnchor" number="11.2.4">
-<h3><span class="header-section-number">11.2.4</span> 2. Log-Linear Models<a href="ordinary-least-squares-ols.html#log-linear-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="log-linear-models" class="section level3 hasAnchor" number="12.2.4">
+<h3><span class="header-section-number">12.2.4</span> 2. Log-Linear Models<a href="ordinary-least-squares-ols.html#log-linear-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Model Form</strong>: <span class="math inline">\(\log(Y) = \beta_0 + \beta_1 X + \epsilon\)</span></p>
 <ul>
 <li><strong>Coefficients Interpretation</strong>:
@@ -680,8 +759,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul>
 </div>
-<div id="linear-log-models" class="section level3 hasAnchor" number="11.2.5">
-<h3><span class="header-section-number">11.2.5</span> 3. Linear-Log Models<a href="ordinary-least-squares-ols.html#linear-log-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="linear-log-models" class="section level3 hasAnchor" number="12.2.5">
+<h3><span class="header-section-number">12.2.5</span> 3. Linear-Log Models<a href="ordinary-least-squares-ols.html#linear-log-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Model Form</strong>: <span class="math inline">\(Y = \beta_0 + \beta_1 \log(X) + \epsilon\)</span></p>
 <ul>
 <li><strong>Coefficients Interpretation</strong>:
@@ -694,8 +773,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul>
 </div>
-<div id="log-log-models" class="section level3 hasAnchor" number="11.2.6">
-<h3><span class="header-section-number">11.2.6</span> 4. Log-Log Models<a href="ordinary-least-squares-ols.html#log-log-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="log-log-models" class="section level3 hasAnchor" number="12.2.6">
+<h3><span class="header-section-number">12.2.6</span> 4. Log-Log Models<a href="ordinary-least-squares-ols.html#log-log-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Model Form</strong>: <span class="math inline">\(\log(Y) = \beta_0 + \beta_1 \log(X) + \epsilon\)</span></p>
 <ul>
 <li><strong>Coefficients Interpretation</strong>:
@@ -708,10 +787,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul>
 </div>
-<div id="examples-of-dummy-and-continuous-variables" class="section level3 hasAnchor" number="11.2.7">
-<h3><span class="header-section-number">11.2.7</span> Examples of Dummy and Continuous Variables<a href="ordinary-least-squares-ols.html#examples-of-dummy-and-continuous-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="example-1-linear-model-with-dummy-and-continuous-variables" class="section level4 hasAnchor" number="11.2.7.1">
-<h4><span class="header-section-number">11.2.7.1</span> Example 1: Linear Model with Dummy and Continuous Variables<a href="ordinary-least-squares-ols.html#example-1-linear-model-with-dummy-and-continuous-variables" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="examples-of-dummy-and-continuous-variables" class="section level3 hasAnchor" number="12.2.7">
+<h3><span class="header-section-number">12.2.7</span> Examples of Dummy and Continuous Variables<a href="ordinary-least-squares-ols.html#examples-of-dummy-and-continuous-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="example-1-linear-model-with-dummy-and-continuous-variables" class="section level4 hasAnchor" number="12.2.7.1">
+<h4><span class="header-section-number">12.2.7.1</span> Example 1: Linear Model with Dummy and Continuous Variables<a href="ordinary-least-squares-ols.html#example-1-linear-model-with-dummy-and-continuous-variables" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><strong>Model</strong>: <span class="math inline">\(Y = \beta_0 + \beta_1 X_1 + \beta_2 D + \epsilon\)</span></p>
 <ul>
 <li><strong><span class="math inline">\(Y\)</span></strong>: Income</li>
@@ -722,8 +801,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 - <span class="math inline">\(\beta_1\)</span>: Change in income for an additional year of education.
 - <span class="math inline">\(\beta_2\)</span>: Difference in income between males and females, holding education constant.</p>
 </div>
-<div id="example-2-log-linear-model-with-continuous-variables" class="section level4 hasAnchor" number="11.2.7.2">
-<h4><span class="header-section-number">11.2.7.2</span> Example 2: Log-Linear Model with Continuous Variables<a href="ordinary-least-squares-ols.html#example-2-log-linear-model-with-continuous-variables" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="example-2-log-linear-model-with-continuous-variables" class="section level4 hasAnchor" number="12.2.7.2">
+<h4><span class="header-section-number">12.2.7.2</span> Example 2: Log-Linear Model with Continuous Variables<a href="ordinary-least-squares-ols.html#example-2-log-linear-model-with-continuous-variables" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><strong>Model</strong>: <span class="math inline">\(\log(Y) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon\)</span></p>
 <ul>
 <li><strong><span class="math inline">\(\log(Y)\)</span></strong>: Log of income</li>
@@ -734,8 +813,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 - <span class="math inline">\(\beta_1\)</span>: Percentage change in income for an additional year of education.
 - <span class="math inline">\(\beta_2\)</span>: Percentage change in income for an additional year of work experience.</p>
 </div>
-<div id="example-3-log-log-model-with-continuous-variables" class="section level4 hasAnchor" number="11.2.7.3">
-<h4><span class="header-section-number">11.2.7.3</span> Example 3: Log-Log Model with Continuous Variables<a href="ordinary-least-squares-ols.html#example-3-log-log-model-with-continuous-variables" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="example-3-log-log-model-with-continuous-variables" class="section level4 hasAnchor" number="12.2.7.3">
+<h4><span class="header-section-number">12.2.7.3</span> Example 3: Log-Log Model with Continuous Variables<a href="ordinary-least-squares-ols.html#example-3-log-log-model-with-continuous-variables" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><strong>Model</strong>: <span class="math inline">\(\log(Y) = \beta_0 + \beta_1 \log(X_1) + \beta_2 \log(X_2) + \epsilon\)</span></p>
 <ul>
 <li><strong><span class="math inline">\(\log(Y)\)</span></strong>: Log of income</li>
@@ -747,8 +826,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 - <span class="math inline">\(\beta_2\)</span>: Elasticity of income with respect to work experience.</p>
 </div>
 </div>
-<div id="assumptions-and-considerations-3" class="section level3 hasAnchor" number="11.2.8">
-<h3><span class="header-section-number">11.2.8</span> Assumptions and Considerations<a href="ordinary-least-squares-ols.html#assumptions-and-considerations-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="assumptions-and-considerations-2" class="section level3 hasAnchor" number="12.2.8">
+<h3><span class="header-section-number">12.2.8</span> Assumptions and Considerations<a href="ordinary-least-squares-ols.html#assumptions-and-considerations-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><strong>Linearity</strong>: The relationship between the variables should be correctly specified (linear, log-linear, etc.).</li>
 <li><strong>Homoscedasticity</strong>: The variance of the error terms should be constant across all levels of the independent variables.</li>
@@ -759,18 +838,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Understanding these models and their interpretations is crucial for accurately conveying the impact of variables in econometric analyses. Being prepared to explain these interpretations clearly and provide relevant examples will be beneficial for your interview.</p>
 </div>
 </div>
-<div id="multivariate-regression" class="section level2 hasAnchor" number="11.3">
-<h2><span class="header-section-number">11.3</span> Multivariate Regression<a href="ordinary-least-squares-ols.html#multivariate-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="multivariate-regression" class="section level2 hasAnchor" number="12.3">
+<h2><span class="header-section-number">12.3</span> Multivariate Regression<a href="ordinary-least-squares-ols.html#multivariate-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>It will eventually become second nature for you to talk about including more variables on the right side of a regression as “controlling for” those variables.</p>
 </div>
-<div id="generalized-linear-model" class="section level2 hasAnchor" number="11.4">
-<h2><span class="header-section-number">11.4</span> Generalized Linear Model<a href="ordinary-least-squares-ols.html#generalized-linear-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="generalized-linear-model" class="section level2 hasAnchor" number="12.4">
+<h2><span class="header-section-number">12.4</span> Generalized Linear Model<a href="ordinary-least-squares-ols.html#generalized-linear-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 </div>
-<div id="generalised-least-square" class="section level2 hasAnchor" number="11.5">
-<h2><span class="header-section-number">11.5</span> Generalised Least Square<a href="ordinary-least-squares-ols.html#generalised-least-square" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="generalised-least-square" class="section level2 hasAnchor" number="12.5">
+<h2><span class="header-section-number">12.5</span> Generalised Least Square<a href="ordinary-least-squares-ols.html#generalised-least-square" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 </div>
-<div id="weighted-least-squares-wls" class="section level2 hasAnchor" number="11.6">
-<h2><span class="header-section-number">11.6</span> Weighted Least Squares (WLS)<a href="ordinary-least-squares-ols.html#weighted-least-squares-wls" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="weighted-least-squares-wls" class="section level2 hasAnchor" number="12.6">
+<h2><span class="header-section-number">12.6</span> Weighted Least Squares (WLS)<a href="ordinary-least-squares-ols.html#weighted-least-squares-wls" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>WLS is a special case of GLS where the variance-covariance matrix Σ of the error terms is diagonal. This means that the errors are uncorrelated but may have different variances. WLS is used specifically to address heteroscedasticity by assigning different weights to different observations based on their error variances.</p>
 <p>Weights: In WLS, each observation is assigned a weight that is inversely proportional to the variance of its error term. If an observation has a high variance, it receives a lower weight, and vice versa.</p>
 
@@ -781,8 +860,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="fixed-effects-and-panel-data-methods.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="resampling-methods.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="doubledebiased-machine-learning-double-ml.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="doubly-robust-methods.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

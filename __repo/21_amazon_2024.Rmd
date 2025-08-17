@@ -1,0 +1,1121 @@
+# Amazon Economist - Case Study - 2024
+
+## Concept
+
+**Reduced Form Causal Analysis (RFCA)** RFCA economists specialize in econometric methods to identify causal relationships, handling challenges like selection bias and omitted variables. They use tools such as difference-in-differences, regression discontinuity, matching, synthetic control, and DML, and may conduct surveys or RCTs when needed.
+
+They work on program/product evaluations, elasticity estimation, customer behavior analysis, long-term effect prediction, and translating results into business decisions. 
+
+Communication with non-technical partners is key. In interviews, you’ll be given an ambiguous business case to test your breadth (range of methods you can propose) and depth (ability to implement and explain one method in detail).
+
+ I suggest asking clarifying questions on the front end before diving into a strategy.
+ 
+
+**Sample Technical Questions**
+
+- How would you measure the effect of a training program for Fulfillment Center associates on performance?
+
+- How would you help business leaders think about whether they should invest in creating tools to help AWS customers reduce their costs by optimizing the cloud services they use?
+
+- There’s an intervention X that we tried or are thinking of trying. Leaders want to know if it was or will be a good idea. How would you help them answer that question?
+
+
+
+**They’re testing:**
+
+1. **Tech breadth** → can you list a range of reasonable evaluation approaches?
+
+2. **Tech depth** → can you dive into one and explain it rigorously (causal inference).
+
+
+## 📦 The Scenario
+
+Amazon rolls out a **new delivery program** (1-day delivery) in **20–30 cities**. They ask:
+
+**“How do you evaluate it? What outcomes would you look at?”**
+
+
+## Step 1: Clarify the Business Question and Data
+
+**Data Availability**
+
+- “Do we have pre-period data on orders, customer demographics, costs?”
+
+- If they don’t specify, assume city-level panel data (treated vs. untreated cities across time).
+
+- But it’s good to show breadth by saying something like:
+
+---
+
+“I’d expect the data at the city-week level: orders, revenue, Prime retention, etc. If more granular data is available, like customer-level transactions, I could run matching or micro-level causal models. But even at the city level, difference-in-differences or synthetic control would be natural.”
+
+
+“At the city-week panel level, many characteristics like population or median income won’t change, so they’ll be absorbed by city fixed effects. That way, I’m comparing each city to itself over time.
+For time-varying factors, like seasonality, local unemployment, or weather disruptions, I’d include them as controls in the regression. This ensures that my difference-in-differences estimate isn’t confounded by local shocks that vary over time.”
+
+---
+
+Before jumping into methods, clarify:
+
+* **Primary outcomes**:
+
+  * Customer satisfaction (ratings, NPS, repeat purchase).
+  
+  * Order volume (total orders, frequency).
+  
+  * Revenue/profit per customer.
+  
+  * Prime signups / retention.
+
+* **Secondary outcomes**:
+
+  * Operational costs (delivery costs, fulfillment costs).
+  
+  * Spillovers (did 1-day shift demand from 2-day, or increase net new orders?).
+
+This shows you think **like an economist**, not just a statistician.
+
+
+
+
+**Outcomes of Interest**
+
+- “What does success mean for this program — more orders, more Prime signups, higher revenue, or customer satisfaction?”
+
+- This tells them you know different outcomes may imply different models.
+
+- order frequency, customer retention, order size, sign-ups, customer satisfaction - NPS, revenue per customer, profit margin, delivery cost per order, on time delivery rates.
+
+**Unit of Rollout**
+
+- “Was the rollout done at the city level, ZIP code level, or customer level?”
+Helps you know what level of aggregation to use in analysis.
+
+**Timing / Staggering**
+
+- “Were all 20–30 cities rolled out at once, or was it staggered over time?”
+
+- If staggered, you can talk about staggered diff-in-diff or event studies.
+
+**Selection of Cities**
+
+- “How were the rollout cities chosen? Were they the largest markets, or chosen randomly?”
+
+- Critical: if not random, you’ll need to account for bias (synthetic control, matching, IV).
+
+
+
+Lets you judge whether parallel trends can be tested.
+
+
+----------
+
+“First, I’d want to clarify what outcome Amazon cares most about. For a delivery program like this, possible outcomes could be order volume, customer satisfaction, revenue per customer, or Prime retention.
+
+
+I’d also ask how the rollout was done — were the 20–30 cities chosen randomly, or were they the biggest markets? And was the rollout staggered or simultaneous? 
+
+
+Those details matter because they influence whether I can use difference-in-differences, a staggered event study, or whether I’d need something like synthetic control to address selection bias.
+
+Assuming we have pre- and post-data on treated and untreated cities, a clean way to evaluate would be a difference-in-differences design. I’d compare order volumes before and after in rollout cities relative to control cities. The key assumption is parallel trends, and I’d test that using pre-trends.
+
+The outcomes I’d look at would include both customer-side measures (orders per customer, conversion rates, Prime retention) and cost-side measures (delivery cost per order, overall fulfillment cost). 
+
+The goal is to see not only if customers are ordering more, but also if it’s profitable.
+
+For robustness, I’d also try synthetic control if the rollout wasn’t random, or event study if adoption was staggered. 
+
+**The idea is to triangulate the effect with multiple methods to make sure the result is credible.”**
+
+---------
+
+## Step 2: Possible Evaluation Designs (Tech Breadth)
+
+You want to list several designs, then choose one to dive into:
+
+### **Randomized Controlled Trial (RCT)**
+
+- The gold standard would be a randomized controlled trial. 
+
+- For example, Amazon could randomly assign some cities, ZIP codes, or customers to get the 1-day delivery program, and others to stay at 2-day delivery. 
+
+- We’d then compare outcomes like order frequency, customer retention, order size, sign-ups, customer satisfaction - NPS, revenue per customer, profit margin, delivery cost per order, on time delivery rates.
+
+- The strength of an RCT is that it removes selection bias, since treated and control groups are comparable by design.
+
+- The challenge, of course, is feasibility — Amazon may not want to hold back 1-day delivery in some places once it’s available. 
+
+- That’s why in practice, we might rely more on natural experiments, difference-in-differences, or synthetic controls. But if we could do it, an RCT would give the cleanest causal estimate.
+
+### **Difference-in-Differences (DiD)**
+
+**🔹 What DiD Does in This Case**
+
+* **Setup:** Amazon rolls out **1-day delivery** in 20–30 cities (treated group). Other cities don’t get it (control group).
+
+* **Idea:** Compare how outcomes (orders, revenue, Prime retention, etc.) change **before vs. after rollout** in treated cities, relative to the same change in control cities.
+
+* **Why it works:** Controls for time trends affecting *all* cities (e.g., seasonality, holidays, economic shocks).
+
+
+**🔹 The Core Equation**
+
+At the **city-week level**, you’d estimate something like:
+
+$$
+Y_{it} = \alpha + \beta \cdot Treatment_{it} + \gamma_i + \delta_t + \epsilon_{it}
+$$
+
+Where:
+
+* $Y_{it}$: outcome (e.g., orders per capita).
+
+* $Treatment_{it}$: 1 if city i has 1-day delivery at time t.
+
+* $\gamma_i$: city fixed effects (control for time-invariant city differences).
+
+* $\delta_t$: time fixed effects (control for shocks affecting all cities).
+
+* $\beta$: DiD estimate = causal effect of 1-day delivery.
+
+
+
+
+
+**Key Assumption**
+
+* **Parallel Trends**: In absence of treatment, treated and control cities would have had similar outcome trends.
+
+
+* You test this using **pre-trends** (plot outcomes over time before rollout).
+
+* If treated cities were already diverging, plain DiD won’t be valid.
+
+
+
+**Variants / Extensions**
+
+**Event Study / Dynamic DiD**:
+
+
+* Estimate effects over time (e.g., 1 week after rollout, 4 weeks after, 12 weeks after).
+
+* Lets you see whether effects grow, fade, or persist.
+
+
+* **Staggered Adoption**:
+
+* If cities rolled out at different times, you use modern DiD estimators (like Sun & Abraham 2020 or Callaway & Sant’Anna 2021) to avoid bias from naive two-way fixed effects.
+
+* **Matched DiD**:
+
+  * Pre-match cities on observables (size, income, Prime penetration) before applying DiD.
+
+
+**🔹 Strengths**
+
+* Straightforward to implement.
+
+* Widely used and easy to explain to business stakeholders.
+
+* Naturally fits rollout experiments where not everyone is treated.
+
+
+
+**🔹 Limitations**
+
+* Relies heavily on **parallel trends assumption**.
+
+* Vulnerable to **spillovers**: if control cities benefit indirectly (e.g., nearby customers crossing into treated areas).
+
+* If treatment timing is staggered, naive TWFE (two-way FE) DiD can be biased — must use updated estimators.
+
+---
+
+**🔹 How You’d Say It in Interview**
+
+A natural evaluation method here would be **difference-in-differences**. I’d compare changes in order volume and customer retention in the 20–30 rollout cities before vs. after treatment, relative to similar changes in non-rollout cities. The DiD model would include **city fixed effects** to control for time-invariant differences and **time fixed effects** for national shocks. The key assumption is **parallel trends**, so I’d test pre-trends carefully. If rollout was staggered, I’d use a modern staggered DiD estimator to avoid bias. The nice thing about DiD is it controls for shared seasonality, like Prime Day or holiday shopping, and gives a clear causal estimate.
+
+---
+
+### **Event Study / Staggered Adoption**
+
+   * If rollout timing differs across cities, use staggered DiD (good for program evaluation with multiple cohorts).
+
+
+
+
+
+
+### **Synthetic Control**
+
+
+**What Synthetic Control Is**
+
+* Synthetic Control builds a **counterfactual** for a treated unit (e.g., a city that got one-day delivery).
+
+* Instead of picking one “control city,” you create a **weighted combination of multiple control cities** that best mimics the treated city’s pre-treatment outcomes.
+
+* After rollout, you compare the treated city to its synthetic version.
+
+
+**Why It’s Useful Here**
+
+* Rollout cities are **not random** — Amazon likely chose large, high-Prime, high-volume cities.
+
+* Those treated cities may look nothing like the average untreated city.
+
+* A **synthetic control** lets you construct a “look-alike” city from weighted controls. Example:
+
+  * Seattle = 0.5 Portland + 0.3 Denver + 0.2 Kansas City (weights chosen to minimize pre-treatment differences).
+
+* This gives a more credible counterfactual than just comparing Seattle vs. one city.
+
+
+**Implementation Steps**
+
+1. **Choose predictors**: Pre-rollout outcomes (orders, revenue, retention), demographics, Prime penetration.
+
+2. **Fit weights**: Find nonnegative weights for control cities so that the weighted average matches the treated city’s pre-treatment trajectory.
+
+3. **Compare outcomes post-rollout**: The gap between actual treated city and its synthetic twin = estimated treatment effect.
+
+
+
+**Strengths**
+
+* Transparent: You can show stakeholders that treated and synthetic city had nearly identical trends before rollout.
+
+* Handles **selection bias** better than plain DiD when treated units differ a lot from untreated.
+
+* Useful when the **number of treated units is small** (like 20–30 cities).
+
+
+**Limitations**
+
+* Works best with **one or a few treated units** — gets tricky with many treated cities at once.
+
+* Sensitive to choice of predictors and pre-treatment period.
+
+* Cannot easily capture **spillovers** (e.g., if nearby untreated cities are indirectly affected).
+
+**Extensions**
+
+* **Multiple Synthetic Controls**: Build one synthetic twin per treated city.
+
+* **Generalized Synthetic Control**: Matrix factorization methods allow handling multiple treated units and staggered adoption.
+
+---
+
+Another approach is **Synthetic Control**. For each rollout city, I could build a weighted combination of untreated cities that closely tracks its pre-treatment outcomes. 
+
+For example, if Seattle got 1-day delivery, its synthetic twin might be 50% Portland, 30% Denver, and 20% Kansas City. If Seattle diverges from its synthetic twin after rollout, that gap gives us the treatment effect. This is powerful when rollout cities are very different from average controls, and it makes the counterfactual more credible than simple before-after or DiD. The limitation is that it works best with a small number of treated units and needs stable pre-treatment data.
+
+---
+
+
+### **Propensity Score Matching / Reweighting**
+
+* Match treated cities with comparable controls (population size, Prime penetration, order frequency).
+   
+* Propensity Score Matching (PSM) was originally designed for individual-level data (like patients in medical studies, or customers in marketing experiments), where you have many units to match across treatment/control.
+   
+* In the Amazon delivery rollout case, your “units” are cities — and you only have 20–30 treated cities. That’s a small sample, which makes PSM less powerful.
+   
+* But PSM can still apply at the city level if:
+
+  - You have a large enough pool of potential control cities (e.g., 200+ U.S. cities not in the rollout).
+
+  - You include rich covariates (population, income, Prime penetration, baseline orders, etc.) to balance them.
+
+  - You treat PSM as a preprocessing step before running DiD or regression — so it reduces imbalance but doesn’t stand alone.
+   
+---
+
+**Propensity Score Matching** is often most effective at the individual level, because you have many units to match. With cities, the sample size is small, so matching quality can be limited.
+
+That said, if we had a large enough pool of untreated cities, we could use PSM as a preprocessing step — match treated and control cities on observables like population, income, and baseline demand, and then run a difference-in-differences. This way, we reduce observable imbalance while still accounting for time trends. But I’d be careful about relying on PSM alone here, because unobserved differences across cities could still bias the estimate.
+
+---
+
+
+
+
+### **Instrumental Variables (IV)** (if spillovers or selection bias is a concern).
+
+**Why IV Might Be Needed**
+
+* Rollout to 20–30 cities is **not random** — Amazon may have picked **biggest cities, high-Prime penetration, or operationally easier locations**.
+
+* This creates **selection bias** → treated cities differ systematically from controls.
+
+* Spillovers are also possible → if neighboring cities benefit (e.g., customers order from a nearby one-day delivery area), it contaminates the control group.
+
+* IV is useful when treatment assignment is **endogenous** (correlated with unobserved demand).
+
+
+**How IV Works Here**
+
+1. **We want**: the causal effect of one-day delivery availability on outcomes (orders, revenue, Prime signups).
+
+2. **Problem**: rollout cities are chosen strategically → treatment is endogenous.
+
+3. **Solution**: find a variable (**instrument**) that:
+
+   * Is correlated with rollout (affects likelihood a city gets one-day delivery).
+
+   * Does not directly affect demand, except through rollout.
+
+
+
+**Example Instruments**
+
+* **Distance to Nearest Fulfillment Center (FC)**
+
+  * Closer cities are cheaper to serve → more likely to get one-day rollout.
+  
+  * Conditional on city demand trends, distance itself doesn’t directly change customer ordering.
+
+
+
+* **Weather Disruptions / Storm Patterns**
+
+  * If rollout timing depends on logistical feasibility (e.g., avoiding regions with winter weather bottlenecks), this variation can serve as an instrument.
+
+* **Logistical Capacity Constraints**
+
+  * Cities where delivery stations had available excess capacity vs. constrained ones.
+
+* **Historical Route Density**
+
+  * Areas with high density of delivery routes may be more likely to get rollout — conditional on demand, this variable proxies operational feasibility, not demand growth.
+
+**Assumptions**
+
+1. **Exclusion Restriction:** The instrument (Z) must affect the outcome (Y) only through its effect on the treatment (T).
+
+2. **Relevance Condition:**
+
+- The instrument needs to be correlated with treatment variable, which is rollout cities.
+
+
+**🔹 Example in the Amazon 1-Day Delivery Rollout**
+
+- Instrument: Distance to nearest fulfillment center.
+
+- Treatment: Whether the city received 1-day delivery.
+
+- Outcome: Orders per customer.
+
+- ✅ Valid if: Distance influences orders only because it changes the likelihood of 1-day delivery.
+
+- ❌ Invalid if: Distance also affects delivery cost and therefore pricing, or if rural/urban proximity to FC changes customer demand for unrelated reasons.
+
+
+
+---
+
+If rollout selection was endogenous, I’d consider an instrumental variables approach. 
+
+For example, **distance to the nearest fulfillment center** is a strong predictor of whether a city can support one-day delivery. That satisfies the relevance condition — closer cities are more likely to be rolled out first.
+
+The more challenging part is the **exclusion restriction:** distance should affect customer orders only through its impact on rollout, not directly. If distance is correlated with other demand drivers like urban density or competition, that could violate the assumption. I’d address this by controlling for observables and checking robustness, and if multiple instruments are available, I’d run overidentification tests.
+
+In practice, I’d test instrument strength using the first-stage regression, making sure the F-statistic is comfortably above 10 to avoid weak instruments. I’d also check whether the instrument predicts pre-treatment outcomes — if it does, that would raise concerns about independence.
+Finally, IV also relies on monotonicity: the instrument should push all units in the same direction (e.g., no city becomes less likely to get rollout just because it’s closer to a fulfillment center). That’s typically a theoretical assumption but important to state.
+If these assumptions hold, I’d use 2SLS: the first stage predicts rollout using distance, and the second stage estimates the causal effect of rollout on outcomes like orders and revenue. This approach helps isolate a credible causal effect even when rollout isn’t random.
+
+---
+
+👉 Key is:
+
+* **Show you know when IV is appropriate** (endogeneity, selection bias).
+
+* **Give realistic instruments** (distance to FC, logistics capacity).
+
+* **Acknowledge assumptions** (exclusion restriction).
+
+---
+
+
+## Step 3: Tech Depth — Example with **Difference-in-Differences**
+
+If pressed, go deep on one (Amazon loves DiD for these questions):
+
+* **Setup**:
+
+  $$
+  Y_{it} = \alpha + \beta \cdot Treatment_{it} + \gamma_i + \delta_t + \epsilon_{it}
+  $$
+
+  * $Y_{it}$: outcome for city *i* at time *t* (e.g., orders per capita).
+  * $Treatment_{it}$: indicator for cities after rollout.
+  * $\gamma_i$: city fixed effects (control for time-invariant city differences).
+  * $\delta_t$: time fixed effects (control for global shocks like seasonality).
+  * $\beta$: causal effect of 1-day delivery.
+
+* **Parallel Trends Assumption**: Treated and control cities would have followed similar trends without the program. You’d test this with pre-trends.
+
+* **Robustness Checks**:
+
+  * Add covariates (city size, Prime penetration).
+  
+  * Check for heterogeneous effects (small vs. large cities).
+  
+  * Placebo tests (pretend rollout earlier).
+  
+  
+  
+## Step 3 with RCTs
+
+
+### 🔹 Design Choices
+
+* **Unit of randomization**: city, ZIP code, or customer.
+
+* **Blocking/stratification**: ensure balance on baseline order volume, Prime penetration, region.
+
+* **Stepped-wedge design**: randomize order of rollout if Amazon doesn’t want to hold back treatment indefinitely.
+
+* **Guarding against spillovers**: buffer zones between treated and control ZIPs.
+
+
+
+
+### 🔹 Assumptions
+
+* **SUTVA (no interference)** → one unit’s treatment shouldn’t affect another. Need cluster-level randomization if spillovers exist.
+
+* **Stable treatment** → customers offered “1-day” see the same version (not free for some, paid for others).
+
+* **Compliance** → customers in treatment group may not use 1-day; customers in control might still access it. Handle with ITT (intent-to-treat) and IV (assignment → actual usage).
+
+
+
+### 🔹 Measurement Plan
+
+* **Primary outcomes**: orders per customer, revenue, contribution margin.
+
+* **Secondary outcomes**: Prime retention, customer satisfaction, delivery costs.
+
+* **Timing**: define ramp-up period vs. stable period for evaluation.
+
+* **Heterogeneity**: look at effects by city size, income level, Prime vs. non-Prime.
+
+
+### 🔹 Estimation
+
+* **Difference-in-means** if balanced.
+
+* **Regression framework** to increase precision:
+
+  $$
+  Y_i = \alpha + \beta \cdot Treatment_i + \gamma X_i + \epsilon_i
+  $$
+
+* **Cluster-robust SEs** at the randomization level (city or ZIP).
+
+* **ITT**: average effect of being assigned treatment.
+
+* **LATE**: if compliance issues, estimate via IV using assignment as instrument for actual usage.
+
+
+
+### 🔹 Power and Sample Size
+
+* **City-level RCT**: fewer clusters, higher intra-cluster correlation → need careful power analysis.
+
+* **Customer-level RCT**: more units, easier to detect smaller effects.
+
+* **Rule of thumb**: detect +3–5% lift in orders → need enough units to get 80% power at 5% significance.
+
+
+
+### 🔹 Threats and Mitigations
+
+* **Spillovers** → cluster-level assignment + buffer ZIPs.
+
+* **Noncompliance** → ITT + IV.
+
+* **Seasonality** → block by time or include time FE.
+
+* **Attrition** → track if customers in control “drop out” differently.
+
+---
+
+If I could design it, the cleanest evaluation would be a randomized controlled trial. For example, we could randomize ZIP codes to get 1-day delivery, with blocking on baseline demand and Prime penetration. To avoid spillovers, I’d use buffer zones between treated and control areas. The primary outcomes would be orders per customer, revenue, and contribution margin, with Prime retention as a secondary outcome. I’d analyze intent-to-treat using a regression with cluster-robust SEs. If some customers don’t comply — for example, they’re eligible but don’t use 1-day — I’d also estimate the local average treatment effect using assignment as an instrument. Finally, I’d check power carefully: at the city level, the number of clusters is small, so stepped-wedge or customer-level randomization might be better. This way, the RCT gives us a credible causal estimate while accounting for real-world constraints.
+
+---
+
+👉 In short, you can go as deep as:
+
+* **Design → Assumptions → Outcomes → Estimation → Power → Threats → Mitigation.**
+
+  
+  
+  
+  
+  
+  
+  
+  
+
+## Step 4: Communicate Results
+
+When they ask “what would you look at?”, emphasize:
+
+* *Direct Effect*: more orders, higher revenue.
+
+* *Customer Value*: repeat purchase, Prime retention.
+
+* *Efficiency*: did cost per order go up or down?
+
+* *Net Impact*: did 1-day cannibalize 2-day, or add new demand?
+
+
+
+✅ **Good Interview Flow**:
+
+1. Clarify outcomes (business impact).
+
+2. Lay out multiple approaches (breadth).
+
+3. Dive into one rigorously (depth).
+
+4. Acknowledge assumptions + limitations.
+
+5. Tie back to business implications.
+
+
+
+## More on Instrumental Variables
+
+**🔹 What is Overidentification?**
+
+* In IV, you need at least as many **instruments** as **endogenous variables** (this is “just identified”).
+
+* If you have **more instruments than endogenous variables**, the model is **overidentified**.
+
+* Example: Suppose treatment = rollout of 1-day delivery. If you have two instruments — (1) distance to fulfillment center and (2) local logistical capacity — then you’re overidentified.
+
+
+**🔹 Why it Matters**
+
+* With more instruments than needed, you can test whether the instruments are consistent with each other.
+
+* If they all satisfy the exclusion restriction, they should give the same causal estimate.
+
+* If not, at least one instrument is invalid.
+
+
+**The Overidentification Test**
+
+* **Hansen J-test (robust)** or **Sargan test (classic)**.
+
+* Null hypothesis: *all instruments are valid (exogenous)*.
+
+* If p-value is low → reject the null → at least one instrument likely violates exclusion restriction.
+
+
+**Example in Amazon Case**
+
+* **Treatment:** Whether a city got one-day rollout.
+
+* **Instruments:**
+
+  1. Distance to nearest fulfillment center.
+  2. Historical route density (proxy for logistical feasibility).
+
+* If both are valid instruments, the IV estimate of rollout effect should be consistent across them.
+
+* Overidentification test helps check that.
+
+---
+
+If I had more than one instrument — say, distance to fulfillment center and logistical capacity — the model would be overidentified. That allows me to run an overidentification test, like the Hansen J-test. The null is that all instruments are valid. If the test rejects, it suggests at least one instrument violates the exclusion restriction. Of course, it’s not a perfect guarantee, but it provides evidence about instrument validity.”
+
+---
+
+👉 So in short:
+
+* **Overidentified = more instruments than needed.**
+
+* **Test = Hansen J or Sargan.**
+
+* **Purpose = check whether exclusion restriction holds across instruments.**
+
+
+**Testing Assumptions**
+
+**1. Relevance (testable)**
+
+* **What it is:** Instrument is correlated with treatment.
+
+* **How to test:** Look at the **first-stage regression**.
+
+  $$
+  T_i = \pi_0 + \pi_1 Z_i + \pi_2 X_i + \nu_i
+  $$
+
+  * $T_i$: treatment (e.g., rollout city).
+  * $Z_i$: instrument (e.g., distance to FC).
+
+* **Check:**
+
+  * F-statistic for $\pi_1$ > 10 (rule of thumb).
+  * Weak instruments → biased estimates.
+
+
+**2. Exclusion Restriction (not directly testable)**
+
+* **What it is:** Instrument affects outcome only through treatment.
+* **How to check credibility:**
+
+  * **Theoretical argument:** Why would “distance to FC” affect orders *only* through rollout?
+  * **Balance checks:** See if instrument is correlated with baseline outcomes or covariates (e.g., cities closer to FC also richer?). If so, risk of violation.
+  * **Overidentification tests** (if >1 instrument): Hansen J-test or Sargan test.
+
+    * Null: all instruments valid.
+    * If rejected → at least one violates exclusion.
+
+**3. Independence (as-if random)**
+
+* **What it is:** Instrument is independent of unobserved factors affecting outcomes.
+* **How to check:**
+
+  * Test if instrument predicts **pre-treatment outcomes**.
+  * If distance to FC predicts *pre-rollout* order volume, then it’s confounded.
+
+
+**🔹 4. Monotonicity (no defiers)**
+
+* **What it is:** Instrument pushes all units in the same direction (no one is less likely to get treatment *because* of the instrument).
+
+* **How to check:** Can’t test directly. Rely on logic. Example: Closer distance can’t make a city *less* likely to get one-day delivery.
+
+
+
+
+
+## More Questions
+
+
+
+### In ab test, how do you communicate significance level change, 1%, 5% to non-technicals? 
+
+
+**Translate Significance into “Risk of False Alarm”**
+
+* **5% significance** → we’re okay with a **1 in 20 chance** that the result looks real but isn’t.
+
+* **1% significance** → we’re stricter: only **1 in 100 chance** of a false alarm.
+
+👉 Analogy: *“If we flip a coin, and it comes up heads five times in a row, would you believe it’s a weighted coin? At 5% significance, we’d say yes sooner. At 1%, we’d demand even more evidence.”*
+
+
+**Framing for Business Leaders**
+
+* At **5%**, we’re balancing speed and certainty — good for most product/marketing tests.
+
+* At **1%**, we’re asking for stronger proof — good when the decision is **costly or risky** (e.g., changing logistics, pricing).
+
+* So: *“Lowering the significance threshold reduces the chance of being fooled by random noise, but requires more data or a bigger effect size before we call something a win.”*
+
+
+**How to Phrase It in Plain English**
+
+* “At 5%, we’re saying we’re comfortable being wrong 1 in 20 times. At 1%, we’re saying we only want to be wrong 1 in 100 times. The stricter we are, the more confident we are in the result — but it also means we might need a larger sample or stronger effect before we see significance.”
+
+* Business framing:
+  *“Think of it as how strict a referee is. At 5%, we allow close calls to count as fouls. At 1%, the referee only calls fouls when it’s really obvious. That reduces false alarms but sometimes misses subtle, real effects.”*
+
+---
+
+> “To a non-technical audience, I’d explain significance as the risk of a false alarm. At 5% significance, we’re okay being wrong 1 in 20 times; at 1%, we’re stricter and only accept being wrong 1 in 100 times. Lowering the threshold gives us more confidence in the result, but it means we need more evidence — either a bigger effect or a larger sample size. I’d frame it as a trade-off between speed and certainty, so stakeholders can align the level of risk with the importance of the decision.”
+
+---
+
+👉 This way you show you can bridge **statistical rigor** with **business communication**, which is exactly what Amazon will test you on.
+
+
+
+
+### In synthetic control how do you calculate weigths?
+
+
+**Core Idea**
+
+You want to build a **synthetic twin** for a treated unit (e.g., Seattle after 1-day rollout) by combining multiple untreated units (e.g., Portland, Denver, Kansas City) with **weights** that make their **pre-treatment trajectory** as close as possible to Seattle’s.
+
+The weights ($w_j$) are chosen so that the **synthetic city** matches the treated city in:
+
+* Pre-treatment outcomes (e.g., orders per capita, revenue, retention).
+
+* Predictors (e.g., population, income, Prime penetration).
+
+
+**How Weights Are Calculated**
+
+Formally:
+
+* Suppose treated city = $i^*$.
+
+* Potential controls = $j = 1, \dots, J$.
+
+* We want weights $w_j$ (nonnegative, sum to 1).
+
+* Synthetic control outcome:
+
+  $$
+  Y_{it}^{SC} = \sum_{j=1}^J w_j Y_{jt}
+  $$
+
+
+* Goal: Choose $w_j$ to minimize the distance between pre-treatment outcomes of treated vs. synthetic:
+
+  $$
+  \min_{w} \; (X_{i^*} - \sum_{j=1}^J w_j X_j)' V (X_{i^*} - \sum_{j=1}^J w_j X_j)
+  $$
+
+  where:
+
+  * $X_{i^*}$ = vector of predictors for treated city.
+  * $X_j$ = predictors for control cities.
+  * $V$ = weighting matrix that reflects importance of predictors (chosen via cross-validation or researcher judgment).
+
+
+**Intuition**
+
+* If Seattle had pre-treatment outcomes \[10, 12, 15], and Portland \[11, 13, 14], Denver \[9, 11, 16], Kansas City \[8, 10, 15]…
+
+* The algorithm finds weights like 0.5 Portland + 0.3 Denver + 0.2 Kansas City = \[10.1, 12.2, 15.0].
+
+* That’s almost identical to Seattle’s pre-trends → good synthetic twin.
+
+
+
+**Tools / Implementation**
+
+* **R:** `Synth` package.
+
+* **Python:** `SyntheticControlMethods` or `econml`.
+
+* The software automates the minimization problem and produces weights + gaps.
+
+---
+
+In synthetic control, we calculate weights by finding the convex combination of control cities that best matches the treated city’s pre-treatment outcomes and characteristics. The weights are nonnegative and sum to one. The algorithm solves an optimization problem: minimize the difference between treated and synthetic in the pre-treatment period, using a weighted distance measure. After rollout, the gap between the treated city and its synthetic twin gives the causal effect. For example, Seattle might be represented as 50% Portland, 30% Denver, and 20% Kansas City if that best reproduces its pre-treatment trajectory.
+
+---
+
+👉 So:
+
+* **Mathematically** → optimization problem with constraints.
+
+* **Intuitively** → weighted average of control cities to mimic treated city.
+
+* **Practically** → solved by `Synth` or similar packages.
+
+
+
+
+
+
+
+
+
+### How do you make sure your analysis is good?
+
+
+**Internal Validity Checks**
+
+* **Parallel trends / pre-trends (for DiD):** Check that treated and control cities had similar outcome trends before rollout. If not, adjust with controls, matching, or synthetic control.
+
+* **Placebo tests:** Pretend rollout happened earlier and see if you still get an effect (shouldn’t).
+
+* **Balance checks:** Make sure treatment and control groups are comparable on observables (population, Prime %, baseline demand).
+
+* **Robustness to specification:** Try different model forms (levels vs. logs, alternative time windows) and see if results are consistent.
+
+
+**Statistical Validity**
+
+* **Standard errors:** Use clustering (e.g., at city level) to account for correlation.
+
+* **Multiple testing / false positives:** If testing many outcomes, adjust or at least note risk.
+
+* **Power:** Confirm sample size is sufficient to detect the effect you care about.
+
+
+
+
+**External Validity**
+
+* **Heterogeneity:** Test if effect varies by city size, region, Prime penetration, customer demographics. Helps tell the business *where* rollout is most valuable.
+
+* **Scalability:** Ask: does the effect in these 20–30 cities generalize to the rest of the country? If not, what adjustments might be needed?
+
+
+
+**Operational / Business Sense Check**
+
+* **Order of magnitude check:** If the model says “1-day delivery increased orders by 50%,” is that realistic? Cross-check with survey results, pilot data, or industry benchmarks.
+
+* **Consistency across metrics:** If orders went up but contribution margin plummeted, something’s off—dig deeper.
+
+* **Trace through mechanism:** Did faster delivery actually improve retention, basket size, Prime sign-ups? Evidence should align with the story.
+
+
+
+**Communicating Reliability**
+
+When talking to **non-technical stakeholders**:
+
+* Instead of “p < 0.05,” say: *“We’re 95% confident this isn’t due to chance.”*
+
+* Emphasize consistency: *“No matter how we cut the data—by time period, city size, or statistical model—the effect size is similar.”*
+
+* Highlight what’s **directionally robust** (sign and order of magnitude), even if precise estimates shift a bit.
+
+---
+
+
+I’d make sure the analysis is valid by first checking assumptions—like parallel trends in a DiD—and running placebo tests to see if I find effects where none should exist. I’d test robustness by trying different model forms and checking heterogeneity across cities. On the statistical side, I’d use clustered standard errors and check power. Finally, I’d do a business sanity check—do the numbers make sense compared to historical demand and benchmarks? When I share results, I don’t just show a coefficient, I show robustness across methods and whether the effect is consistent with business logic.
+
+---
+
+
+
+
+### What if leadership says implement his program in big cities?
+
+
+
+**Reframe the Question**
+
+* Leadership says: *“Only big cities should get the program.”*
+
+* That means rollout is **non-random** and likely **correlated with demand drivers** (population, density, income, existing infrastructure).
+
+* The key challenge = **selection bias** → big cities are systematically different.
+
+
+
+
+**How to Adjust Analysis**
+
+1. **Difference-in-Differences with Big City Controls**
+
+   * Use other **big cities not yet treated** as control group.
+   
+   * Still check **parallel pre-trends**: do big rollout cities look like big non-rollout cities before the program?
+
+2. **Synthetic Control**
+
+   * Build synthetic versions of rollout cities using a weighted combo of other big cities.
+   
+   * Helps mimic “what would have happened” in the absence of rollout.
+
+3. **Matching or Weighting**
+
+   * Match rollout cities with similar non-rollout big cities on observables (population, Prime penetration, demand history).
+   
+   * Use **balancing weights** to adjust comparisons.
+
+4. **Instrumental Variables** (if feasible)
+
+   * If rollout timing among big cities is staggered, or depends on something like proximity to FCs, use that as an instrument.
+
+
+
+**Communicating the Challenge**
+
+When explaining to **leadership / non-technical**:
+
+> “Since rollout is limited to large cities, we can’t just compare treated vs. untreated cities directly—bigger cities naturally have higher demand. To get a fair estimate, I’d compare treated big cities to similar big cities that haven’t rolled out yet, or construct a synthetic benchmark. This helps us isolate the true effect of faster delivery, not just the fact that big cities behave differently.”
+
+---
+
+If leadership only implements in big cities, selection bias becomes a concern since big cities differ from smaller ones. I’d adjust by comparing rollout cities only against similar large cities not yet treated, checking pre-trends carefully. If needed, I’d use synthetic control or matching to build a valid counterfactual. That way, even though we can’t randomize, we still get a credible estimate of the causal effect.
+
+---
+
+
+
+
+
+
+
+### What if leadership want to do it within east and west coast?
+
+
+1. **Recognize the New Challenge**
+
+* Rollout limited to **coastal cities**.
+
+* East/West Coast cities differ systematically from Midwest/South (population density, urbanization, shipping routes, demographics).
+
+* Direct comparisons would be **biased** if you don’t account for these geographic differences.
+
+
+
+2. **Analytical Adjustments**
+
+
+1. **Within-region DiD**
+
+   * Compare **treated vs. untreated** cities *within the same coast*.
+   
+   * Example: rollout city in East Coast vs. similar East Coast control city.
+   
+   * Controls for geography-specific demand drivers.
+
+2. **Staggered Rollout Leverage**
+
+   * If rollout timing differs within coasts, exploit that variation → compare early adopters vs. later adopters on the same coast.
+
+
+3. **Synthetic Control / Matching**
+
+   * Construct a synthetic version of New York rollout using weighted combo of other East Coast cities not rolled out.
+
+   * Same for San Francisco using other West Coast cities.
+
+
+
+4. **Control Variables**
+
+   * Explicitly control for coast-wide economic shocks (e.g., hurricanes, port strikes, regional seasonality).
+
+   * This addresses region-specific confounders.
+
+
+
+3. **Communicating to Leadership**
+
+> “If rollout is restricted to the coasts, we need to be careful not to attribute natural coastal differences to the program. I’d evaluate using only coastal cities as comparisons—treated vs. untreated within East and West. Where possible, I’d use staggered timing or synthetic controls to create credible counterfactuals. That way, even though the rollout is geographically concentrated, we still get a clean read on the program’s causal impact.”
+
+---
+
+> “If rollout is only on the East and West Coast, I’d avoid comparing against inland cities since those differ structurally. Instead, I’d design the evaluation within each coast, comparing treated cities to untreated coastal peers or using synthetic controls. If there’s staggered rollout, I’d leverage that timing. This ensures we’re isolating the effect of 1-day delivery, not just regional demand differences.”
+
+---
+
+
+
+
+
+
+
+
+
+
+### How I determine sample size, significance, and MDE
+
+
+
+1. **Effect Size**
+
+* The **minimum meaningful difference** we care about detecting (e.g., 2% uplift in orders, \$1 increase in revenue per customer).
+
+* Should be **business-driven**: what size of change justifies program cost?
+
+**How I’d phrase in an interview:**
+
+> “I’d align effect size with business impact. For example, if a 2% uplift in conversions covers the cost of rollout, that becomes the effect size I power the test around.”
+
+
+
+2. **Power (1 – β)**
+
+* Probability of detecting a true effect when it exists (commonly 80%).
+
+* Balances sample size and effect size.
+
+
+
+3. **Significance (α)**
+
+* Probability of **Type I error** (false positive).
+
+* Common levels: 5% (standard), 1% (stricter).
+
+* Tighter significance → need larger sample or stronger effect.
+
+
+
+4. **Sample Size**
+
+* Driven by: baseline variability, expected effect size, desired confidence.
+
+* Larger sample = more precise estimate.
+
+* Formula-wise: depends on variance of outcome, desired power (often 80%), and significance level (α).
+
+
+
+**How I’d explain it simply:**
+
+> “Sample size tells us how many observations we need to confidently detect an effect. The more variable the outcome, or the smaller the effect we expect, the more data we need.”
+
+
+
+
+5. **Putting It Together (Interview Version)**
+
+> “When planning an evaluation, I’d first work with business teams to define the effect size that matters—say, a 2% uplift that makes the program profitable. Then I’d calculate the sample size required to detect that effect with 80% power at a 5% significance level. If leadership wants stricter confidence, like 1%, we’d need either more data or accept that only larger effects will show up as significant. This way, the statistics are tied directly to the business decision.”
+
+
+
+
+
+
+
+### How do you communicate 10-15% significance to non-technicals
+
+
+1. **Translate into everyday risk**
+
+* At 5% significance: *“We’re okay being wrong 1 in 20 times.”*
+* At 10% significance: *“We’re okay being wrong 1 in 10 times.”*
+* At 15% significance: *“We’re okay being wrong about 1 in 7 times.”*
+
+👉 So the trade-off is: **more chance of a false alarm**, but **faster and easier to declare a result**.
+
+ 
+2. **Use a business analogy**
+
+> “If we set the bar at 5%, we only act when we’re 95% sure it’s real. At 10–15%, we act when we’re about 85–90% sure. That means we might make a few more false calls, but it lets us move faster when time is valuable.”
+
+
+
+3. **Frame as speed vs. certainty**
+
+* **Stricter (5%)**: safer, but needs more data → longer, costlier test.
+
+* **Looser (10–15%)**: faster insights, but with more risk of being wrong.
+
+👉 Useful when:
+
+* Testing is expensive or slow.
+
+* Business needs quick directional answers.
+
+* You’re in an exploratory phase, not final rollout.
+
+
+
+4. **Contextualize with decision stakes**
+
+* *“If the cost of a false positive is high—like rolling out a bad product—we stick to 5%.”*
+
+* *“If the cost is low—like trying a new ad creative—we may accept 10–15% to move faster.”*
+
+
+
+✅ **One-liner for interviews / non-techs:**
+
+> “At 10–15% significance, we’re trading some confidence for speed. Instead of being 95% sure, we’re about 85–90% sure, which means quicker tests but more risk of a false positive. Whether that’s okay depends on how costly a wrong decision is.”
+
+
