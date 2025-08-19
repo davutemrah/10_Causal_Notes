@@ -35,6 +35,7 @@
 ### Practical Workflow
 
 1. Split the data into $K$ folds.
+
 2. For each fold:
 
    * Estimate nuisance functions ($\hat{m}(X), \hat{p}(X)$) using ML.
@@ -50,6 +51,7 @@
 ### Use Case Example
 
 * **Education & Wages**: Estimating the causal effect of education on wages when there are 500+ potential confounders (family background, demographics, test scores, etc.).
+
 * ML methods (e.g., random forests, LASSO, boosting) handle the high-dimensional confounding flexibly, while DML ensures valid causal inference.
 
 ---
@@ -57,7 +59,9 @@
 ### Advantages
 
 * **Doubly Robust**: Consistent if nuisance estimates are sufficiently good (not perfect).
+
 * **Asymptotically Normal**: Enables valid confidence intervals and hypothesis testing.
+
 * **Scalable**: Works with modern ML tools (lasso, random forests, neural nets).
 
 ---
@@ -66,8 +70,84 @@
 
 * Chernozhukov, V., Chetverikov, D., Demirer, M., Duflo, E., Hansen, C., Newey, W., & Robins, J. (2018). *Double/Debiased Machine Learning for Treatment and Structural Parameters*.
 
+
+
+
+## Doubly Robust (DR) vs. Double Machine Learning (DML)
+
+| **Feature** | **Doubly Robust (DR) Methods** | **Double Machine Learning (DML)** |
+|-------------|--------------------------------|-----------------------------------|
+| **Main Idea** | Combine outcome regression and propensity score weighting. | Use ML to flexibly estimate nuisance functions, then orthogonalize residuals for causal estimation. |
+| **Key Components** | (1) Outcome model: `E[Y|X,D]` <br> (2) Treatment model: `P(D=1|X)` | (1) Outcome regression (predict Y) <br> (2) Propensity score / treatment model (predict D) <br> (3) Orthogonalization and cross-fitting |
+| **Estimation Strategy** | Combine outcome predictions with inverse-probability weighting. <br> Consistent if either model is correct. | Residualize both outcome and treatment using ML-estimated nuisance functions. <br> Regress residualized outcome on residualized treatment. |
+| **Assumptions** | No unmeasured confounding; overlap; either outcome or treatment model correctly specified. | No unmeasured confounding; overlap; nuisance functions estimated consistently (even if imperfect). |
+| **Strengths** | Doubly robust consistency (only one model needs to be correct). | Handles high-dimensional data; reduces bias via orthogonalization + cross-fitting. |
+| **Weaknesses** | Still parametric in many applications; efficiency depends on models used. | Requires larger samples and careful ML tuning; more computationally intensive. |
+| **Use Cases** | Healthcare, education, labor economics — observational data with moderate covariates. | Big data / high-dimensional covariates — e.g., genetics, large-scale surveys, online experiments. |
+
+
+
+### Key Takeaway
+
+* **Doubly Robust** estimators were the first step: they guard against model misspecification by combining outcome regression and treatment models.
+
+* **Double ML** generalizes this logic to **high-dimensional ML settings**, ensuring valid causal inference even when using complex, nonparametric models.
+
+
+
+
+## Concepts
+
+
+
+
+### 🔹 Nuisance Functions
+
+In causal inference, **nuisance functions** are the parts of the model we don’t care about directly but need to handle correctly in order to estimate the causal effect.
+
+Examples:
+
+* **Propensity score model**: $e(X) = P(D=1 \mid X)$ (probability of treatment given covariates).
+* **Outcome regression model**: $m(X) = E[Y \mid X, D]$.
+
+👉 These are called *nuisance* because our main parameter of interest is the treatment effect (say, $\theta$), not the functions themselves. But we need to estimate them in order to “clean out” confounding.
+
 ---
 
-✅ This cleaned-up version should fit neatly into your **methods notebook**, while still being accessible and rigorous.
+### 🔹 Orthogonalization
 
-Would you like me to **add a side-by-side comparison** (Doubly Robust vs. Double ML), so your notebook highlights how DML generalizes DR methods?
+Orthogonalization (sometimes called **Neyman orthogonalization**) is a way of constructing the estimating equation for the treatment effect so that **small errors in nuisance function estimation do not bias the causal estimate**.
+
+* Think of it as creating a moment condition that is *insensitive* to mistakes in ML predictions of propensity scores or outcomes.
+* In practice, this is done by **residualizing**:
+
+  * First, predict outcomes using $m(X)$. Then compute residuals $Y - \hat{m}(X)$.
+  * Predict treatment using $e(X)$. Then compute residuals $D - \hat{e}(X)$.
+  * Finally, regress the outcome residuals on the treatment residuals to get the causal effect $\theta$.
+
+This step “orthogonalizes” the causal effect from nuisance functions — i.e., makes them perpendicular (uncorrelated) so errors in ML predictions don’t contaminate the estimate.
+
+---
+
+### 🔹 Why This Matters
+
+* If we just plugged raw ML predictions of outcomes or treatment into a regression, overfitting or small misspecifications would bias our causal effect.
+* With orthogonalization, we make the causal parameter **robust to first-order errors** in nuisance estimation.
+* That’s why DML can work well even with high-dimensional covariates and flexible ML methods.
+
+
+✅ **Summary in one line**:
+
+* *Nuisance functions* = models for outcome and treatment assignment we don’t directly care about.
+
+* *Orthogonalization* = a trick to make causal estimates robust to small errors in those nuisance functions by using residuals.
+
+
+
+
+
+
+
+
+
+

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 9 Regression Discontinuity Designs (RDD) | Notes on Causal Models</title>
+  <title>Chapter 8 Regression Discontinuity Designs (RDD) | Notes on Causal Models</title>
   <meta name="description" content="This is a collection of notes from open sources" />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 9 Regression Discontinuity Designs (RDD) | Notes on Causal Models" />
+  <meta property="og:title" content="Chapter 8 Regression Discontinuity Designs (RDD) | Notes on Causal Models" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a collection of notes from open sources" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 9 Regression Discontinuity Designs (RDD) | Notes on Causal Models" />
+  <meta name="twitter:title" content="Chapter 8 Regression Discontinuity Designs (RDD) | Notes on Causal Models" />
   
   <meta name="twitter:description" content="This is a collection of notes from open sources" />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="DEA" />
 
 
-<meta name="date" content="2025-08-17" />
+<meta name="date" content="2025-08-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="instrumental-variables-iv.html"/>
-<link rel="next" href="fixed-effects-and-panel-data-methods.html"/>
+<link rel="next" href="doubly-robust-methods.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -234,12 +234,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.4.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#simple-difference-method"><i class="fa fa-check"></i><b>2.4.1</b> Simple Difference Method</a></li>
 <li class="chapter" data-level="2.4.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#conclusion"><i class="fa fa-check"></i><b>2.4.2</b> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="2.5" data-path="potential-outcomes.html"><a href="potential-outcomes.html#on-how-parameters-are-calculated"><i class="fa fa-check"></i><b>2.5</b> On how parameters are calculated</a>
-<ul>
-<li class="chapter" data-level="2.5.1" data-path="potential-outcomes.html"><a href="potential-outcomes.html#propensity-score-matching-psm-and-maximum-likelihood-estimation-mle"><i class="fa fa-check"></i><b>2.5.1</b> Propensity Score Matching (PSM) and Maximum Likelihood Estimation (MLE)</a></li>
-<li class="chapter" data-level="2.5.2" data-path="potential-outcomes.html"><a href="potential-outcomes.html#logistic-regression"><i class="fa fa-check"></i><b>2.5.2</b> Logistic Regression</a></li>
-<li class="chapter" data-level="2.5.3" data-path="potential-outcomes.html"><a href="potential-outcomes.html#ordinary-least-squares-ols-regression"><i class="fa fa-check"></i><b>2.5.3</b> Ordinary Least Squares (OLS) Regression</a></li>
-</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="matching.html"><a href="matching.html"><i class="fa fa-check"></i><b>3</b> Matching</a>
 <ul>
@@ -279,281 +273,289 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.7.2" data-path="matching.html"><a href="matching.html#steps-in-coarsened-exact-matching"><i class="fa fa-check"></i><b>3.7.2</b> Steps in Coarsened Exact Matching</a></li>
 <li class="chapter" data-level="3.7.3" data-path="matching.html"><a href="matching.html#considerations-1"><i class="fa fa-check"></i><b>3.7.3</b> Considerations</a></li>
 </ul></li>
-<li class="chapter" data-level="3.8" data-path="matching.html"><a href="matching.html#ab-test-article-from-medium"><i class="fa fa-check"></i><b>3.8</b> A/B Test article from Medium</a>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ab-testing.html"><a href="ab-testing.html"><i class="fa fa-check"></i><b>4</b> AB Testing</a>
 <ul>
-<li class="chapter" data-level="3.8.1" data-path="matching.html"><a href="matching.html#example-conversion-rate-of-an-e-commerce-website"><i class="fa fa-check"></i><b>3.8.1</b> Example: Conversion Rate of an E-Commerce Website</a></li>
-<li class="chapter" data-level="3.8.2" data-path="matching.html"><a href="matching.html#example-ab-test"><i class="fa fa-check"></i><b>3.8.2</b> Example: A/B Test</a></li>
-</ul></li>
-<li class="chapter" data-level="3.9" data-path="matching.html"><a href="matching.html#task-1-load-the-data"><i class="fa fa-check"></i><b>3.9</b> Task 1: Load the data</a></li>
-<li class="chapter" data-level="3.10" data-path="matching.html"><a href="matching.html#task-2-set-up-hypothesis"><i class="fa fa-check"></i><b>3.10</b> Task 2: Set up Hypothesis</a></li>
-<li class="chapter" data-level="3.11" data-path="matching.html"><a href="matching.html#task-3-compute-the-difference-in-the-click-through-rate"><i class="fa fa-check"></i><b>3.11</b> Task 3: Compute the difference in the click-through rate</a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html"><i class="fa fa-check"></i><b>4</b> Task four : create sample distribution using bootsrapping</a>
+<li class="chapter" data-level="4.1" data-path="ab-testing.html"><a href="ab-testing.html#sources"><i class="fa fa-check"></i><b>4.1</b> Sources</a></li>
+<li class="chapter" data-level="4.2" data-path="ab-testing.html"><a href="ab-testing.html#concepts-1"><i class="fa fa-check"></i><b>4.2</b> Concepts</a></li>
+<li class="chapter" data-level="4.3" data-path="ab-testing.html"><a href="ab-testing.html#ai-summary"><i class="fa fa-check"></i><b>4.3</b> AI Summary</a>
 <ul>
-<li class="chapter" data-level="4.0.1" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#bootstrapping"><i class="fa fa-check"></i><b>4.0.1</b> Bootstrapping :</a></li>
-<li class="chapter" data-level="4.0.2" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#example-7"><i class="fa fa-check"></i><b>4.0.2</b> Example :</a></li>
-<li class="chapter" data-level="4.1" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#task-five-evaluate-the-null-hypothesis-and-draw-conclustions."><i class="fa fa-check"></i><b>4.1</b> Task five : Evaluate the null hypothesis and draw conclustions.</a></li>
-<li class="chapter" data-level="4.2" data-path="task-four-create-sample-distribution-using-bootsrapping.html"><a href="task-four-create-sample-distribution-using-bootsrapping.html#alternative-random-sampling-code"><i class="fa fa-check"></i><b>4.2</b> alternative random sampling code</a></li>
+<li class="chapter" data-level="4.3.1" data-path="ab-testing.html"><a href="ab-testing.html#ab-testing-randomized-controlled-trials"><i class="fa fa-check"></i><b>4.3.1</b> A/B Testing (Randomized Controlled Trials)</a></li>
+<li class="chapter" data-level="4.3.2" data-path="ab-testing.html"><a href="ab-testing.html#concepts-2"><i class="fa fa-check"></i><b>4.3.2</b> Concepts:</a></li>
+<li class="chapter" data-level="4.3.3" data-path="ab-testing.html"><a href="ab-testing.html#comparison-and-usage"><i class="fa fa-check"></i><b>4.3.3</b> Comparison and Usage</a></li>
+<li class="chapter" data-level="4.3.4" data-path="ab-testing.html"><a href="ab-testing.html#significance"><i class="fa fa-check"></i><b>4.3.4</b> Significance</a></li>
+<li class="chapter" data-level="4.3.5" data-path="ab-testing.html"><a href="ab-testing.html#group-size"><i class="fa fa-check"></i><b>4.3.5</b> Group Size</a></li>
+<li class="chapter" data-level="4.3.6" data-path="ab-testing.html"><a href="ab-testing.html#relationship-between-effect-size-significance-and-group-size"><i class="fa fa-check"></i><b>4.3.6</b> Relationship Between Effect Size, Significance, and Group Size</a></li>
+<li class="chapter" data-level="4.3.7" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-2"><i class="fa fa-check"></i><b>4.3.7</b> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="ab-testing.html"><a href="ab-testing.html"><i class="fa fa-check"></i><b>5</b> AB Testing</a>
+<li class="chapter" data-level="4.4" data-path="ab-testing.html"><a href="ab-testing.html#size-of-the-control-group"><i class="fa fa-check"></i><b>4.4</b> Size of the Control Group</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="ab-testing.html"><a href="ab-testing.html#sources"><i class="fa fa-check"></i><b>5.1</b> Sources</a></li>
-<li class="chapter" data-level="5.2" data-path="ab-testing.html"><a href="ab-testing.html#concepts-1"><i class="fa fa-check"></i><b>5.2</b> Concepts</a></li>
-<li class="chapter" data-level="5.3" data-path="ab-testing.html"><a href="ab-testing.html#ai-summary"><i class="fa fa-check"></i><b>5.3</b> AI Summary</a>
+<li class="chapter" data-level="4.4.1" data-path="ab-testing.html"><a href="ab-testing.html#sample-size-calculation-formula"><i class="fa fa-check"></i><b>4.4.1</b> Sample Size Calculation Formula</a></li>
+<li class="chapter" data-level="4.4.2" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-3"><i class="fa fa-check"></i><b>4.4.2</b> Conclusion</a></li>
+<li class="chapter" data-level="4.4.3" data-path="ab-testing.html"><a href="ab-testing.html#statistical-assumptions-for-randomized-controlled-trials-rcts"><i class="fa fa-check"></i><b>4.4.3</b> Statistical Assumptions for Randomized Controlled Trials (RCTs)</a></li>
+<li class="chapter" data-level="4.4.4" data-path="ab-testing.html"><a href="ab-testing.html#robustness-checks-1"><i class="fa fa-check"></i><b>4.4.4</b> Robustness Checks</a></li>
+<li class="chapter" data-level="4.4.5" data-path="ab-testing.html"><a href="ab-testing.html#validation-methods-1"><i class="fa fa-check"></i><b>4.4.5</b> Validation Methods</a></li>
+<li class="chapter" data-level="4.4.6" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-4"><i class="fa fa-check"></i><b>4.4.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="ab-testing.html"><a href="ab-testing.html#example-conversion-rate-of-an-e-commerce-website"><i class="fa fa-check"></i><b>4.5</b> Example: Conversion Rate of an E-Commerce Website</a></li>
+<li class="chapter" data-level="4.6" data-path="ab-testing.html"><a href="ab-testing.html#example-ab-test"><i class="fa fa-check"></i><b>4.6</b> Example: A/B Test</a>
 <ul>
-<li class="chapter" data-level="5.3.1" data-path="ab-testing.html"><a href="ab-testing.html#ab-testing-randomized-controlled-trials"><i class="fa fa-check"></i><b>5.3.1</b> A/B Testing (Randomized Controlled Trials)</a></li>
-<li class="chapter" data-level="5.3.2" data-path="ab-testing.html"><a href="ab-testing.html#concepts-2"><i class="fa fa-check"></i><b>5.3.2</b> Concepts:</a></li>
-<li class="chapter" data-level="5.3.3" data-path="ab-testing.html"><a href="ab-testing.html#comparison-and-usage"><i class="fa fa-check"></i><b>5.3.3</b> Comparison and Usage</a></li>
-<li class="chapter" data-level="5.3.4" data-path="ab-testing.html"><a href="ab-testing.html#significance"><i class="fa fa-check"></i><b>5.3.4</b> Significance</a></li>
-<li class="chapter" data-level="5.3.5" data-path="ab-testing.html"><a href="ab-testing.html#group-size"><i class="fa fa-check"></i><b>5.3.5</b> Group Size</a></li>
-<li class="chapter" data-level="5.3.6" data-path="ab-testing.html"><a href="ab-testing.html#relationship-between-effect-size-significance-and-group-size"><i class="fa fa-check"></i><b>5.3.6</b> Relationship Between Effect Size, Significance, and Group Size</a></li>
-<li class="chapter" data-level="5.3.7" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-2"><i class="fa fa-check"></i><b>5.3.7</b> Conclusion</a></li>
+<li class="chapter" data-level="4.6.1" data-path="ab-testing.html"><a href="ab-testing.html#task-1-load-the-data"><i class="fa fa-check"></i><b>4.6.1</b> Task 1: Load the data</a></li>
+<li class="chapter" data-level="4.6.2" data-path="ab-testing.html"><a href="ab-testing.html#task-2-set-up-hypothesis"><i class="fa fa-check"></i><b>4.6.2</b> Task 2: Set up Hypothesis</a></li>
+<li class="chapter" data-level="4.6.3" data-path="ab-testing.html"><a href="ab-testing.html#task-3-compute-the-difference-in-the-click-through-rate"><i class="fa fa-check"></i><b>4.6.3</b> Task 3: Compute the difference in the click-through rate</a></li>
+<li class="chapter" data-level="4.6.4" data-path="ab-testing.html"><a href="ab-testing.html#task-four-create-sample-distribution-using-bootsrapping"><i class="fa fa-check"></i><b>4.6.4</b> Task four : create sample distribution using bootsrapping</a></li>
+<li class="chapter" data-level="4.6.5" data-path="ab-testing.html"><a href="ab-testing.html#task-five-evaluate-the-null-hypothesis-and-draw-conclustions."><i class="fa fa-check"></i><b>4.6.5</b> Task five : Evaluate the null hypothesis and draw conclustions.</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="ab-testing.html"><a href="ab-testing.html#size-of-the-control-group"><i class="fa fa-check"></i><b>5.4</b> Size of the Control Group</a>
+</ul></li>
+<li class="chapter" data-level="5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html"><i class="fa fa-check"></i><b>5</b> Difference-in-Differences (DiD) Methods</a>
 <ul>
-<li class="chapter" data-level="5.4.1" data-path="ab-testing.html"><a href="ab-testing.html#sample-size-calculation-formula"><i class="fa fa-check"></i><b>5.4.1</b> Sample Size Calculation Formula</a></li>
-<li class="chapter" data-level="5.4.2" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-3"><i class="fa fa-check"></i><b>5.4.2</b> Conclusion</a></li>
-<li class="chapter" data-level="5.4.3" data-path="ab-testing.html"><a href="ab-testing.html#statistical-assumptions-for-randomized-controlled-trials-rcts"><i class="fa fa-check"></i><b>5.4.3</b> Statistical Assumptions for Randomized Controlled Trials (RCTs)</a></li>
-<li class="chapter" data-level="5.4.4" data-path="ab-testing.html"><a href="ab-testing.html#robustness-checks-1"><i class="fa fa-check"></i><b>5.4.4</b> Robustness Checks</a></li>
-<li class="chapter" data-level="5.4.5" data-path="ab-testing.html"><a href="ab-testing.html#validation-methods-1"><i class="fa fa-check"></i><b>5.4.5</b> Validation Methods</a></li>
-<li class="chapter" data-level="5.4.6" data-path="ab-testing.html"><a href="ab-testing.html#conclusion-4"><i class="fa fa-check"></i><b>5.4.6</b> Conclusion</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html"><i class="fa fa-check"></i><b>6</b> Difference-in-Differences (DiD) Methods</a>
+<li class="chapter" data-level="5.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#simple-difference-in-differences-did"><i class="fa fa-check"></i><b>5.1</b> Simple Difference-in-Differences (DiD)</a></li>
+<li class="chapter" data-level="5.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#controversial-note"><i class="fa fa-check"></i><b>5.2</b> Controversial Note</a></li>
+<li class="chapter" data-level="5.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#placebo-tests-for-parallel-trends"><i class="fa fa-check"></i><b>5.3</b> Placebo tests for parallel trends</a></li>
+<li class="chapter" data-level="5.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#two-way-fixed-effects-model"><i class="fa fa-check"></i><b>5.4</b> Two-Way Fixed Effects Model</a></li>
+<li class="chapter" data-level="5.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#event-study-methods"><i class="fa fa-check"></i><b>5.5</b> Event Study Methods</a></li>
+<li class="chapter" data-level="5.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#importance-of-placebos-in-dd"><i class="fa fa-check"></i><b>5.6</b> Importance of Placebos in DD</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#simple-difference-in-differences-did"><i class="fa fa-check"></i><b>6.1</b> Simple Difference-in-Differences (DiD)</a></li>
-<li class="chapter" data-level="6.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#controversial-note"><i class="fa fa-check"></i><b>6.2</b> Controversial Note</a></li>
-<li class="chapter" data-level="6.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#placebo-tests-for-parallel-trends"><i class="fa fa-check"></i><b>6.3</b> Placebo tests for parallel trends</a></li>
-<li class="chapter" data-level="6.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#two-way-fixed-effects-model"><i class="fa fa-check"></i><b>6.4</b> Two-Way Fixed Effects Model</a></li>
-<li class="chapter" data-level="6.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#event-study-methods"><i class="fa fa-check"></i><b>6.5</b> Event Study Methods</a></li>
-<li class="chapter" data-level="6.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#importance-of-placebos-in-dd"><i class="fa fa-check"></i><b>6.6</b> Importance of Placebos in DD</a>
+<li class="chapter" data-level="5.6.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#triple-differences"><i class="fa fa-check"></i><b>5.6.1</b> Triple Differences</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#compositional-changes"><i class="fa fa-check"></i><b>5.7</b> Compositional Changes</a></li>
+<li class="chapter" data-level="5.8" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-assumptions"><i class="fa fa-check"></i><b>5.8</b> Key Assumptions</a>
 <ul>
-<li class="chapter" data-level="6.6.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#triple-differences"><i class="fa fa-check"></i><b>6.6.1</b> Triple Differences</a></li>
+<li class="chapter" data-level="5.8.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#implementation-steps"><i class="fa fa-check"></i><b>5.8.1</b> Implementation Steps</a></li>
+<li class="chapter" data-level="5.8.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#advantages"><i class="fa fa-check"></i><b>5.8.2</b> Advantages</a></li>
+<li class="chapter" data-level="5.8.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#limitations-1"><i class="fa fa-check"></i><b>5.8.3</b> Limitations</a></li>
+<li class="chapter" data-level="5.8.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#q-how-would-you-test-the-parallel-trends-assumption"><i class="fa fa-check"></i><b>5.8.4</b> Q: How would you test the parallel trends assumption?</a></li>
+<li class="chapter" data-level="5.8.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#q-how-would-you-address-potential-violations-of-the-parallel-trends-assumption"><i class="fa fa-check"></i><b>5.8.5</b> Q: How would you address potential violations of the parallel trends assumption?</a></li>
 </ul></li>
-<li class="chapter" data-level="6.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#compositional-changes"><i class="fa fa-check"></i><b>6.7</b> Compositional Changes</a></li>
-<li class="chapter" data-level="6.8" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-assumptions"><i class="fa fa-check"></i><b>6.8</b> Key Assumptions</a>
+<li class="chapter" data-level="5.9" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#notes"><i class="fa fa-check"></i><b>5.9</b> Notes</a>
 <ul>
-<li class="chapter" data-level="6.8.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#implementation-steps"><i class="fa fa-check"></i><b>6.8.1</b> Implementation Steps</a></li>
-<li class="chapter" data-level="6.8.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#advantages"><i class="fa fa-check"></i><b>6.8.2</b> Advantages</a></li>
-<li class="chapter" data-level="6.8.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#limitations-1"><i class="fa fa-check"></i><b>6.8.3</b> Limitations</a></li>
-<li class="chapter" data-level="6.8.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#q-how-would-you-test-the-parallel-trends-assumption"><i class="fa fa-check"></i><b>6.8.4</b> Q: How would you test the parallel trends assumption?</a></li>
-<li class="chapter" data-level="6.8.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#q-how-would-you-address-potential-violations-of-the-parallel-trends-assumption"><i class="fa fa-check"></i><b>6.8.5</b> Q: How would you address potential violations of the parallel trends assumption?</a></li>
+<li class="chapter" data-level="5.9.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#example-business"><i class="fa fa-check"></i><b>5.9.1</b> Example: Business</a></li>
 </ul></li>
-<li class="chapter" data-level="6.9" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#notes"><i class="fa fa-check"></i><b>6.9</b> Notes</a>
+<li class="chapter" data-level="5.10" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#extra-considerations"><i class="fa fa-check"></i><b>5.10</b> Extra Considerations</a></li>
+<li class="chapter" data-level="5.11" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#synthetic-difference-in-differences-synthdid-method"><i class="fa fa-check"></i><b>5.11</b> Synthetic Difference-in-Differences (SynthDiD) method</a>
 <ul>
-<li class="chapter" data-level="6.9.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#example-business"><i class="fa fa-check"></i><b>6.9.1</b> Example: Business</a></li>
+<li class="chapter" data-level="5.11.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#introduction"><i class="fa fa-check"></i><b>5.11.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.11.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#what-problem-it-solves"><i class="fa fa-check"></i><b>5.11.2</b> What problem it solves</a></li>
+<li class="chapter" data-level="5.11.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#how-it-works-intuition"><i class="fa fa-check"></i><b>5.11.3</b> How it works (intuition)</a></li>
+<li class="chapter" data-level="5.11.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#how-it-differs-from-related-methods"><i class="fa fa-check"></i><b>5.11.4</b> How it differs from related methods</a></li>
+<li class="chapter" data-level="5.11.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#when-to-use"><i class="fa fa-check"></i><b>5.11.5</b> When to use</a></li>
+<li class="chapter" data-level="5.11.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#assumptions-why-its-appealing"><i class="fa fa-check"></i><b>5.11.6</b> Assumptions (why it’s appealing)</a></li>
+<li class="chapter" data-level="5.11.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#inference-diagnostics"><i class="fa fa-check"></i><b>5.11.7</b> Inference &amp; diagnostics</a></li>
+<li class="chapter" data-level="5.11.8" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#pros-cons"><i class="fa fa-check"></i><b>5.11.8</b> Pros / Cons</a></li>
+<li class="chapter" data-level="5.11.9" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#tldr-contrast"><i class="fa fa-check"></i><b>5.11.9</b> TL;DR (contrast)</a></li>
+<li class="chapter" data-level="5.11.10" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#an-example"><i class="fa fa-check"></i><b>5.11.10</b> An Example:</a></li>
+<li class="chapter" data-level="5.11.11" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-5"><i class="fa fa-check"></i><b>5.11.11</b> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="6.10" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#extra-considerations"><i class="fa fa-check"></i><b>6.10</b> Extra Considerations</a></li>
-<li class="chapter" data-level="6.11" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#synthetic-difference-in-differences-synthdid-method"><i class="fa fa-check"></i><b>6.11</b> Synthetic Difference-in-Differences (SynthDiD) method</a>
+<li class="chapter" data-level="5.12" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#doubly-robust-difference-in-differences"><i class="fa fa-check"></i><b>5.12</b> Doubly Robust Difference in Differences</a>
 <ul>
-<li class="chapter" data-level="6.11.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#introduction"><i class="fa fa-check"></i><b>6.11.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.11.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#what-problem-it-solves"><i class="fa fa-check"></i><b>6.11.2</b> What problem it solves</a></li>
-<li class="chapter" data-level="6.11.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#how-it-works-intuition"><i class="fa fa-check"></i><b>6.11.3</b> How it works (intuition)</a></li>
-<li class="chapter" data-level="6.11.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#how-it-differs-from-related-methods"><i class="fa fa-check"></i><b>6.11.4</b> How it differs from related methods</a></li>
-<li class="chapter" data-level="6.11.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#when-to-use"><i class="fa fa-check"></i><b>6.11.5</b> When to use</a></li>
-<li class="chapter" data-level="6.11.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#assumptions-why-its-appealing"><i class="fa fa-check"></i><b>6.11.6</b> Assumptions (why it’s appealing)</a></li>
-<li class="chapter" data-level="6.11.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#inference-diagnostics"><i class="fa fa-check"></i><b>6.11.7</b> Inference &amp; diagnostics</a></li>
-<li class="chapter" data-level="6.11.8" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#pros-cons"><i class="fa fa-check"></i><b>6.11.8</b> Pros / Cons</a></li>
-<li class="chapter" data-level="6.11.9" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#tldr-contrast"><i class="fa fa-check"></i><b>6.11.9</b> TL;DR (contrast)</a></li>
-<li class="chapter" data-level="6.11.10" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#an-example"><i class="fa fa-check"></i><b>6.11.10</b> An Example:</a></li>
-<li class="chapter" data-level="6.11.11" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-5"><i class="fa fa-check"></i><b>6.11.11</b> Conclusion</a></li>
+<li class="chapter" data-level="5.12.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#details"><i class="fa fa-check"></i><b>5.12.1</b> Details</a></li>
 </ul></li>
-<li class="chapter" data-level="6.12" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#doubly-robust-difference-in-differences"><i class="fa fa-check"></i><b>6.12</b> Doubly Robust Difference in Differences</a>
+<li class="chapter" data-level="5.13" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#twoway-fixed-effects-with-differential-timing"><i class="fa fa-check"></i><b>5.13</b> Twoway Fixed Effects with Differential Timing</a></li>
+<li class="chapter" data-level="5.14" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#bacon-decomposition"><i class="fa fa-check"></i><b>5.14</b> Bacon Decomposition</a>
 <ul>
-<li class="chapter" data-level="6.12.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#details"><i class="fa fa-check"></i><b>6.12.1</b> Details</a></li>
+<li class="chapter" data-level="5.14.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#overview"><i class="fa fa-check"></i><b>5.14.1</b> Overview</a></li>
+<li class="chapter" data-level="5.14.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-concepts-3"><i class="fa fa-check"></i><b>5.14.2</b> Key Concepts</a></li>
+<li class="chapter" data-level="5.14.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#components-of-bacon-decomposition"><i class="fa fa-check"></i><b>5.14.3</b> Components of Bacon Decomposition</a></li>
+<li class="chapter" data-level="5.14.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#formula-for-decomposition"><i class="fa fa-check"></i><b>5.14.4</b> Formula for Decomposition</a></li>
+<li class="chapter" data-level="5.14.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#implications-and-interpretation"><i class="fa fa-check"></i><b>5.14.5</b> Implications and Interpretation</a></li>
+<li class="chapter" data-level="5.14.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#example-8"><i class="fa fa-check"></i><b>5.14.6</b> Example</a></li>
+<li class="chapter" data-level="5.14.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-6"><i class="fa fa-check"></i><b>5.14.7</b> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="6.13" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#twoway-fixed-effects-with-differential-timing"><i class="fa fa-check"></i><b>6.13</b> Twoway Fixed Effects with Differential Timing</a></li>
-<li class="chapter" data-level="6.14" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#bacon-decomposition"><i class="fa fa-check"></i><b>6.14</b> Bacon Decomposition</a>
+</ul></li>
+<li class="chapter" data-level="6" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html"><i class="fa fa-check"></i><b>6</b> Synthetic Control Method (SCM)</a>
 <ul>
-<li class="chapter" data-level="6.14.1" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#overview"><i class="fa fa-check"></i><b>6.14.1</b> Overview</a></li>
-<li class="chapter" data-level="6.14.2" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#key-concepts-3"><i class="fa fa-check"></i><b>6.14.2</b> Key Concepts</a></li>
-<li class="chapter" data-level="6.14.3" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#components-of-bacon-decomposition"><i class="fa fa-check"></i><b>6.14.3</b> Components of Bacon Decomposition</a></li>
-<li class="chapter" data-level="6.14.4" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#formula-for-decomposition"><i class="fa fa-check"></i><b>6.14.4</b> Formula for Decomposition</a></li>
-<li class="chapter" data-level="6.14.5" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#implications-and-interpretation"><i class="fa fa-check"></i><b>6.14.5</b> Implications and Interpretation</a></li>
-<li class="chapter" data-level="6.14.6" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#example-8"><i class="fa fa-check"></i><b>6.14.6</b> Example</a></li>
-<li class="chapter" data-level="6.14.7" data-path="difference-in-differences-did-methods.html"><a href="difference-in-differences-did-methods.html#conclusion-6"><i class="fa fa-check"></i><b>6.14.7</b> Conclusion</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html"><i class="fa fa-check"></i><b>7</b> Synthetic Control Method (SCM)</a>
+<li class="chapter" data-level="6.1" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#ai-summary-1"><i class="fa fa-check"></i><b>6.1</b> AI Summary</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#ai-summary-1"><i class="fa fa-check"></i><b>7.1</b> AI Summary</a>
+<li class="chapter" data-level="6.1.1" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#synthetic-control-method-scm-1"><i class="fa fa-check"></i><b>6.1.1</b> Synthetic Control Method (SCM)</a></li>
+<li class="chapter" data-level="6.1.2" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#placebo-tests"><i class="fa fa-check"></i><b>6.1.2</b> Placebo tests</a></li>
+<li class="chapter" data-level="6.1.3" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>6.1.3</b> Leave-One-Out Cross-Validation</a></li>
+<li class="chapter" data-level="6.1.4" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#detailed-example"><i class="fa fa-check"></i><b>6.1.4</b> Detailed Example</a></li>
+<li class="chapter" data-level="6.1.5" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-8"><i class="fa fa-check"></i><b>6.1.5</b> Conclusion</a></li>
+<li class="chapter" data-level="6.1.6" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data"><i class="fa fa-check"></i><b>6.1.6</b> Data</a></li>
+<li class="chapter" data-level="6.1.7" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data-setting"><i class="fa fa-check"></i><b>6.1.7</b> Data Setting</a></li>
+<li class="chapter" data-level="6.1.8" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#requirements-for-synthetic-control-method"><i class="fa fa-check"></i><b>6.1.8</b> Requirements for Synthetic Control Method</a></li>
+<li class="chapter" data-level="6.1.9" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data-requirements-summary"><i class="fa fa-check"></i><b>6.1.9</b> Data Requirements Summary</a></li>
+<li class="chapter" data-level="6.1.10" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#practical-considerations"><i class="fa fa-check"></i><b>6.1.10</b> Practical Considerations</a></li>
+<li class="chapter" data-level="6.1.11" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#example-11"><i class="fa fa-check"></i><b>6.1.11</b> Example</a></li>
+<li class="chapter" data-level="6.1.12" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-9"><i class="fa fa-check"></i><b>6.1.12</b> Conclusion</a></li>
+<li class="chapter" data-level="6.1.13" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#synthetic-did"><i class="fa fa-check"></i><b>6.1.13</b> Synthetic DID</a></li>
+<li class="chapter" data-level="6.1.14" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#robustness-checks-3"><i class="fa fa-check"></i><b>6.1.14</b> Robustness Checks</a></li>
+<li class="chapter" data-level="6.1.15" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#validation-methods-3"><i class="fa fa-check"></i><b>6.1.15</b> Validation Methods</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html"><i class="fa fa-check"></i><b>7</b> Instrumental Variables (IV)</a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#synthetic-control-method-scm-1"><i class="fa fa-check"></i><b>7.1.1</b> Synthetic Control Method (SCM)</a></li>
-<li class="chapter" data-level="7.1.2" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#placebo-tests"><i class="fa fa-check"></i><b>7.1.2</b> Placebo tests</a></li>
-<li class="chapter" data-level="7.1.3" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>7.1.3</b> Leave-One-Out Cross-Validation</a></li>
-<li class="chapter" data-level="7.1.4" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#detailed-example"><i class="fa fa-check"></i><b>7.1.4</b> Detailed Example</a></li>
-<li class="chapter" data-level="7.1.5" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-8"><i class="fa fa-check"></i><b>7.1.5</b> Conclusion</a></li>
-<li class="chapter" data-level="7.1.6" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data"><i class="fa fa-check"></i><b>7.1.6</b> Data</a></li>
-<li class="chapter" data-level="7.1.7" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data-setting"><i class="fa fa-check"></i><b>7.1.7</b> Data Setting</a></li>
-<li class="chapter" data-level="7.1.8" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#requirements-for-synthetic-control-method"><i class="fa fa-check"></i><b>7.1.8</b> Requirements for Synthetic Control Method</a></li>
-<li class="chapter" data-level="7.1.9" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#data-requirements-summary"><i class="fa fa-check"></i><b>7.1.9</b> Data Requirements Summary</a></li>
-<li class="chapter" data-level="7.1.10" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#practical-considerations"><i class="fa fa-check"></i><b>7.1.10</b> Practical Considerations</a></li>
-<li class="chapter" data-level="7.1.11" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#example-11"><i class="fa fa-check"></i><b>7.1.11</b> Example</a></li>
-<li class="chapter" data-level="7.1.12" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#conclusion-9"><i class="fa fa-check"></i><b>7.1.12</b> Conclusion</a></li>
-<li class="chapter" data-level="7.1.13" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#synthetic-did"><i class="fa fa-check"></i><b>7.1.13</b> Synthetic DID</a></li>
-<li class="chapter" data-level="7.1.14" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#robustness-checks-3"><i class="fa fa-check"></i><b>7.1.14</b> Robustness Checks</a></li>
-<li class="chapter" data-level="7.1.15" data-path="synthetic-control-method-scm.html"><a href="synthetic-control-method-scm.html#validation-methods-3"><i class="fa fa-check"></i><b>7.1.15</b> Validation Methods</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html"><i class="fa fa-check"></i><b>8</b> Instrumental Variables (IV)</a>
+<li class="chapter" data-level="7.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#key-concepts-4"><i class="fa fa-check"></i><b>7.1</b> Key Concepts</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#key-concepts-4"><i class="fa fa-check"></i><b>8.1</b> Key Concepts</a>
+<li class="chapter" data-level="7.1.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#requirements-for-a-valid-instrument"><i class="fa fa-check"></i><b>7.1.1</b> Requirements for a Valid Instrument</a></li>
+<li class="chapter" data-level="7.1.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#the-iv-estimation-process"><i class="fa fa-check"></i><b>7.1.2</b> The IV Estimation Process</a></li>
+<li class="chapter" data-level="7.1.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#example-12"><i class="fa fa-check"></i><b>7.1.3</b> Example</a></li>
+<li class="chapter" data-level="7.1.4" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#assumptions-and-considerations-1"><i class="fa fa-check"></i><b>7.1.4</b> Assumptions and Considerations</a></li>
+<li class="chapter" data-level="7.1.5" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#advantages-of-iv"><i class="fa fa-check"></i><b>7.1.5</b> Advantages of IV</a></li>
+<li class="chapter" data-level="7.1.6" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#disadvantages-of-iv"><i class="fa fa-check"></i><b>7.1.6</b> Disadvantages of IV</a></li>
+<li class="chapter" data-level="7.1.7" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#conclusion-10"><i class="fa fa-check"></i><b>7.1.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#difference-between-instrumental-variable-iv-method-and-two-stage-least-squares-2sls-method"><i class="fa fa-check"></i><b>7.2</b> Difference Between Instrumental Variable (IV) Method and Two-Stage Least Squares (2SLS) Method</a>
 <ul>
-<li class="chapter" data-level="8.1.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#requirements-for-a-valid-instrument"><i class="fa fa-check"></i><b>8.1.1</b> Requirements for a Valid Instrument</a></li>
-<li class="chapter" data-level="8.1.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#the-iv-estimation-process"><i class="fa fa-check"></i><b>8.1.2</b> The IV Estimation Process</a></li>
-<li class="chapter" data-level="8.1.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#example-12"><i class="fa fa-check"></i><b>8.1.3</b> Example</a></li>
-<li class="chapter" data-level="8.1.4" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#assumptions-and-considerations-1"><i class="fa fa-check"></i><b>8.1.4</b> Assumptions and Considerations</a></li>
-<li class="chapter" data-level="8.1.5" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#advantages-of-iv"><i class="fa fa-check"></i><b>8.1.5</b> Advantages of IV</a></li>
-<li class="chapter" data-level="8.1.6" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#disadvantages-of-iv"><i class="fa fa-check"></i><b>8.1.6</b> Disadvantages of IV</a></li>
-<li class="chapter" data-level="8.1.7" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#conclusion-10"><i class="fa fa-check"></i><b>8.1.7</b> Conclusion</a></li>
+<li class="chapter" data-level="7.2.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#instrumental-variable-iv-method"><i class="fa fa-check"></i><b>7.2.1</b> Instrumental Variable (IV) Method</a></li>
+<li class="chapter" data-level="7.2.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#two-stage-least-squares-2sls-method"><i class="fa fa-check"></i><b>7.2.2</b> Two-Stage Least Squares (2SLS) Method</a></li>
+<li class="chapter" data-level="7.2.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#summary-of-differences"><i class="fa fa-check"></i><b>7.2.3</b> Summary of Differences:</a></li>
 </ul></li>
-<li class="chapter" data-level="8.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#difference-between-instrumental-variable-iv-method-and-two-stage-least-squares-2sls-method"><i class="fa fa-check"></i><b>8.2</b> Difference Between Instrumental Variable (IV) Method and Two-Stage Least Squares (2SLS) Method</a>
+<li class="chapter" data-level="7.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#homogenous-treatment-effect"><i class="fa fa-check"></i><b>7.3</b> Homogenous Treatment Effect</a></li>
+<li class="chapter" data-level="7.4" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#heterogenous-treatment-effect"><i class="fa fa-check"></i><b>7.4</b> Heterogenous Treatment Effect</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html"><i class="fa fa-check"></i><b>8</b> Regression Discontinuity Designs (RDD)</a>
 <ul>
-<li class="chapter" data-level="8.2.1" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#instrumental-variable-iv-method"><i class="fa fa-check"></i><b>8.2.1</b> Instrumental Variable (IV) Method</a></li>
-<li class="chapter" data-level="8.2.2" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#two-stage-least-squares-2sls-method"><i class="fa fa-check"></i><b>8.2.2</b> Two-Stage Least Squares (2SLS) Method</a></li>
-<li class="chapter" data-level="8.2.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#summary-of-differences"><i class="fa fa-check"></i><b>8.2.3</b> Summary of Differences:</a></li>
-</ul></li>
-<li class="chapter" data-level="8.3" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#homogenous-treatment-effect"><i class="fa fa-check"></i><b>8.3</b> Homogenous Treatment Effect</a></li>
-<li class="chapter" data-level="8.4" data-path="instrumental-variables-iv.html"><a href="instrumental-variables-iv.html#heterogenous-treatment-effect"><i class="fa fa-check"></i><b>8.4</b> Heterogenous Treatment Effect</a></li>
-</ul></li>
-<li class="chapter" data-level="9" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html"><i class="fa fa-check"></i><b>9</b> Regression Discontinuity Designs (RDD)</a>
+<li class="chapter" data-level="8.0.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#validation-and-falsification"><i class="fa fa-check"></i><b>8.0.1</b> Validation and Falsification</a></li>
+<li class="chapter" data-level="8.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#regression-discontinuity-designs-rdd-1"><i class="fa fa-check"></i><b>8.1</b> Regression Discontinuity Designs (RDD)</a></li>
+<li class="chapter" data-level="8.2" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-5"><i class="fa fa-check"></i><b>8.2</b> Key Concepts</a>
 <ul>
-<li class="chapter" data-level="9.0.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#validation-and-falsification"><i class="fa fa-check"></i><b>9.0.1</b> Validation and Falsification</a></li>
-<li class="chapter" data-level="9.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#regression-discontinuity-designs-rdd-1"><i class="fa fa-check"></i><b>9.1</b> Regression Discontinuity Designs (RDD)</a></li>
-<li class="chapter" data-level="9.2" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-5"><i class="fa fa-check"></i><b>9.2</b> Key Concepts</a>
+<li class="chapter" data-level="8.2.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#types-of-rdd"><i class="fa fa-check"></i><b>8.2.1</b> Types of RDD</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#sharp-rdd"><i class="fa fa-check"></i><b>8.3</b> Sharp RDD</a>
 <ul>
-<li class="chapter" data-level="9.2.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#types-of-rdd"><i class="fa fa-check"></i><b>9.2.1</b> Types of RDD</a></li>
+<li class="chapter" data-level="8.3.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-6"><i class="fa fa-check"></i><b>8.3.1</b> Key Concepts</a></li>
+<li class="chapter" data-level="8.3.2" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#assumptions-for-rdd"><i class="fa fa-check"></i><b>8.3.2</b> Assumptions for RDD</a></li>
+<li class="chapter" data-level="8.3.3" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#estimation-in-sharp-rdd"><i class="fa fa-check"></i><b>8.3.3</b> Estimation in Sharp RDD</a></li>
+<li class="chapter" data-level="8.3.4" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#fuzzy-rdd"><i class="fa fa-check"></i><b>8.3.4</b> Fuzzy RDD</a></li>
+<li class="chapter" data-level="8.3.5" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications"><i class="fa fa-check"></i><b>8.3.5</b> Parametric vs. Non-Parametric Applications</a></li>
+<li class="chapter" data-level="8.3.6" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#example-13"><i class="fa fa-check"></i><b>8.3.6</b> Example</a></li>
+<li class="chapter" data-level="8.3.7" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#summary-3"><i class="fa fa-check"></i><b>8.3.7</b> Summary</a></li>
+<li class="chapter" data-level="8.3.8" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#challenges-to-identification"><i class="fa fa-check"></i><b>8.3.8</b> Challenges to Identification</a></li>
+<li class="chapter" data-level="8.3.9" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#examples-1"><i class="fa fa-check"></i><b>8.3.9</b> Examples</a></li>
+<li class="chapter" data-level="8.3.10" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#types-of-rdd-1"><i class="fa fa-check"></i><b>8.3.10</b> Types of RDD</a></li>
+<li class="chapter" data-level="8.3.11" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications-1"><i class="fa fa-check"></i><b>8.3.11</b> Parametric vs. Non-Parametric Applications</a></li>
 </ul></li>
-<li class="chapter" data-level="9.3" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#sharp-rdd"><i class="fa fa-check"></i><b>9.3</b> Sharp RDD</a>
+<li class="chapter" data-level="8.4" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#regression-kink-design"><i class="fa fa-check"></i><b>8.4</b> Regression Kink Design</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html"><i class="fa fa-check"></i><b>9</b> Doubly Robust Methods</a>
 <ul>
-<li class="chapter" data-level="9.3.1" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#key-concepts-6"><i class="fa fa-check"></i><b>9.3.1</b> Key Concepts</a></li>
-<li class="chapter" data-level="9.3.2" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#assumptions-for-rdd"><i class="fa fa-check"></i><b>9.3.2</b> Assumptions for RDD</a></li>
-<li class="chapter" data-level="9.3.3" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#estimation-in-sharp-rdd"><i class="fa fa-check"></i><b>9.3.3</b> Estimation in Sharp RDD</a></li>
-<li class="chapter" data-level="9.3.4" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#fuzzy-rdd"><i class="fa fa-check"></i><b>9.3.4</b> Fuzzy RDD</a></li>
-<li class="chapter" data-level="9.3.5" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications"><i class="fa fa-check"></i><b>9.3.5</b> Parametric vs. Non-Parametric Applications</a></li>
-<li class="chapter" data-level="9.3.6" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#example-13"><i class="fa fa-check"></i><b>9.3.6</b> Example</a></li>
-<li class="chapter" data-level="9.3.7" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#summary-3"><i class="fa fa-check"></i><b>9.3.7</b> Summary</a></li>
-<li class="chapter" data-level="9.3.8" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#challenges-to-identification"><i class="fa fa-check"></i><b>9.3.8</b> Challenges to Identification</a></li>
-<li class="chapter" data-level="9.3.9" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#examples-1"><i class="fa fa-check"></i><b>9.3.9</b> Examples</a></li>
-<li class="chapter" data-level="9.3.10" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#types-of-rdd-1"><i class="fa fa-check"></i><b>9.3.10</b> Types of RDD</a></li>
-<li class="chapter" data-level="9.3.11" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications-1"><i class="fa fa-check"></i><b>9.3.11</b> Parametric vs. Non-Parametric Applications</a></li>
-</ul></li>
-<li class="chapter" data-level="9.4" data-path="regression-discontinuity-designs-rdd.html"><a href="regression-discontinuity-designs-rdd.html#regression-kink-design"><i class="fa fa-check"></i><b>9.4</b> Regression Kink Design</a></li>
-</ul></li>
-<li class="chapter" data-level="10" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html"><i class="fa fa-check"></i><b>10</b> Fixed Effects and Panel Data Methods</a>
+<li class="chapter" data-level="9.1" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#why-they-matter"><i class="fa fa-check"></i><b>9.1</b> Why They Matter</a></li>
+<li class="chapter" data-level="9.2" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#core-ingredients"><i class="fa fa-check"></i><b>9.2</b> Core Ingredients</a></li>
+<li class="chapter" data-level="9.3" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#more-on-outcome-models-for-treated-and-control"><i class="fa fa-check"></i><b>9.3</b> More on Outcome Models for Treated and Control</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#pooled-regression"><i class="fa fa-check"></i><b>10.1</b> Pooled Regression</a></li>
-<li class="chapter" data-level="10.2" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#panel-data-methods"><i class="fa fa-check"></i><b>10.2</b> Panel Data Methods</a>
+<li class="chapter" data-level="9.3.1" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#why-some-articles-emphasize-separate-models"><i class="fa fa-check"></i><b>9.3.1</b> Why Some Articles Emphasize Separate Models</a></li>
+<li class="chapter" data-level="9.3.2" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#key-point"><i class="fa fa-check"></i><b>9.3.2</b> Key Point</a></li>
+<li class="chapter" data-level="9.3.3" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#takeaway-for-your-notebook"><i class="fa fa-check"></i><b>9.3.3</b> Takeaway for Your Notebook</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#advantages-1"><i class="fa fa-check"></i><b>9.4</b> Advantages</a></li>
+<li class="chapter" data-level="9.5" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#assumptions-2"><i class="fa fa-check"></i><b>9.5</b> Assumptions</a></li>
+<li class="chapter" data-level="9.6" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#example-applications"><i class="fa fa-check"></i><b>9.6</b> Example Applications</a></li>
+<li class="chapter" data-level="9.7" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#summary-4"><i class="fa fa-check"></i><b>9.7</b> Summary</a></li>
+<li class="chapter" data-level="9.8" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#extension-dr-in-difference-in-differences-drdid"><i class="fa fa-check"></i><b>9.8</b> Extension: DR in Difference-in-Differences (DRDID)</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html"><i class="fa fa-check"></i><b>10</b> Double/Debiased Machine Learning (Double ML)</a>
 <ul>
-<li class="chapter" data-level="10.2.1" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#fixed-effects-model"><i class="fa fa-check"></i><b>10.2.1</b> Fixed Effects Model</a></li>
-<li class="chapter" data-level="10.2.2" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#random-effects-model"><i class="fa fa-check"></i><b>10.2.2</b> Random Effects Model</a></li>
-<li class="chapter" data-level="10.2.3" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#example-economic-growth-and-education"><i class="fa fa-check"></i><b>10.2.3</b> Example: Economic Growth and Education</a></li>
-<li class="chapter" data-level="10.2.4" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#conclusion-11"><i class="fa fa-check"></i><b>10.2.4</b> Conclusion</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="11" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html"><i class="fa fa-check"></i><b>11</b> Double/Debiased Machine Learning (Double ML)</a>
+<li class="chapter" data-level="10.1" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#motivation"><i class="fa fa-check"></i><b>10.1</b> Motivation</a></li>
+<li class="chapter" data-level="10.2" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#key-components"><i class="fa fa-check"></i><b>10.2</b> Key Components</a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#motivation"><i class="fa fa-check"></i><b>11.1</b> Motivation</a></li>
-<li class="chapter" data-level="11.2" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#key-components"><i class="fa fa-check"></i><b>11.2</b> Key Components</a>
+<li class="chapter" data-level="10.2.1" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#practical-workflow"><i class="fa fa-check"></i><b>10.2.1</b> Practical Workflow</a></li>
+<li class="chapter" data-level="10.2.2" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#use-case-example"><i class="fa fa-check"></i><b>10.2.2</b> Use Case Example</a></li>
+<li class="chapter" data-level="10.2.3" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#advantages-2"><i class="fa fa-check"></i><b>10.2.3</b> Advantages</a></li>
+<li class="chapter" data-level="10.2.4" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#key-reference"><i class="fa fa-check"></i><b>10.2.4</b> Key Reference</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#doubly-robust-dr-vs.-double-machine-learning-dml"><i class="fa fa-check"></i><b>10.3</b> Doubly Robust (DR) vs. Double Machine Learning (DML)</a>
 <ul>
-<li class="chapter" data-level="11.2.1" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#practical-workflow"><i class="fa fa-check"></i><b>11.2.1</b> Practical Workflow</a></li>
-<li class="chapter" data-level="11.2.2" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#use-case-example"><i class="fa fa-check"></i><b>11.2.2</b> Use Case Example</a></li>
-<li class="chapter" data-level="11.2.3" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#advantages-1"><i class="fa fa-check"></i><b>11.2.3</b> Advantages</a></li>
-<li class="chapter" data-level="11.2.4" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#key-reference"><i class="fa fa-check"></i><b>11.2.4</b> Key Reference</a></li>
+<li class="chapter" data-level="10.3.1" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#key-takeaway"><i class="fa fa-check"></i><b>10.3.1</b> Key Takeaway</a></li>
 </ul></li>
-</ul></li>
-<li class="chapter" data-level="12" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html"><i class="fa fa-check"></i><b>12</b> Ordinary Least Squares (OLS)</a>
+<li class="chapter" data-level="10.4" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#concepts-3"><i class="fa fa-check"></i><b>10.4</b> Concepts</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#ordinary-least-squares-ols-1"><i class="fa fa-check"></i><b>12.1</b> Ordinary Least Squares (OLS)</a>
+<li class="chapter" data-level="10.4.1" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#nuisance-functions"><i class="fa fa-check"></i><b>10.4.1</b> 🔹 Nuisance Functions</a></li>
+<li class="chapter" data-level="10.4.2" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#orthogonalization"><i class="fa fa-check"></i><b>10.4.2</b> 🔹 Orthogonalization</a></li>
+<li class="chapter" data-level="10.4.3" data-path="doubledebiased-machine-learning-double-ml.html"><a href="doubledebiased-machine-learning-double-ml.html#why-this-matters"><i class="fa fa-check"></i><b>10.4.3</b> 🔹 Why This Matters</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html"><i class="fa fa-check"></i><b>11</b> Ordinary Least Squares (OLS)</a>
 <ul>
-<li class="chapter" data-level="12.1.1" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#linearity"><i class="fa fa-check"></i><b>12.1.1</b> <strong>Linearity</strong></a></li>
-<li class="chapter" data-level="12.1.2" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#exogeneity"><i class="fa fa-check"></i><b>12.1.2</b> <strong>Exogeneity</strong></a></li>
-<li class="chapter" data-level="12.1.3" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#homoscedasticity"><i class="fa fa-check"></i><b>12.1.3</b> <strong>Homoscedasticity</strong></a></li>
-<li class="chapter" data-level="12.1.4" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#no-autocorrelation"><i class="fa fa-check"></i><b>12.1.4</b> <strong>No Autocorrelation</strong></a></li>
-<li class="chapter" data-level="12.1.5" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#no-perfect-multicollinearity"><i class="fa fa-check"></i><b>12.1.5</b> <strong>No Perfect Multicollinearity</strong></a></li>
-<li class="chapter" data-level="12.1.6" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#normality-of-errors-for-inference"><i class="fa fa-check"></i><b>12.1.6</b> <strong>Normality of Errors (for inference)</strong></a></li>
-<li class="chapter" data-level="12.1.7" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#practical-considerations-and-tests"><i class="fa fa-check"></i><b>12.1.7</b> Practical Considerations and Tests</a></li>
-</ul></li>
-<li class="chapter" data-level="12.2" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#simple-linear-regression"><i class="fa fa-check"></i><b>12.2</b> Simple Linear Regression</a>
+<li class="chapter" data-level="11.0.1" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#linearity"><i class="fa fa-check"></i><b>11.0.1</b> <strong>Linearity</strong></a></li>
+<li class="chapter" data-level="11.0.2" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#exogeneity"><i class="fa fa-check"></i><b>11.0.2</b> <strong>Exogeneity</strong></a></li>
+<li class="chapter" data-level="11.0.3" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#homoscedasticity"><i class="fa fa-check"></i><b>11.0.3</b> <strong>Homoscedasticity</strong></a></li>
+<li class="chapter" data-level="11.0.4" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#no-autocorrelation"><i class="fa fa-check"></i><b>11.0.4</b> <strong>No Autocorrelation</strong></a></li>
+<li class="chapter" data-level="11.0.5" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#no-perfect-multicollinearity"><i class="fa fa-check"></i><b>11.0.5</b> <strong>No Perfect Multicollinearity</strong></a></li>
+<li class="chapter" data-level="11.0.6" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#normality-of-errors-for-inference"><i class="fa fa-check"></i><b>11.0.6</b> <strong>Normality of Errors (for inference)</strong></a></li>
+<li class="chapter" data-level="11.0.7" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#practical-considerations-and-tests"><i class="fa fa-check"></i><b>11.0.7</b> Practical Considerations and Tests</a></li>
+<li class="chapter" data-level="11.1" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#simple-linear-regression"><i class="fa fa-check"></i><b>11.1</b> Simple Linear Regression</a>
 <ul>
-<li class="chapter" data-level="12.2.1" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#summary-4"><i class="fa fa-check"></i><b>12.2.1</b> Summary</a></li>
-<li class="chapter" data-level="12.2.2" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#interpreting-model-coefficients-in-ols-models"><i class="fa fa-check"></i><b>12.2.2</b> Interpreting Model Coefficients in OLS Models</a></li>
-<li class="chapter" data-level="12.2.3" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#linear-models-linear-linear"><i class="fa fa-check"></i><b>12.2.3</b> 1. Linear Models (Linear-Linear)</a></li>
-<li class="chapter" data-level="12.2.4" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#log-linear-models"><i class="fa fa-check"></i><b>12.2.4</b> 2. Log-Linear Models</a></li>
-<li class="chapter" data-level="12.2.5" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#linear-log-models"><i class="fa fa-check"></i><b>12.2.5</b> 3. Linear-Log Models</a></li>
-<li class="chapter" data-level="12.2.6" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#log-log-models"><i class="fa fa-check"></i><b>12.2.6</b> 4. Log-Log Models</a></li>
-<li class="chapter" data-level="12.2.7" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#examples-of-dummy-and-continuous-variables"><i class="fa fa-check"></i><b>12.2.7</b> Examples of Dummy and Continuous Variables</a></li>
-<li class="chapter" data-level="12.2.8" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#assumptions-and-considerations-2"><i class="fa fa-check"></i><b>12.2.8</b> Assumptions and Considerations</a></li>
+<li class="chapter" data-level="11.1.1" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#summary-5"><i class="fa fa-check"></i><b>11.1.1</b> Summary</a></li>
+<li class="chapter" data-level="11.1.2" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#interpreting-model-coefficients-in-ols-models"><i class="fa fa-check"></i><b>11.1.2</b> Interpreting Model Coefficients in OLS Models</a></li>
+<li class="chapter" data-level="11.1.3" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#linear-models-linear-linear"><i class="fa fa-check"></i><b>11.1.3</b> 1. Linear Models (Linear-Linear)</a></li>
+<li class="chapter" data-level="11.1.4" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#log-linear-models"><i class="fa fa-check"></i><b>11.1.4</b> 2. Log-Linear Models</a></li>
+<li class="chapter" data-level="11.1.5" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#linear-log-models"><i class="fa fa-check"></i><b>11.1.5</b> 3. Linear-Log Models</a></li>
+<li class="chapter" data-level="11.1.6" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#log-log-models"><i class="fa fa-check"></i><b>11.1.6</b> 4. Log-Log Models</a></li>
+<li class="chapter" data-level="11.1.7" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#examples-of-dummy-and-continuous-variables"><i class="fa fa-check"></i><b>11.1.7</b> Examples of Dummy and Continuous Variables</a></li>
+<li class="chapter" data-level="11.1.8" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#assumptions-and-considerations-2"><i class="fa fa-check"></i><b>11.1.8</b> Assumptions and Considerations</a></li>
 </ul></li>
-<li class="chapter" data-level="12.3" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#multivariate-regression"><i class="fa fa-check"></i><b>12.3</b> Multivariate Regression</a></li>
-<li class="chapter" data-level="12.4" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#generalized-linear-model"><i class="fa fa-check"></i><b>12.4</b> Generalized Linear Model</a></li>
-<li class="chapter" data-level="12.5" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#generalised-least-square"><i class="fa fa-check"></i><b>12.5</b> Generalised Least Square</a></li>
-<li class="chapter" data-level="12.6" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#weighted-least-squares-wls"><i class="fa fa-check"></i><b>12.6</b> Weighted Least Squares (WLS)</a></li>
+<li class="chapter" data-level="11.2" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#multivariate-regression"><i class="fa fa-check"></i><b>11.2</b> Multivariate Regression</a></li>
+<li class="chapter" data-level="11.3" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#generalized-linear-model"><i class="fa fa-check"></i><b>11.3</b> Generalized Linear Model</a></li>
+<li class="chapter" data-level="11.4" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#generalised-least-square"><i class="fa fa-check"></i><b>11.4</b> Generalised Least Square</a></li>
+<li class="chapter" data-level="11.5" data-path="ordinary-least-squares-ols.html"><a href="ordinary-least-squares-ols.html#weighted-least-squares-wls"><i class="fa fa-check"></i><b>11.5</b> Weighted Least Squares (WLS)</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html"><i class="fa fa-check"></i><b>13</b> Doubly Robust Methods</a>
+<li class="chapter" data-level="12" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>12</b> Logistic Regression</a>
 <ul>
-<li class="chapter" data-level="13.1" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#why-they-matter"><i class="fa fa-check"></i><b>13.1</b> Why They Matter</a></li>
-<li class="chapter" data-level="13.2" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#core-ingredients"><i class="fa fa-check"></i><b>13.2</b> Core Ingredients</a></li>
-<li class="chapter" data-level="13.3" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#more-on-outcome-models-for-treated-and-control"><i class="fa fa-check"></i><b>13.3</b> More on Outcome Models for Treated and Control</a>
+<li class="chapter" data-level="12.1" data-path="logistic-regression.html"><a href="logistic-regression.html#model"><i class="fa fa-check"></i><b>12.1</b> Model</a></li>
+<li class="chapter" data-level="12.2" data-path="logistic-regression.html"><a href="logistic-regression.html#estimation"><i class="fa fa-check"></i><b>12.2</b> Estimation</a></li>
+<li class="chapter" data-level="12.3" data-path="logistic-regression.html"><a href="logistic-regression.html#hypothesis-testing"><i class="fa fa-check"></i><b>12.3</b> Hypothesis Testing</a></li>
+<li class="chapter" data-level="12.4" data-path="logistic-regression.html"><a href="logistic-regression.html#role-in-causal-inference"><i class="fa fa-check"></i><b>12.4</b> Role in Causal Inference</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html"><i class="fa fa-check"></i><b>13</b> Hypotheis Testing</a>
 <ul>
-<li class="chapter" data-level="13.3.1" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#why-some-articles-emphasize-separate-models"><i class="fa fa-check"></i><b>13.3.1</b> Why Some Articles Emphasize Separate Models</a></li>
-<li class="chapter" data-level="13.3.2" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#key-point"><i class="fa fa-check"></i><b>13.3.2</b> Key Point</a></li>
-<li class="chapter" data-level="13.3.3" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#takeaway-for-your-notebook"><i class="fa fa-check"></i><b>13.3.3</b> Takeaway for Your Notebook</a></li>
-</ul></li>
-<li class="chapter" data-level="13.4" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#advantages-2"><i class="fa fa-check"></i><b>13.4</b> Advantages</a></li>
-<li class="chapter" data-level="13.5" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#assumptions-2"><i class="fa fa-check"></i><b>13.5</b> Assumptions</a></li>
-<li class="chapter" data-level="13.6" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#example-applications"><i class="fa fa-check"></i><b>13.6</b> Example Applications</a></li>
-<li class="chapter" data-level="13.7" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#summary-5"><i class="fa fa-check"></i><b>13.7</b> Summary</a></li>
-<li class="chapter" data-level="13.8" data-path="doubly-robust-methods.html"><a href="doubly-robust-methods.html#extension-dr-in-difference-in-differences-drdid"><i class="fa fa-check"></i><b>13.8</b> Extension: DR in Difference-in-Differences (DRDID)</a></li>
-</ul></li>
-<li class="chapter" data-level="14" data-path="resampling-methods.html"><a href="resampling-methods.html"><i class="fa fa-check"></i><b>14</b> Resampling methods</a>
+<li class="chapter" data-level="13.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#concepts-4"><i class="fa fa-check"></i><b>13.1</b> Concepts</a>
 <ul>
-<li class="chapter" data-level="14.1" data-path="resampling-methods.html"><a href="resampling-methods.html#randomization-based-methods"><i class="fa fa-check"></i><b>14.1</b> Randomization-Based Methods</a>
+<li class="chapter" data-level="13.1.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#significance-level-α"><i class="fa fa-check"></i><b>13.1.1</b> Significance Level (α)</a></li>
+<li class="chapter" data-level="13.1.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#p-value"><i class="fa fa-check"></i><b>13.1.2</b> P-Value</a></li>
+<li class="chapter" data-level="13.1.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-i-error"><i class="fa fa-check"></i><b>13.1.3</b> Type I Error</a></li>
+<li class="chapter" data-level="13.1.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-ii-error"><i class="fa fa-check"></i><b>13.1.4</b> Type II Error</a></li>
+<li class="chapter" data-level="13.1.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#relationship-between-type-i-and-type-ii-errors"><i class="fa fa-check"></i><b>13.1.5</b> Relationship Between Type I and Type II Errors</a></li>
+<li class="chapter" data-level="13.1.6" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#importance-in-research-and-decision-making"><i class="fa fa-check"></i><b>13.1.6</b> Importance in Research and Decision Making</a></li>
+<li class="chapter" data-level="13.1.7" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#statistical-power"><i class="fa fa-check"></i><b>13.1.7</b> Statistical power</a></li>
+</ul></li>
+<li class="chapter" data-level="13.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#null-hypothesis"><i class="fa fa-check"></i><b>13.2</b> Null Hypothesis</a>
 <ul>
-<li class="chapter" data-level="14.1.1" data-path="resampling-methods.html"><a href="resampling-methods.html#traditional-methods-vs.-randomization-based-methods"><i class="fa fa-check"></i><b>14.1.1</b> Traditional Methods vs. Randomization-Based Methods</a></li>
-<li class="chapter" data-level="14.1.2" data-path="resampling-methods.html"><a href="resampling-methods.html#why-use-randomization-based-methods"><i class="fa fa-check"></i><b>14.1.2</b> Why Use Randomization-Based Methods?</a></li>
-<li class="chapter" data-level="14.1.3" data-path="resampling-methods.html"><a href="resampling-methods.html#how-randomization-based-methods-work"><i class="fa fa-check"></i><b>14.1.3</b> How Randomization-Based Methods Work</a></li>
-<li class="chapter" data-level="14.1.4" data-path="resampling-methods.html"><a href="resampling-methods.html#example-14"><i class="fa fa-check"></i><b>14.1.4</b> Example</a></li>
-<li class="chapter" data-level="14.1.5" data-path="resampling-methods.html"><a href="resampling-methods.html#contribution-of-athey-and-imbens"><i class="fa fa-check"></i><b>14.1.5</b> Contribution of Athey and Imbens</a></li>
+<li class="chapter" data-level="13.2.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fishers-sharp-null-hypothesis"><i class="fa fa-check"></i><b>13.2.1</b> Fisher’s Sharp Null Hypothesis</a></li>
+<li class="chapter" data-level="13.2.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#neymans-null-hypothesis"><i class="fa fa-check"></i><b>13.2.2</b> Neyman’s Null Hypothesis</a></li>
+<li class="chapter" data-level="13.2.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#key-differences"><i class="fa fa-check"></i><b>13.2.3</b> Key Differences</a></li>
+<li class="chapter" data-level="13.2.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-to-illustrate-the-difference"><i class="fa fa-check"></i><b>13.2.4</b> Example to Illustrate the Difference</a></li>
+<li class="chapter" data-level="13.2.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-11"><i class="fa fa-check"></i><b>13.2.5</b> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="14.2" data-path="resampling-methods.html"><a href="resampling-methods.html#bootstrapping-1"><i class="fa fa-check"></i><b>14.2</b> Bootstrapping</a></li>
-</ul></li>
-<li class="chapter" data-level="15" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html"><i class="fa fa-check"></i><b>15</b> Hypotheis Testing</a>
+<li class="chapter" data-level="13.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#permutation-tests"><i class="fa fa-check"></i><b>13.3</b> Permutation Tests</a>
 <ul>
-<li class="chapter" data-level="15.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#concepts-3"><i class="fa fa-check"></i><b>15.1</b> Concepts</a>
+<li class="chapter" data-level="13.3.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-and-why-to-use-permutation-tests"><i class="fa fa-check"></i><b>13.3.1</b> When and Why to Use Permutation Tests</a></li>
+<li class="chapter" data-level="13.3.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-to-perform-a-permutation-test"><i class="fa fa-check"></i><b>13.3.2</b> How to Perform a Permutation Test</a></li>
+<li class="chapter" data-level="13.3.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-calculation"><i class="fa fa-check"></i><b>13.3.3</b> Example Calculation</a></li>
+<li class="chapter" data-level="13.3.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-12"><i class="fa fa-check"></i><b>13.3.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fischers-exact-test"><i class="fa fa-check"></i><b>13.4</b> Fischer’s Exact Test</a>
 <ul>
-<li class="chapter" data-level="15.1.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#significance-level-α"><i class="fa fa-check"></i><b>15.1.1</b> Significance Level (α)</a></li>
-<li class="chapter" data-level="15.1.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#p-value"><i class="fa fa-check"></i><b>15.1.2</b> P-Value</a></li>
-<li class="chapter" data-level="15.1.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-i-error"><i class="fa fa-check"></i><b>15.1.3</b> Type I Error</a></li>
-<li class="chapter" data-level="15.1.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#type-ii-error"><i class="fa fa-check"></i><b>15.1.4</b> Type II Error</a></li>
-<li class="chapter" data-level="15.1.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#relationship-between-type-i-and-type-ii-errors"><i class="fa fa-check"></i><b>15.1.5</b> Relationship Between Type I and Type II Errors</a></li>
-<li class="chapter" data-level="15.1.6" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#importance-in-research-and-decision-making"><i class="fa fa-check"></i><b>15.1.6</b> Importance in Research and Decision Making</a></li>
-<li class="chapter" data-level="15.1.7" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#statistical-power"><i class="fa fa-check"></i><b>15.1.7</b> Statistical power</a></li>
+<li class="chapter" data-level="13.4.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-to-use-fishers-exact-test"><i class="fa fa-check"></i><b>13.4.1</b> When to Use Fisher’s Exact Test</a></li>
+<li class="chapter" data-level="13.4.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-fishers-exact-test-works"><i class="fa fa-check"></i><b>13.4.2</b> How Fisher’s Exact Test Works</a></li>
+<li class="chapter" data-level="13.4.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#step-by-step-example-1"><i class="fa fa-check"></i><b>13.4.3</b> Step-by-Step Example</a></li>
+<li class="chapter" data-level="13.4.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-13"><i class="fa fa-check"></i><b>13.4.4</b> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="15.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#null-hypothesis"><i class="fa fa-check"></i><b>15.2</b> Null Hypothesis</a>
+</ul></li>
+<li class="chapter" data-level="14" data-path="maximum-likelihood-estimation.html"><a href="maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>14</b> Maximum Likelihood Estimation</a></li>
+<li class="chapter" data-level="15" data-path="resampling-methods.html"><a href="resampling-methods.html"><i class="fa fa-check"></i><b>15</b> Resampling methods</a>
 <ul>
-<li class="chapter" data-level="15.2.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fishers-sharp-null-hypothesis"><i class="fa fa-check"></i><b>15.2.1</b> Fisher’s Sharp Null Hypothesis</a></li>
-<li class="chapter" data-level="15.2.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#neymans-null-hypothesis"><i class="fa fa-check"></i><b>15.2.2</b> Neyman’s Null Hypothesis</a></li>
-<li class="chapter" data-level="15.2.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#key-differences"><i class="fa fa-check"></i><b>15.2.3</b> Key Differences</a></li>
-<li class="chapter" data-level="15.2.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-to-illustrate-the-difference"><i class="fa fa-check"></i><b>15.2.4</b> Example to Illustrate the Difference</a></li>
-<li class="chapter" data-level="15.2.5" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-12"><i class="fa fa-check"></i><b>15.2.5</b> Conclusion</a></li>
-</ul></li>
-<li class="chapter" data-level="15.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#permutation-tests"><i class="fa fa-check"></i><b>15.3</b> Permutation Tests</a>
+<li class="chapter" data-level="15.1" data-path="resampling-methods.html"><a href="resampling-methods.html#randomization-based-methods"><i class="fa fa-check"></i><b>15.1</b> Randomization-Based Methods</a>
 <ul>
-<li class="chapter" data-level="15.3.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-and-why-to-use-permutation-tests"><i class="fa fa-check"></i><b>15.3.1</b> When and Why to Use Permutation Tests</a></li>
-<li class="chapter" data-level="15.3.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-to-perform-a-permutation-test"><i class="fa fa-check"></i><b>15.3.2</b> How to Perform a Permutation Test</a></li>
-<li class="chapter" data-level="15.3.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#example-calculation"><i class="fa fa-check"></i><b>15.3.3</b> Example Calculation</a></li>
-<li class="chapter" data-level="15.3.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-13"><i class="fa fa-check"></i><b>15.3.4</b> Conclusion</a></li>
+<li class="chapter" data-level="15.1.1" data-path="resampling-methods.html"><a href="resampling-methods.html#traditional-methods-vs.-randomization-based-methods"><i class="fa fa-check"></i><b>15.1.1</b> Traditional Methods vs. Randomization-Based Methods</a></li>
+<li class="chapter" data-level="15.1.2" data-path="resampling-methods.html"><a href="resampling-methods.html#why-use-randomization-based-methods"><i class="fa fa-check"></i><b>15.1.2</b> Why Use Randomization-Based Methods?</a></li>
+<li class="chapter" data-level="15.1.3" data-path="resampling-methods.html"><a href="resampling-methods.html#how-randomization-based-methods-work"><i class="fa fa-check"></i><b>15.1.3</b> How Randomization-Based Methods Work</a></li>
+<li class="chapter" data-level="15.1.4" data-path="resampling-methods.html"><a href="resampling-methods.html#example-15"><i class="fa fa-check"></i><b>15.1.4</b> Example</a></li>
+<li class="chapter" data-level="15.1.5" data-path="resampling-methods.html"><a href="resampling-methods.html#contribution-of-athey-and-imbens"><i class="fa fa-check"></i><b>15.1.5</b> Contribution of Athey and Imbens</a></li>
 </ul></li>
-<li class="chapter" data-level="15.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#fischers-exact-test"><i class="fa fa-check"></i><b>15.4</b> Fischer’s Exact Test</a>
+<li class="chapter" data-level="15.2" data-path="resampling-methods.html"><a href="resampling-methods.html#bootstrapping-1"><i class="fa fa-check"></i><b>15.2</b> Bootstrapping</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html"><i class="fa fa-check"></i><b>16</b> Fixed Effects and Panel Data Methods</a>
 <ul>
-<li class="chapter" data-level="15.4.1" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#when-to-use-fishers-exact-test"><i class="fa fa-check"></i><b>15.4.1</b> When to Use Fisher’s Exact Test</a></li>
-<li class="chapter" data-level="15.4.2" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#how-fishers-exact-test-works"><i class="fa fa-check"></i><b>15.4.2</b> How Fisher’s Exact Test Works</a></li>
-<li class="chapter" data-level="15.4.3" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#step-by-step-example-1"><i class="fa fa-check"></i><b>15.4.3</b> Step-by-Step Example</a></li>
-<li class="chapter" data-level="15.4.4" data-path="hypotheis-testing.html"><a href="hypotheis-testing.html#conclusion-14"><i class="fa fa-check"></i><b>15.4.4</b> Conclusion</a></li>
+<li class="chapter" data-level="16.1" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#pooled-regression"><i class="fa fa-check"></i><b>16.1</b> Pooled Regression</a></li>
+<li class="chapter" data-level="16.2" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#panel-data-methods"><i class="fa fa-check"></i><b>16.2</b> Panel Data Methods</a>
+<ul>
+<li class="chapter" data-level="16.2.1" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#fixed-effects-model"><i class="fa fa-check"></i><b>16.2.1</b> Fixed Effects Model</a></li>
+<li class="chapter" data-level="16.2.2" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#random-effects-model"><i class="fa fa-check"></i><b>16.2.2</b> Random Effects Model</a></li>
+<li class="chapter" data-level="16.2.3" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#example-economic-growth-and-education"><i class="fa fa-check"></i><b>16.2.3</b> Example: Economic Growth and Education</a></li>
+<li class="chapter" data-level="16.2.4" data-path="fixed-effects-and-panel-data-methods.html"><a href="fixed-effects-and-panel-data-methods.html#conclusion-14"><i class="fa fa-check"></i><b>16.2.4</b> Conclusion</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="16" data-path="maximum-likelihood-estimation.html"><a href="maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>16</b> Maximum Likelihood Estimation</a></li>
 <li class="chapter" data-level="17" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html"><i class="fa fa-check"></i><b>17</b> Amazon Economist - Case Study - 2024</a>
 <ul>
 <li class="chapter" data-level="17.1" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#concept-2"><i class="fa fa-check"></i><b>17.1</b> Concept</a></li>
@@ -574,7 +576,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="17.6.1" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#design-choices"><i class="fa fa-check"></i><b>17.6.1</b> 🔹 Design Choices</a></li>
 <li class="chapter" data-level="17.6.2" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#assumptions-3"><i class="fa fa-check"></i><b>17.6.2</b> 🔹 Assumptions</a></li>
 <li class="chapter" data-level="17.6.3" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#measurement-plan"><i class="fa fa-check"></i><b>17.6.3</b> 🔹 Measurement Plan</a></li>
-<li class="chapter" data-level="17.6.4" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#estimation"><i class="fa fa-check"></i><b>17.6.4</b> 🔹 Estimation</a></li>
+<li class="chapter" data-level="17.6.4" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#estimation-1"><i class="fa fa-check"></i><b>17.6.4</b> 🔹 Estimation</a></li>
 <li class="chapter" data-level="17.6.5" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#power-and-sample-size"><i class="fa fa-check"></i><b>17.6.5</b> 🔹 Power and Sample Size</a></li>
 <li class="chapter" data-level="17.6.6" data-path="amazon-economist---case-study---2024.html"><a href="amazon-economist---case-study---2024.html#threats-and-mitigations"><i class="fa fa-check"></i><b>17.6.6</b> 🔹 Threats and Mitigations</a></li>
 </ul></li>
@@ -612,8 +614,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="regression-discontinuity-designs-rdd" class="section level1 hasAnchor" number="9">
-<h1><span class="header-section-number">Chapter 9</span> Regression Discontinuity Designs (RDD)<a href="regression-discontinuity-designs-rdd.html#regression-discontinuity-designs-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="regression-discontinuity-designs-rdd" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Regression Discontinuity Designs (RDD)<a href="regression-discontinuity-designs-rdd.html#regression-discontinuity-designs-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>(Comprehensive Source)[<a href="https://rdpackages.github.io" class="uri">https://rdpackages.github.io</a>]</p>
 <p>In the absence of randomized treatment assignment, research designs that
 allow for the rigorous study of non-experimental interventions are
@@ -700,8 +702,8 @@ fit.</p>
 <p>In a nutshell, the local randomization approach imposes conditions so that units above and below the cutoff whose score values lie in a small window around the cutoff are comparable to each other and thus can be studied “as if” they had been randomly assigned to treatment or control.</p>
 <p>When the running variable is continuous, the local randomization approach typically requires stronger assumptions than the continuity-based approach; in these cases, it is natural to use the continuity-based approach for the main RD analysis, and to use the local randomization approach as a robustness check. But in settings where the running variable is discrete or other departures from the canonical RD framework occur, the local randomization approach no longer imposes the strongest assumptions and can be a natural and useful method for analysis.</p>
 <p><a href="https://rdpackages.github.io/references/Cattaneo-Idrobo-Titiunik_2024_CUP.pdf" class="uri">https://rdpackages.github.io/references/Cattaneo-Idrobo-Titiunik_2024_CUP.pdf</a></p>
-<div id="validation-and-falsification" class="section level3 hasAnchor" number="9.0.1">
-<h3><span class="header-section-number">9.0.1</span> Validation and Falsification<a href="regression-discontinuity-designs-rdd.html#validation-and-falsification" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="validation-and-falsification" class="section level3 hasAnchor" number="8.0.1">
+<h3><span class="header-section-number">8.0.1</span> Validation and Falsification<a href="regression-discontinuity-designs-rdd.html#validation-and-falsification" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>If the RD cutoff is known to the units that will be the beneficiaries of
 the treatment, researchers must worry about the possibility of units
 actively changing or manipulating the value of their score when they
@@ -758,8 +760,8 @@ around the cutoff.</p></li>
 <p>In the continuity-based approach, this falsification test is implemented by changing the bandwidth used for local polynomial estimation.</p>
 <p>As h increases, bias of local polynomial estimator will increase and variance will decrease and CI will get narrower.</p>
 </div>
-<div id="regression-discontinuity-designs-rdd-1" class="section level2 hasAnchor" number="9.1">
-<h2><span class="header-section-number">9.1</span> Regression Discontinuity Designs (RDD)<a href="regression-discontinuity-designs-rdd.html#regression-discontinuity-designs-rdd-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="regression-discontinuity-designs-rdd-1" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Regression Discontinuity Designs (RDD)<a href="regression-discontinuity-designs-rdd.html#regression-discontinuity-designs-rdd-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Regression Discontinuity Designs (RDD) are quasi-experimental methods
 used to estimate causal effects when a treatment is assigned based on a
 cutoff point in a continuous assignment variable. The basic idea is to
@@ -770,8 +772,8 @@ variable against the outcome variable, we can observe any “jumps” in the
 probability of treatment at the cutoff. These jumps indicate the
 treatment effect.</p>
 </div>
-<div id="key-concepts-5" class="section level2 hasAnchor" number="9.2">
-<h2><span class="header-section-number">9.2</span> Key Concepts<a href="regression-discontinuity-designs-rdd.html#key-concepts-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="key-concepts-5" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Key Concepts<a href="regression-discontinuity-designs-rdd.html#key-concepts-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
 <li><p><strong>Assignment Variable</strong>: A continuous (running) variable that
 determines treatment assignment based on a cutoff point.</p></li>
@@ -800,8 +802,8 @@ address the bias arising from the need to extrapolate. These methods
 ensure that the comparisons made are as clean and unbiased as
 possible.</p></li>
 </ul>
-<div id="types-of-rdd" class="section level3 hasAnchor" number="9.2.1">
-<h3><span class="header-section-number">9.2.1</span> Types of RDD<a href="regression-discontinuity-designs-rdd.html#types-of-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="types-of-rdd" class="section level3 hasAnchor" number="8.2.1">
+<h3><span class="header-section-number">8.2.1</span> Types of RDD<a href="regression-discontinuity-designs-rdd.html#types-of-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ol style="list-style-type: decimal">
 <li><p><strong>Sharp RDD</strong>: Treatment assignment is strictly determined by the
 cutoff. All units above (or below) the cutoff receive the treatment,
@@ -812,8 +814,8 @@ some units below (or above) the cutoff may receive the treatment.</p></li>
 </ol>
 </div>
 </div>
-<div id="sharp-rdd" class="section level2 hasAnchor" number="9.3">
-<h2><span class="header-section-number">9.3</span> Sharp RDD<a href="regression-discontinuity-designs-rdd.html#sharp-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="sharp-rdd" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Sharp RDD<a href="regression-discontinuity-designs-rdd.html#sharp-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In Sharp RDD, the treatment is perfectly assigned based on the cutoff
 point. This can be represented as:</p>
 <p><span class="math display">\[ D_i = \begin{cases}
@@ -831,8 +833,8 @@ point. This can be represented as:</p>
 <li><p>only one cutoff.</p></li>
 <li><p>score is continuously distributed</p></li>
 </ul>
-<div id="key-concepts-6" class="section level3 hasAnchor" number="9.3.1">
-<h3><span class="header-section-number">9.3.1</span> Key Concepts<a href="regression-discontinuity-designs-rdd.html#key-concepts-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="key-concepts-6" class="section level3 hasAnchor" number="8.3.1">
+<h3><span class="header-section-number">8.3.1</span> Key Concepts<a href="regression-discontinuity-designs-rdd.html#key-concepts-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The sharp RDD estimation is interpreted as an average causal effect of
 the treatment as the running variable approaches the cutoff in the
 limit, for it is only in the limit that we have overlap. This average
@@ -854,8 +856,8 @@ units with similar values of the assignment variable <span class="math inline">\
 </ol>
 <p>There is no common support because control and treated groups may not
 have same value of running variable.</p>
-<div id="explanation-1" class="section level4 hasAnchor" number="9.3.1.1">
-<h4><span class="header-section-number">9.3.1.1</span> Explanation<a href="regression-discontinuity-designs-rdd.html#explanation-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="explanation-1" class="section level4 hasAnchor" number="8.3.1.1">
+<h4><span class="header-section-number">8.3.1.1</span> Explanation<a href="regression-discontinuity-designs-rdd.html#explanation-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In a sharp RDD:</p>
 <p><strong>Treatment Assignment</strong>: Units are assigned to treatment or control
 strictly based on whether their assignment variable <span class="math inline">\(X\)</span> is above or
@@ -867,8 +869,8 @@ then <span class="math inline">\(D_i = 0\)</span> (the unit is in the control gr
 treatment group).</p></li>
 </ul>
 </div>
-<div id="no-common-support-in-rdd" class="section level4 hasAnchor" number="9.3.1.2">
-<h4><span class="header-section-number">9.3.1.2</span> No Common Support in RDD<a href="regression-discontinuity-designs-rdd.html#no-common-support-in-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="no-common-support-in-rdd" class="section level4 hasAnchor" number="8.3.1.2">
+<h4><span class="header-section-number">8.3.1.2</span> No Common Support in RDD<a href="regression-discontinuity-designs-rdd.html#no-common-support-in-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><strong>No Overlap</strong>: For any given value of <span class="math inline">\(X_i\)</span>, units are either in
 the treatment group or the control group, but not both. This means
@@ -882,8 +884,8 @@ terms, it’s often the case we look just below and just above
 </ul></li>
 </ul>
 </div>
-<div id="extrapolation-in-rdd" class="section level4 hasAnchor" number="9.3.1.3">
-<h4><span class="header-section-number">9.3.1.3</span> Extrapolation in RDD<a href="regression-discontinuity-designs-rdd.html#extrapolation-in-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="extrapolation-in-rdd" class="section level4 hasAnchor" number="8.3.1.3">
+<h4><span class="header-section-number">8.3.1.3</span> Extrapolation in RDD<a href="regression-discontinuity-designs-rdd.html#extrapolation-in-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><strong>Extrapolation</strong>: To estimate the treatment effect at the cutoff, we
 essentially need to compare the outcomes of units just below and just
 above the cutoff. Since there are no units that have exactly the same
@@ -895,8 +897,8 @@ in the control group and units with <span class="math inline">\(X_i = 50.1\)</sp
 group. We compare the outcomes of these units to estimate the treatment
 effect.</p>
 </div>
-<div id="why-extrapolation-is-needed" class="section level4 hasAnchor" number="9.3.1.4">
-<h4><span class="header-section-number">9.3.1.4</span> Why Extrapolation is Needed<a href="regression-discontinuity-designs-rdd.html#why-extrapolation-is-needed" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="why-extrapolation-is-needed" class="section level4 hasAnchor" number="8.3.1.4">
+<h4><span class="header-section-number">8.3.1.4</span> Why Extrapolation is Needed<a href="regression-discontinuity-designs-rdd.html#why-extrapolation-is-needed" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><strong>Local Comparisons</strong>: In RDD, we rely on the assumption that units just
 below and just above the cutoff are very similar in all respects except
 for the treatment. Thus, we “extrapolate” the behavior of one group to
@@ -904,8 +906,8 @@ understand the counterfactual of the other.</p>
 <p><strong>Local Treatment Effect</strong>: This local comparison near the cutoff allows
 us to estimate the causal effect of the treatment precisely at <span class="math inline">\(c_0\)</span>.</p>
 </div>
-<div id="summary-2" class="section level4 hasAnchor" number="9.3.1.5">
-<h4><span class="header-section-number">9.3.1.5</span> Summary<a href="regression-discontinuity-designs-rdd.html#summary-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="summary-2" class="section level4 hasAnchor" number="8.3.1.5">
+<h4><span class="header-section-number">8.3.1.5</span> Summary<a href="regression-discontinuity-designs-rdd.html#summary-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In summary, the lack of common support in RDD means we don’t have units
 that are both treated and untreated at the same value of the assignment
 variable. As a result, we rely on extrapolation, comparing units just
@@ -915,10 +917,10 @@ treatment, allowing us to infer what the outcome would be if their
 treatment status were different.</p>
 </div>
 </div>
-<div id="assumptions-for-rdd" class="section level3 hasAnchor" number="9.3.2">
-<h3><span class="header-section-number">9.3.2</span> Assumptions for RDD<a href="regression-discontinuity-designs-rdd.html#assumptions-for-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="continuity-assumption-in-rdd" class="section level4 hasAnchor" number="9.3.2.1">
-<h4><span class="header-section-number">9.3.2.1</span> Continuity Assumption in RDD<a href="regression-discontinuity-designs-rdd.html#continuity-assumption-in-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="assumptions-for-rdd" class="section level3 hasAnchor" number="8.3.2">
+<h3><span class="header-section-number">8.3.2</span> Assumptions for RDD<a href="regression-discontinuity-designs-rdd.html#assumptions-for-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="continuity-assumption-in-rdd" class="section level4 hasAnchor" number="8.3.2.1">
+<h4><span class="header-section-number">8.3.2.1</span> Continuity Assumption in RDD<a href="regression-discontinuity-designs-rdd.html#continuity-assumption-in-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ol style="list-style-type: decimal">
 <li><strong>Definition</strong>: The potential outcomes (both treated and untreated)
 must be continuous at the cutoff. This ensures that any jump in the
@@ -973,15 +975,15 @@ treatment effect.</p>
 effect is the only factor causing a jump in the outcome at the cutoff,
 allowing us to make causal inferences from the RDD design.</p>
 </div>
-<div id="no-manipulation-sorting" class="section level4 hasAnchor" number="9.3.2.2">
-<h4><span class="header-section-number">9.3.2.2</span> No Manipulation (sorting)<a href="regression-discontinuity-designs-rdd.html#no-manipulation-sorting" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="no-manipulation-sorting" class="section level4 hasAnchor" number="8.3.2.2">
+<h4><span class="header-section-number">8.3.2.2</span> No Manipulation (sorting)<a href="regression-discontinuity-designs-rdd.html#no-manipulation-sorting" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Units cannot precisely manipulate the assignment variable to end up on
 one side of the cutoff. This ensures that the units just above and below
 the cutoff are comparable.</p>
 </div>
 </div>
-<div id="estimation-in-sharp-rdd" class="section level3 hasAnchor" number="9.3.3">
-<h3><span class="header-section-number">9.3.3</span> Estimation in Sharp RDD<a href="regression-discontinuity-designs-rdd.html#estimation-in-sharp-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="estimation-in-sharp-rdd" class="section level3 hasAnchor" number="8.3.3">
+<h3><span class="header-section-number">8.3.3</span> Estimation in Sharp RDD<a href="regression-discontinuity-designs-rdd.html#estimation-in-sharp-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Parametric Approach</strong>: Fit separate linear regressions on either side
 of the cutoff and estimate the treatment effect as the difference in the
 intercepts at the cutoff.</p>
@@ -998,8 +1000,8 @@ relationship between the assignment variable and the outcome.</p>
 <li><p>kernel type, cutof window</p></li>
 </ul>
 </div>
-<div id="fuzzy-rdd" class="section level3 hasAnchor" number="9.3.4">
-<h3><span class="header-section-number">9.3.4</span> Fuzzy RDD<a href="regression-discontinuity-designs-rdd.html#fuzzy-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="fuzzy-rdd" class="section level3 hasAnchor" number="8.3.4">
+<h3><span class="header-section-number">8.3.4</span> Fuzzy RDD<a href="regression-discontinuity-designs-rdd.html#fuzzy-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In Fuzzy RDD, the probability of receiving treatment changes
 discontinuously at the cutoff but is not perfectly deterministic. This
 can be represented as:</p>
@@ -1010,8 +1012,8 @@ can be represented as:</p>
 \]</span></p>
 <p>Where <span class="math inline">\(p_1\)</span> and <span class="math inline">\(p_0\)</span> are the probabilities of receiving treatment above
 and below the cutoff, respectively.</p>
-<div id="estimation-in-fuzzy-rdd" class="section level4 hasAnchor" number="9.3.4.1">
-<h4><span class="header-section-number">9.3.4.1</span> Estimation in Fuzzy RDD<a href="regression-discontinuity-designs-rdd.html#estimation-in-fuzzy-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="estimation-in-fuzzy-rdd" class="section level4 hasAnchor" number="8.3.4.1">
+<h4><span class="header-section-number">8.3.4.1</span> Estimation in Fuzzy RDD<a href="regression-discontinuity-designs-rdd.html#estimation-in-fuzzy-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><strong>Instrumental Variables (IV) Approach</strong>: Use the cutoff as an
 instrument for actual treatment receipt. The first stage estimates
@@ -1024,8 +1026,8 @@ estimate the treatment effect.</li>
 otherwise.</p>
 </div>
 </div>
-<div id="parametric-vs.-non-parametric-applications" class="section level3 hasAnchor" number="9.3.5">
-<h3><span class="header-section-number">9.3.5</span> Parametric vs. Non-Parametric Applications<a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="parametric-vs.-non-parametric-applications" class="section level3 hasAnchor" number="8.3.5">
+<h3><span class="header-section-number">8.3.5</span> Parametric vs. Non-Parametric Applications<a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Parametric Applications</strong>: Assume a specific functional form (e.g.,
 linear) for the relationship between the assignment variable and the
 outcome. Simpler to implement but relies heavily on the correct
@@ -1035,8 +1037,8 @@ functional form. Typically use methods like local polynomial regression
 or kernel regression to fit the data near the cutoff. More flexible and
 robust but can be more complex to implement and interpret.</p>
 </div>
-<div id="example-13" class="section level3 hasAnchor" number="9.3.6">
-<h3><span class="header-section-number">9.3.6</span> Example<a href="regression-discontinuity-designs-rdd.html#example-13" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="example-13" class="section level3 hasAnchor" number="8.3.6">
+<h3><span class="header-section-number">8.3.6</span> Example<a href="regression-discontinuity-designs-rdd.html#example-13" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Suppose a school district awards scholarships to students who score
 above a certain threshold on a standardized test.</p>
 <ul>
@@ -1050,8 +1052,8 @@ criteria or random factors). We use the score of 80 as an instrument
 to estimate the causal effect of receiving the scholarship.</p></li>
 </ul>
 </div>
-<div id="summary-3" class="section level3 hasAnchor" number="9.3.7">
-<h3><span class="header-section-number">9.3.7</span> Summary<a href="regression-discontinuity-designs-rdd.html#summary-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="summary-3" class="section level3 hasAnchor" number="8.3.7">
+<h3><span class="header-section-number">8.3.7</span> Summary<a href="regression-discontinuity-designs-rdd.html#summary-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Regression Discontinuity Designs are powerful tools for causal inference
 in observational studies where treatment assignment is based on a
 cutoff.</p>
@@ -1071,8 +1073,8 @@ same value of X.</p>
 <p>We can identify causal effects for those subjects whose score is in a
 close neighborhood around some cutoff <span class="math inline">\(c_o\)</span>.</p>
 </div>
-<div id="challenges-to-identification" class="section level3 hasAnchor" number="9.3.8">
-<h3><span class="header-section-number">9.3.8</span> Challenges to Identification<a href="regression-discontinuity-designs-rdd.html#challenges-to-identification" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="challenges-to-identification" class="section level3 hasAnchor" number="8.3.8">
+<h3><span class="header-section-number">8.3.8</span> Challenges to Identification<a href="regression-discontinuity-designs-rdd.html#challenges-to-identification" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The requirement for RDD to estimate a causal effect are the continuity
 assumptions. That is, the expected potential outcomes change smoothly as
 a function of the running variable through the cutoff. In words, this
@@ -1097,16 +1099,16 @@ separately.</p></li>
 </ul>
 <p>Although assumptions may not be tested directly, indirect evidence may
 be show to be persuasive.</p>
-<div id="density-test" class="section level4 hasAnchor" number="9.3.8.1">
-<h4><span class="header-section-number">9.3.8.1</span> Density Test<a href="regression-discontinuity-designs-rdd.html#density-test" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="density-test" class="section level4 hasAnchor" number="8.3.8.1">
+<h4><span class="header-section-number">8.3.8.1</span> Density Test<a href="regression-discontinuity-designs-rdd.html#density-test" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>density test is used to check whether units are sorting on the running
 variable.</p>
 <p>under the null, the density should be continuous at the cutoff point.
 Under the alternative hypothesis, the density should increase at the
 kink.</p>
 </div>
-<div id="covariate-balance-and-other-placebos" class="section level4 hasAnchor" number="9.3.8.2">
-<h4><span class="header-section-number">9.3.8.2</span> Covariate balance and Other placebos<a href="regression-discontinuity-designs-rdd.html#covariate-balance-and-other-placebos" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="covariate-balance-and-other-placebos" class="section level4 hasAnchor" number="8.3.8.2">
+<h4><span class="header-section-number">8.3.8.2</span> Covariate balance and Other placebos<a href="regression-discontinuity-designs-rdd.html#covariate-balance-and-other-placebos" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>For RDD to be valid in your study, there must not be an observable
 discontinuous change in the average values of reasonably chosen
 covariates around the cutoff.</p>
@@ -1123,8 +1125,8 @@ section, and pretending it was a discontinuity, <span class="math inline">\(c^{i
 whether there is a discontinuity in the outcome at <span class="math inline">\(c^{i}_0\)</span>. You do not
 want to find anything.</p>
 </div>
-<div id="non-random-heaping-in-running-variable" class="section level4 hasAnchor" number="9.3.8.3">
-<h4><span class="header-section-number">9.3.8.3</span> Non-random heaping in running variable<a href="regression-discontinuity-designs-rdd.html#non-random-heaping-in-running-variable" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="non-random-heaping-in-running-variable" class="section level4 hasAnchor" number="8.3.8.3">
+<h4><span class="header-section-number">8.3.8.3</span> Non-random heaping in running variable<a href="regression-discontinuity-designs-rdd.html#non-random-heaping-in-running-variable" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Heaping occurs when there is an excess number of units at certain points
 along the running variable. In this case, it seems to happen at regular
 100-gram intervals, likely due to hospitals rounding to the nearest
@@ -1141,10 +1143,10 @@ is the “donut hole” RDD, where units in the vicinity of 1,500 grams are
 removed, and the model is re-estimated.</p>
 </div>
 </div>
-<div id="examples-1" class="section level3 hasAnchor" number="9.3.9">
-<h3><span class="header-section-number">9.3.9</span> Examples<a href="regression-discontinuity-designs-rdd.html#examples-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="close-election" class="section level4 hasAnchor" number="9.3.9.1">
-<h4><span class="header-section-number">9.3.9.1</span> Close Election<a href="regression-discontinuity-designs-rdd.html#close-election" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="examples-1" class="section level3 hasAnchor" number="8.3.9">
+<h3><span class="header-section-number">8.3.9</span> Examples<a href="regression-discontinuity-designs-rdd.html#examples-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="close-election" class="section level4 hasAnchor" number="8.3.9.1">
+<h4><span class="header-section-number">8.3.9.1</span> Close Election<a href="regression-discontinuity-designs-rdd.html#close-election" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Regression Discontinuity Design (RDD) can be effectively used in the
 context of close elections to identify causal effects. The key idea is
 that in very close elections, the outcome of the election (winning or
@@ -1169,8 +1171,8 @@ comparison of outcomes just above and just below the threshold.</p>
 to those where the incumbent barely lost, researchers can isolate the
 effect of holding office on policy decisions and economic outcomes.</p>
 </div>
-<div id="education-policies" class="section level4 hasAnchor" number="9.3.9.2">
-<h4><span class="header-section-number">9.3.9.2</span> Education Policies<a href="regression-discontinuity-designs-rdd.html#education-policies" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="education-policies" class="section level4 hasAnchor" number="8.3.9.2">
+<h4><span class="header-section-number">8.3.9.2</span> Education Policies<a href="regression-discontinuity-designs-rdd.html#education-policies" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><strong>Identifying the Impact of Scholarship Programs:</strong></p>
 <p><strong>Scenario</strong>: A scholarship program is awarded to students who score
 above a certain threshold on an entrance exam.</p>
@@ -1183,8 +1185,8 @@ except for receiving the scholarship.</p>
 future earnings between the two groups, researchers can estimate the
 causal impact of the scholarship program.</p>
 </div>
-<div id="health-interventions" class="section level4 hasAnchor" number="9.3.9.3">
-<h4><span class="header-section-number">9.3.9.3</span> Health Interventions<a href="regression-discontinuity-designs-rdd.html#health-interventions" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="health-interventions" class="section level4 hasAnchor" number="8.3.9.3">
+<h4><span class="header-section-number">8.3.9.3</span> Health Interventions<a href="regression-discontinuity-designs-rdd.html#health-interventions" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><strong>Identifying the Impact of Health Interventions:</strong></p>
 <p><strong>Scenario</strong>: A public health intervention is provided to individuals
 whose health risk score exceeds a certain threshold.</p>
@@ -1197,10 +1199,10 @@ or hospitalization rates, researchers can infer the causal effect of the
 health intervention.</p>
 </div>
 </div>
-<div id="types-of-rdd-1" class="section level3 hasAnchor" number="9.3.10">
-<h3><span class="header-section-number">9.3.10</span> Types of RDD<a href="regression-discontinuity-designs-rdd.html#types-of-rdd-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="sharp-rdd-1" class="section level4 hasAnchor" number="9.3.10.1">
-<h4><span class="header-section-number">9.3.10.1</span> Sharp RDD<a href="regression-discontinuity-designs-rdd.html#sharp-rdd-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="types-of-rdd-1" class="section level3 hasAnchor" number="8.3.10">
+<h3><span class="header-section-number">8.3.10</span> Types of RDD<a href="regression-discontinuity-designs-rdd.html#types-of-rdd-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="sharp-rdd-1" class="section level4 hasAnchor" number="8.3.10.1">
+<h4><span class="header-section-number">8.3.10.1</span> Sharp RDD<a href="regression-discontinuity-designs-rdd.html#sharp-rdd-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In sharp RDD, the treatment assignment is strictly determined by whether
 the running variable crosses a threshold.</p>
 <ul>
@@ -1209,8 +1211,8 @@ a certain cutoff. Families just below the cutoff receive the tax
 credit, while those just above do not.</li>
 </ul>
 </div>
-<div id="fuzzy-rdd-1" class="section level4 hasAnchor" number="9.3.10.2">
-<h4><span class="header-section-number">9.3.10.2</span> Fuzzy RDD<a href="regression-discontinuity-designs-rdd.html#fuzzy-rdd-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="fuzzy-rdd-1" class="section level4 hasAnchor" number="8.3.10.2">
+<h4><span class="header-section-number">8.3.10.2</span> Fuzzy RDD<a href="regression-discontinuity-designs-rdd.html#fuzzy-rdd-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In fuzzy RDD, the probability of treatment assignment jumps at the
 threshold but not perfectly.</p>
 <ul>
@@ -1220,10 +1222,10 @@ eligible individuals enroll in the program.</li>
 </ul>
 </div>
 </div>
-<div id="parametric-vs.-non-parametric-applications-1" class="section level3 hasAnchor" number="9.3.11">
-<h3><span class="header-section-number">9.3.11</span> Parametric vs. Non-Parametric Applications<a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="parametric-rdd" class="section level4 hasAnchor" number="9.3.11.1">
-<h4><span class="header-section-number">9.3.11.1</span> Parametric RDD<a href="regression-discontinuity-designs-rdd.html#parametric-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="parametric-vs.-non-parametric-applications-1" class="section level3 hasAnchor" number="8.3.11">
+<h3><span class="header-section-number">8.3.11</span> Parametric vs. Non-Parametric Applications<a href="regression-discontinuity-designs-rdd.html#parametric-vs.-non-parametric-applications-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="parametric-rdd" class="section level4 hasAnchor" number="8.3.11.1">
+<h4><span class="header-section-number">8.3.11.1</span> Parametric RDD<a href="regression-discontinuity-designs-rdd.html#parametric-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Parametric RDD involves fitting a parametric model (e.g., a polynomial
 regression) to estimate the relationship between the running variable
 and the outcome.</p>
@@ -1232,8 +1234,8 @@ and the outcome.</p>
 impact of an education intervention on test scores.</li>
 </ul>
 </div>
-<div id="non-parametric-rdd" class="section level4 hasAnchor" number="9.3.11.2">
-<h4><span class="header-section-number">9.3.11.2</span> Non-Parametric RDD<a href="regression-discontinuity-designs-rdd.html#non-parametric-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="non-parametric-rdd" class="section level4 hasAnchor" number="8.3.11.2">
+<h4><span class="header-section-number">8.3.11.2</span> Non-Parametric RDD<a href="regression-discontinuity-designs-rdd.html#non-parametric-rdd" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Non-parametric RDD uses local polynomial regression or other
 non-parametric methods to estimate the treatment effect, focusing on
 observations near the cutoff.</p>
@@ -1244,8 +1246,8 @@ of a health intervention on patient recovery rates.</li>
 </div>
 </div>
 </div>
-<div id="regression-kink-design" class="section level2 hasAnchor" number="9.4">
-<h2><span class="header-section-number">9.4</span> Regression Kink Design<a href="regression-discontinuity-designs-rdd.html#regression-kink-design" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="regression-kink-design" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Regression Kink Design<a href="regression-discontinuity-designs-rdd.html#regression-kink-design" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 
 </div>
 </div>
@@ -1255,7 +1257,7 @@ of a health intervention on patient recovery rates.</li>
         </div>
       </div>
 <a href="instrumental-variables-iv.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="fixed-effects-and-panel-data-methods.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="doubly-robust-methods.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

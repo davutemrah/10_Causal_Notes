@@ -1,4 +1,4 @@
-### Example: A/B Test
+## Example: A/B Test
 
 
 A/B testing is an experiment where two or more variants are evaluated using statistical analysis to determine which variation performs better for a given conversion goal.
@@ -12,7 +12,7 @@ Assume you are hired by a digital marketing agency to conduct an A/B test on a n
 The agency has run an experiment where one group of users was shown the new ad design, while another group was shown the old ad design. The users' interactions with the ads were observed, specifically whether they clicked on the ad or not.
 
 
-## Task 1: Load the data
+### Task 1: Load the data
 
 In this task, we will import our libraries and then load our
 dataset
@@ -37,7 +37,7 @@ df%>%
 ```
 
 
-## Task 2: Set up Hypothesis
+### Task 2: Set up Hypothesis
 
 **experiment group**: the group that is involved in the new experiment . i.e the group that received the new ad .
 
@@ -119,7 +119,7 @@ Hypothesis is that the click through rate associated with the new ad is less tha
 And the alternative hypothesis will be the opposite.
 
 
-## Task 3: Compute the difference in the click-through rate 
+### Task 3: Compute the difference in the click-through rate 
 
 This task we will compute the difference in the click through rate between the control and experiment groups.
 
@@ -139,15 +139,15 @@ diff <- experiment_ctr - control_ctr
 diff
 ```
 
-# Task four : create sample distribution using bootsrapping
+### Task four : create sample distribution using bootsrapping
 
-### Bootstrapping : 
+#### Bootstrapping : 
 
 The bootstrap method is a statistical technique for estimating quantities about a population by averaging estimates from multiple small data samples.
 
 Importantly, samples are constructed by drawing observations from a large data sample one at a time and returning them to the data sample after they have been chosen. This allows a given observation to be included in a given small sample more than once. This approach to sampling is called sampling with replacement.
 
-### Example : 
+#### Example : 
 
 Bootstrapping in statistics, means sampling with replacement.
 So, if we have a group of individuals and , and want to bootstrap sample of ten individuals from this group , we could randomly sample any ten individuals but with bootsrapping, we are sampling with replacement so we could actually end up sampling 7 out of the ten individuals and three of the previously selected individuals might end up being sampled again.
@@ -172,7 +172,7 @@ for (i in 1:10000){
 
 ```
 
-## Task five : Evaluate the null hypothesis and draw conclustions.
+### Task five : Evaluate the null hypothesis and draw conclustions.
 
  The central limit theorem states that if you have a population with mean μ and standard deviation σ and take sufficiently large random samples from the population with replacement , then the distribution of the sample means will be approximately normally distributed.
  
@@ -204,13 +204,7 @@ mean((null_hypothesis > diff))
 
 It says that we dont reject the null hypothesis. We can find more extreme values than our test statistics 98% of the time if the null hypothesis true.
  
-## alternative random sampling code
 
-```{r}
-df %>%
-    slice_sample(n = size, replace = T)
-```
- 
  
  
  

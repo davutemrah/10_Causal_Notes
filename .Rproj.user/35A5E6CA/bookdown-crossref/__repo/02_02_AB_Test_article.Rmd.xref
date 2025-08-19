@@ -1,10 +1,9 @@
-h3:example-ab-test Example: A/B Test
-h2:task-1-load-the-data Task 1: Load the data
-h2:task-2-set-up-hypothesis Task 2: Set up Hypothesis
-h2:task-3-compute-the-difference-in-the-click-through-rate Task 3: Compute the difference in the click-through rate
-h1:task-four-create-sample-distribution-using-bootsrapping Task four : create sample distribution using bootsrapping
-h3:bootstrapping Bootstrapping :
-h3:example Example :
-h2:task-five-evaluate-the-null-hypothesis-and-draw-conclustions. Task five : Evaluate the null hypothesis and draw conclustions.
-h2:alternative-random-sampling-code alternative random sampling code
+h2:example-ab-test Example: A/B Test
+h3:task-1-load-the-data Task 1: Load the data
+h3:task-2-set-up-hypothesis Task 2: Set up Hypothesis
+h3:task-3-compute-the-difference-in-the-click-through-rate Task 3: Compute the difference in the click-through rate
+h3:task-four-create-sample-distribution-using-bootsrapping Task four : create sample distribution using bootsrapping
+h4:bootstrapping Bootstrapping :
+h4:example Example :
+h3:task-five-evaluate-the-null-hypothesis-and-draw-conclustions. Task five : Evaluate the null hypothesis and draw conclustions.
 

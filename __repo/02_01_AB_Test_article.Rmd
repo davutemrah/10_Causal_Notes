@@ -1,13 +1,5 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
 
-## A/B Test article from Medium
-
-
-### Example: Conversion Rate of an E-Commerce Website 
+## Example: Conversion Rate of an E-Commerce Website 
 
 [Article
 Source](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a)

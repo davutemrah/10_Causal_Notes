@@ -1,0 +1,51 @@
+# Logistic Regression
+
+**Purpose**
+Logistic regression models the probability of a binary outcome $Y \in \{0,1\}$ as a function of predictors $X$. It is central in causal inference, especially for estimating **propensity scores**.
+
+
+## Model
+
+$$
+P(Y=1|X) = \frac{1}{1 + e^{-X^\top \beta}}
+$$
+
+
+
+## Estimation
+
+* **Objective Function**: Maximize the **likelihood** of observing the data given parameters $\beta$.
+
+* **Loss Function**: Equivalent to minimizing the **negative log-likelihood**.
+
+$$
+\ell(\beta) = \sum_{i=1}^n \left[ y_i \log p_i + (1-y_i)\log(1-p_i) \right], \quad p_i = \frac{1}{1+e^{-x_i^\top \beta}}
+$$
+
+* **Maximum Likelihood Estimation (MLE)**: Estimates $\hat{\beta}$ are obtained by maximizing $\ell(\beta)$.
+
+
+
+## Hypothesis Testing
+
+* Test whether coefficients differ from zero using the **z-statistic**:
+
+$$
+z = \frac{\hat{\beta}_j}{SE(\hat{\beta}_j)}
+$$
+
+* Null hypothesis: $H_0: \beta_j = 0$.
+
+
+
+## Role in Causal Inference
+
+* Logistic regression estimated by **MLE** is the standard method for estimating **propensity scores**.
+
+* These scores underpin **Propensity Score Matching (PSM)** and **Inverse Probability Weighting (IPW)**, enabling adjustment for confounding.
+
+
+
+⚡ **Takeaway**: Logistic regression uses **MLE** to estimate parameters by maximizing the likelihood (minimizing negative log-likelihood). Its most important role in causal inference is providing **propensity scores** for adjusting treatment selection bias.
+
+

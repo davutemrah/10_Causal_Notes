@@ -11,6 +11,7 @@ Instrumental Variables (IV) is a method used in econometrics and statistics to e
 ### Requirements for a Valid Instrument
 
 A valid instrument must satisfy two key conditions:
+
 1. **Relevance**: The instrument must be correlated with the endogenous explanatory variable.
    - *Mathematically*: $ \text{Cov}(Z, X) \neq 0 $
    - This ensures that the instrument can explain some of the variations in the endogenous regressor.

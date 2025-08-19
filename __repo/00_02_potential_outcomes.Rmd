@@ -85,23 +85,47 @@ The treatment assignment was only conditionally random. When treatment assignmen
 
 ### Stable Unit Treatment Value Assumption (SUTVA)
 
-SUTVA is a critical assumption in causal inference and has two main components:
+SUTVA is a fundamental assumption in causal inference, ensuring that potential outcomes are well-defined and comparable across units. It has **two main components**:
 
-- **No Interference**: The potential outcomes for any unit are unaffected by the treatment status of other units. This means the treatment effect on one unit does not spill over to affect another unit.
+1. **No Interference**
+   The potential outcomes for any unit are unaffected by the treatment status of other units.
 
-- **Consistency**: The observed outcome for a unit under the treatment received is the same as the potential outcome under that treatment. This means that if a unit receives the treatment, its observed outcome should match the potential outcome we would expect if it had received that treatment.
+   * Example: If student A receives tutoring, student B’s outcome should not change because of A’s treatment.
+ 
+   * If spillovers exist (e.g., peer effects in classrooms), this assumption is violated.
 
-**Implications of SUTVA**
+2. **Consistency**
 
-1. **Homogeneous Treatment**:
-    - SUTVA implies that the treatment is administered uniformly across all units. In practice, this assumption can be violated if, for instance, the effectiveness of a treatment varies due to differences in how it is delivered. For example, if some doctors are better surgeons than others, the "dose" of the treatment (surgery) is not homogeneous.
+   The observed outcome for a unit under the treatment it actually receives equals the potential outcome under that treatment.
 
-2. **No Externalities (No Spillovers)**:
-    - SUTVA assumes there are no externalities, meaning that the treatment of one unit does not affect the outcomes of other units. If unit 1 receives the treatment and this somehow affects unit 2's outcome, this would be a violation of SUTVA. We are assuming away such spillover effects to ensure that the treatment effect can be isolated and accurately measured.
-    
-  - No general equilibrium effects
+   * Example: If a patient receives a vaccine, their observed health outcome corresponds exactly to the potential outcome “under vaccination.”
 
-Violations of SUTVA can lead to biased estimates of causal effects, so it is essential to consider these assumptions carefully and take appropriate steps to address potential violations when conducting causal inference.
+   * This rules out ambiguity in treatment definitions (e.g., receiving “partial” vs. “full” treatment).
+
+
+
+#### Implications of SUTVA
+
+* **Homogeneous Treatment Delivery**
+  SUTVA assumes that the treatment is applied uniformly. In practice, this can fail if delivery varies (e.g., some doctors are more skilled surgeons than others), effectively changing the “dose” of treatment.
+
+* **No Spillovers / Externalities**
+  Treatment of one unit should not affect the outcomes of others. For example, if vaccinating one person reduces infection risk for their neighbor, SUTVA is violated.
+
+* **No General Equilibrium Effects**
+  Large-scale interventions may change market conditions or environments (e.g., job training programs affecting local wages). These indirect effects break the no-interference component of SUTVA.
+
+
+#### Why SUTVA Matters
+
+Violations of SUTVA lead to **biased causal effect estimates**, because the counterfactuals we rely on are no longer valid. Researchers should:
+
+* Be explicit about possible spillovers or heterogeneity in treatment.
+
+* Use designs that can account for interference (e.g., cluster-randomized trials, network models).
+
+* Interpret results cautiously if SUTVA is unlikely to hold.
+
 
 
 ## Methods for Estimating Causal Effects

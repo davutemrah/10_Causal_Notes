@@ -8,6 +8,8 @@ h2:assumptions-for-identifying-causal-effects Assumptions for Identifying Causal
 h3:independence 
 h4:conditional-independence Conditional Independence
 h3:stable-unit-treatment-value-assumption-sutva Stable Unit Treatment Value Assumption (SUTVA)
+h4:implications-of-sutva Implications of SUTVA
+h4:why-sutva-matters Why SUTVA Matters
 h2:methods-for-estimating-causal-effects Methods for Estimating Causal Effects
 h2:example Example
 h3:simple-difference-method Simple Difference Method

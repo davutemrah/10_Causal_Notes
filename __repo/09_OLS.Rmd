@@ -1,7 +1,5 @@
 # Ordinary Least Squares (OLS)
 
-## Ordinary Least Squares (OLS)
-
 Ordinary Least Squares (OLS) is a fundamental technique in regression analysis used to estimate the parameters of a linear model. 
 
 For OLS estimators to be the **Best Linear Unbiased Estimators (BLUE)**, certain assumptions must hold. Violations of these assumptions can lead to biased, inconsistent, or inefficient estimates. Here are the key assumptions and the potential consequences of their violations:
